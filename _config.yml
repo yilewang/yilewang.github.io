@@ -1,6 +1,6 @@
 # Site settings
-title: Network of the Brain
-description: Personal Website of <br> Yile (Wayne) Wang
+title: Yile (Wayne) Wang
+description: PhD student in Cognition and Neuroscience
 baseurl: "" 
 #change the baseurl to "" if you are using it as your user GitHub Pages
 url: "https://yilewang.github.io"  
