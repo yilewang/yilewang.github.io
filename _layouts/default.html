@@ -1,14 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
    <head>
-      {% include head.html %}  
-      {% if page.mathjax %}			
-      {% include markdown-enhancements/mathjax.html %}
-      {% endif %} 
-      {% include theme-vue.html%}
-      <!-- change font -->
-      <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Source+Sans+Pro:300,400,600&amp;subset=greek,greek-ext,latin-ext" rel="stylesheet" async>
-      <!--  -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+      <title >Home Index</title>
+   </head>
+   <div class="topnav" id="topnav">
+      <a class="sidebar-nav-item" href="https://yilewang.github.io/">Home</a>
+<a class="sidebar-nav-item" href="https://yilewang.github.io/blog" >Posts</a>
+<a class="sidebar-nav-item" href="https://yilewang.github.io/blog/about" >About</a>
+
+<a class="sidebar-nav-item" href="https://github.com/yilewang" target="_blank">
+GitHub</i>
+</a>
+
+   </div>
+   <!-- link to topbar.css-->
+   <link rel="stylesheet" href="/assets/css/topbar.css">
+   <link rel="stylesheet" href="https://yilewang.github.io/assets/typora/vue.css">
+
+   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Source+Sans+Pro:300,400,600&amp;subset=greek,greek-ext,latin-ext" rel="stylesheet" async>
+   <!---->
+
    </head>
    {% include topnav.html active="home"%}
    <body>
