@@ -1,17 +1,17 @@
 # Site settings
-title: Yile (Wayne) Wang
-description: PhD student in Cognition and Neuroscience
+title: Website Title
+description: Website short description
 baseurl: "" 
 #change the baseurl to "" if you are using it as your user GitHub Pages
 url: "https://yilewang.github.io"  
 
 
 # GitHub User settings
-username: Yile (Wayne) Wang
-github_username: yilewang
-user_description: Incoming PhD student
-user_title: Mister
-email: ylwwayne@gmail.com
+username: Username
+github_username: github_username
+user_description: user_description
+user_title: user_title
+email:
 
 # Blog Author settings
 author:
