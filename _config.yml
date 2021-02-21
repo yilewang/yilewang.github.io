@@ -1,6 +1,6 @@
 # Site settings
-title: Yile Wang's Website
-description: A Nomad in Neuroscience World
+title: A Nomad of Neuroscience
+description: Personal Website of Yile (Wayne) Wang
 baseurl: "" 
 #change the baseurl to "" if you are using it as your user GitHub Pages
 url: "https://yilewang.github.io"  
@@ -10,7 +10,7 @@ url: "https://yilewang.github.io"
 username: Yile (Wayne) Wang
 github_username: yilewang
 user_description: Incoming PhD student
-user_title: Mr.
+user_title: Mister
 email: ylwwayne@gmail.com
 
 # Blog Author settings
