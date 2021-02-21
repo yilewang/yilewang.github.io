@@ -1,6 +1,6 @@
 # Site settings
-title: A Nomad of Neuroscience
-description: Personal Website of Yile (Wayne) Wang
+title: 
+description: Personal Website <br> of Yile (Wayne) Wang
 baseurl: "" 
 #change the baseurl to "" if you are using it as your user GitHub Pages
 url: "https://yilewang.github.io"  
