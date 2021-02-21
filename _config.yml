@@ -15,15 +15,12 @@ email: ylwwayne@gmail.com
 
 # Blog Author settings
 author:
-  name:            Yile Wang
-  picture:        
-  email:           ylwwayne@gmail.com
-  description:     I am an incoming PhD student in Cognition and Neuroscience
-  twitter:         https://twitter.com/yilewangwayne
-  facebook:
-  github:          http://github.com/yilewang
-  linkedin:
-  clustrmap:      
+  googlescholar    : "https://scholar.google.com/citations?user=bgnVj8wAAAAJ&hl=en"
+  name             : "Yile Wang"  
+  email            : "ylwwayne@gmail.com"
+  description      : "I am an incoming PhD student in Cognition and Neuroscience"
+  twitter          : "https://twitter.com/yilewangwayne"
+  github           : "http://github.com/yilewang"
 
 
 # markdown
