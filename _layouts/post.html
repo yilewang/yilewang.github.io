@@ -19,7 +19,6 @@
       <link rel="stylesheet" href="{{site.url}}{{site.baseurl}}/assets/css/post.css">
    </head>
    <body>
-      <input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
       <div class="wrap">
          <div class="container content">
             <div class="page">
@@ -33,12 +32,5 @@
             </div>
          </div>
       </div>
-      {% include footer.html %} 
-   </body>
-   {% if page.mermaid == true %}
-   {% include markdown-enhancements/mermaid.html %}
-   {% endif %}
-   {% if page.highlight == true %}
-   {% include markdown-enhancements/highlight.html %}
    {% endif %}
 </html>
