@@ -8,19 +8,13 @@ layout: home
 <p align="left"><font size="3"><a href="https://scholar.google.com/citations?user=bgnVj8wAAAAJ&hl=en"><i class="fas fa-fw fa-graduation-cap"></i> Google Scholar </a> <br> <a href="https://twitter.com/yilewangwayne"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a> </font></p>
 
 
-</div>
-<div class="permlinks">
-<h2>Recent Posts</h2>
-<dl>
-	{% for post in site.posts limit:3 %}
-	<dt><code>{{ post.date | date_to_string }} </code><i class="fas fa-angle-double-right" aria-hidden="true"></i><a href="{{ post.url }}">{{ post.title }}</a> &nbsp;{% include status-indicator.html status=post.status%}
-	{% if post.description %}
- <dd style="text-align: justify">{{ post.description | markdownify }}
-    </dd>
-	{% endif %}
-	{% endfor %}
-	<p>... <a href="/blog">Full Posts List</a> </p>
-</dl>
+
+<h2>My Recent News: </h2>
+<ul>
+	<li>02/18/2021: I recevied PhD offer from The University of Texas at Dallas! </li>
+</ul>
+
+
 
 <h2>Upcoming Posts: </h2>
 <ul>
