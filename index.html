@@ -11,13 +11,15 @@ layout: home
 </div>
 <div class="permlinks">
 <h2>My Recent News: </h2>
+<dl>
+	{% for post in site.posts limit:3 %}
 <ul>
 	<li>02/18/2021: I recevied PhD offer from The University of Texas at Dallas! </li>
 </ul>
 
 
 
-<h2>Upcoming Posts: </h2>
+<h2>My Recent Projects: </h2>
 <ul>
 	<li>Brain Dynamics and Alzheimer's Disease</li>
 	<li>Brain Lateralization and Alzheimer's Disease</li>
