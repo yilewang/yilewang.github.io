@@ -19,7 +19,7 @@ GitHub</i>
    <!---->
 
 	<body>
-		<div style="width: 80vw; height: 100vh; margin: 0 auto;">
+		<div style="width: 80vw; height: 80vh; margin: 0 auto;">
 		<ul>
 			<h1>Personal Stuff</h1>
 			<p> Hi this is Yile Wang. My friends usually call me Wayne. My Chinese name is 王一乐. I was born in China, and raised at Shenzhen for more than 20 years. I have been stayed three cities during my undergra: Foshan in Guangdong, Taichung in Taiwan and Guangzhou in Guangdong. Currently I am living at Plano, TX in United States. I hope to be a computational neuroscientist in future. <br> In my spare time, I enjoy staying alone doing whatever I want. Music is part of my life.  My favourite band is a Korean Indie band called <strong>Hyukoh</strong>. I also enjoying thinking because that&#39;s the only way I can have absolute freedom in the world as a living being. My email address is <a href = "mailto: ylwwayne@gmail.com">ylwwayne@gmail.com</a>. Feel free to contact me if you want. Please check my CV <a href="https://raw.githubusercontent.com/yilewang/yilewang.github.io/master/assets/Yile_Wang_CV.pdf">here</a>. </p>
@@ -29,15 +29,18 @@ GitHub</i>
 	</body>
 
 
-   <footer>
-   <p style="margin-left: auto; margin-right: auto;"> 
-      &copy; {{ site.posts[-1].date | date: '%Y' }}-{{ site.time | date: '%Y' }}, {{ site.author.name }}. This site is open source. {% if page.edit %}<a href="https://github.com/{{site.github_username}}/{{site.github_username}}.github.io/commits/master/{{ page.path }}" > Version history</a>.{% endif %} <a href="https://github.com/{{site.github_username}}/{{site.github_username}}.github.io/edit/master/{{ page.path }}" target="_blank">Improve this page</a>. <a href="https://github.com/{{site.github_username}}/{{site.github_username}}.github.io/blob/master/LICENSE.md" target="_blank">License</a>. <a href="{{site.url}}{{site.baseurl}}/info/disclaimer" target="_blank">Disclaimer</a>. 
-   </p>
-	 {% if include.analytics == false %}
-	 {% else %}
-   {% include clustrmap.html style="hiddenpng"%}
-	 {% endif %}
-</footer>
+	<footer>
+	<p style="margin-left: auto; margin-right: auto;"> 
+	&copy; 2018-2021, Yile Wang. This site is open source.  <a href="https://github.com/yilewang/yilewang.github.io/edit/master/404.html" target="_blank">Improve this page</a>. <a href="https://github.com/yilewang/yilewang.github.io/blob/master/LICENSE.md" target="_blank">License</a>. <a href="https://yilewang.github.io/info/disclaimer" target="_blank">Disclaimer</a>. 
+	</p>
+	 
+     
+	<div hidden class="analytics" aria-hidden="true">
+	 <img src="//www.clustrmaps.com/map_v2.png?d=&cl=ffffff" />
+	</div>
+
+	 
+	</footer>
 
 <link rel="stylesheet" href="{{site.url}}{{site.baseurl}}/assets/css/footer.css" >
 </html>
