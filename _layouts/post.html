@@ -21,24 +21,24 @@
       <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Source+Sans+Pro:300,400,600&amp;subset=greek,greek-ext,latin-ext" rel="stylesheet" async>
       <!---->
 
-   <body>
-      <!-- Add all page content inside this div if you want the side nav to push page content to the right
-         (not used if you only want the sidenav to sit on top of the page -->
-      <div class="wrap">
-         <div class="container content">
-            <div class="page">
-	       <div style="width: 80vw; height: 120vh; margin: 0 auto;">
-               <div id="content-container" style="text-align:justify">
-                  {{ content }}			
-               </div>
+   	<body>
+      	<!-- Add all page content inside this div if you want the side nav to push page content to the right
+         	(not used if you only want the sidenav to sit on top of the page -->
+      	<div class="wrap">
+         	<div class="container content">
+            	<div class="page">
+	       	<div style="width: 80vw; height: 120vh; margin: 0 auto;">
+               	<div id="content-container" style="text-align:justify">
+                  	{{ content }}			
+               	</div>
       
-   </body>
+   	</body>
 		    
-{% include footer.html %} 
-{% if page.mermaid == true %}
-{% include markdown-enhancements/mermaid.html %}
-{% endif %}
-{% if page.highlight == true %}
-{% include markdown-enhancements/highlight.html %}
-{% endif %}
+     {% include footer.html %} 
+     {% if page.mermaid == true %}
+     {% include markdown-enhancements/mermaid.html %}
+     {% endif %}
+     {% if page.highlight == true %}
+     {% include markdown-enhancements/highlight.html %}
+     {% endif %}
 </html>
