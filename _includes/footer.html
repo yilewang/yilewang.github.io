@@ -1,11 +1,14 @@
 <footer>
    <p style="margin-left: auto; margin-right: auto;"> 
-      &copy; {{ site.posts[-1].date | date: '%Y' }}-{{ site.time | date: '%Y' }}, {{ site.author.name }}. This site is open source. {% if page.edit %}<a href="https://github.com/{{site.github_username}}/{{site.github_username}}.github.io/commits/master/{{ page.path }}" > Version history</a>.{% endif %} <a href="https://github.com/{{site.github_username}}/{{site.github_username}}.github.io/edit/master/{{ page.path }}" target="_blank">Improve this page</a>. <a href="https://github.com/{{site.github_username}}/{{site.github_username}}.github.io/blob/master/LICENSE.md" target="_blank">License</a>. <a href="{{site.url}}{{site.baseurl}}/info/disclaimer" target="_blank">Disclaimer</a>. 
+      &copy; 2018-2021, Yile Wang. This site is open source.  <a href="https://github.com/yilewang/yilewang.github.io/edit/master/404.html" target="_blank">Improve this page</a>. <a href="https://github.com/yilewang/yilewang.github.io/blob/master/LICENSE.md" target="_blank">License</a>. <a href="https://yilewang.github.io/info/disclaimer" target="_blank">Disclaimer</a>. 
    </p>
-	 {% if include.analytics == false %}
-	 {% else %}
-   {% include clustrmap.html style="hiddenpng"%}
-	 {% endif %}
+	 
+     
+<div hidden class="analytics" aria-hidden="true">
+	 <img src="//www.clustrmaps.com/map_v2.png?d=&cl=ffffff" />
+</div>
+
+	 
 </footer>
 
 <link rel="stylesheet" href="{{site.url}}{{site.baseurl}}/assets/css/footer.css" >
