@@ -13,7 +13,8 @@ description: Literature sharing for interhemispheric dynamics
 Hey What's up guys 
 因为对微信公众号以及微信本身的厌恶，加之我个人比较喜欢用markdown写东西，所以以后文献分享的内容我将在我的个人网页posts部分更新。微信公众号上只会更新链接，不过也欢迎大家留言和交流。Thx!
 
-今天分享的是一篇我最近在读的，也是我们合作者的文章，关于interhemispheric connection 和 structural connectivity的文章。
+今天分享的是一篇我最近在读的，关于interhemispheric connection 和 structural connectivity的文章。
 
-## 1. abstract
+## 1. Abstract
 
+文章有几个重要结论：
