@@ -15,6 +15,13 @@ Hey What's up guys
 
 今天分享的是一篇我最近在读的，关于interhemispheric connection 和 structural connectivity的文章。
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/112678094-8a079e80-8e38-11eb-86c3-c5939f9227ac.png" width="80%" height="80%" />
+</p>
+
+
+
+
 ## 1. Abstract
 
 文章有几个重要结论：
