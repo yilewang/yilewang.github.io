@@ -17,7 +17,7 @@ Hey What's up guys
 今天分享的是一篇我最近在读的，关于criticality的文章。
 
 <p align="center">
-  <img src="" width="80%" height="80%" />
+  <img src="https://user-images.githubusercontent.com/37648360/122690600-1afbd500-d1f0-11eb-819d-258d48510cbb.png" width="80%" height="80%" />
 </p>
 
 
