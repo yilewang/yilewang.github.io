@@ -32,7 +32,7 @@ Hey What's up guys
 
 去理解这些问题，从本质上其实是去理解一个高维复杂的系统是如何工作的。类似的工作在气象学和物理学界其实已经开展多年，比如，风是如何对当地气候，甚至世界天气产生影响的(厄尔尼诺现象)。在这些前人对复杂系统的研究中，criticality这个概念被用来描述系统介于‘有序’(比如水流中的laminar flow)和‘无序’(比如水流中的turbulence) 两者之间的行为。具有criticality 特征的系统，会表现出scale-free fluctuations (波动)，这种波动会自发的在不同系统状态间(有序和无序)跳跃。值得一提的是，这种critical phenomenon在不同随机系统中表现出了非常一致、结构化和符合物理世界特征的特性，这种通用性可以被用来进行后期统计建模分析。
 
-在很多脑成像的研究中发现，neural system也有criticality的特征：在计算模型中，当系统迫近critical point时，大脑会对输入信息的加工呈现最大的适应性等等(具体可见[shew, et al. 2019] (https://www.jneurosci.org/content/32/3/1061)等类似文章)。值得注意的是，在应用criticality的概念在研究中时，研究者需要对其标准和范围有清醒认识。这篇文章提供了物理学和经典的criticality在neuroscience领域中的应用作为例子进行更好的说明。
+在很多脑成像的研究中发现，neural system也有criticality的特征：在计算模型中，当系统迫近critical point时，大脑会对输入信息的加工呈现最大的适应性等等(具体可见[shew, et al. 2019] (https://www.jneurosci.org/content/32/3/1061) 等类似文章)。值得注意的是，在应用criticality的概念在研究中时，研究者需要对其标准和范围有清醒认识。这篇文章提供了物理学和经典的criticality在neuroscience领域中的应用作为例子进行更好的说明。
 
 ## 2. 物理系统中的Critcality
 
