@@ -12,17 +12,18 @@ description: Literature sharing for criticality
 
 Hey What's up guys 
 
-因为对微信公众号以及微信本身的厌恶，加之我个人比较喜欢用markdown写东西，所以以后文献分享的内容我将在我的个人网页posts部分更新。微信公众号上只会更新链接，不过也欢迎大家留言和交流。Thx!
+今天分享的是一篇我最近在读的，关于criticality and brain activity的文章。我会不定期在我的个人网页和微信公众号同步更新一些与computational neuroscience相关的文章。欢迎大家留言+关注。谢谢
 
-今天分享的是一篇我最近在读的，关于criticality and brain activity的文章。
+[个人网页](https://yilewang.github.io) | 微信公众号: CyberPsy
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/37648360/122690600-1afbd500-d1f0-11eb-819d-258d48510cbb.png" width="80%" height="80%" />
 </p>
 
 
-
-
 ## 1. Abstract
 
+在神经系统中，目前普遍认为认知功能的发生是一个多维度神经活动协调的过程。从单一神经元产生脉冲(spikes)，到整个神经环路的信息传导，再到大规模的网络连接，大脑这个复杂系统无时无刻不在做跨维度的计算和协调。我们该如何理解这样的复杂系统呢？目前，越来越多的研究发现大脑的多尺度(multi-scale)计算是来源于criticality 这个现象。criticality是一种广泛发生在自然界其他复杂物理系统的一种现象，一般在复杂系统处于‘有序’和‘无序’的中间状态是产生，一般表现为一种不专属于任何一种时空尺度的波动or振荡行为(fluctuations/oscillations)。这个不专属于某一时空尺度的概念，我的理解是它的产生不依赖于某一维度的活动(比如，是single neuron 还是large-scale network)。这篇综述介绍了criticality的内核，以及其在不同自然系统和大脑中的特性。
 
+
+## 2. 
