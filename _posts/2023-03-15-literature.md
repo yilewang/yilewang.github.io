@@ -1,12 +1,14 @@
 ---
 layout: post
-title: 文献分享：利用脑网络模型进行多尺度神经机制推理 inferring multi-scale neural mechanisms with brain network modeling
+title: 文献分享：Inferring multi-scale neural mechanisms with brain network modeling
 author: Wayne
 date: 2023-03-15
 permalink: /posts/03/15/2023/literature
 description: Literature sharing
 
 ---
+# 文献分享：Inferring multi-scale neural mechanisms with brain network modeling
+
 公众号好久没更新，这个学期三门课，真的把人上傻了。读博第一建议，别上太多课…
 
 今天分享一篇关于用hybrid modeling做fMRI信号拟合的文章。这个文章和我之前的一个想要用模型模拟empirical fMRI signal的想法非常类似，这里做一个中文解读和大家分享一下。
