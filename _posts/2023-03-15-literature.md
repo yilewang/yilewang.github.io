@@ -43,12 +43,16 @@ Method
 
 ![Pasted Graphic 1](https://user-images.githubusercontent.com/37648360/225517110-6c222faa-a6ea-4a35-b43a-2f94e0250605.png)
 
+
 图2. 文章中的hybrid model
+
 
 ![IMG_0010](https://user-images.githubusercontent.com/37648360/225517124-7e8d7e98-9ec4-45a5-b9b5-92001ca98e23.PNG)
 
-图3. 我对文章中数学的一些标注，方便大家理解
+图3. 我对文章中数学的一些标注，方便大家理解 
+
 ![Screenshot 2023-03-15 at 8 58 25 PM](https://user-images.githubusercontent.com/37648360/225517137-ae4e019f-71ef-4047-9f14-4eaeea69d05c.png)  
+
 
 图4. 原始模型（from Deco et al., 2014)
 
