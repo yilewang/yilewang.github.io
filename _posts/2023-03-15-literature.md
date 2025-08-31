@@ -53,7 +53,7 @@ Method
 
 图3. 我对文章中数学的一些标注，方便大家理解 
 
-![Screenshot 2023-03-15 at 8 58 25 PM](https://user-images.githubusercontent.com/37648360/225517137-ae4e019f-71ef-4047-9f14-4eaeea69d05c.png)  
+![Screenshot 2023-03-15 at 8 58 25 PM](https://user-images.githubusercontent.com/37648360/225517137-ae4e019f-71ef-4047-9f14-4eaeea69d05c.png)
 
 
 图4. 原始模型（from Deco et al., 2014)
@@ -61,7 +61,7 @@ Method
 这里我就不过多展开数学的细节了，我也附上了模型中参数解释的截图。感兴趣的朋友们欢迎留言讨论。
 
 Results
-最后来说一下结果。文章的结果还是很有意思的，我尽量用精简的语言介绍一下。在图五中，从左到右代表的是不同的实验研究中发现的alpha波与神经元活动的负相关现象。第一行是这个研究中他们复现的结果，第二行是之前别的研究者的实验结果。他们发现，hybrid model很好的复现了实验中的结果。这个部分的结果可以说吗他们的模型是有效的。
+最后来说一下结果。文章的结果还是很有意思的，我尽量用精简的语言介绍一下。在图五中，从左到右代表的是不同的实验研究中发现的alpha波与神经元活动的负相关现象。第一行是这个研究中他们复现的结果，第二行是之前别的研究者的实验结果。他们发现，hybrid model很好的复现了实验中的结果。这个部分的结果可以说明他们的模型是有效的。
 ![Pasted Graphic 3](https://user-images.githubusercontent.com/37648360/225517285-90a44b27-3889-4b71-97dd-f8622181c5d1.png)
 
 图5. upper row由是hybrid model计算从而复现的结果。lower row是之前的研究中发现的现象。我们可以看到，hybrid model非常好的复现了之前文章中在实验里发现的结果。a, alpha波的相位和神经元激活的反相关；b, alpha波和EPSC是正相关和IPSC（抑制突触电流）是负相关关系；c, alpha波增强，神经元放电率降低；d, alpha波能量和fMRI信号也呈现负相关关系；e, fMRI的能量频谱分布呈现一个scale free的趋势。
