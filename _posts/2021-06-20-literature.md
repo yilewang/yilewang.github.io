@@ -17,7 +17,7 @@ Hey What's up guys
 [个人网页](https://yilewang.github.io) | 微信公众号: CyberPsy
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/37648360/122690600-1afbd500-d1f0-11eb-819d-258d48510cbb.png" width="80%" height="80%" />
+  <img src="https://user-images.githubusercontent.com/37648360/122690600-1afbd500-d1f0-11eb-819d-258d48510cbb.png" width="100%" />
 </p>
 
 
