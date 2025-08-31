@@ -1,6 +1,6 @@
 # Site settings
 title: Yile Wang
-description: PhD Student in Cognition and Neuroscience
+description: Cognition and Neuroscience
 baseurl: "" 
 #change the baseurl to "" if you are using it as your user GitHub Pages
 url: "https://yilewang.github.io"  
@@ -9,8 +9,8 @@ url: "https://yilewang.github.io"
 # GitHub User settings
 username: Yile Wang
 github_username: yilewang
-user_description: Brain Dynamics & Network Neuroscience
-user_title: Master Student
+user_description: Computational Neuroscience
+user_title: PhD Student
 email: ylwwayne@gmail.com
 
 # Blog Author settings
@@ -72,3 +72,4 @@ exclude:
  - "*.nb"
  - "*.bk"
  - "*.draft.md"
+
