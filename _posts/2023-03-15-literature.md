@@ -86,10 +86,19 @@ Results
 图5. upper row由是hybrid model计算从而复现的结果。lower row是之前的研究中发现的现象。我们可以看到，hybrid model非常好的复现了之前文章中在实验里发现的结果。a, alpha波的相位和神经元激活的反相关；b, alpha波和EPSC是正相关和IPSC（抑制突触电流）是负相关关系；c, alpha波增强，神经元放电率降低；d, alpha波能量和fMRI信号也呈现负相关关系；e, fMRI的能量频谱分布呈现一个scale free的趋势。
 
 图6图7还是在说明hybrid model的有效性。在和各个脑区以及平均time series做了相关之后，他们发现hybrid model的拟合和empirical fMRI是最好的。这里值得注意的是，alpha-regressor指的是用传统的hemodynamic response function去卷积EEG data得到的time series；permutations是指把EEG信号打乱放入模型中，但是其他不变；noise model指的就是比较传统的脑网络模型做法，通过噪声来驱动。后面的三个模型都是这篇文章的control models，用来和他们的hybrid model做比较。
-![Pasted Graphic 4](https://user-images.githubusercontent.com/37648360/225517299-9337903d-4f4f-4dbb-9849-2d0de0156eb3.png)
+
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/225517299-9337903d-4f4f-4dbb-9849-2d0de0156eb3.png" width="100%" />
+</p>
+
+
 
 图6. 最上面是20mins的fMRI信号和4个不同模型的比较；中间是在不同的脑区做静态的时间序列的相关；最后一行是加时间窗来算相关。
-![Pasted Graphic 5](https://user-images.githubusercontent.com/37648360/225517328-5f1ad9c5-d42b-4213-97b8-1fab311cbef9.png)
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/225517328-5f1ad9c5-d42b-4213-97b8-1fab311cbef9.png" width="100%" />
+</p>
 
 图7. 做functional connectivity（功能连接）的相关。
 
@@ -97,18 +106,28 @@ Results
 
 在图8中，他们具体介绍了一下注入EEG活动到模型中是怎么影响突触活动的。首先如果你还记得method部分的数学模型，你可以知道，这个中间黑色的source activity就是EEG活动；绿色的线是long-range input，是模型中global coupling（全局耦合）的参数影响生成的活动。红色是EPSC，然后蓝色是IPSC。我们可以看到注入的EEG在模型中其实就是直接被当成了EPSC，很自然的IPSC就变成了和alpha波成anti-phase（负相位）了。因为就像油门和刹车一样，不可能神经元一直在踩油门。IPSC的抑制作用就是通过和EPSC反相位来实现。
 具体来解释一下这个过程：EPSC会在一开始主导inhibitory firing rate和synaptic gating的趋势，但是因为这里存在一个feedback inhibition loop（反溃抑制环路），所以EPSC越强，IPSC也越强，所以IPSC会呈现完全的反相位。但是，如果我们仔细看IPSC的振幅，我们会发现IPSC其实是比EPSC大得多的，所以会出现一个现象就是synaptic firing rate最终的形状是IPSC的形状。这个效应在以往的实验中也得到了证实。
-![Pasted Graphic 6](https://user-images.githubusercontent.com/37648360/225517373-4087714a-d472-4b34-8f09-b410eb6f6cc3.png)
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/225517373-4087714a-d472-4b34-8f09-b410eb6f6cc3.png" width="100%" />
+</p>
 
 图8. 在神经元活动的层面，alpha波是如何影响EPSC和IPSC的。
 
 在长时间尺度，比如fMRI上，alpha波又是怎么影响fMRI 震荡的呢？图9的a这里他们做了类似的in-silicon的实验，不过这个时候他们吧EEG alpha波替代位了人工生成的，稳定10hz的alpha波，他们发现了与之前相似的效应：fMRI signal呈现了反相关的趋势；在b的实验中，他们把人工生成的alpha波换成了更复杂的情况：在一开始的时候alpha信号是slow component（因为需要更长的时间去完成一个cycle），然后切换到fast comonent（oscillation更频繁）。他们发现在fMRI的振幅上，当alpha是slow component的时候，fMRI的振幅比在fast component的时候要高，这个也非常符合反相关的现象。
-![Pasted Graphic 7](https://user-images.githubusercontent.com/37648360/225517404-ac8dd787-c9e7-490b-9580-53aa7756ae7c.png)
+
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/225517404-ac8dd787-c9e7-490b-9580-53aa7756ae7c.png" width="100%" />
+</p>
 
 图9. 人工模拟的alpha波对fMRI signal的影响
 
 文章的最后，他们还讨论了long-range input对于alpha波对fMRI信号的影响。他们发现，如果去除模型中long-range input，fMRI的振幅将不再有区别。这个直接说明了long-range input对于alpha波的影响。这里潜在的机制是，因为long-range 激活有着更慢的decay rate（衰减率），所以long-range的兴奋能让slow component的活动有更长的时间去积累兴奋信号，然后产生更强的oscillation；相反，fast component没有足够的时间去积累，所以导致振幅低于slow component时候的活动。
 
-![Pasted Graphic 8](https://user-images.githubusercontent.com/37648360/225517417-261cd39e-a292-4253-8213-8c56b4bf98d1.png)
+
+  <p align="center">
+    <img src="https://user-images.githubusercontent.com/37648360/225517417-261cd39e-a292-4253-8213-8c56b4bf98d1.png" width="100%" />
+  </p>
 
 图10. long-range input对于fMRI oscillation的影响
 
