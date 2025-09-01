@@ -12,7 +12,10 @@ description: Literature sharing
 公众号好久没更新，这个学期三门课，真的把人上傻了。读博第一建议，别上太多课…
 
 今天分享一篇关于用hybrid modeling做fMRI信号拟合的文章。这个文章和我之前的一个想要用模型模拟empirical fMRI signal的想法非常类似，这里做一个中文解读和大家分享一下。
-![Pasted Graphic](https://user-images.githubusercontent.com/37648360/225517055-7448272d-2317-4565-9359-acca5237c70a.png)
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/225517055-7448272d-2317-4565-9359-acca5237c70a.png" width="100%" />
+</p>
 
 
 文章标题为inferring multi-scale neural mechanisms with brain network modeling，是2018年发表在eLIFE上文章，作者来自TheVirtualBrain 团队以及Charit  ́ e – Universita ̈ tsmedizin Berlin （柏林夏洛特医学院）的Brain Simulation Group。
@@ -36,24 +39,35 @@ Introduction
 
 Method
 文章的总体框架如图1所示：研究者用了diffusion MRI 作为模型的long-range coupling 参数（用来描述脑区间的耦合），然后T1 MRI作为parcellation template（脑区分割），EEG作为模型的EPSC参数。脑网络模型的的输出是excitatory synaptic activity（兴奋突触活动），然后再借用Balloon-Windkessel hemodynamic model，可以将神经元群层面的活动转换为fMRI signal，我们称之为simulated fMRI。然后empirical fMRI和simulated fMRI做相关来进行fine-tuning，我们就能得到最终最优的模型。
-![Pasted Graphic 2](https://user-images.githubusercontent.com/37648360/225517096-12b1cb19-7927-456a-9019-4e0c077b07c9.png)
+
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/225517096-12b1cb19-7927-456a-9019-4e0c077b07c9.png" width="100%" />
+</p>
 
 图1. 计算框架。
 
 这里值得一提的还有他们对于脑网络模型的修改。在原始的模型中 $w_{BG}^{(E, I)} I_{BG}$ 项的参数原本只是比较传统的 $I_{external}$，不过他们把这一项替换成了EEG data。相比较原始模型，他们还去除了$J_{NMDA}$项（local feedback inhibitory weight）。这里我就不过多展开。
 
 
-![Pasted Graphic 1](https://user-images.githubusercontent.com/37648360/225517110-6c222faa-a6ea-4a35-b43a-2f94e0250605.png)
-
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/225517110-6c222faa-a6ea-4a35-b43a-2f94e0250605.png" width="100%" />
+</p>
 
 图2. 文章中的hybrid model
 
 
-![IMG_0010](https://user-images.githubusercontent.com/37648360/225517124-7e8d7e98-9ec4-45a5-b9b5-92001ca98e23.PNG)
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/225517124-7e8d7e98-9ec4-45a5-b9b5-92001ca98e23.PNG" width="100%" />
+</p>
+
 
 图3. 我对文章中数学的一些标注，方便大家理解 
 
-![Screenshot 2023-03-15 at 8 58 25 PM](https://user-images.githubusercontent.com/37648360/225517137-ae4e019f-71ef-4047-9f14-4eaeea69d05c.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/225517137-ae4e019f-71ef-4047-9f14-4eaeea69d05c.png" width="100%" />
+</p>
 
 
 图4. 原始模型（from Deco et al., 2014)
@@ -62,7 +76,12 @@ Method
 
 Results
 最后来说一下结果。文章的结果还是很有意思的，我尽量用精简的语言介绍一下。在图五中，从左到右代表的是不同的实验研究中发现的alpha波与神经元活动的负相关现象。第一行是这个研究中他们复现的结果，第二行是之前别的研究者的实验结果。他们发现，hybrid model很好的复现了实验中的结果。这个部分的结果可以说明他们的模型是有效的。
-![Pasted Graphic 3](https://user-images.githubusercontent.com/37648360/225517285-90a44b27-3889-4b71-97dd-f8622181c5d1.png)
+
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37648360/225517285-90a44b27-3889-4b71-97dd-f8622181c5d1.png" width="100%" />
+</p>
+
 
 图5. upper row由是hybrid model计算从而复现的结果。lower row是之前的研究中发现的现象。我们可以看到，hybrid model非常好的复现了之前文章中在实验里发现的结果。a, alpha波的相位和神经元激活的反相关；b, alpha波和EPSC是正相关和IPSC（抑制突触电流）是负相关关系；c, alpha波增强，神经元放电率降低；d, alpha波能量和fMRI信号也呈现负相关关系；e, fMRI的能量频谱分布呈现一个scale free的趋势。
 
