@@ -1,31 +1,59 @@
 ---
-layout: single
-title: "Curriculum Vitae"
-author_profile: true
+layout: archive
+title: "CV"
 permalink: /cv/
+author_profile: true
+redirect_from:
+  - /resume
 ---
 
-I am a computational neuroscience researcher working on network dynamics, learning algorithms, and interpretable models of behavior. My work draws on tools from statistics, machine learning, and cognitive science to understand how complex systems learn and adapt.
+{% include base_path %}
 
-## Appointments
-- **PhD Student**, Cognition and Neuroscience, UT Dallas (2021–present)
-- **Research Intern**, Computational Neurobiology Lab (Summer 2023)
+Education
+======
+* B.S. in GitHub, GitHub University, 2012
+* M.S. in Jekyll, GitHub University, 2014
+* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
 
-## Education
-- **M.S., Applied Cognition and Neuroscience** — UT Dallas, 2021
-- **B.S., Cognitive Science** — Zhejiang University, 2019
+Work experience
+======
+* Summer 2015: Research Assistant
+  * Github University
+  * Duties included: Tagging issues
+  * Supervisor: Professor Git
 
-## Research Interests
-- Representation learning and memory consolidation in recurrent networks
-- Modeling human decision making with interpretable latent dynamics
-- Neuro-inspired optimization for continual learning
+* Fall 2015: Research Assistant
+  * Github University
+  * Duties included: Merging pull requests
+  * Supervisor: Professor Hub
+  
+Skills
+======
+* Skill 1
+* Skill 2
+  * Sub-skill 2.1
+  * Sub-skill 2.2
+  * Sub-skill 2.3
+* Skill 3
 
-## Selected Awards
-- Graduate Research Fellowship, School of Behavioral and Brain Sciences, 2023
-- Outstanding Undergraduate Thesis in Cognitive Science, 2019
-
-## Professional Service
-- Reviewer for Conference on Cognitive Computational Neuroscience (CCN)
-- Teaching assistant for Statistical Methods in Neuroscience
-
-A printable CV is available upon request via email.
+Publications
+======
+  <ul>{% for post in site.publications %}
+    {% include archive-single-cv.html %}
+  {% endfor %}</ul>
+  
+Talks
+======
+  <ul>{% for post in site.talks %}
+    {% include archive-single-talk-cv.html %}
+  {% endfor %}</ul>
+  
+Teaching
+======
+  <ul>{% for post in site.teaching %}
+    {% include archive-single-cv.html %}
+  {% endfor %}</ul>
+  
+Service and leadership
+======
+* Currently signed in to 43 different slack teams
