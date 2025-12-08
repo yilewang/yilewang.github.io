@@ -6,6 +6,12 @@ date: 2021-03-24
 permalink: /posts/03/24/2021/random_talk
 description: why I didn't agree to Chinese type radical Feminism.
 published: false
+categories:
+  - daily-life
+tags:
+  - chinese
+  - social
+  - feminism
 
 ---
 

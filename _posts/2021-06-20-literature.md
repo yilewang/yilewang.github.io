@@ -6,6 +6,13 @@ date: 2021-06-20
 permalink: /posts/06/20/2021/literature
 description: Literature sharing for criticality
 published: false
+categories:
+  - technical
+tags:
+  - chinese
+  - neuroscience
+  - literature
+  - criticality
 
 ---
 
