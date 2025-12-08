@@ -1,7 +1,13 @@
 main:
-  - title: "CV"
-    url: /cv/
-  - title: "Publication"
+  - title: "About"
+    url: /about/
+  - title: "Publications"
     url: /publications/
-  - title: "Posts"
-    url: /posts/
+  - title: "Projects"
+    url: /projects/
+  - title: "Teaching"
+    url: /teaching/
+  - title: "Talks"
+    url: /talks/
+  - title: "Blog"
+    url: /year-archive/
