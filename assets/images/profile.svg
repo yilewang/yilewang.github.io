@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <rect width="240" height="240" fill="#f0f4ff"/>
+  <circle cx="120" cy="100" r="60" fill="#2b6cb0" opacity="0.1"/>
+  <circle cx="120" cy="90" r="38" fill="#2b6cb0" opacity="0.3"/>
+  <path d="M60 194c10-38 110-38 120 0" fill="#2b6cb0" opacity="0.2"/>
+  <text x="120" y="208" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#1a365d">YW</text>
+</svg>
