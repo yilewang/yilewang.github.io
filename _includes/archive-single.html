@@ -34,7 +34,7 @@
       {% endif %}
     </h2>
     
-    {% if post.read_time %}
+    {% if post.read_time and include.type != "grid" %}
       <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> {% include read-time.html %}</p>
     {% endif %}
 
