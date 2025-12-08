@@ -5,6 +5,7 @@ author: Wayne
 date: 2023-03-15
 permalink: /posts/03/15/2023/literature
 description: Literature sharing
+published: false
 
 ---
 # 文献分享：Inferring multi-scale neural mechanisms with brain network modeling
