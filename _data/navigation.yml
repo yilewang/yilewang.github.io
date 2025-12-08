@@ -1,10 +1,13 @@
 # main links links
 main:
   - title: "CV"
-    url: /files/CV_HayoungSong.pdf
+    url: /files/CV_yilewang.pdf
 
   - title: "Publications"
     url: /publications/    
+
+  - title: "Posts"
+    url: /year-archive/
 
   # - title: "Teaching"
   #   url: /teaching/    
