@@ -46,15 +46,6 @@
          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].date_label | default: "Published:" }}</strong> <time datetime="{{ post.date | default: "1900-01-01" | date_to_xmlschema }}">{{ post.date | default: "1900-01-01" | date: "%B %d, %Y" }}</time></p>
         {% endif %}
 
-    {% if post.categories.size > 0 %}
-      <p class="page__meta">
-        <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories:</strong>
-        {% for category in post.categories %}
-          <a href="{{ base_path }}/categories/#{{ category | slugify }}" class="page__taxonomy-item" rel="tag">{{ category }}</a>{% unless forloop.last %}<span class="sep">, </span>{% endunless %}
-        {% endfor %}
-      </p>
-    {% endif %}
-
     {% if post.tags.size > 0 %}
       <p class="page__meta">
         <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags:</strong>
