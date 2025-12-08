@@ -49,6 +49,17 @@
 }
 
 .page__content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5em 2em;
+
+  @include breakpoint(max-width $medium) {
+    padding: 1em 1.5em;
+  }
+
+  @include breakpoint(max-width $small) {
+    padding: 1em;
+  }
 
   h2 {
     padding-bottom: 0.5em;
