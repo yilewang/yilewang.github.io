@@ -1,6 +1,6 @@
 ---
 layout: posts
-title: "Posts"
-permalink: /posts/
+title: "Blog Posts"
+permalink: /year-archive/
 author_profile: true
 ---
