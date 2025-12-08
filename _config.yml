@@ -1,75 +1,130 @@
 # Site settings
-title: Yile Wang
-description: PhD in Cognition and Neuroscience in progress
-baseurl: "" 
-#change the baseurl to "" if you are using it as your user GitHub Pages
-url: "https://yilewang.github.io"  
+locale                   : "en-US"
+title                    : "Yile Wang"
+name                     : "Yile Wang"
+description              : "PhD student in Cognition and Neuroscience"
+url                      : "https://yilewang.github.io"
+baseurl                  : ""
+repository               : "yilewang/yilewang.github.io"
+remote_theme             : "mmistakes/minimal-mistakes@4.24.0"
 
+# Appearance
+minimal_mistakes_skin    : "default"
 
-# GitHub User settings
-username: Yile Wang
-github_username: yilewang
-user_description: Computational Neuroscience
-user_title: PhD Student
-email: ylwwayne@gmail.com
-
-# Blog Author settings
+# Author settings
 author:
-  googlescholar    : "https://scholar.google.com/citations?user=bgnVj8wAAAAJ&hl=en"
-  name             : "Yile Wang"  
-  email            : "ylwwayne@gmail.com"
-  description      : "I am an incoming PhD student in Cognition and Neuroscience"
-  twitter          : "https://twitter.com/yilewangwayne"
-  github           : "http://github.com/yilewang"
+  name           : "Yile Wang"
+  avatar         : "/assets/images/profile.svg"
+  bio            : "Computational neuroscience researcher and PhD student."
+  location       : "Dallas, TX"
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope"
+      url: "mailto:ylwwayne@gmail.com"
+    - label: "Google Scholar"
+      icon: "ai ai-google-scholar"
+      url: "https://scholar.google.com/citations?user=bgnVj8wAAAAJ&hl=en"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/yilewang"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter"
+      url: "https://twitter.com/yilewangwayne"
 
+# Collections
+collections:
+  publications:
+    output: true
+    permalink: /publications/:title/
+  projects:
+    output: true
+    permalink: /projects/:title/
+  teaching:
+    output: true
+    permalink: /teaching/:title/
+  talks:
+    output: true
+    permalink: /talks/:title/
 
-# markdown
-markdown: kramdown
-  
-kramdown:
- footnote_nr: 1
- entity_output: as_char
- # Jekyll 3 and GitHub Pages now only support rouge for syntax highlighting
- syntax_highlighter: rouge
- syntax_highlighter_opts:
-  # Use existing pygments syntax highlighting css
-  css_class: 'highlight'
- span:
-  line_numbers: false
- block:
-  line_numbers: true
-  start_line: 1
- 
-highlighter: rouge
-    
-plugins:
-  - jekyll-seo-tag
-  - jekyll-sitemap
-  
-permalink: none
-
+# Defaults
 defaults:
-  -
-    scope:
+  - scope:
       path: ""
-      type: "posts"
+      type: posts
     values:
-      toc: true
-      mathjax: true
-      mermaid: false
-      highlight: false
-      numbering: true
-      status: Completed
-      protected: false
-      commentable: true
-      rss: true
-      numbering: true
+      layout: single
+      author_profile: true
+      read_time: true
+      share: true
+      comments: false
+      related: true
+  - scope:
+      path: ""
+      type: publications
+    values:
+      layout: single
+      author_profile: true
+      share: false
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: single
+      author_profile: true
+      share: false
+  - scope:
+      path: ""
+      type: teaching
+    values:
+      layout: single
+      author_profile: true
+      share: false
+  - scope:
+      path: ""
+      type: talks
+    values:
+      layout: single
+      author_profile: true
+      share: false
+  - scope:
+      path: "_pages"
+    values:
+      layout: single
+      author_profile: true
+      permalink: /:basename/
 
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-paginate
+  - jekyll-remote-theme
+  - jekyll-include-cache
+  - jekyll-seo-tag
+  - jekyll-redirect-from
+
+paginate: 5
+paginate_path: "/blog/page:num/"
+
+# Markdown
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: true
+  hard_wrap: false
+
+# Include/exclude
+include:
+  - _pages
+  - _posts
 exclude:
- - LICENSE.md
- - README.md
- - "*.cdf"
- - "*.nb"
- - "*.bk"
- - "*.draft.md"
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - node_modules
+  - tmp
 
+# Analytics
+analytics:
+  provider: ""
