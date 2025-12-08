@@ -2,7 +2,7 @@
 locale                   : "en-US"
 title                    : "Yile Wang"
 name                     : "Yile Wang"
-description              : "PhD student in Cognition and Neuroscience"
+description              : "Computational neuroscience researcher and PhD student"
 url                      : "https://yilewang.github.io"
 baseurl                  : ""
 repository               : "yilewang/yilewang.github.io"
@@ -15,7 +15,7 @@ minimal_mistakes_skin    : "default"
 author:
   name           : "Yile Wang"
   avatar         : "/assets/images/profile.svg"
-  bio            : "Computational neuroscience researcher and PhD student."
+  bio            : "Computational neuroscience researcher working on representational drift, learning algorithms, and neural network dynamics."
   location       : "Dallas, TX"
   links:
     - label: "Email"
