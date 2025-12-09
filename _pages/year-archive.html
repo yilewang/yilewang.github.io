@@ -49,11 +49,11 @@ redirect_from:
   'use strict';
   
   function init() {
-    const tagButtons = document.querySelectorAll('.tag-filter-btn');
+    const tagButtons = Array.prototype.slice.call(document.querySelectorAll('.tag-filter-btn'));
     const clearButton = document.getElementById('clear-filters');
     const activeFiltersEl = document.getElementById('active-filters');
-    const postItems = document.querySelectorAll('.post-item');
-    const yearHeaders = document.querySelectorAll('.year-header');
+    const postItems = Array.prototype.slice.call(document.querySelectorAll('.post-item'));
+    const yearHeaders = Array.prototype.slice.call(document.querySelectorAll('.year-header'));
     let selectedTags = new Set();
 
     function updateActiveFilters() {
