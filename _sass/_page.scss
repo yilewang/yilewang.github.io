@@ -18,9 +18,9 @@
 
 .page {
   @include breakpoint($large) {
-    @include span(12 of 12);
-    @include prefix(0);
-    @include suffix(0);
+    @include span(10 of 12 last);
+    @include prefix(0.5 of 12);
+    @include suffix(2 of 12);
   }
 
   .page__inner-wrap {
@@ -49,9 +49,9 @@
 }
 
 .page__content {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 1.25em 1.5em;
+  padding: 1.5em 2em;
 
   @include breakpoint(max-width $medium) {
     padding: 1em 1.25em;
