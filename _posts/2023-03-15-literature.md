@@ -12,7 +12,6 @@ tags:
   - neuroscience
 
 ---
-# 文献分享：Inferring multi-scale neural mechanisms with brain network modeling
 
 公众号好久没更新，这个学期三门课，真的把人上傻了。读博第一建议，别上太多课…
 
