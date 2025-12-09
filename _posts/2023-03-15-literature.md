@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 文献分享：Inferring multi-scale neural mechanisms with brain network modeling
+title: "文献分享：Inferring multi-scale neural mechanisms with brain network modeling"
 author: Wayne
 date: 2023-03-15
 permalink: /posts/03_15_2023_multi_scale_brain_modeling

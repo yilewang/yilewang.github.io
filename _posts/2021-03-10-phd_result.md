@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 以此文纪念申请季结束
+title: "以此文纪念申请季结束"
 author: Wayne
 date: 2021-03-10
 permalink: /posts/03_10_2021_phd_results
@@ -11,8 +11,6 @@ tags:
   - personal
 
 ---
-
-# 以此文纪念申请季结束
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/37648360/110596085-7d9afa80-8144-11eb-8bd8-a85aa96ce708.jpg" width="100%" />

@@ -1,20 +1,16 @@
 ---
 layout: post
-title: 文献分享：Criticality in the brain: A synthesis of neurobiology, models and cognition
+title: "文献分享：Criticality in the brain : A synthesis of neurobiology, models and cognition"
 author: Wayne
 date: 2021-06-20
-permalink: /posts/06/20/2021/literature
+permalink: /posts/06_20_2021_criticality
 description: Literature sharing for criticality
-published: false
+published: true
 tags:
   - technical
   - chinese
   - neuroscience
-  - literature
-  - criticality
 ---
-
-# 文献分享：Criticality in the brain: A synthesis of neurobiology, models and cognition
 
 Hey What's up guys 
 
