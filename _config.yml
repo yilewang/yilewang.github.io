@@ -7,9 +7,9 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Yile Wang" #"Your Name / Site Title"
+title                    : "Yile Wang, M.S., PhD candidate" #"Your Name / Site Title"
 title_separator          : "-"
-name                     : &name "Yile Wang, M.S"
+name                     : &name "Yile Wang"
 description              : &description "Computational Neuroscience Researcher"
 url                      : https://yilewang.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
