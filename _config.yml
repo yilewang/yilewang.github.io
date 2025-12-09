@@ -7,7 +7,7 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Yile Wang, M.S., PhD candidate" #"Your Name / Site Title"
+title                    : "Yile Wang" #"Your Name / Site Title"
 title_separator          : "-"
 name                     : &name "Yile Wang"
 description              : &description "Computational Neuroscience Researcher"
@@ -265,6 +265,7 @@ plugins:
   - jekyll-gist
   - jekyll-feed
   - jekyll-redirect-from
+  - jekyll-archives
 # mimic GitHub Pages with --safe
 whitelist:
   - jekyll-paginate
@@ -288,8 +289,17 @@ category_archive:
   type: liquid
   path: /categories/
 tag_archive:
-  type: liquid
+  type: jekyll-archives
   path: /tags/
+
+# jekyll-archives configuration (generates per-tag pages at /tags/:name/)
+jekyll-archives:
+  enabled:
+    - tags
+  layouts:
+    tag: archive-taxonomy
+  permalinks:
+    tag: /tags/:name/
 # https://github.com/jekyll/jekyll-archives
 # jekyll-archives:
 #   enabled:

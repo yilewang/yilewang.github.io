@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "About Yile Wang"
+title: "About Me"
 excerpt: "Yile Wang"
 author_profile: true
 redirect_from: 
