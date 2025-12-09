@@ -49,9 +49,9 @@
 }
 
 .page__content {
-  max-width: 1600px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 1.1em 1.25em;
+  padding: 1.25em 1.5em;
 
   @include breakpoint(max-width $medium) {
     padding: 1em 1.25em;
