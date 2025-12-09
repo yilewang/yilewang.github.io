@@ -1,0 +1,37 @@
+name: Build and deploy Jekyll site
+
+on:
+  push:
+    # Trigger on your main branches; add or change branch names if needed
+    branches: [ "main", "master", "model/representational_drift" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+
+      - name: Install bundler & gems
+        run: |
+          gem install bundler
+          bundle config set path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: Build site with Jekyll
+        env:
+          JEKYLL_ENV: production
+        run: |
+          bundle exec jekyll build -d ./_site
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
