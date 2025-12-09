@@ -12,7 +12,6 @@ tags:
   - neuroscience
   - literature
   - criticality
-
 ---
 
 # 文献分享：Criticality in the brain: A synthesis of neurobiology, models and cognition
@@ -20,8 +19,6 @@ tags:
 Hey What's up guys 
 
 今天分享的是一篇我最近在读的，关于criticality and brain activity的文章。我会不定期在我的个人网页和微信公众号同步更新一些与computational neuroscience相关的文章。欢迎大家留言+关注。谢谢
-
-[个人网页](https://yilewang.github.io) | 微信公众号: CyberPsy
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/37648360/122690600-1afbd500-d1f0-11eb-819d-258d48510cbb.png" width="100%" />

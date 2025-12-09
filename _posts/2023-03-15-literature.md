@@ -3,15 +3,13 @@ layout: post
 title: 文献分享：Inferring multi-scale neural mechanisms with brain network modeling
 author: Wayne
 date: 2023-03-15
-permalink: /posts/03/15/2023/literature
+permalink: /posts/03_15_2023_multi_scale_brain_modeling
 description: Literature sharing
-published: false
+published: true
 tags:
   - technical
   - chinese
   - neuroscience
-  - literature
-  - brain-modeling
 
 ---
 # 文献分享：Inferring multi-scale neural mechanisms with brain network modeling
