@@ -21,7 +21,17 @@
     {% for hash in tag_hashes %}
       {% assign keyValue = hash | split: '#' %}
       {% capture tag_word %}{{ keyValue[1] | strip_newlines }}{% endcapture %}
-      <a href="{{ base_path }}{{ tag_word | slugify | prepend: path_type | prepend: site.tag_archive.path }}" class="page__taxonomy-item" rel="tag">{{ tag_word }}</a>{% unless forloop.last %}<span class="sep">, </span>{% endunless %}
+      {% assign tag_slug = tag_word | slugify %}
+      {%- comment -%}
+        jekyll-archives generates tag pages at /tags/:name/ (note trailing slash).
+        Without the slash the links 404 on GitHub Pages, so add it when needed.
+      {%- endcomment -%}
+      {% if site.tag_archive.type == "jekyll-archives" %}
+        {% assign tag_path = tag_slug | append: "/" %}
+      {% else %}
+        {% assign tag_path = tag_slug %}
+      {% endif %}
+      <a href="{{ base_path }}{{ tag_path | prepend: path_type | prepend: site.tag_archive.path }}" class="page__taxonomy-item" rel="tag">{{ tag_word }}</a>{% unless forloop.last %}<span class="sep">, </span>{% endunless %}
     {% endfor %}
     </span>
   </p>
