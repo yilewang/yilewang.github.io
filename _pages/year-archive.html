@@ -16,11 +16,11 @@ redirect_from:
     {% if all_tags.size > 0 %}
       {% for tag in all_tags %}
         {% if tag != nil and tag != '' %}
-          <button class="btn btn--primary tag-filter-btn" type="button" data-tag="{{ tag | slugify }}" style="margin: 0.25em;">{{ tag }}</button>
+          <button class="btn btn--primary tag-filter-btn" data-tag="{{ tag | slugify }}" style="margin: 0.25em;">{{ tag }}</button>
         {% endif %}
       {% endfor %}
     {% endif %}
-    <button class="btn btn--primary tag-filter-btn" type="button" id="clear-filters" style="margin: 0.25em;">Clear All</button>
+    <button class="btn btn--primary tag-filter-btn" id="clear-filters" style="margin: 0.25em;">Clear All</button>
   </p>
   <p id="active-filters" style="margin-top: 1em; font-style: italic; color: #666;"></p>
 </div>
@@ -44,129 +44,7 @@ redirect_from:
 {% endfor %}
 </div>
 
-<script>
-(function() {
-  'use strict';
-  
-  function init() {
-    const tagButtons = Array.prototype.slice.call(document.querySelectorAll('.tag-filter-btn'));
-    const clearButton = document.getElementById('clear-filters');
-    const activeFiltersEl = document.getElementById('active-filters');
-    const postItems = Array.prototype.slice.call(document.querySelectorAll('.post-item'));
-    const yearHeaders = Array.prototype.slice.call(document.querySelectorAll('.year-header'));
-    let selectedTags = new Set();
-
-    function updateActiveFilters() {
-      if (!activeFiltersEl) return;
-      if (selectedTags.length === 0) {
-        activeFiltersEl.textContent = '';
-      } else {
-        activeFiltersEl.textContent = 'Active filters: ' + selectedTags.join(', ');
-      }
-    }
-
-    function filterPosts() {
-      if (!postItems || postItems.length === 0) return;
-      
-      postItems.forEach(function(post) {
-        var tagsAttr = post.getAttribute('data-tags');
-        if (!tagsAttr || tagsAttr.trim() === '') {
-          post.style.display = selectedTags.length === 0 ? '' : 'none';
-          return;
-        }
-
-        var postTags = tagsAttr.trim().split(/\s+/).filter(function(t) { return t.length > 0; });
-        var hasAllTags = true;
-
-        if (selectedTags.length > 0) {
-          for (var i = 0; i < selectedTags.length; i++) {
-            if (postTags.indexOf(selectedTags[i]) === -1) {
-              hasAllTags = false;
-              break;
-            }
-          }
-        }
-        
-        if (hasAllTags) {
-          post.style.display = '';
-        } else {
-          post.style.display = 'none';
-        }
-      });
-
-      // Hide year headers if no posts are visible in that year
-      if (yearHeaders && yearHeaders.length > 0) {
-        yearHeaders.forEach(function(header) {
-          var year = header.getAttribute('data-year');
-          var hasVisiblePosts = false;
-          
-          // Find the next sibling post items after this header
-          var current = header.nextElementSibling;
-          while (current) {
-            if (current.classList && current.classList.contains('post-item')) {
-              if (current.style.display !== 'none') {
-                hasVisiblePosts = true;
-                break;
-              }
-            } else if (current.classList && current.classList.contains('year-header')) {
-              break;
-            }
-            current = current.nextElementSibling;
-          }
-          
-          if (!hasVisiblePosts && selectedTags.length > 0) {
-            header.style.display = 'none';
-          } else {
-            header.style.display = '';
-          }
-        });
-      }
-    }
-
-    if (tagButtons && tagButtons.length > 0) {
-      tagButtons.forEach(function(btn) {
-        if (btn.id !== 'clear-filters') {
-          btn.addEventListener('click', function() {
-            var tag = this.getAttribute('data-tag');
-            var tagIndex = selectedTags.indexOf(tag);
-
-            if (tagIndex !== -1) {
-              selectedTags.splice(tagIndex, 1);
-              this.classList.remove('active');
-            } else {
-              selectedTags.push(tag);
-              this.classList.add('active');
-            }
-            
-            updateActiveFilters();
-            filterPosts();
-          });
-        }
-      });
-    }
-
-    if (clearButton) {
-      clearButton.addEventListener('click', function() {
-        selectedTags = [];
-        if (tagButtons && tagButtons.length > 0) {
-          tagButtons.forEach(function(btn) {
-            btn.classList.remove('active');
-          });
-        }
-        updateActiveFilters();
-        filterPosts();
-      });
-    }
-  }
-  
-  // Wait for DOM to be ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-</script>
+<script src="{{ base_path }}/assets/js/tag-filter.js"></script>
 
 <style>
 .tag-filter-btn.active {
