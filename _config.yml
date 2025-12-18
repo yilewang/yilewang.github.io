@@ -289,7 +289,7 @@ category_archive:
   type: liquid
   path: /categories/
 tag_archive:
-  type: jekyll-archives
+  type: liquid
   path: /tags/
 
 # jekyll-archives configuration (generates per-tag pages at /tags/:name/)
