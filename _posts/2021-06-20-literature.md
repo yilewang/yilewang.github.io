@@ -7,7 +7,7 @@ permalink: /posts/06_20_2021_criticality
 description: Literature sharing for criticality
 published: true
 tags:
-  - technical
+  - literature review
   - chinese
   - neuroscience
 ---

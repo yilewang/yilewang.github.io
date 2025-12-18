@@ -7,7 +7,7 @@ permalink: /posts/03_15_2023_multi_scale_brain_modeling
 description: Literature sharing
 published: true
 tags:
-  - technical
+  - literature review
   - chinese
   - neuroscience
 
