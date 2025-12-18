@@ -1,12 +1,5 @@
 {% include base_path %}
 
-{% case site.tag_archive.type %}
-  {% when "liquid" %}
-    {% assign path_type = "#" %}
-  {% when "jekyll-archives" %}
-    {% assign path_type = nil %}
-{% endcase %}
-
 {% if site.tag_archive.path %}
   {% comment %}
     <!-- Sort alphabetically regardless of case e.g. a B c d E -->
@@ -27,11 +20,11 @@
         Without the slash the links 404 on GitHub Pages, so add it when needed.
       {%- endcomment -%}
       {% if site.tag_archive.type == "jekyll-archives" %}
-        {% assign tag_path = tag_slug | append: "/" %}
-      {% else %}
-        {% assign tag_path = tag_slug %}
+        <a href="{{ site.tag_archive.path }}{{ tag_slug }}/" class="page__taxonomy-item" rel="tag">{{ tag_word }}</a>
+      {% elsif site.tag_archive.type == "liquid" %}
+        <a href="{{ site.tag_archive.path }}#{{ tag_slug }}" class="page__taxonomy-item" rel="tag">{{ tag_word }}</a>
       {% endif %}
-      <a href="{{ base_path }}{{ tag_path | prepend: path_type | prepend: site.tag_archive.path }}" class="page__taxonomy-item" rel="tag">{{ tag_word }}</a>{% unless forloop.last %}<span class="sep">, </span>{% endunless %}
+      {%- unless forloop.last %}<span class="sep">, </span>{% endunless %}
     {% endfor %}
     </span>
   </p>
