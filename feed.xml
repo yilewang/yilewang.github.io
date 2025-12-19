@@ -1,4 +1,169 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://yilewang.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yilewang.github.io/" rel="alternate" type="text/html" /><updated>2025-12-19T10:59:47-08:00</updated><id>https://yilewang.github.io/feed.xml</id><title type="html">Yile Wang</title><subtitle>Computational Neuroscience Researcher</subtitle><author><name>Yile Wang</name><email>ylwwayne@gmail.com</email></author><entry><title type="html">文献分享：Inferring multi-scale neural mechanisms with brain network modeling</title><link href="https://yilewang.github.io/posts/03_15_2023_multi_scale_brain_modeling" rel="alternate" type="text/html" title="文献分享：Inferring multi-scale neural mechanisms with brain network modeling" /><published>2023-03-15T00:00:00-07:00</published><updated>2023-03-15T00:00:00-07:00</updated><id>https://yilewang.github.io/posts/literature</id><content type="html" xml:base="https://yilewang.github.io/posts/03_15_2023_multi_scale_brain_modeling"><![CDATA[<p>公众号好久没更新，这个学期三门课，真的把人上傻了。读博第一建议，别上太多课…</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://yilewang.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yilewang.github.io/" rel="alternate" type="text/html" /><updated>2025-12-19T11:08:54-08:00</updated><id>https://yilewang.github.io/feed.xml</id><title type="html">Yile Wang</title><subtitle>Computational Neuroscience Researcher</subtitle><author><name>Yile Wang</name><email>ylwwayne@gmail.com</email></author><entry><title type="html">Oja’s learning rule</title><link href="https://yilewang.github.io/posts/12_19_2025_oja_learning_rule" rel="alternate" type="text/html" title="Oja’s learning rule" /><published>2025-12-19T00:00:00-08:00</published><updated>2025-12-19T00:00:00-08:00</updated><id>https://yilewang.github.io/posts/Oja</id><content type="html" xml:base="https://yilewang.github.io/posts/12_19_2025_oja_learning_rule"><![CDATA[<h2 id="-idea--thought">📝 Idea / Thought</h2>
+
+<p>The invention of the Oja’s rule is to overcome the problem of unbounded growth when training the neural network with the Hebbian learning rules</p>
+
+\[y_i = \sum_j w_{ij} x_j\]
+
+<h3 id="ojas-rule">Oja’s rule</h3>
+
+<p>In Oja’s rule, it used the multiplicative constrains to re-normalize the weights, so that it will converge to the first principal component. But keep in mind that it’s only for the one neuron Oja’s model; If the model has multiple neurons following Oja’s rule, it will converge to find the subspace of the two eigenvectors, not exactly the two eigenvectors.</p>
+
+<h4 id="how-ojas-rule-is-derived">How Oja’s rule is derived</h4>
+<p>we already know the classic Hebbian learning is
+\(\mathbf{y = w x}\)
+When updated weight, the learning rule is:
+\(\mathbf{\Delta w = yx}\)</p>
+<ul>
+  <li>it means that when the presynaptic neurons $\mathbf{x}$ and postsynaptic neurons $\mathbf{y}$ fire together, they will update the weights more. 
+We can also write it in this way:
+\(\mathbf{w(t+1) = w(t) + \eta yx}\)
+To avoid unbounded weight growth, for each step, the updated weight is re-normalized by the scalar term itself:</li>
+</ul>
+
+<p>\(\mathbf{w(t+1) = \Delta w' = \frac{w'}{||w'||}}\)
+As we already know
+\(\mathbf{w' = w(t) + \eta yx}\)
+We can calculate the $\mathbf{||w’||^2}$  as
+\(\begin{align}
+\mathbf{||w'||^2 = (w(t))^2 + 2\eta yxw' + (\eta yx)^2} \\
+=\mathbf{||w'||^2  + 2 \eta y^2 + \eta^2 y^2 ||x||^2} \\
+=1 + 2\eta y^2 + \eta^2 y^2 ||x||^2
+\end{align}\)</p>
+
+<p>Then, let $\epsilon = 2\eta y^2 + \eta^2 y^2 ||x||^2$ :
+\(\begin{align}
+||w'||^2 = 1+\epsilon,  \\
+||w'||= \sqrt{1+\epsilon} \\
+= (1+\epsilon)^{\frac{1}{2}}
+\end{align}\)
+Then, get the approximate value of $||w’||$ by Taylor series:
+\(\begin{align}
+||w'||= \sqrt{1+\epsilon}
+\approx 1 + \frac{1}{2}\epsilon+ O(\eta^2)
+\approx 1 + \eta y^2 + O(\eta^2)
+\end{align}\)
+Let $\delta = \eta y^2 + O(\eta^2)$, and approximate by Taylor series:
+\(\frac{1}{||w'||} = (1+\delta)^{-1} \approx 1-\delta \approx 1- \eta y^2 - O(\eta^2)\)
+After we have all elements, we can calculate $\mathbf{w(t+1)}$ now:
+\(\begin{align}
+\mathbf{w(t+1) = \frac{w'}{||w'||} = (w(t)+\eta yx) (1-\eta y^2 - O(\eta^2))} \\
+\approx \mathbf{w(t)(1-\eta y^2) + \eta yx(1-\eta y^2)} \\
+\approx \mathbf{w(t) + \eta yx - \eta y^2 w(t)- \eta^2y^3x}
+\end{align}\)
+Finally, we moved $\mathbf{w(t)}$ to the left hand side:
+\(\begin{align}
+\mathbf{w(t+1) - w(t) = \eta(yx-y^2w) - \eta^2 y^3x} \\
+\end{align}\)
+The last term will become $O(\eta^2)$, we will have Oja’s rule:
+\(\mathbf{\Delta w = \eta(yx - y^2w)}\)</p>
+
+<p>Here is the multiple neuron version of the Oja’s learning rule
+\(\Delta w_{ij} = \alpha(x_j y_i -y_i \sum_{k=1}^m w_{kj}y_k)\)</p>
+
+<h3 id="regularization-term-in-ojas-rule">Regularization term in Oja’s rule</h3>
+<p>In the last term of the Oja’s rule, the $\mathbf{y^2w}$ can be $diag(y)^2 w$ or  $\mathbf{YY^T}$.</p>
+<ul>
+  <li>diagonal term: All the neurons learn the first PCs</li>
+  <li>off-diagonal term: Neurons learn PC subspace</li>
+</ul>]]></content><author><name>Wayne</name></author><category term="english" /><category term="math" /><summary type="html"><![CDATA[📝 Idea / Thought]]></summary></entry><entry><title type="html">From PCA to Hebbian learning</title><link href="https://yilewang.github.io/posts/12_19_2025_hebbian" rel="alternate" type="text/html" title="From PCA to Hebbian learning" /><published>2025-12-19T00:00:00-08:00</published><updated>2025-12-19T00:00:00-08:00</updated><id>https://yilewang.github.io/posts/hebbian</id><content type="html" xml:base="https://yilewang.github.io/posts/12_19_2025_hebbian"><![CDATA[<h3 id="what-is-pca">What is PCA?</h3>
+<p>From the Pattern Recognition and Machine learning:</p>
+<blockquote>
+  <p>Orthogonal projection of the data onto a lower dimensional linear space; linear projection that minimizes the average projection cost.</p>
+</blockquote>
+
+<h3 id="the-algebraical-connections-between-pca-and-hebbian-learning">The algebraical connections between PCA and Hebbian learning</h3>
+
+<p>A famous quote for principal of Hebbain learning is that</p>
+<blockquote>
+  <p>Neurons fire together, wire together.</p>
+</blockquote>
+
+<p>It means that when neurons are co-activated, the synaptic weights are strengthened. This simple rule can be written as:
+\(\Delta w = yx\)
+And we know that the activation function for postsynaptic neuron $Y$ can be written as</p>
+
+<p>\(y = w^\top x\)
+We also know that the covariance of presynaptic neuron $X$ is
+\(\mathbf{C = \mathbb{E}(xx^\top)}\)</p>
+
+<p>Then, the update of the synaptic weight $w$ can be written in: 
+\(\Delta w = \eta yx = \eta(w^\top x)x\)</p>
+
+<p>To combine the term, the update of $w$ can be written as:
+\(\mathbb{E}(\Delta w) = \eta \mathbf{\mathbb{E}(xx^\top)w} = \eta \mathbf{Cw}\)</p>
+
+<p>Then there is a question: what’s the link between $w$ and the maximum variance direction of the data?</p>
+
+<p>We can write down the expression of the variance first (for 0 mean, $\mathbb{E}[x]=0$): 
+\(\begin{align}
+Var(Y) = \mathbb{E}(Y^2) - (\mathbb{E}Y)^2 \\ = \mathbb{E}\mathbf{(w^\top x)^2} \\ = \mathbb{E}\mathbf{(w^\top x x^\top w)} \\ = \mathbf{w^\top C w} 
+\end{align}\)</p>
+
+<p>The covariance matrix $C$ can be decomposed as:</p>
+
+\[C = V \Lambda V^\top\]
+
+<p>This equation works because $C$ is a symmetric matrix. The matrix $V$ is the collection of basis vector $v$ and $\Lambda$ is the diagonal of scalar values, which represents the much or less variance distribution on different vector $v$.</p>
+
+<p>The $V$ can be written as:
+$$
+V =</p>
+
+<p>\begin{bmatrix}</p>
+
+<p>\vert &amp; \vert \</p>
+
+<p>v_1 &amp; v_2 \</p>
+
+<p>\vert &amp; \vert</p>
+
+<p>\end{bmatrix}</p>
+
+\[The $\Lambda$ is:\]
+
+<p>\Lambda =</p>
+
+<p>\begin{bmatrix}</p>
+
+<p>\lambda_1 &amp; 0 \</p>
+
+<p>0 &amp; \lambda_2</p>
+
+<p>\end{bmatrix}</p>
+
+<p>$$</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>To overcome the unbounded growth of Hebbian learning weight, if we add the regularization on $</td>
+      <td> </td>
+      <td>w</td>
+      <td> </td>
+      <td>$, we get Oja’s rule:</td>
+    </tr>
+  </tbody>
+</table>
+
+\[\Delta w = yx - y^2w\]
+
+<p>At the equilibrium point ($\Delta w = 0$ ), the weights $w$ stop changing and become</p>
+
+\[\begin{align}
+\mathbb{E}(\Delta w) = 0 \\  \eta \mathbf{Cw}  =  \mathbf{(w^\top C w)w}
+\end{align}\]
+
+<p>To explain the equation  $Cw = \lambda w$ in geometry, it means that covariance matrix project into a unit vector $w$ and it is equivalent to scale up/down along this direction of vector $w$.</p>
+
+<p>To better understand the relationship why $\lambda = w^\top C w$, there is an easy decomposition on two steps:</p>
+<ul>
+  <li>step 1: $Cw$ is a transformation of covariance matrix. The transformation is to use the data distribution to reshape the vector $w$ to make it a new vector here $v = Cw$.</li>
+  <li>step 2: $w^\top v$, is a projection from previous step 1 transformation back to original direction, to see how much information is lost. If the $w$ is the eigenvector, it captures the maximum possible variance. The $w^\top w = 1$ is the result of normalization.</li>
+</ul>
+
+<blockquote>
+  <p>[!faq] Questions?</p>
+</blockquote>]]></content><author><name>Wayne</name></author><category term="math" /><category term="english" /><summary type="html"><![CDATA[Statistical learning sharing]]></summary></entry><entry><title type="html">文献分享：Inferring multi-scale neural mechanisms with brain network modeling</title><link href="https://yilewang.github.io/posts/03_15_2023_multi_scale_brain_modeling" rel="alternate" type="text/html" title="文献分享：Inferring multi-scale neural mechanisms with brain network modeling" /><published>2023-03-15T00:00:00-07:00</published><updated>2023-03-15T00:00:00-07:00</updated><id>https://yilewang.github.io/posts/literature</id><content type="html" xml:base="https://yilewang.github.io/posts/03_15_2023_multi_scale_brain_modeling"><![CDATA[<p>公众号好久没更新，这个学期三门课，真的把人上傻了。读博第一建议，别上太多课…</p>
 
 <p>今天分享一篇关于用hybrid modeling做fMRI信号拟合的文章。这个文章和我之前的一个想要用模型模拟empirical fMRI signal的想法非常类似，这里做一个中文解读和大家分享一下。</p>
 
