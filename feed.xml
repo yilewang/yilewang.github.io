@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://yilewang.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yilewang.github.io/" rel="alternate" type="text/html" /><updated>2025-12-19T11:21:53-08:00</updated><id>https://yilewang.github.io/feed.xml</id><title type="html">Yile Wang</title><subtitle>Computational Neuroscience Researcher</subtitle><author><name>Yile Wang</name><email>ylwwayne@gmail.com</email></author><entry><title type="html">Oja’s learning rule</title><link href="https://yilewang.github.io/posts/12_19_2025_oja_learning_rule" rel="alternate" type="text/html" title="Oja’s learning rule" /><published>2025-12-19T00:00:00-08:00</published><updated>2025-12-19T00:00:00-08:00</updated><id>https://yilewang.github.io/posts/Oja</id><content type="html" xml:base="https://yilewang.github.io/posts/12_19_2025_oja_learning_rule"><![CDATA[<h2 id="-idea--thought">📝 Idea / Thought</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://yilewang.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://yilewang.github.io/" rel="alternate" type="text/html" /><updated>2025-12-19T11:29:46-08:00</updated><id>https://yilewang.github.io/feed.xml</id><title type="html">Yile Wang</title><subtitle>Computational Neuroscience Researcher</subtitle><author><name>Yile Wang</name><email>ylwwayne@gmail.com</email></author><entry><title type="html">Oja’s learning rule</title><link href="https://yilewang.github.io/posts/12_19_2025_oja_learning_rule" rel="alternate" type="text/html" title="Oja’s learning rule" /><published>2025-12-19T00:00:00-08:00</published><updated>2025-12-19T00:00:00-08:00</updated><id>https://yilewang.github.io/posts/Oja</id><content type="html" xml:base="https://yilewang.github.io/posts/12_19_2025_oja_learning_rule"><![CDATA[<h2 id="-idea--thought">📝 Idea / Thought</h2>
 
 <p>The invention of the Oja’s rule is to overcome the problem of unbounded growth when training the neural network with the Hebbian learning rules</p>
 
@@ -122,17 +122,7 @@ v_1 &amp; v_2 \\
 0 &amp; \lambda_2
 \end{bmatrix}\)</p>
 
-<table>
-  <tbody>
-    <tr>
-      <td>To overcome the unbounded growth of Hebbian learning weight, if we add the regularization on $</td>
-      <td> </td>
-      <td>w</td>
-      <td> </td>
-      <td>$, we get Oja’s rule:</td>
-    </tr>
-  </tbody>
-</table>
+<p>To overcome the unbounded growth of Hebbian learning weight, if we add the regularization on $|w|$, we get Oja’s rule:</p>
 
 \[\Delta w = yx - y^2w\]
 
