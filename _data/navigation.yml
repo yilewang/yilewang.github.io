@@ -6,6 +6,10 @@ main:
   - title: "Publications"
     url: /publications/    
 
+  - title: "LLM-for-Zotero"
+    url: /llm-for-zotero/
+
+
   - title: "Posts"
     url: /year-archive/
 
