@@ -1,0 +1,682 @@
+---
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      /* ───────────────────────────────────────────────
+         Sphinx Read-the-Docs theme — faithful replica
+         ─────────────────────────────────────────────── */
+      :root {
+        --rtd-teal: #2980b9;
+        --rtd-teal-dark: #2472a4;
+        --rtd-green: #27ae60;
+        --rtd-sidebar-w: 300px;
+        --rtd-bg: #fcfcfc;
+        --rtd-text: #404040;
+        --rtd-heading: #1a1a1a;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        color: var(--rtd-text);
+        background: var(--rtd-bg);
+        line-height: 1.6;
+      }
+
+      /* ── Sidebar ── */
+      .wy-nav-side {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        width: var(--rtd-sidebar-w);
+        background: #343131;
+        overflow-y: auto;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .wy-nav-side::-webkit-scrollbar { width: 6px; }
+      .wy-nav-side::-webkit-scrollbar-track { background: #343131; }
+      .wy-nav-side::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
+
+      /* Sidebar header / brand */
+      .wy-side-nav-search {
+        background: var(--rtd-teal);
+        padding: 18px 20px;
+        text-align: center;
+        color: #fff;
+      }
+
+      .wy-side-nav-search img {
+        display: block;
+        margin: 0 auto 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #fff;
+        padding: 2px;
+      }
+
+      .wy-side-nav-search .wy-project-name {
+        font-family: 'Roboto Slab', serif;
+        font-size: 1.3em;
+        font-weight: 700;
+        color: #fff;
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .wy-side-nav-search .wy-version {
+        display: inline-block;
+        font-size: 0.8em;
+        color: rgba(255,255,255,0.85);
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin-bottom: 12px;
+      }
+
+      /* Sidebar search */
+      .wy-side-nav-search input[type="text"] {
+        width: 100%;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 3px;
+        font-size: 0.9em;
+        font-family: 'Lato', sans-serif;
+        color: #333;
+        outline: none;
+      }
+
+      .wy-side-nav-search input[type="text"]::placeholder {
+        color: #999;
+      }
+
+      /* Sidebar navigation */
+      .wy-menu {
+        padding: 12px 0 30px;
+        flex: 1;
+      }
+
+      .wy-menu .caption {
+        display: block;
+        padding: 8px 20px 4px;
+        font-size: 0.82em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--rtd-teal);
+        margin-top: 4px;
+      }
+
+      .wy-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .wy-menu li {}
+
+      .wy-menu li a {
+        display: block;
+        padding: 5px 20px 5px 24px;
+        color: #d9d9d9;
+        text-decoration: none;
+        font-size: 0.9em;
+        line-height: 1.5;
+        border-left: 3px solid transparent;
+        transition: background 0.1s;
+      }
+
+      .wy-menu li a:hover {
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+      }
+
+      .wy-menu li a.current {
+        background: #4e4a4a;
+        color: #fff;
+        font-weight: 700;
+        border-left-color: var(--rtd-teal);
+      }
+
+      /* Sub-level nav */
+      .wy-menu li ul a {
+        padding-left: 40px;
+        font-size: 0.85em;
+      }
+
+      .wy-menu li ul ul a {
+        padding-left: 56px;
+        font-size: 0.83em;
+      }
+
+      /* ── Content wrapper ── */
+      .wy-nav-content-wrap {
+        margin-left: var(--rtd-sidebar-w);
+        background: var(--rtd-bg);
+        min-height: 100vh;
+      }
+
+      /* ── Top breadcrumb bar ── */
+      .wy-breadcrumbs-aside {
+        float: right;
+      }
+
+      .wy-nav-top {
+        display: none;
+        background: var(--rtd-teal);
+        color: #fff;
+        padding: 10px 16px;
+        font-size: 0.95em;
+        cursor: pointer;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .wy-nav-top .fa-bars {
+        font-size: 1.2em;
+      }
+
+      .rst-content {
+        max-width: 800px;
+        padding: 28px 40px 60px;
+      }
+
+      /* Breadcrumbs */
+      .wy-breadcrumbs {
+        list-style: none;
+        padding: 0 0 12px;
+        margin: 0 0 20px;
+        border-bottom: 1px solid #e1e4e5;
+        font-size: 0.85em;
+        display: flex;
+        align-items: center;
+        gap: 0;
+      }
+
+      .wy-breadcrumbs li {
+        display: inline;
+        color: #666;
+      }
+
+      .wy-breadcrumbs li a {
+        color: var(--rtd-teal);
+        text-decoration: none;
+      }
+
+      .wy-breadcrumbs li a:hover { text-decoration: underline; }
+
+      .wy-breadcrumbs .sep {
+        margin: 0 8px;
+        color: #ccc;
+      }
+
+      .wy-breadcrumbs-aside a {
+        color: var(--rtd-teal);
+        text-decoration: none;
+        font-size: 0.85em;
+      }
+
+      .wy-breadcrumbs-aside a:hover { text-decoration: underline; }
+
+      /* ── Typography — matches Sphinx RTD theme exactly ── */
+      .rst-content h1 {
+        font-family: 'Roboto Slab', serif;
+        font-size: 1.75em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 0 0 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e1e4e5;
+      }
+
+      .rst-content h2 {
+        font-family: 'Roboto Slab', serif;
+        font-size: 1.45em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 40px 0 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e1e4e5;
+      }
+
+      .rst-content h3 {
+        font-family: 'Roboto Slab', serif;
+        font-size: 1.2em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 30px 0 12px;
+      }
+
+      .rst-content h4 {
+        font-family: 'Roboto Slab', serif;
+        font-size: 1.05em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 24px 0 10px;
+      }
+
+      .rst-content p {
+        margin: 0 0 16px;
+        line-height: 1.65;
+      }
+
+      .rst-content a {
+        color: var(--rtd-teal);
+        text-decoration: none;
+      }
+
+      .rst-content a:hover { text-decoration: underline; }
+
+      /* Inline code */
+      .rst-content code,
+      .rst-content tt {
+        background: #fff;
+        border: 1px solid #e1e4e5;
+        padding: 1px 5px;
+        font-size: 0.88em;
+        color: #e74c3c;
+        border-radius: 2px;
+        white-space: nowrap;
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      }
+
+      /* Code blocks */
+      .rst-content pre {
+        background: #f8f8f8;
+        border: 1px solid #e1e4e5;
+        padding: 12px 16px;
+        overflow-x: auto;
+        margin: 0 0 20px;
+        line-height: 1.5;
+        border-radius: 2px;
+      }
+
+      .rst-content pre code {
+        background: none;
+        border: none;
+        color: #333;
+        padding: 0;
+        white-space: pre;
+      }
+
+      /* Images */
+      .rst-content img {
+        max-width: 100%;
+        height: auto;
+        margin: 12px 0;
+      }
+
+      .rst-content .figure {
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      .rst-content .figure img {
+        border: 1px solid #e1e4e5;
+        border-radius: 3px;
+      }
+
+      /* Tables — RTD style */
+      .rst-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0 24px;
+        font-size: 0.9em;
+      }
+
+      .rst-content table th {
+        background: #e1e4e5;
+        padding: 8px 12px;
+        text-align: left;
+        font-weight: 700;
+        border: 1px solid #d1d4d5;
+        color: #333;
+      }
+
+      .rst-content table td {
+        padding: 8px 12px;
+        border: 1px solid #e1e4e5;
+        vertical-align: top;
+      }
+
+      .rst-content table tr:nth-child(even) {
+        background: #f3f6f6;
+      }
+
+      /* Lists */
+      .rst-content ul,
+      .rst-content ol {
+        margin: 0 0 16px;
+        padding-left: 24px;
+      }
+
+      .rst-content li {
+        margin-bottom: 6px;
+        line-height: 1.6;
+      }
+
+      .rst-content li p {
+        margin-bottom: 8px;
+      }
+
+      /* Blockquotes */
+      .rst-content blockquote {
+        border-left: 3px solid #e1e4e5;
+        margin: 0 0 16px;
+        padding: 6px 16px;
+        color: #555;
+      }
+
+      /* Horizontal rules */
+      .rst-content hr {
+        border: none;
+        border-top: 1px solid #e1e4e5;
+        margin: 30px 0;
+      }
+
+      /* ── Admonitions — exact RTD style ── */
+      .admonition {
+        margin: 20px 0;
+        padding: 12px 16px;
+        border-radius: 2px;
+        font-size: 0.92em;
+      }
+
+      .admonition-title {
+        font-weight: 700;
+        margin-bottom: 6px;
+        display: block;
+      }
+
+      .admonition.note {
+        background: #e7f2fa;
+        border: 1px solid #6ab0de;
+      }
+      .admonition.note .admonition-title { color: #6ab0de; }
+
+      .admonition.tip,
+      .admonition.hint {
+        background: #dbfaf4;
+        border: 1px solid #1abc9c;
+      }
+      .admonition.tip .admonition-title,
+      .admonition.hint .admonition-title { color: #1abc9c; }
+
+      .admonition.warning,
+      .admonition.important {
+        background: #ffedcc;
+        border: 1px solid #f0b37e;
+      }
+      .admonition.warning .admonition-title,
+      .admonition.important .admonition-title { color: #e67e22; }
+
+      .admonition.danger,
+      .admonition.error {
+        background: #fdf3f2;
+        border: 1px solid #f29f97;
+      }
+      .admonition.danger .admonition-title,
+      .admonition.error .admonition-title { color: #e74c3c; }
+
+      /* ── Footer ── */
+      .rst-footer {
+        max-width: 800px;
+        padding: 16px 40px 30px;
+        border-top: 1px solid #e1e4e5;
+        margin-top: 20px;
+        font-size: 0.8em;
+        color: #999;
+      }
+
+      .rst-footer a { color: var(--rtd-teal); text-decoration: none; }
+      .rst-footer a:hover { text-decoration: underline; }
+
+      /* ── Previous / Next ── */
+      .rst-footer-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e1e4e5;
+      }
+
+      .rst-footer-buttons a {
+        color: #fff;
+        background: var(--rtd-teal);
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 2px;
+        font-size: 0.9em;
+        transition: background 0.15s;
+      }
+
+      .rst-footer-buttons a:hover {
+        background: var(--rtd-teal-dark);
+        text-decoration: none;
+      }
+
+      /* ── Mobile ── */
+      .wy-nav-top-hamburger {
+        display: none;
+        background: var(--rtd-teal);
+        color: #fff;
+        padding: 12px 16px;
+        font-size: 1em;
+        cursor: pointer;
+        border: none;
+        width: 100%;
+        text-align: left;
+        font-family: 'Lato', sans-serif;
+      }
+
+      @media (max-width: 768px) {
+        .wy-nav-side {
+          transform: translateX(-100%);
+          transition: transform 0.25s ease;
+          width: 280px;
+        }
+
+        .wy-nav-side.wy-nav-side--open {
+          transform: translateX(0);
+        }
+
+        .wy-nav-content-wrap {
+          margin-left: 0;
+        }
+
+        .wy-nav-top-hamburger {
+          display: block;
+        }
+
+        .rst-content {
+          padding: 20px 16px 40px;
+        }
+
+        /* Overlay */
+        .wy-nav-overlay {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.5);
+          z-index: 150;
+        }
+
+        .wy-nav-overlay.active { display: block; }
+      }
+
+      /* ── Badges ── */
+      .rst-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 12px 0 20px;
+      }
+
+      .rst-badges img {
+        height: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Mobile hamburger -->
+    <button class="wy-nav-top-hamburger" onclick="document.querySelector('.wy-nav-side').classList.toggle('wy-nav-side--open'); document.querySelector('.wy-nav-overlay').classList.toggle('active');">
+      &#9776;&nbsp; LLM for Zotero
+    </button>
+    <div class="wy-nav-overlay" onclick="document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open'); this.classList.remove('active');"></div>
+
+    <!-- ─── Sidebar ─── -->
+    <nav class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <img src="/images/llm-for-zotero/icon.png" alt="LLM for Zotero">
+        <span class="wy-project-name">LLM for Zotero</span>
+        <span class="wy-version">stable &middot; v3.7.6</span>
+        <input type="text" placeholder="Search docs ..." id="rtd-search-input">
+      </div>
+
+      <div class="wy-menu">
+        <span class="caption">Getting Started</span>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#configuration">Configuration</a>
+            <ul>
+              <li><a href="#supported-providers--protocols">Providers &amp; Protocols</a></li>
+              <li><a href="#supported-models">Supported Models</a></li>
+              <li><a href="#multiple-providers">Multiple Providers</a></li>
+              <li><a href="#reasoning-levels--hyperparameters">Reasoning &amp; Hyperparameters</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <span class="caption">User Guide</span>
+        <ul>
+          <li><a href="#usage-guide">Basic Usage</a>
+            <ul>
+              <li><a href="#conversation-modes">Conversation Modes</a></li>
+              <li><a href="#interface-controls">Interface Controls</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <span class="caption">Features</span>
+        <ul>
+          <li><a href="#grounded-answers-with-citation-navigation">Citation Navigation</a></li>
+          <li><a href="#paper-summarization">Paper Summarization</a></li>
+          <li><a href="#selected-text-explanation">Text Explanation</a></li>
+          <li><a href="#figure-interpretation">Figure Interpretation</a></li>
+          <li><a href="#cross-paper-comparison">Cross-Paper Comparison</a></li>
+          <li><a href="#external-document-upload">Document Upload</a></li>
+          <li><a href="#save-to-notes">Save to Notes</a></li>
+          <li><a href="#conversation-history--export">History &amp; Export</a></li>
+          <li><a href="#custom-quick-action-presets">Quick-Action Presets</a></li>
+        </ul>
+
+        <span class="caption">Advanced</span>
+        <ul>
+          <li><a href="#agent-mode-beta">Agent Mode (Beta)</a>
+            <ul>
+              <li><a href="#available-tools">Available Tools</a></li>
+              <li><a href="#built-in-actions">Built-in Actions</a></li>
+              <li><a href="#agent-demos">Demos</a></li>
+              <li><a href="#safety--confirmation">Safety &amp; Confirmation</a></li>
+            </ul>
+          </li>
+          <li><a href="#codex-auth-setup">Codex Auth Setup</a></li>
+        </ul>
+
+        <span class="caption">Help</span>
+        <ul>
+          <li><a href="#frequently-asked-questions">FAQ</a></li>
+          <li><a href="#contributing--support">Contributing</a></li>
+          <li><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">GitHub &#8599;</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ─── Content ─── -->
+    <div class="wy-nav-content-wrap">
+      <div class="rst-content">
+        <ul class="wy-breadcrumbs">
+          <li><a href="/">Home</a></li>
+          <span class="sep">/</span>
+          <li>LLM for Zotero Documentation</li>
+          <li style="flex:1"></li>
+          <li class="wy-breadcrumbs-aside"><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">Edit on GitHub</a></li>
+        </ul>
+
+        {{ content }}
+      </div>
+
+      <div class="rst-footer">
+        &copy; 2025 <a href="https://github.com/yilewang">Yile Wang</a>.
+        Built with Jekyll. Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0">AGPL v3</a>.
+      </div>
+    </div>
+
+    <!-- Scroll-spy for active sidebar link -->
+    <script>
+    (function() {
+      var links = document.querySelectorAll('.wy-menu a[href^="#"]');
+      var sections = [];
+      links.forEach(function(link) {
+        var id = link.getAttribute('href').slice(1);
+        var el = document.getElementById(id);
+        if (el) sections.push({ el: el, link: link });
+      });
+
+      function update() {
+        var y = window.scrollY + 100;
+        var hit = null;
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].el.offsetTop <= y) hit = sections[i];
+        }
+        links.forEach(function(l) { l.classList.remove('current'); });
+        if (hit) hit.link.classList.add('current');
+      }
+
+      window.addEventListener('scroll', update);
+      update();
+
+      /* simple client-side search filter */
+      var input = document.getElementById('rtd-search-input');
+      if (input) {
+        input.addEventListener('input', function() {
+          var q = this.value.toLowerCase();
+          document.querySelectorAll('.wy-menu li').forEach(function(li) {
+            var a = li.querySelector(':scope > a');
+            if (!a) return;
+            li.style.display = (!q || a.textContent.toLowerCase().indexOf(q) !== -1) ? '' : 'none';
+          });
+        });
+      }
+
+      /* mobile: close sidebar when clicking a nav link */
+      links.forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open');
+            document.querySelector('.wy-nav-overlay').classList.remove('active');
+          }
+        });
+      });
+    })();
+    </script>
+  </body>
+</html>

@@ -256,6 +256,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.8.0)
+    webrick (1.9.2)
     zeitwerk (2.6.18)
 
 PLATFORMS
@@ -267,6 +268,7 @@ DEPENDENCIES
   jekyll-archives
   jekyll-feed
   jekyll-sitemap
+  webrick
 
 BUNDLED WITH
   4.0.8
