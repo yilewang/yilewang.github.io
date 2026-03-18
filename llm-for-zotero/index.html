@@ -1,1 +1,1282 @@
-<!doctype html><html lang="en" class="no-js"><head><meta charset="utf-8"> <!-- begin SEO --><title>LLM-for-Zotero - Yile Wang</title><meta property="og:locale" content="en-US"><meta property="og:site_name" content="Yile Wang"><meta property="og:title" content="LLM-for-Zotero"><link rel="canonical" href="https://yilewang.github.io/llm-for-zotero/"><meta property="og:url" content="https://yilewang.github.io/llm-for-zotero/"><meta property="og:description" content="Documentation for LLM-for-Zotero, a Zotero plugin that brings chat and agent workflows directly into the reader."> <script type="application/ld+json"> { "@context" : "http://schema.org", "@type" : "Person", "name" : "Yile Wang", "url" : "https://yilewang.github.io", "sameAs" : null } </script> <!-- end SEO --><link href="https://yilewang.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Yile Wang Feed"> <!-- http://t.co/dKP3o1e --><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width, initial-scale=1.0"> <script> document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js '; </script> <!-- For all browsers --><link rel="stylesheet" href="https://yilewang.github.io/assets/css/main.css"><meta http-equiv="cleartype" content="on"> <!-- start custom head snippets --><link rel="apple-touch-icon" sizes="57x57" href="https://yilewang.github.io/images/apple-touch-icon-57x57.png?v=M44lzPylqQ"><link rel="apple-touch-icon" sizes="60x60" href="https://yilewang.github.io/images/apple-touch-icon-60x60.png?v=M44lzPylqQ"><link rel="apple-touch-icon" sizes="72x72" href="https://yilewang.github.io/images/apple-touch-icon-72x72.png?v=M44lzPylqQ"><link rel="apple-touch-icon" sizes="76x76" href="https://yilewang.github.io/images/apple-touch-icon-76x76.png?v=M44lzPylqQ"><link rel="apple-touch-icon" sizes="114x114" href="https://yilewang.github.io/images/apple-touch-icon-114x114.png?v=M44lzPylqQ"><link rel="apple-touch-icon" sizes="120x120" href="https://yilewang.github.io/images/apple-touch-icon-120x120.png?v=M44lzPylqQ"><link rel="apple-touch-icon" sizes="144x144" href="https://yilewang.github.io/images/apple-touch-icon-144x144.png?v=M44lzPylqQ"><link rel="apple-touch-icon" sizes="152x152" href="https://yilewang.github.io/images/apple-touch-icon-152x152.png?v=M44lzPylqQ"><link rel="apple-touch-icon" sizes="180x180" href="https://yilewang.github.io/images/apple-touch-icon-180x180.png?v=M44lzPylqQ"><link rel="icon" type="image/png" href="https://yilewang.github.io/images/favicon-32x32.png?v=M44lzPylqQ" sizes="32x32"><link rel="icon" type="image/png" href="https://yilewang.github.io/images/android-chrome-192x192.png?v=M44lzPylqQ" sizes="192x192"><link rel="icon" type="image/png" href="https://yilewang.github.io/images/favicon-96x96.png?v=M44lzPylqQ" sizes="96x96"><link rel="icon" type="image/png" href="https://yilewang.github.io/images/favicon-16x16.png?v=M44lzPylqQ" sizes="16x16"><link rel="manifest" href="https://yilewang.github.io/images/manifest.json?v=M44lzPylqQ"><link rel="mask-icon" href="https://yilewang.github.io/images/safari-pinned-tab.svg?v=M44lzPylqQ" color="#000000"><link rel="shortcut icon" href="/images/favicon.ico?v=M44lzPylqQ"><meta name="msapplication-TileColor" content="#000000"><meta name="msapplication-TileImage" content="https://yilewang.github.io/images/mstile-144x144.png?v=M44lzPylqQ"><meta name="msapplication-config" content="https://yilewang.github.io/images/browserconfig.xml?v=M44lzPylqQ"><meta name="theme-color" content="#ffffff"><link rel="stylesheet" href="https://yilewang.github.io/assets/css/academicons.css"/> <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script> <script type="text/x-mathjax-config"> MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } }); </script> <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script> <!-- end custom head snippets --></head><body> <!--[if lt IE 9]><div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]--><div class="masthead"><div class="masthead__inner-wrap"><div class="masthead__menu"><nav id="site-nav" class="greedy-nav"> <button><div class="navicon"></div></button><ul class="visible-links"><li class="masthead__menu-item masthead__menu-item--lg"><a href="https://yilewang.github.io/">Yile Wang</a></li><li class="masthead__menu-item"><a href="https://yilewang.github.io/files/CV_yilewang.pdf">CV</a></li><li class="masthead__menu-item"><a href="https://yilewang.github.io/publications/">Publications</a></li><li class="masthead__menu-item"><a href="https://yilewang.github.io/llm-for-zotero/">LLM-for-Zotero</a></li><li class="masthead__menu-item"><a href="https://yilewang.github.io/year-archive/">Posts</a></li></ul><ul class="hidden-links hidden"></ul></nav></div></div></div><div id="main" role="main"><article class="splash" itemscope itemtype="http://schema.org/CreativeWork"><meta itemprop="headline" content="LLM-for-Zotero"><meta itemprop="description" content="Documentation for LLM-for-Zotero, a Zotero plugin that brings chat and agent workflows directly into the reader."><section class="page__content" itemprop="text"><style> :root { --software-ink: #1e1d1a; --software-muted: #625d55; --software-line: #ddd5ca; --software-panel: #fffdf9; --software-panel-strong: #f7f1e8; --software-sidebar: #f4efe7; --software-accent: #b53a2d; --software-accent-deep: #8f271d; --software-accent-soft: #fae1dc; --software-teal: #1f6b68; --software-code: #fff7ed; --software-shadow: 0 18px 40px rgba(48, 38, 28, 0.08); } .page__content { max-width: 1320px !important; padding-top: 1.25rem !important; } .page { float: none !important; width: 100% !important; } .page__meta, .page__share, .page__related, .sidebar, .author__avatar, .author__content, .author__urls-wrapper { display: none !important; } .software-docs { color: var(--software-ink); } .software-docs p, .software-docs li { font-size: 1rem; line-height: 1.75; } .software-docs code { background: var(--software-code); border: 1px solid rgba(181, 58, 45, 0.14); border-radius: 0.35rem; color: var(--software-accent-deep); padding: 0.1rem 0.35rem; } .docs-header { background: linear-gradient(135deg, rgba(250, 225, 220, 0.95), rgba(255, 253, 249, 0.98) 52%, rgba(232, 242, 239, 0.92)); border: 1px solid var(--software-line); border-radius: 1.4rem; box-shadow: var(--software-shadow); margin-bottom: 2rem; overflow: hidden; } .docs-header__inner { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.9fr); padding: 2rem; } .docs-kicker { color: var(--software-accent); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.12em; margin-bottom: 0.8rem; text-transform: uppercase; } .docs-header h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); letter-spacing: -0.03em; line-height: 1.05; margin: 0 0 0.9rem; } .docs-header p { color: var(--software-muted); font-size: 1.08rem; margin-bottom: 1rem; max-width: 40rem; } .docs-pillbar { display: flex; flex-wrap: wrap; gap: 0.65rem; margin: 1rem 0 1.35rem; } .docs-pill { background: rgba(255, 255, 255, 0.88); border: 1px solid rgba(181, 58, 45, 0.16); border-radius: 999px; color: var(--software-accent-deep); font-size: 0.92rem; font-weight: 600; padding: 0.45rem 0.8rem; } .docs-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; } .docs-actions .btn { border-radius: 999px; font-weight: 700; } .docs-quickbox { background: rgba(255, 255, 255, 0.72); border: 1px solid rgba(31, 107, 104, 0.14); border-radius: 1.1rem; padding: 1.25rem; } .docs-quickbox h2 { font-size: 1rem; margin: 0 0 0.85rem; } .docs-quickbox ol { margin: 0; padding-left: 1.25rem; } .docs-quickbox li { margin-bottom: 0.6rem; } .docs-shell { display: grid; gap: 1.5rem; grid-template-columns: 270px minmax(0, 1fr); align-items: start; } .docs-nav { background: var(--software-sidebar); border: 1px solid var(--software-line); border-radius: 1rem; padding: 1rem; position: sticky; top: 5rem; } .docs-nav__title { color: var(--software-accent); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.9rem; text-transform: uppercase; } .docs-nav a { border-left: 2px solid transparent; color: var(--software-muted); display: block; font-size: 0.97rem; font-weight: 600; margin-bottom: 0.18rem; padding: 0.45rem 0.75rem; text-decoration: none; transition: all 0.18s ease; } .docs-nav a:hover, .docs-nav a:focus { background: rgba(255, 255, 255, 0.78); border-left-color: var(--software-accent); color: var(--software-accent-deep); } .docs-content { display: grid; gap: 1.25rem; } .docs-section { background: var(--software-panel); border: 1px solid var(--software-line); border-radius: 1rem; box-shadow: var(--software-shadow); padding: 1.5rem; scroll-margin-top: 5.8rem; } .docs-section h2 { font-size: 1.65rem; letter-spacing: -0.03em; margin-top: 0; margin-bottom: 0.5rem; } .docs-section h3 { font-size: 1.15rem; margin-top: 0; margin-bottom: 0.45rem; } .docs-subtitle { color: var(--software-muted); margin-bottom: 1.15rem; } .docs-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); } .docs-card { background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 241, 232, 0.8)); border: 1px solid rgba(181, 58, 45, 0.12); border-radius: 0.95rem; padding: 1rem; } .docs-card p:last-child, .docs-callout p:last-child { margin-bottom: 0; } .docs-card strong { color: var(--software-accent-deep); } .docs-steps { counter-reset: docstep; display: grid; gap: 0.9rem; } .docs-step { background: #fff; border: 1px solid var(--software-line); border-radius: 0.95rem; padding: 1rem 1rem 1rem 1.1rem; position: relative; } .docs-step::before { align-items: center; background: var(--software-accent); border-radius: 999px; color: #fff; counter-increment: docstep; content: counter(docstep); display: inline-flex; font-size: 0.85rem; font-weight: 700; height: 1.7rem; justify-content: center; margin-bottom: 0.7rem; width: 1.7rem; } .docs-media { border: 1px solid var(--software-line); border-radius: 0.95rem; margin-top: 1rem; overflow: hidden; } .docs-media img { display: block; width: 100%; } .docs-promptlist { display: grid; gap: 0.75rem; } .docs-prompt { background: #fff; border: 1px solid var(--software-line); border-left: 4px solid var(--software-teal); border-radius: 0.85rem; padding: 0.95rem 1rem; } .docs-prompt code { display: block; line-height: 1.6; } .docs-callout { background: linear-gradient(135deg, rgba(31, 107, 104, 0.08), rgba(255, 255, 255, 0.92)); border: 1px solid rgba(31, 107, 104, 0.18); border-radius: 1rem; padding: 1.1rem; } .docs-callout h3 { color: var(--software-teal); } .docs-split { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); } .docs-list { margin: 0; padding-left: 1.2rem; } .docs-list li + li { margin-top: 0.45rem; } .docs-footer { align-items: center; background: linear-gradient(135deg, rgba(181, 58, 45, 0.08), rgba(31, 107, 104, 0.08)); border: 1px solid var(--software-line); border-radius: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; margin-top: 1.2rem; padding: 1.25rem 1.4rem; } .docs-footer p { margin: 0; } @media (max-width: 1080px) { .docs-shell, .docs-header__inner, .docs-grid, .docs-split { grid-template-columns: 1fr; } .docs-nav { position: static; } } @media (max-width: 720px) { .docs-header__inner, .docs-section { padding: 1.2rem; } .docs-header h1 { font-size: 2.2rem; } }</style><div class="software-docs"><section class="docs-header"><div class="docs-header__inner"><div><div class="docs-kicker">LLM-for-Zotero Documentation</div><h1>LLM-for-Zotero</h1><p> A Zotero plugin that brings large language models and agent workflows directly into the PDF reader so you can summarize papers, explain selected text, interpret figures, compare related work, and save useful outputs back into your notes.</p><div class="docs-pillbar"> <span class="docs-pill">Zotero 7 and 8</span> <span class="docs-pill">OpenAI, Gemini, DeepSeek, OpenAI-compatible APIs</span> <span class="docs-pill">Codex auth supported</span> <span class="docs-pill">Notes, screenshots, and file uploads</span> <span class="docs-pill">Agent mode with approvals</span></div><div class="docs-actions"> <a class="btn btn--primary" href="https://github.com/yilewang/llm-for-zotero">GitHub</a> <a class="btn btn--inverse" href="https://github.com/yilewang/llm-for-zotero/releases">Download .xpi</a></div></div><div class="docs-quickbox"><h2>Quick Start</h2><ol><li>Install the latest <code>.xpi</code> from the release page.</li><li>Open Zotero preferences and configure your model provider.</li><li>Open any PDF and launch the LLM sidebar from the right toolbar.</li><li>Ask a question such as <code>Summarize this paper in five bullets.</code></li></ol><div class="docs-media"> <img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/demo.png" alt="LLM for Zotero interface" /></div></div></div></section><div class="docs-shell"><aside class="docs-nav" aria-label="LLM-for-Zotero page navigation"><div class="docs-nav__title">On This Page</div><a href="#overview">Overview</a> <a href="#install">Install and configure</a> <a href="#workflow">Daily workflow</a> <a href="#functions">Main functions</a> <a href="#agent-mode">Agent mode</a> <a href="#codex-auth">Codex auth</a> <a href="#prompts">Starter prompts</a> <a href="#links">Project links</a></aside><div class="docs-content"><section class="docs-section" id="overview"><h2>Overview</h2><p class="docs-subtitle"> LLM for Zotero is designed for paper reading inside Zotero rather than in a separate browser tool. The plugin keeps your paper, context, screenshots, and notes in one workflow.</p><div class="docs-grid"><div class="docs-card"><h3>Read in place</h3><p>Open a paper in Zotero and chat with the current PDF without leaving the reader.</p></div><div class="docs-card"><h3>Ground answers in context</h3><p>Use selected text, screenshots, or extra files to give the model exactly the evidence it needs.</p></div><div class="docs-card"><h3>Work across papers</h3><p>Open multiple tabs and cite another paper with <code>/</code> when you want comparison or synthesis.</p></div><div class="docs-card"><h3>Keep results in Zotero</h3><p>Save answers, selected snippets, screenshots, and conversation history directly into notes.</p></div></div></section><section class="docs-section" id="install"><h2>Install and configure</h2><p class="docs-subtitle">You only need a Zotero install and one working model provider connection.</p><div class="docs-steps"><div class="docs-step"><h3>Install the plugin</h3><p>Download the latest <code>.xpi</code> from GitHub Releases, then in Zotero open <code>Tools -&gt; Add-ons</code> and choose <code>Install Add-on From File</code>.</p></div><div class="docs-step"><h3>Open the settings panel</h3><p>Restart Zotero, open <code>Preferences</code>, and switch to the <code>llm-for-zotero</code> tab.</p></div><div class="docs-step"><h3>Add a model connection</h3><p>Pick your provider, then enter the API URL, secret key, and model name. You can set up multiple providers and models for different tasks.</p></div><div class="docs-step"><h3>Test before using</h3><p>Use <code>Test Connection</code> to verify the configuration before starting your first paper chat.</p></div></div><div class="docs-split" style="margin-top: 1rem;"><div class="docs-callout"><h3>Good first question</h3><p><code>What is the main conclusion of this paper, and what evidence supports it?</code></p></div><div class="docs-callout"><h3>Supported extra files</h3><p>PDF, DOCX, PPTX, TXT, and Markdown files can be added as extra context.</p></div></div></section><section class="docs-section" id="workflow"><h2>Daily workflow</h2><p class="docs-subtitle">A typical reading session fits into four moves.</p><div class="docs-grid"><div class="docs-card"> <strong>1. Start broad</strong><p>Ask for a summary, the research question, or the main takeaway to decide whether the paper is worth deeper reading.</p></div><div class="docs-card"> <strong>2. Narrow with context</strong><p>Select a paragraph, add a figure screenshot, or upload a related file when a specific claim needs more explanation.</p></div><div class="docs-card"> <strong>3. Compare or extend</strong><p>Use <code>/</code> to cite another open paper and ask how the methods, datasets, or conclusions differ.</p></div><div class="docs-card"> <strong>4. Save what matters</strong><p>Export a strong answer into Zotero notes so your reasoning and supporting context stay attached to the paper.</p></div></div></section><section class="docs-section" id="functions"><h2>Main functions</h2><p class="docs-subtitle">These are the core tasks the plugin is built to handle.</p><div class="docs-card"><h3>Summarize a paper quickly</h3><p>The first turn loads the full paper context so the model can produce a summary grounded in the document you are reading.</p><p><code>Summarize this paper in five bullets: problem, method, data, main result, and limitation.</code></p><div class="docs-media"> <img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/summarize.gif" alt="Summarizing a paper in LLM for Zotero" /></div></div><div class="docs-card" style="margin-top: 1rem;"><h3>Explain selected text</h3><p>Select a dense paragraph or term in the PDF and ask the model to explain it. The selected text becomes extra context on top of the paper itself.</p><p><code>Explain this selected paragraph in plain English and define the technical terms.</code></p><div class="docs-media"> <img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/text.gif" alt="Explaining selected text in LLM for Zotero" /></div></div><div class="docs-card" style="margin-top: 1rem;"><h3>Interpret figures and screenshots</h3><p>Capture a figure or visual region from the paper and ask for an interpretation. This is useful when the key claim is hidden in a chart or diagram.</p><p><code>What does this figure show, and how does it support the paper's argument?</code></p><div class="docs-media"> <img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/screenshot.gif" alt="Interpreting a figure in LLM for Zotero" /></div></div><div class="docs-card" style="margin-top: 1rem;"><h3>Compare multiple papers</h3><p>When multiple papers are open in Zotero, type <code>/</code> to cite another paper as context and ask for a structured comparison.</p><p><code>Compare this paper with /the other tab on objective, method, dataset, and weaknesses.</code></p><div class="docs-media"> <img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/multi.gif" alt="Comparing papers in LLM for Zotero" /></div></div><div class="docs-card" style="margin-top: 1rem;"><h3>Add extra documents</h3><p>You can upload local files that are not already in Zotero, including PDF, DOCX, PPTX, TXT, and Markdown.</p><p><code>Read this uploaded document and tell me how it changes the interpretation of the current paper.</code></p><div class="docs-media"> <img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/upload_files.gif" alt="Uploading extra files in LLM for Zotero" /></div></div><div class="docs-card" style="margin-top: 1rem;"><h3>Save answers and conversation history</h3><p>Strong answers can be exported directly into Zotero notes, and conversation history is stored per paper so you can resume later.</p><p><code>Save this answer to my note with headings and preserve the equations.</code></p><div class="docs-split"><div class="docs-media"> <img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/save_notes.gif" alt="Saving an answer to a note" /></div><div class="docs-media"> <img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/save_chat.gif" alt="Saving a conversation in Zotero" /></div></div></div><div class="docs-split" style="margin-top: 1rem;"><div class="docs-callout"><h3>Custom shortcuts</h3><p>Create quick actions for repeated workflows like methodology summaries, limitations, or future-work extraction.</p></div><div class="docs-callout"><h3>Agent Mode</h3><p>Switch to agent mode when you want the plugin to inspect your library, plan multi-step work, and prepare changes for review.</p></div></div></section><section class="docs-section" id="agent-mode"><h2>Agent mode</h2><p class="docs-subtitle"> Chat mode is best for direct paper questions. Agent mode is for workflows where the assistant needs to inspect Zotero state, choose tools, and complete several steps in sequence.</p><div class="docs-split"><div class="docs-card"><h3>How to enable it</h3><ol class="docs-list"><li>Open <code>Preferences</code> and go to the <code>llm-for-zotero</code> tab.</li><li>Check <code>Enable Agent Mode (Beta)</code>.</li><li>Open a PDF and click the <code>Agent mode</code> toggle in the context bar.</li></ol><p>The toggle stays hidden until the beta setting is enabled.</p></div><div class="docs-card"><h3>When to use it</h3><ul class="docs-list"><li>Use chat mode for fast answers about the current paper.</li><li>Use agent mode for library search, note inspection, metadata cleanup, tagging, and collection work.</li><li>Run it from the current paper or from open chat when the task spans multiple papers and files.</li></ul></div></div><div class="docs-grid" style="margin-top: 1rem;"><div class="docs-card"><h3>What the agent can inspect</h3><p>It can search your library, browse collections, list unfiled or untagged papers, read notes and annotations, compare papers, search related work online, and inspect the current reader view or specific PDF pages.</p></div><div class="docs-card"><h3>Safe write actions</h3><p>When a task would modify Zotero data, the agent prepares a review card first. You approve note saves, metadata edits, tag changes, new collections, and collection moves before anything is applied.</p></div><div class="docs-card"><h3>Visible activity trace</h3><p>Each agent turn shows an activity log in the chat so you can see tool calls, status updates, and expandable reasoning summaries instead of getting a black-box answer.</p></div><div class="docs-card"><h3>Undo support</h3><p>The agent keeps an undo stack for recent write actions in the current conversation, so you can ask it to undo the last agent-applied change if a batch edit is not what you wanted.</p></div></div><div class="docs-callout" style="margin-top: 1rem;"><h3>Good agent prompts</h3><ul class="docs-list"><li><code>Find papers in my Zotero library related to this article and group them by method.</code></li><li><code>Audit this paper's metadata, explain what is wrong, and prepare a clean fix.</code></li><li><code>Read my notes and annotations for this paper, then draft a structured summary.</code></li><li><code>List untagged papers in this library and suggest tags I can review.</code></li></ul></div></section><section class="docs-section" id="codex-auth"><h2>Codex auth</h2><p class="docs-subtitle">If you have a ChatGPT Plus subscription, you can reuse that login with Codex auth instead of supplying an API key.</p><div class="docs-split"><div class="docs-card"><h3>Setup steps</h3><ol class="docs-list"><li>Install the Codex CLI.</li><li>Run <code>codex login</code> in your terminal.</li><li>In Zotero settings, set <code>Auth Mode</code> to <code>codex auth</code>.</li><li>Set <code>API URL</code> to <code>https://chatgpt.com/backend-api/codex/responses</code>.</li><li>Choose a Codex model such as <code>gpt-5.4</code>.</li><li>Click <code>Test Connection</code>.</li></ol></div><div class="docs-card"><h3>What this enables</h3><ul class="docs-list"><li>Use Codex models without an API key.</li><li>Ground answers in local PDF text and screenshots.</li><li>Reuse credentials stored in <code>~/.codex/auth.json</code>.</li><li>Keep the same Zotero workflow while lowering API key management overhead.</li></ul></div></div><div class="docs-media"> <img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/codex.png" alt="Codex auth setup in LLM for Zotero" /></div></section><section class="docs-section" id="prompts"><h2>Starter prompts</h2><p class="docs-subtitle">A few prompts that work well on day one.</p><div class="docs-promptlist"><div class="docs-prompt"><code>Summarize this paper for me in five bullets and tell me whether it is worth a careful read.</code></div><div class="docs-prompt"><code>Explain this selected text like I am new to this subfield, but keep the scientific meaning precise.</code></div><div class="docs-prompt"><code>What assumptions does this method make, and where in the paper are they justified?</code></div><div class="docs-prompt"><code>Compare this paper with /the other open paper on data, method, evaluation, and limitations.</code></div><div class="docs-prompt"><code>Read this uploaded document and tell me which parts are relevant to the paper I am reading now.</code></div><div class="docs-prompt"><code>Turn the best part of this answer into a Zotero note with a short title and bullet-point takeaways.</code></div></div></section><section class="docs-section" id="links"><h2>Project links</h2><div class="docs-footer"><p>Source code, releases, and issue tracking are all on GitHub.</p><div class="docs-actions"> <a class="btn btn--primary" href="https://github.com/yilewang/llm-for-zotero">Repository</a> <a class="btn btn--inverse" href="https://github.com/yilewang/llm-for-zotero/releases">Releases</a></div></div></section></div></div></div></section></article></div><div class="page__footer"><footer> <!-- start custom footer snippets --> <a href="/sitemap/">Sitemap</a> <!-- end custom footer snippets --><div class="page__footer-follow"><ul class="social-icons"><li><strong>Follow:</strong></li><li><a href="http://github.com/yilewang"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li><li><a href="https://yilewang.github.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li></ul></div><div class="page__footer-copyright">&copy; 2026 Yile Wang. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>, a fork of <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div></footer></div><script src="https://yilewang.github.io/assets/js/main.min.js"></script> <script> (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','//www.google-analytics.com/analytics.js','ga'); ga('create', '', 'auto'); ga('send', 'pageview'); </script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LLM for Zotero — Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      /* ───────────────────────────────────────────────
+         Sphinx Read-the-Docs theme — faithful replica
+         ─────────────────────────────────────────────── */
+      :root {
+        --rtd-teal: #2980b9;
+        --rtd-teal-dark: #2472a4;
+        --rtd-green: #27ae60;
+        --rtd-sidebar-w: 300px;
+        --rtd-bg: #fcfcfc;
+        --rtd-text: #404040;
+        --rtd-heading: #1a1a1a;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        color: var(--rtd-text);
+        background: var(--rtd-bg);
+        line-height: 1.6;
+      }
+
+      /* ── Sidebar ── */
+      .wy-nav-side {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        width: var(--rtd-sidebar-w);
+        background: #343131;
+        overflow-y: auto;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .wy-nav-side::-webkit-scrollbar { width: 6px; }
+      .wy-nav-side::-webkit-scrollbar-track { background: #343131; }
+      .wy-nav-side::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
+
+      /* Sidebar header / brand */
+      .wy-side-nav-search {
+        background: var(--rtd-teal);
+        padding: 18px 20px;
+        text-align: center;
+        color: #fff;
+      }
+
+      .wy-side-nav-search img {
+        display: block;
+        margin: 0 auto 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #fff;
+        padding: 2px;
+      }
+
+      .wy-side-nav-search .wy-project-name {
+        font-family: 'Roboto Slab', serif;
+        font-size: 1.3em;
+        font-weight: 700;
+        color: #fff;
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .wy-side-nav-search .wy-version {
+        display: inline-block;
+        font-size: 0.8em;
+        color: rgba(255,255,255,0.85);
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin-bottom: 12px;
+      }
+
+      /* Sidebar search */
+      .wy-side-nav-search input[type="text"] {
+        width: 100%;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 3px;
+        font-size: 0.9em;
+        font-family: 'Lato', sans-serif;
+        color: #333;
+        outline: none;
+      }
+
+      .wy-side-nav-search input[type="text"]::placeholder {
+        color: #999;
+      }
+
+      /* Sidebar navigation */
+      .wy-menu {
+        padding: 12px 0 30px;
+        flex: 1;
+      }
+
+      .wy-menu .caption {
+        display: block;
+        padding: 8px 20px 4px;
+        font-size: 0.82em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--rtd-teal);
+        margin-top: 4px;
+      }
+
+      .wy-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .wy-menu li {}
+
+      .wy-menu li a {
+        display: block;
+        padding: 5px 20px 5px 24px;
+        color: #d9d9d9;
+        text-decoration: none;
+        font-size: 0.9em;
+        line-height: 1.5;
+        border-left: 3px solid transparent;
+        transition: background 0.1s;
+      }
+
+      .wy-menu li a:hover {
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+      }
+
+      .wy-menu li a.current {
+        background: #4e4a4a;
+        color: #fff;
+        font-weight: 700;
+        border-left-color: var(--rtd-teal);
+      }
+
+      /* Sub-level nav */
+      .wy-menu li ul a {
+        padding-left: 40px;
+        font-size: 0.85em;
+      }
+
+      .wy-menu li ul ul a {
+        padding-left: 56px;
+        font-size: 0.83em;
+      }
+
+      /* ── Content wrapper ── */
+      .wy-nav-content-wrap {
+        margin-left: var(--rtd-sidebar-w);
+        background: var(--rtd-bg);
+        min-height: 100vh;
+      }
+
+      /* ── Top breadcrumb bar ── */
+      .wy-breadcrumbs-aside {
+        float: right;
+      }
+
+      .wy-nav-top {
+        display: none;
+        background: var(--rtd-teal);
+        color: #fff;
+        padding: 10px 16px;
+        font-size: 0.95em;
+        cursor: pointer;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .wy-nav-top .fa-bars {
+        font-size: 1.2em;
+      }
+
+      .rst-content {
+        max-width: 800px;
+        padding: 28px 40px 60px;
+      }
+
+      /* Breadcrumbs */
+      .wy-breadcrumbs {
+        list-style: none;
+        padding: 0 0 12px;
+        margin: 0 0 20px;
+        border-bottom: 1px solid #e1e4e5;
+        font-size: 0.85em;
+        display: flex;
+        align-items: center;
+        gap: 0;
+      }
+
+      .wy-breadcrumbs li {
+        display: inline;
+        color: #666;
+      }
+
+      .wy-breadcrumbs li a {
+        color: var(--rtd-teal);
+        text-decoration: none;
+      }
+
+      .wy-breadcrumbs li a:hover { text-decoration: underline; }
+
+      .wy-breadcrumbs .sep {
+        margin: 0 8px;
+        color: #ccc;
+      }
+
+      .wy-breadcrumbs-aside a {
+        color: var(--rtd-teal);
+        text-decoration: none;
+        font-size: 0.85em;
+      }
+
+      .wy-breadcrumbs-aside a:hover { text-decoration: underline; }
+
+      /* ── Typography — matches Sphinx RTD theme exactly ── */
+      .rst-content h1 {
+        font-family: 'Roboto Slab', serif;
+        font-size: 1.75em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 0 0 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e1e4e5;
+      }
+
+      .rst-content h2 {
+        font-family: 'Roboto Slab', serif;
+        font-size: 1.45em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 40px 0 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e1e4e5;
+      }
+
+      .rst-content h3 {
+        font-family: 'Roboto Slab', serif;
+        font-size: 1.2em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 30px 0 12px;
+      }
+
+      .rst-content h4 {
+        font-family: 'Roboto Slab', serif;
+        font-size: 1.05em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 24px 0 10px;
+      }
+
+      .rst-content p {
+        margin: 0 0 16px;
+        line-height: 1.65;
+      }
+
+      .rst-content a {
+        color: var(--rtd-teal);
+        text-decoration: none;
+      }
+
+      .rst-content a:hover { text-decoration: underline; }
+
+      /* Inline code */
+      .rst-content code,
+      .rst-content tt {
+        background: #fff;
+        border: 1px solid #e1e4e5;
+        padding: 1px 5px;
+        font-size: 0.88em;
+        color: #e74c3c;
+        border-radius: 2px;
+        white-space: nowrap;
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      }
+
+      /* Code blocks */
+      .rst-content pre {
+        background: #f8f8f8;
+        border: 1px solid #e1e4e5;
+        padding: 12px 16px;
+        overflow-x: auto;
+        margin: 0 0 20px;
+        line-height: 1.5;
+        border-radius: 2px;
+      }
+
+      .rst-content pre code {
+        background: none;
+        border: none;
+        color: #333;
+        padding: 0;
+        white-space: pre;
+      }
+
+      /* Images */
+      .rst-content img {
+        max-width: 100%;
+        height: auto;
+        margin: 12px 0;
+      }
+
+      .rst-content .figure {
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      .rst-content .figure img {
+        border: 1px solid #e1e4e5;
+        border-radius: 3px;
+      }
+
+      /* Tables — RTD style */
+      .rst-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0 24px;
+        font-size: 0.9em;
+      }
+
+      .rst-content table th {
+        background: #e1e4e5;
+        padding: 8px 12px;
+        text-align: left;
+        font-weight: 700;
+        border: 1px solid #d1d4d5;
+        color: #333;
+      }
+
+      .rst-content table td {
+        padding: 8px 12px;
+        border: 1px solid #e1e4e5;
+        vertical-align: top;
+      }
+
+      .rst-content table tr:nth-child(even) {
+        background: #f3f6f6;
+      }
+
+      /* Lists */
+      .rst-content ul,
+      .rst-content ol {
+        margin: 0 0 16px;
+        padding-left: 24px;
+      }
+
+      .rst-content li {
+        margin-bottom: 6px;
+        line-height: 1.6;
+      }
+
+      .rst-content li p {
+        margin-bottom: 8px;
+      }
+
+      /* Blockquotes */
+      .rst-content blockquote {
+        border-left: 3px solid #e1e4e5;
+        margin: 0 0 16px;
+        padding: 6px 16px;
+        color: #555;
+      }
+
+      /* Horizontal rules */
+      .rst-content hr {
+        border: none;
+        border-top: 1px solid #e1e4e5;
+        margin: 30px 0;
+      }
+
+      /* ── Admonitions — exact RTD style ── */
+      .admonition {
+        margin: 20px 0;
+        padding: 12px 16px;
+        border-radius: 2px;
+        font-size: 0.92em;
+      }
+
+      .admonition-title {
+        font-weight: 700;
+        margin-bottom: 6px;
+        display: block;
+      }
+
+      .admonition.note {
+        background: #e7f2fa;
+        border: 1px solid #6ab0de;
+      }
+      .admonition.note .admonition-title { color: #6ab0de; }
+
+      .admonition.tip,
+      .admonition.hint {
+        background: #dbfaf4;
+        border: 1px solid #1abc9c;
+      }
+      .admonition.tip .admonition-title,
+      .admonition.hint .admonition-title { color: #1abc9c; }
+
+      .admonition.warning,
+      .admonition.important {
+        background: #ffedcc;
+        border: 1px solid #f0b37e;
+      }
+      .admonition.warning .admonition-title,
+      .admonition.important .admonition-title { color: #e67e22; }
+
+      .admonition.danger,
+      .admonition.error {
+        background: #fdf3f2;
+        border: 1px solid #f29f97;
+      }
+      .admonition.danger .admonition-title,
+      .admonition.error .admonition-title { color: #e74c3c; }
+
+      /* ── Footer ── */
+      .rst-footer {
+        max-width: 800px;
+        padding: 16px 40px 30px;
+        border-top: 1px solid #e1e4e5;
+        margin-top: 20px;
+        font-size: 0.8em;
+        color: #999;
+      }
+
+      .rst-footer a { color: var(--rtd-teal); text-decoration: none; }
+      .rst-footer a:hover { text-decoration: underline; }
+
+      /* ── Previous / Next ── */
+      .rst-footer-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e1e4e5;
+      }
+
+      .rst-footer-buttons a {
+        color: #fff;
+        background: var(--rtd-teal);
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 2px;
+        font-size: 0.9em;
+        transition: background 0.15s;
+      }
+
+      .rst-footer-buttons a:hover {
+        background: var(--rtd-teal-dark);
+        text-decoration: none;
+      }
+
+      /* ── Mobile ── */
+      .wy-nav-top-hamburger {
+        display: none;
+        background: var(--rtd-teal);
+        color: #fff;
+        padding: 12px 16px;
+        font-size: 1em;
+        cursor: pointer;
+        border: none;
+        width: 100%;
+        text-align: left;
+        font-family: 'Lato', sans-serif;
+      }
+
+      @media (max-width: 768px) {
+        .wy-nav-side {
+          transform: translateX(-100%);
+          transition: transform 0.25s ease;
+          width: 280px;
+        }
+
+        .wy-nav-side.wy-nav-side--open {
+          transform: translateX(0);
+        }
+
+        .wy-nav-content-wrap {
+          margin-left: 0;
+        }
+
+        .wy-nav-top-hamburger {
+          display: block;
+        }
+
+        .rst-content {
+          padding: 20px 16px 40px;
+        }
+
+        /* Overlay */
+        .wy-nav-overlay {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.5);
+          z-index: 150;
+        }
+
+        .wy-nav-overlay.active { display: block; }
+      }
+
+      /* ── Badges ── */
+      .rst-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 12px 0 20px;
+      }
+
+      .rst-badges img {
+        height: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Mobile hamburger -->
+    <button class="wy-nav-top-hamburger" onclick="document.querySelector('.wy-nav-side').classList.toggle('wy-nav-side--open'); document.querySelector('.wy-nav-overlay').classList.toggle('active');">
+      &#9776;&nbsp; LLM for Zotero
+    </button>
+    <div class="wy-nav-overlay" onclick="document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open'); this.classList.remove('active');"></div>
+
+    <!-- ─── Sidebar ─── -->
+    <nav class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <img src="/images/llm-for-zotero/icon.png" alt="LLM for Zotero">
+        <span class="wy-project-name">LLM for Zotero</span>
+        <span class="wy-version">stable &middot; v3.7.6</span>
+        <input type="text" placeholder="Search docs ..." id="rtd-search-input">
+      </div>
+
+      <div class="wy-menu">
+        <span class="caption">Getting Started</span>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#configuration">Configuration</a>
+            <ul>
+              <li><a href="#supported-providers--protocols">Providers &amp; Protocols</a></li>
+              <li><a href="#supported-models">Supported Models</a></li>
+              <li><a href="#multiple-providers">Multiple Providers</a></li>
+              <li><a href="#reasoning-levels--hyperparameters">Reasoning &amp; Hyperparameters</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <span class="caption">User Guide</span>
+        <ul>
+          <li><a href="#usage-guide">Basic Usage</a>
+            <ul>
+              <li><a href="#conversation-modes">Conversation Modes</a></li>
+              <li><a href="#interface-controls">Interface Controls</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <span class="caption">Features</span>
+        <ul>
+          <li><a href="#grounded-answers-with-citation-navigation">Citation Navigation</a></li>
+          <li><a href="#paper-summarization">Paper Summarization</a></li>
+          <li><a href="#selected-text-explanation">Text Explanation</a></li>
+          <li><a href="#figure-interpretation">Figure Interpretation</a></li>
+          <li><a href="#cross-paper-comparison">Cross-Paper Comparison</a></li>
+          <li><a href="#external-document-upload">Document Upload</a></li>
+          <li><a href="#save-to-notes">Save to Notes</a></li>
+          <li><a href="#conversation-history--export">History &amp; Export</a></li>
+          <li><a href="#custom-quick-action-presets">Quick-Action Presets</a></li>
+        </ul>
+
+        <span class="caption">Advanced</span>
+        <ul>
+          <li><a href="#agent-mode-beta">Agent Mode (Beta)</a>
+            <ul>
+              <li><a href="#available-tools">Available Tools</a></li>
+              <li><a href="#built-in-actions">Built-in Actions</a></li>
+              <li><a href="#agent-demos">Demos</a></li>
+              <li><a href="#safety--confirmation">Safety &amp; Confirmation</a></li>
+            </ul>
+          </li>
+          <li><a href="#codex-auth-setup">Codex Auth Setup</a></li>
+        </ul>
+
+        <span class="caption">Help</span>
+        <ul>
+          <li><a href="#frequently-asked-questions">FAQ</a></li>
+          <li><a href="#contributing--support">Contributing</a></li>
+          <li><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">GitHub &#8599;</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ─── Content ─── -->
+    <div class="wy-nav-content-wrap">
+      <div class="rst-content">
+        <ul class="wy-breadcrumbs">
+          <li><a href="/">Home</a></li>
+          <span class="sep">/</span>
+          <li>LLM for Zotero Documentation</li>
+          <li style="flex:1"></li>
+          <li class="wy-breadcrumbs-aside"><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">Edit on GitHub</a></li>
+        </ul>
+
+        <h1 id="overview">LLM for Zotero</h1>
+
+<div class="rtd-badges">
+  <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-7-green?style=flat-square&amp;logo=zotero&amp;logoColor=CC2936" alt="Zotero 7" /></a>
+  <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-8-green?style=flat-square&amp;logo=zotero&amp;logoColor=CC2936" alt="Zotero 8" /></a>
+  <a href="https://www.gnu.org/licenses/agpl-3.0"><img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg?style=flat-square" alt="AGPL v3" /></a>
+  <a href="https://github.com/yilewang/llm-for-zotero/releases"><img src="https://img.shields.io/github/v/release/yilewang/llm-for-zotero?style=flat-square" alt="Latest release" /></a>
+  <a href="https://github.com/yilewang/llm-for-zotero/stargazers"><img src="https://img.shields.io/github/stars/yilewang/llm-for-zotero?style=flat-square" alt="GitHub Stars" /></a>
+</div>
+
+<p><strong>llm-for-zotero</strong> is a free, open-source plugin for <a href="https://www.zotero.org/">Zotero</a> that brings Large Language Models directly into the PDF reader. Unlike tools that require uploading PDFs to a web portal, this plugin lets you chat with your papers <em>without leaving Zotero</em>. It sits quietly in the reader sidebar — your standby research assistant, ready whenever you need it.</p>
+
+<p><img src="/images/llm-for-zotero/demo.png" alt="Screenshot of the llm-for-zotero sidebar inside the Zotero PDF reader" /></p>
+
+<div class="rtd-feature-grid">
+  <div class="rtd-feature-card">
+    <strong>Chat with Papers</strong>
+    <p>Ask questions about any open PDF. Answers are grounded in the paper with clickable citations.</p>
+  </div>
+  <div class="rtd-feature-card">
+    <strong>Multi-Provider Support</strong>
+    <p>OpenAI, Anthropic, Google Gemini, DeepSeek, local models — use any LLM you prefer.</p>
+  </div>
+  <div class="rtd-feature-card">
+    <strong>Agent Mode</strong>
+    <p>Let the LLM autonomously search, tag, organize, and annotate your entire Zotero library.</p>
+  </div>
+  <div class="rtd-feature-card">
+    <strong>Privacy-First</strong>
+    <p>Uses your own API keys. No data is sent to third-party portals — privacy governed by your provider.</p>
+  </div>
+</div>
+
+<hr />
+
+<h2 id="installation">Installation</h2>
+
+<ol>
+  <li>
+    <p><strong>Download the latest <code class="language-plaintext highlighter-rouge">.xpi</code> release</strong>
+Go to the <a href="https://github.com/yilewang/llm-for-zotero/releases">Releases Page</a> and download the latest <code class="language-plaintext highlighter-rouge">.xpi</code> file.</p>
+  </li>
+  <li>
+    <p><strong>Install the add-on in Zotero</strong>
+Open Zotero → <code class="language-plaintext highlighter-rouge">Tools</code> → <code class="language-plaintext highlighter-rouge">Add-ons</code> → click the gear icon → <strong>Install Add-on From File</strong> → select the <code class="language-plaintext highlighter-rouge">.xpi</code> file.</p>
+  </li>
+  <li>
+    <p><strong>Restart Zotero</strong>
+Restart Zotero to complete the installation. The plugin automatically checks for future updates on startup.</p>
+  </li>
+</ol>
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Tip</div>
+  The plugin supports both <strong>Zotero 7</strong> and <strong>Zotero 8</strong>. Make sure you are running a compatible version.
+</div>
+
+<hr />
+
+<h2 id="configuration">Configuration</h2>
+
+<p>Open <strong>Preferences</strong> → navigate to the <strong>llm-for-zotero</strong> tab.</p>
+
+<ol>
+  <li>Select your <strong>Provider</strong> (e.g. OpenAI, Gemini, DeepSeek).</li>
+  <li>Paste your <strong>API Base URL</strong>, <strong>API key</strong>, and <strong>model name</strong>.</li>
+  <li>Click <strong>Test Connection</strong> to verify.</li>
+</ol>
+
+<p><img src="/images/llm-for-zotero/model_setting.gif" alt="Provider and model configuration" /></p>
+
+<h3 id="supported-providers--protocols">Supported Providers &amp; Protocols</h3>
+
+<p>The plugin natively supports five provider protocols:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Protocol</th>
+      <th>Description</th>
+      <th>Key Capabilities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">responses_api</code></td>
+      <td>OpenAI Responses API</td>
+      <td>Streaming, tool calls, file uploads, multimodal</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">openai_chat_compat</code></td>
+      <td>OpenAI-compatible chat APIs</td>
+      <td>Streaming, tool calls, multimodal</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">anthropic_messages</code></td>
+      <td>Anthropic Messages API</td>
+      <td>Streaming, tool calls, multimodal</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">gemini_native</code></td>
+      <td>Google Gemini API</td>
+      <td>Streaming, tool calls, multimodal</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">codex_responses</code></td>
+      <td>ChatGPT/Codex auth</td>
+      <td>ChatGPT Plus integration, no separate API key</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="supported-models">Supported Models</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>API URL</th>
+      <th>Model</th>
+      <th>Reasoning Levels</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://api.openai.com/v1/responses</code></td>
+      <td>gpt-5.4</td>
+      <td>default, low, medium, high, xhigh</td>
+      <td>PDF uploads supported</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://api.openai.com/v1/responses</code></td>
+      <td>gpt-5.4-pro</td>
+      <td>medium, high, xhigh</td>
+      <td>PDF uploads supported</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://api.deepseek.com/v1</code></td>
+      <td>deepseek-chat</td>
+      <td>default</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://api.deepseek.com/v1</code></td>
+      <td>deepseek-reasoner</td>
+      <td>default</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://generativelanguage.googleapis.com</code></td>
+      <td>gemini-3-pro-preview</td>
+      <td>low, high</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://generativelanguage.googleapis.com</code></td>
+      <td>gemini-2.5-flash</td>
+      <td>medium</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://generativelanguage.googleapis.com</code></td>
+      <td>gemini-2.5-pro</td>
+      <td>default, low, high</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://api.moonshot.ai/v1</code></td>
+      <td>kimi-k2.5</td>
+      <td>default</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Any model that exposes an <strong>OpenAI-compatible HTTP API</strong> also works — including locally hosted models via tools like Ollama, LM Studio, or vLLM.</p>
+
+<h3 id="multiple-providers">Multiple Providers</h3>
+
+<p>You can configure <strong>up to 10 provider groups</strong>, each with multiple models. This lets you:</p>
+
+<ul>
+  <li>Use a multimodal model for figure interpretation and a text model for summaries.</li>
+  <li>Cross-check answers across different models for more comprehensive understanding.</li>
+  <li>Switch models mid-conversation from the model selector dropdown.</li>
+</ul>
+
+<h3 id="reasoning-levels--hyperparameters">Reasoning Levels &amp; Hyperparameters</h3>
+
+<p>For models that support it, you can set <strong>reasoning levels</strong> per request: <code class="language-plaintext highlighter-rouge">default</code>, <code class="language-plaintext highlighter-rouge">low</code>, <code class="language-plaintext highlighter-rouge">medium</code>, <code class="language-plaintext highlighter-rouge">high</code>, or <code class="language-plaintext highlighter-rouge">xhigh</code>. This controls how deeply the model thinks before answering.</p>
+
+<p>Additional per-model settings include:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Temperature</td>
+      <td>Controls output randomness (0 = deterministic, 2 = creative)</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>Max output tokens</td>
+      <td>Limit the length of model responses</td>
+      <td>2048</td>
+    </tr>
+    <tr>
+      <td>Input token cap</td>
+      <td>Restrict the context size sent to the model</td>
+      <td>Model default</td>
+    </tr>
+    <tr>
+      <td>System prompt</td>
+      <td>Custom instructions prepended to every request</td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="usage-guide">Usage Guide</h2>
+
+<ol>
+  <li><strong>Open any PDF</strong> in the Zotero reader.</li>
+  <li><strong>Click the LLM Assistant icon</strong> in the right-hand toolbar to open the sidebar.</li>
+  <li><strong>Type a question</strong> such as <em>“What is the main conclusion of this paper?”</em></li>
+</ol>
+
+<p>On the first message, the model loads the full paper content as context. Follow-up questions use focused retrieval from the same paper, keeping the conversation fast and relevant.</p>
+
+<h3 id="conversation-modes">Conversation Modes</h3>
+
+<p>The plugin supports three distinct conversation modes:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Mode</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Paper conversation</strong></td>
+      <td>Chat about a specific open PDF. Context is drawn from that paper.</td>
+    </tr>
+    <tr>
+      <td><strong>Global conversation</strong></td>
+      <td>Library-wide chat, not tied to any specific paper.</td>
+    </tr>
+    <tr>
+      <td><strong>Note conversation</strong></td>
+      <td>Chat while editing a Zotero note, with note content as context.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="interface-controls">Interface Controls</h3>
+
+<ul>
+  <li><strong>Model selector</strong> — switch between configured models mid-conversation.</li>
+  <li><strong>Reasoning selector</strong> — choose the reasoning level for the current request.</li>
+  <li><strong>Font scaling</strong> — adjust sidebar font size from 80% to 180%.</li>
+  <li><strong>Auto-scroll</strong> — automatically scrolls to the latest message.</li>
+  <li><strong>Token usage</strong> — real-time display of input, output, and reasoning tokens consumed.</li>
+</ul>
+
+<hr />
+
+<h2 id="grounded-answers-with-citation-navigation">Grounded Answers with Citation Navigation</h2>
+
+<p><img src="/images/llm-for-zotero/citation_jump.gif" alt="One-click jump from an AI citation to the paper source" /></p>
+
+<p>When you ask a question, the model generates answers <strong>grounded in the paper’s content</strong>. Each claim is backed by a citation — click any citation to jump straight to the source passage in the PDF. This makes it easy to verify answers and find relevant sections.</p>
+
+<hr />
+
+<h2 id="paper-summarization">Paper Summarization</h2>
+
+<p><img src="/images/llm-for-zotero/summarize.gif" alt="Instant paper summary in the sidebar" /></p>
+
+<p>Get a concise summary of any paper in seconds. The summary is generated from the full text of the open PDF. You can customize the summary prompt to focus on specific aspects — methodology, results, implications, or anything else.</p>
+
+<hr />
+
+<h2 id="selected-text-explanation">Selected Text Explanation</h2>
+
+<p><img src="/images/llm-for-zotero/text.gif" alt="Selected text being explained by the model" /></p>
+
+<p>Select any complex paragraph or technical term in the PDF and ask the model to explain it. You can add <strong>up to 5 pieces of context</strong> from the paper or previous answers to refine the explanation.</p>
+
+<p>An optional pop-up automatically suggests adding selected text to the chat. This can be disabled in settings if you prefer manual control.</p>
+
+<hr />
+
+<h2 id="figure-interpretation">Figure Interpretation</h2>
+
+<p><img src="/images/llm-for-zotero/screenshot.gif" alt="Screenshot-based figure interpretation" /></p>
+
+<p>Take a screenshot of any figure, chart, or diagram and ask the model to interpret it. The plugin supports <strong>up to 10 screenshots</strong> at a time, making it easy to analyze complex multi-panel figures or compare visuals across sections.</p>
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Tip</div>
+  For best results with figures, use a multimodal model (e.g. GPT-4o, Gemini Pro, Claude) that supports image inputs.
+</div>
+
+<hr />
+
+<h2 id="cross-paper-comparison">Cross-Paper Comparison</h2>
+
+<p><img src="/images/llm-for-zotero/multi.gif" alt="Cross-paper comparison using the slash command" /></p>
+
+<p>Open multiple papers in different tabs and compare them side by side. Type <strong><code class="language-plaintext highlighter-rouge">/</code></strong> in the chat input to cite another open paper as additional context. You can reference <strong>up to 10 papers</strong> in a single conversation, enabling rich cross-paper analysis.</p>
+
+<hr />
+
+<h2 id="external-document-upload">External Document Upload</h2>
+
+<p><img src="/images/llm-for-zotero/upload_files.gif" alt="External file upload for additional context" /></p>
+
+<p>Upload documents from your local drive as additional context. Supported formats:</p>
+
+<ul>
+  <li><strong>PDF</strong> (up to 50 MB per file)</li>
+  <li><strong>DOCX</strong> (Word documents)</li>
+  <li><strong>PPTX</strong> (PowerPoint presentations)</li>
+  <li><strong>TXT</strong> (plain text)</li>
+  <li><strong>Markdown</strong> (.md files)</li>
+</ul>
+
+<hr />
+
+<h2 id="save-to-notes">Save to Notes</h2>
+
+<p><img src="/images/llm-for-zotero/save_notes.gif" alt="Model answers saved to Zotero notes" /></p>
+
+<p>Save any answer or selected text directly to your <strong>Zotero notes</strong> with one click. This integrates seamlessly with your existing note-taking workflow — no copy-pasting required.</p>
+
+<hr />
+
+<h2 id="conversation-history--export">Conversation History &amp; Export</h2>
+
+<p><img src="/images/llm-for-zotero/save_chat.gif" alt="Conversation export to Zotero notes" /></p>
+
+<p>Conversations are <strong>automatically saved</strong> locally and associated with the paper you’re reading. You can:</p>
+
+<ul>
+  <li>Browse past conversations from the history panel.</li>
+  <li><strong>Export entire conversations</strong> to Zotero notes in Markdown format.</li>
+  <li>Exported notes include selected text, screenshots, and properly rendered LaTeX equations.</li>
+</ul>
+
+<hr />
+
+<h2 id="custom-quick-action-presets">Custom Quick-Action Presets</h2>
+
+<p><img src="/images/llm-for-zotero/shortcuts.gif" alt="Custom quick-action preset configuration" /></p>
+
+<p>Create <strong>up to 10 custom presets</strong> for frequently used prompts — available at the tap of a button. Built-in presets include:</p>
+
+<ul>
+  <li><strong>Summarize</strong> — generate a concise summary</li>
+  <li><strong>Key Points</strong> — extract main findings</li>
+  <li><strong>Methodology</strong> — describe the research methods</li>
+  <li><strong>Limitations</strong> — identify weaknesses or gaps</li>
+</ul>
+
+<p>You can customize these or add your own to match your research workflow.</p>
+
+<hr />
+
+<h2 id="agent-mode-beta">Agent Mode (Beta)</h2>
+
+<div class="rtd-warning">
+  <div class="rtd-admonition-title">Important</div>
+  Agent Mode is disabled by default. Enable it in <strong>Preferences</strong>, then toggle <strong>Agent (beta)</strong> in the context bar.
+</div>
+
+<p>When enabled, the LLM becomes an <strong>autonomous agent</strong> that can read, search, and write within your Zotero library. It operates with a human-in-the-loop design — all write operations require your explicit approval before execution.</p>
+
+<h3 id="available-tools">Available Tools</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tool</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">query_library</code></td>
+      <td>Search and list Zotero items, collections, related papers, and duplicates</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">read_library</code></td>
+      <td>Read metadata, notes, annotations, attachments, and collection details</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">inspect_pdf</code></td>
+      <td>Read front matter, search pages, retrieve evidence, inspect the active reader view</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">search_literature_online</code></td>
+      <td>Search live scholarly sources (Crossref, Semantic Scholar, arXiv, PubMed, and more) or fetch external metadata</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mutate_library</code></td>
+      <td>Batch write operations — metadata edits, tagging, collection management, note writing, paper imports</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">undo_last_action</code></td>
+      <td>Revert the last approved write batch</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The design philosophy is <strong>fewer, more general tools</strong> rather than a long list of task-specific ones. Ask the agent what it can do — it will tell you.</p>
+
+<h3 id="built-in-actions">Built-in Actions</h3>
+
+<p>The agent comes with several pre-built workflows:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>What it does</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Audit Library</strong></td>
+      <td>Checks your library for quality and completeness issues</td>
+    </tr>
+    <tr>
+      <td><strong>Sync Metadata</strong></td>
+      <td>Synchronizes and updates paper metadata from online sources</td>
+    </tr>
+    <tr>
+      <td><strong>Organize Unfiled</strong></td>
+      <td>Sorts unfiled papers into appropriate collections</td>
+    </tr>
+    <tr>
+      <td><strong>Auto Tag</strong></td>
+      <td>Automatically generates and applies relevant tags</td>
+    </tr>
+    <tr>
+      <td><strong>Discover Related</strong></td>
+      <td>Finds related papers in your library or online</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="agent-demos">Agent Demos</h3>
+
+<h4 id="multi-step-workflow">Multi-step workflow</h4>
+
+<p>The agent can chain multiple tools together to accomplish complex tasks — for example, finding a paper, reading its metadata, searching for related work, and writing a summary note.</p>
+
+<p><img src="/images/llm-for-zotero/agent/multi_steps.gif" alt="Multi-step agent workflow" style="max-width:512px;" /></p>
+
+<h4 id="read-a-figure-directly">Read a figure directly</h4>
+
+<p><img src="/images/llm-for-zotero/agent/single_figure.gif" alt="Agent reading a figure from the PDF" /></p>
+
+<h4 id="read-multiple-pages">Read multiple pages</h4>
+
+<p><img src="/images/llm-for-zotero/agent/full_docs.gif" alt="Agent reading multiple pages" /></p>
+
+<h4 id="find-related-papers">Find related papers</h4>
+
+<p><img src="/images/llm-for-zotero/agent/related_papers.gif" alt="Agent finding related papers" /></p>
+
+<h4 id="apply-tags-automatically">Apply tags automatically</h4>
+
+<p><img src="/images/llm-for-zotero/agent/apply_tags.gif" alt="Agent applying tags to a paper" /></p>
+
+<h4 id="write-a-note">Write a note</h4>
+
+<p><img src="/images/llm-for-zotero/agent/write_note.gif" alt="Agent writing a note" /></p>
+
+<h3 id="safety--confirmation">Safety &amp; Confirmation</h3>
+
+<p>All write operations go through a <strong>human-in-the-loop confirmation</strong> workflow:</p>
+
+<ul>
+  <li>The agent proposes a batch of changes (e.g. add tags, edit metadata).</li>
+  <li>You review the proposed changes in a rich approval form.</li>
+  <li>You can <strong>approve</strong>, <strong>reject</strong>, or <strong>modify</strong> before any changes are applied.</li>
+  <li>If something goes wrong, use <code class="language-plaintext highlighter-rouge">undo_last_action</code> to revert.</li>
+</ul>
+
+<hr />
+
+<h2 id="codex-auth-setup">Codex Auth Setup</h2>
+
+<p>If you have a <strong>ChatGPT Plus</strong> subscription, you can use <strong>Codex auth</strong> to access models like <code class="language-plaintext highlighter-rouge">gpt-5.4</code> without a separate API key. The plugin reuses your ChatGPT login via the Codex CLI.</p>
+
+<h3 id="step-by-step-setup">Step-by-step setup</h3>
+
+<p><strong>1. Install the Codex CLI</strong> (one-time):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># macOS / Linux (requires Node.js 18+)</span>
+npm <span class="nb">install</span> <span class="nt">-g</span> @openai/codex
+
+<span class="c"># macOS alternative (no Node.js needed)</span>
+brew <span class="nb">install</span> <span class="nt">--cask</span> codex
+</code></pre></div></div>
+
+<p><strong>2. Log in with your ChatGPT account:</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>codex login
+</code></pre></div></div>
+
+<p>A browser window opens — sign in with your ChatGPT Plus account. Credentials are saved to <code class="language-plaintext highlighter-rouge">~/.codex/auth.json</code>.</p>
+
+<p><strong>3. Configure the plugin:</strong></p>
+
+<p>In Zotero → <strong>Preferences</strong> → <strong>llm-for-zotero</strong>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Auth Mode</td>
+      <td><code class="language-plaintext highlighter-rouge">codex auth</code></td>
+    </tr>
+    <tr>
+      <td>API URL</td>
+      <td><code class="language-plaintext highlighter-rouge">https://chatgpt.com/backend-api/codex/responses</code></td>
+    </tr>
+    <tr>
+      <td>Model</td>
+      <td>e.g. <code class="language-plaintext highlighter-rouge">gpt-5.4</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Click <strong>Test Connection</strong> to verify.</p>
+
+<p><img src="/images/llm-for-zotero/codex.png" alt="Codex auth configuration" /></p>
+
+<h3 id="technical-notes">Technical Notes</h3>
+
+<ul>
+  <li>Reads local credentials from <code class="language-plaintext highlighter-rouge">~/.codex/auth.json</code> (or <code class="language-plaintext highlighter-rouge">$CODEX_HOME/auth.json</code>).</li>
+  <li>Automatically attempts token refresh on 401 responses.</li>
+  <li>Local PDF grounding and screenshot inputs are supported.</li>
+  <li>Embeddings and the <code class="language-plaintext highlighter-rouge">/files</code> upload flow are not yet supported in Codex auth mode.</li>
+</ul>
+
+<hr />
+
+<h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
+
+<p><strong>Is it free to use?</strong></p>
+
+<p>Yes, the plugin is completely free and open source (AGPL v3). You only pay for API calls to your chosen provider. With Codex auth, ChatGPT Plus subscribers can use their existing subscription without a separate API key.</p>
+
+<p><strong>Does it work with local models?</strong></p>
+
+<p>Yes — any model that provides an OpenAI-compatible HTTP API works. This includes models served via <a href="https://ollama.ai/">Ollama</a>, <a href="https://lmstudio.ai/">LM Studio</a>, <a href="https://docs.vllm.ai/">vLLM</a>, or any other compatible server. Just enter the local API URL and model name in settings.</p>
+
+<p><strong>Is my data used to train models?</strong></p>
+
+<p>No. You use your own API key, so data privacy is governed by the terms of your chosen provider. Most API providers (e.g. OpenAI, Anthropic) do not use API data for model training.</p>
+
+<p><strong>Can I use multiple models at the same time?</strong></p>
+
+<p>Yes. Configure up to 10 provider groups, each with multiple models. Switch between models mid-conversation using the model selector dropdown.</p>
+
+<p><strong>How does context retrieval work?</strong></p>
+
+<p>On the first message about a paper, the plugin loads the full text as context. Follow-up questions use <strong>hybrid retrieval</strong> (BM25 + embedding-based search) with diversity optimization to find the most relevant passages, keeping responses fast and accurate.</p>
+
+<p><strong>How do I report a bug or request a feature?</strong></p>
+
+<p>Please <a href="https://github.com/yilewang/llm-for-zotero/issues">open an issue</a> on GitHub.</p>
+
+<hr />
+
+<h2 id="contributing--support">Contributing &amp; Support</h2>
+
+<p>Contributions are welcome! Whether it’s bug reports, feature requests, or pull requests — feel free to <a href="https://github.com/yilewang/llm-for-zotero/issues">open an issue</a> or submit a PR on <a href="https://github.com/yilewang/llm-for-zotero">GitHub</a>.</p>
+
+<p>If you find this plugin helpful, consider:</p>
+<ul>
+  <li>Leaving a star on <a href="https://github.com/yilewang/llm-for-zotero">GitHub</a></li>
+  <li><a href="https://buymeacoffee.com/yat.lok">Buying me a coffee</a></li>
+</ul>
+
+      </div>
+
+      <div class="rst-footer">
+        &copy; 2025 <a href="https://github.com/yilewang">Yile Wang</a>.
+        Built with Jekyll. Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0">AGPL v3</a>.
+      </div>
+    </div>
+
+    <!-- Scroll-spy for active sidebar link -->
+    <script>
+    (function() {
+      var links = document.querySelectorAll('.wy-menu a[href^="#"]');
+      var sections = [];
+      links.forEach(function(link) {
+        var id = link.getAttribute('href').slice(1);
+        var el = document.getElementById(id);
+        if (el) sections.push({ el: el, link: link });
+      });
+
+      function update() {
+        var y = window.scrollY + 100;
+        var hit = null;
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].el.offsetTop <= y) hit = sections[i];
+        }
+        links.forEach(function(l) { l.classList.remove('current'); });
+        if (hit) hit.link.classList.add('current');
+      }
+
+      window.addEventListener('scroll', update);
+      update();
+
+      /* simple client-side search filter */
+      var input = document.getElementById('rtd-search-input');
+      if (input) {
+        input.addEventListener('input', function() {
+          var q = this.value.toLowerCase();
+          document.querySelectorAll('.wy-menu li').forEach(function(li) {
+            var a = li.querySelector(':scope > a');
+            if (!a) return;
+            li.style.display = (!q || a.textContent.toLowerCase().indexOf(q) !== -1) ? '' : 'none';
+          });
+        });
+      }
+
+      /* mobile: close sidebar when clicking a nav link */
+      links.forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open');
+            document.querySelector('.wy-nav-overlay').classList.remove('active');
+          }
+        });
+      });
+    })();
+    </script>
+  </body>
+</html>
