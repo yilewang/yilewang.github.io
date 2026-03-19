@@ -507,6 +507,39 @@
         .wy-nav-overlay.active { display: block; }
       }
 
+      /* ── Language switcher ── */
+      .lang-switcher {
+        display: flex;
+        gap: 0;
+        margin: 12px 20px 4px;
+        border-radius: 4px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.15);
+      }
+
+      .lang-switcher a {
+        flex: 1;
+        text-align: center;
+        padding: 5px 0;
+        font-size: 0.82em;
+        font-weight: 700;
+        text-decoration: none;
+        color: rgba(255,255,255,0.6);
+        background: transparent;
+        transition: all 0.15s;
+        letter-spacing: 0.03em;
+      }
+
+      .lang-switcher a:hover {
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+      }
+
+      .lang-switcher a.active {
+        background: var(--rtd-teal);
+        color: #fff;
+      }
+
       /* ── Badges ── */
       .rst-badges, .rtd-badges {
         display: flex;
@@ -539,7 +572,13 @@
         <input type="text" placeholder="Search docs ..." id="rtd-search-input">
       </div>
 
+      <div class="lang-switcher">
+        <a href="/llm-for-zotero/" class="active">EN</a>
+        <a href="/llm-for-zotero/zh/" >中文</a>
+      </div>
+
       <div class="wy-menu">
+        
         <span class="caption">Getting Started</span>
         <ul>
           <li><a href="#overview">Overview</a></li>
@@ -596,6 +635,7 @@
           <li><a href="#contributing--support">Contributing</a></li>
           <li><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">GitHub &#8599;</a></li>
         </ul>
+        
       </div>
     </nav>
 
@@ -618,7 +658,10 @@
   <a href="https://www.gnu.org/licenses/agpl-3.0"><img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg?style=flat-square" alt="AGPL v3" /></a>
   <a href="https://github.com/yilewang/llm-for-zotero/releases"><img src="https://img.shields.io/github/v/release/yilewang/llm-for-zotero?style=flat-square" alt="Latest release" /></a>
   <a href="https://github.com/yilewang/llm-for-zotero/stargazers"><img src="https://img.shields.io/github/stars/yilewang/llm-for-zotero?style=flat-square" alt="GitHub Stars" /></a>
+  <a href="https://yilewang.github.io"><img src="https://img.shields.io/badge/website-yilewang.github.io-informational?style=flat-square&amp;logo=github" alt="Personal website" /></a>
 </div>
+
+<p style="margin: 4px 0 20px; font-size: 0.9em;">📖 <a href="/llm-for-zotero/zh/"><strong>中文版使用手册</strong></a></p>
 
 <p><strong>llm-for-zotero</strong> is a free, open-source plugin for <a href="https://www.zotero.org/">Zotero</a> that brings Large Language Models directly into the PDF reader. Unlike tools that require uploading PDFs to a web portal, this plugin lets you chat with your papers <em>without leaving Zotero</em>. It sits quietly in the reader sidebar — your standby research assistant, ready whenever you need it.</p>
 
@@ -1212,13 +1255,16 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
 <ul>
   <li>Leaving a star on <a href="https://github.com/yilewang/llm-for-zotero">GitHub</a></li>
   <li><a href="https://buymeacoffee.com/yat.lok">Buying me a coffee</a></li>
+  <li>Donating via Alipay QR code below:
+<img src="/images/llm-for-zotero/alipay.png" alt="Alipay donation QR code" style="max-width:200px;" /></li>
 </ul>
 
       </div>
 
       <div class="rst-footer">
-        &copy; 2025 <a href="https://github.com/yilewang">Yile Wang</a>.
-        Built with Jekyll. Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0">AGPL v3</a>.
+        
+        &copy; 2026 <a href="https://github.com/yilewang">Yile Wang</a>. Built with Jekyll. Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0">AGPL v3</a>.
+        
       </div>
     </div>
 

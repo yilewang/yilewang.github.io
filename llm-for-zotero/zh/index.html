@@ -1,0 +1,1321 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LLM for Zotero — 文档</title>
+    <style>
+      /* ───────────────────────────────────────────────
+         Sphinx Read-the-Docs theme — faithful replica
+         ─────────────────────────────────────────────── */
+      :root {
+        --rtd-teal: #2980b9;
+        --rtd-teal-dark: #2472a4;
+        --rtd-green: #27ae60;
+        --rtd-sidebar-w: 300px;
+        --rtd-bg: #fcfcfc;
+        --rtd-text: #404040;
+        --rtd-heading: #1a1a1a;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        color: var(--rtd-text);
+        background: var(--rtd-bg);
+        line-height: 1.6;
+      }
+
+      /* ── Sidebar ── */
+      .wy-nav-side {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        width: var(--rtd-sidebar-w);
+        background: #343131;
+        overflow-y: auto;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .wy-nav-side::-webkit-scrollbar { width: 6px; }
+      .wy-nav-side::-webkit-scrollbar-track { background: #343131; }
+      .wy-nav-side::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
+
+      /* Sidebar header / brand */
+      .wy-side-nav-search {
+        background: var(--rtd-teal);
+        padding: 18px 20px;
+        text-align: center;
+        color: #fff;
+      }
+
+      .wy-side-nav-search img {
+        display: block;
+        margin: 0 auto 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #fff;
+        padding: 2px;
+      }
+
+      .wy-side-nav-search .wy-project-name {
+        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 1.3em;
+        font-weight: 700;
+        color: #fff;
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .wy-side-nav-search .wy-version {
+        display: inline-block;
+        font-size: 0.8em;
+        color: rgba(255,255,255,0.85);
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin-bottom: 12px;
+      }
+
+      /* Sidebar search */
+      .wy-side-nav-search input[type="text"] {
+        width: 100%;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 3px;
+        font-size: 0.9em;
+        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+        color: #333;
+        outline: none;
+      }
+
+      .wy-side-nav-search input[type="text"]::placeholder {
+        color: #999;
+      }
+
+      /* Sidebar navigation */
+      .wy-menu {
+        padding: 12px 0 30px;
+        flex: 1;
+      }
+
+      .wy-menu .caption {
+        display: block;
+        padding: 8px 20px 4px;
+        font-size: 0.82em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--rtd-teal);
+        margin-top: 4px;
+      }
+
+      .wy-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .wy-menu li {}
+
+      .wy-menu li a {
+        display: block;
+        padding: 5px 20px 5px 24px;
+        color: #d9d9d9;
+        text-decoration: none;
+        font-size: 0.9em;
+        line-height: 1.5;
+        border-left: 3px solid transparent;
+        transition: background 0.1s;
+      }
+
+      .wy-menu li a:hover {
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+      }
+
+      .wy-menu li a.current {
+        background: #4e4a4a;
+        color: #fff;
+        font-weight: 700;
+        border-left-color: var(--rtd-teal);
+      }
+
+      /* Sub-level nav */
+      .wy-menu li ul a {
+        padding-left: 40px;
+        font-size: 0.85em;
+      }
+
+      .wy-menu li ul ul a {
+        padding-left: 56px;
+        font-size: 0.83em;
+      }
+
+      /* ── Content wrapper ── */
+      .wy-nav-content-wrap {
+        margin-left: var(--rtd-sidebar-w);
+        background: var(--rtd-bg);
+        min-height: 100vh;
+      }
+
+      /* ── Top breadcrumb bar ── */
+      .wy-breadcrumbs-aside {
+        float: right;
+      }
+
+      .wy-nav-top {
+        display: none;
+        background: var(--rtd-teal);
+        color: #fff;
+        padding: 10px 16px;
+        font-size: 0.95em;
+        cursor: pointer;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .wy-nav-top .fa-bars {
+        font-size: 1.2em;
+      }
+
+      .rst-content {
+        max-width: 100%;
+        padding: 28px 60px 60px;
+      }
+
+      /* Breadcrumbs */
+      .wy-breadcrumbs {
+        list-style: none;
+        padding: 0 0 12px;
+        margin: 0 0 20px;
+        border-bottom: 1px solid #e1e4e5;
+        font-size: 0.85em;
+        display: flex;
+        align-items: center;
+        gap: 0;
+      }
+
+      .wy-breadcrumbs li {
+        display: inline;
+        color: #666;
+      }
+
+      .wy-breadcrumbs li a {
+        color: var(--rtd-teal);
+        text-decoration: none;
+      }
+
+      .wy-breadcrumbs li a:hover { text-decoration: underline; }
+
+      .wy-breadcrumbs .sep {
+        margin: 0 8px;
+        color: #ccc;
+      }
+
+      .wy-breadcrumbs-aside a {
+        color: var(--rtd-teal);
+        text-decoration: none;
+        font-size: 0.85em;
+      }
+
+      .wy-breadcrumbs-aside a:hover { text-decoration: underline; }
+
+      /* ── Typography — matches Sphinx RTD theme exactly ── */
+      .rst-content h1 {
+        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 1.75em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 0 0 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e1e4e5;
+      }
+
+      .rst-content h2 {
+        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 1.45em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 40px 0 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e1e4e5;
+      }
+
+      .rst-content h3 {
+        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 1.2em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 30px 0 12px;
+      }
+
+      .rst-content h4 {
+        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 1.05em;
+        font-weight: 700;
+        color: var(--rtd-heading);
+        margin: 24px 0 10px;
+      }
+
+      .rst-content p {
+        margin: 0 0 16px;
+        line-height: 1.65;
+      }
+
+      .rst-content a {
+        color: var(--rtd-teal);
+        text-decoration: none;
+      }
+
+      .rst-content a:hover { text-decoration: underline; }
+
+      /* Inline code */
+      .rst-content code,
+      .rst-content tt {
+        background: #fff;
+        border: 1px solid #e1e4e5;
+        padding: 1px 5px;
+        font-size: 0.88em;
+        color: #e74c3c;
+        border-radius: 2px;
+        white-space: nowrap;
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      }
+
+      /* Code blocks */
+      .rst-content pre {
+        background: #f8f8f8;
+        border: 1px solid #e1e4e5;
+        padding: 12px 16px;
+        overflow-x: auto;
+        margin: 0 0 20px;
+        line-height: 1.5;
+        border-radius: 2px;
+      }
+
+      .rst-content pre code {
+        background: none;
+        border: none;
+        color: #333;
+        padding: 0;
+        white-space: pre;
+      }
+
+      /* Images */
+      .rst-content img {
+        max-width: 100%;
+        height: auto;
+        margin: 16px 0;
+        border: 1px solid #e1e4e5;
+        border-radius: 3px;
+        display: block;
+      }
+
+      /* Tables — RTD style */
+      .rst-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0 24px;
+        font-size: 0.9em;
+      }
+
+      .rst-content table th {
+        background: #e1e4e5;
+        padding: 8px 12px;
+        text-align: left;
+        font-weight: 700;
+        border: 1px solid #d1d4d5;
+        color: #333;
+      }
+
+      .rst-content table td {
+        padding: 8px 12px;
+        border: 1px solid #e1e4e5;
+        vertical-align: top;
+      }
+
+      .rst-content table tr:nth-child(even) {
+        background: #f3f6f6;
+      }
+
+      /* Lists */
+      .rst-content ul,
+      .rst-content ol {
+        margin: 0 0 16px;
+        padding-left: 24px;
+      }
+
+      .rst-content li {
+        margin-bottom: 6px;
+        line-height: 1.6;
+      }
+
+      .rst-content li p {
+        margin-bottom: 8px;
+      }
+
+      /* Blockquotes */
+      .rst-content blockquote {
+        border-left: 3px solid #e1e4e5;
+        margin: 0 0 16px;
+        padding: 6px 16px;
+        color: #555;
+      }
+
+      /* Horizontal rules */
+      .rst-content hr {
+        border: none;
+        border-top: 1px solid #e1e4e5;
+        margin: 30px 0;
+      }
+
+      /* ── Admonitions — exact RTD style ── */
+      .admonition {
+        margin: 20px 0;
+        padding: 12px 16px;
+        border-radius: 2px;
+        font-size: 0.92em;
+      }
+
+      .admonition-title {
+        font-weight: 700;
+        margin-bottom: 6px;
+        display: block;
+      }
+
+      .admonition.note {
+        background: #e7f2fa;
+        border: 1px solid #6ab0de;
+      }
+      .admonition.note .admonition-title { color: #6ab0de; }
+
+      .admonition.tip,
+      .admonition.hint {
+        background: #dbfaf4;
+        border: 1px solid #1abc9c;
+      }
+      .admonition.tip .admonition-title,
+      .admonition.hint .admonition-title { color: #1abc9c; }
+
+      .admonition.warning,
+      .admonition.important {
+        background: #ffedcc;
+        border: 1px solid #f0b37e;
+      }
+      .admonition.warning .admonition-title,
+      .admonition.important .admonition-title { color: #e67e22; }
+
+      .admonition.danger,
+      .admonition.error {
+        background: #fdf3f2;
+        border: 1px solid #f29f97;
+      }
+      .admonition.danger .admonition-title,
+      .admonition.error .admonition-title { color: #e74c3c; }
+
+      /* ── Footer ── */
+      .rst-footer {
+        max-width: 100%;
+        padding: 16px 60px 30px;
+        border-top: 1px solid #e1e4e5;
+        margin-top: 20px;
+        font-size: 0.8em;
+        color: #999;
+      }
+
+      .rst-footer a { color: var(--rtd-teal); text-decoration: none; }
+      .rst-footer a:hover { text-decoration: underline; }
+
+      /* ── Previous / Next ── */
+      .rst-footer-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e1e4e5;
+      }
+
+      .rst-footer-buttons a {
+        color: #fff;
+        background: var(--rtd-teal);
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 2px;
+        font-size: 0.9em;
+        transition: background 0.15s;
+      }
+
+      .rst-footer-buttons a:hover {
+        background: var(--rtd-teal-dark);
+        text-decoration: none;
+      }
+
+      /* ── Mobile ── */
+      .wy-nav-top-hamburger {
+        display: none;
+        background: var(--rtd-teal);
+        color: #fff;
+        padding: 12px 16px;
+        font-size: 1em;
+        cursor: pointer;
+        border: none;
+        width: 100%;
+        text-align: left;
+        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+      }
+
+      @media (max-width: 768px) {
+        .wy-nav-side {
+          transform: translateX(-100%);
+          transition: transform 0.25s ease;
+          width: 280px;
+        }
+
+        .wy-nav-side.wy-nav-side--open {
+          transform: translateX(0);
+        }
+
+        .wy-nav-content-wrap {
+          margin-left: 0;
+        }
+
+        .wy-nav-top-hamburger {
+          display: block;
+        }
+
+        .rst-content {
+          padding: 20px 16px 40px;
+        }
+
+        /* Overlay */
+        .wy-nav-overlay {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.5);
+          z-index: 150;
+        }
+
+        .wy-nav-overlay.active { display: block; }
+      }
+
+      /* ── Language switcher ── */
+      .lang-switcher {
+        display: flex;
+        gap: 0;
+        margin: 12px 20px 4px;
+        border-radius: 4px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.15);
+      }
+
+      .lang-switcher a {
+        flex: 1;
+        text-align: center;
+        padding: 5px 0;
+        font-size: 0.82em;
+        font-weight: 700;
+        text-decoration: none;
+        color: rgba(255,255,255,0.6);
+        background: transparent;
+        transition: all 0.15s;
+        letter-spacing: 0.03em;
+      }
+
+      .lang-switcher a:hover {
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+      }
+
+      .lang-switcher a.active {
+        background: var(--rtd-teal);
+        color: #fff;
+      }
+
+      /* ── Badges ── */
+      .rst-badges, .rtd-badges {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        gap: 6px;
+        margin: 12px 0 20px;
+      }
+
+      .rst-badges img, .rtd-badges img {
+        height: 20px;
+        display: inline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Mobile hamburger -->
+    <button class="wy-nav-top-hamburger" onclick="document.querySelector('.wy-nav-side').classList.toggle('wy-nav-side--open'); document.querySelector('.wy-nav-overlay').classList.toggle('active');">
+      &#9776;&nbsp; LLM for Zotero
+    </button>
+    <div class="wy-nav-overlay" onclick="document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open'); this.classList.remove('active');"></div>
+
+    <!-- ─── Sidebar ─── -->
+    <nav class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <img src="/images/llm-for-zotero/icon.png" alt="LLM for Zotero">
+        <span class="wy-project-name">LLM for Zotero</span>
+        <span class="wy-version">stable &middot; v3.7.6</span>
+        <input type="text" placeholder="搜索文档…" id="rtd-search-input">
+      </div>
+
+      <div class="lang-switcher">
+        <a href="/llm-for-zotero/" >EN</a>
+        <a href="/llm-for-zotero/zh/" class="active">中文</a>
+      </div>
+
+      <div class="wy-menu">
+        
+        <span class="caption">快速开始</span>
+        <ul>
+          <li><a href="#overview">概述</a></li>
+          <li><a href="#安装">安装</a></li>
+          <li><a href="#配置">配置</a>
+            <ul>
+              <li><a href="#支持的服务商与协议">服务商与协议</a></li>
+              <li><a href="#支持的模型">支持的模型</a></li>
+              <li><a href="#多服务商配置">多服务商配置</a></li>
+              <li><a href="#推理等级与超参数">推理等级与超参数</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <span class="caption">使用指南</span>
+        <ul>
+          <li><a href="#使用指南">基本用法</a>
+            <ul>
+              <li><a href="#对话模式">对话模式</a></li>
+              <li><a href="#界面控件">界面控件</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <span class="caption">功能</span>
+        <ul>
+          <li><a href="#带引用跳转的有据答案">引用跳转</a></li>
+          <li><a href="#论文摘要生成">摘要生成</a></li>
+          <li><a href="#选中文本解释">文本解释</a></li>
+          <li><a href="#图表解读">图表解读</a></li>
+          <li><a href="#跨论文对比">跨论文对比</a></li>
+          <li><a href="#外部文档上传">文档上传</a></li>
+          <li><a href="#保存至笔记">保存至笔记</a></li>
+          <li><a href="#对话历史与导出">历史与导出</a></li>
+          <li><a href="#自定义快捷预设">快捷预设</a></li>
+        </ul>
+
+        <span class="caption">高级功能</span>
+        <ul>
+          <li><a href="#agent-模式beta">Agent 模式（Beta）</a>
+            <ul>
+              <li><a href="#可用工具">可用工具</a></li>
+              <li><a href="#内置动作">内置动作</a></li>
+              <li><a href="#agent-演示">演示</a></li>
+              <li><a href="#安全与审批">安全与审批</a></li>
+            </ul>
+          </li>
+          <li><a href="#codex-认证配置">Codex 认证配置</a></li>
+        </ul>
+
+        <span class="caption">帮助</span>
+        <ul>
+          <li><a href="#常见问题">常见问题</a></li>
+          <li><a href="#贡献与支持">贡献与支持</a></li>
+          <li><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">GitHub &#8599;</a></li>
+        </ul>
+        
+      </div>
+    </nav>
+
+    <!-- ─── Content ─── -->
+    <div class="wy-nav-content-wrap">
+      <div class="rst-content">
+        <ul class="wy-breadcrumbs">
+          <li><a href="/">首页</a></li>
+          <span class="sep">/</span>
+          <li>LLM for Zotero 文档</li>
+          <li style="flex:1"></li>
+          <li class="wy-breadcrumbs-aside"><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">在 GitHub 上查看</a></li>
+        </ul>
+
+        <h1 id="overview">LLM for Zotero</h1>
+
+<div class="rtd-badges">
+  <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-7-green?style=flat-square&amp;logo=zotero&amp;logoColor=CC2936" alt="Zotero 7" /></a>
+  <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-8-green?style=flat-square&amp;logo=zotero&amp;logoColor=CC2936" alt="Zotero 8" /></a>
+  <a href="https://www.gnu.org/licenses/agpl-3.0"><img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg?style=flat-square" alt="AGPL v3" /></a>
+  <a href="https://github.com/yilewang/llm-for-zotero/releases"><img src="https://img.shields.io/github/v/release/yilewang/llm-for-zotero?style=flat-square" alt="最新版本" /></a>
+  <a href="https://github.com/yilewang/llm-for-zotero/stargazers"><img src="https://img.shields.io/github/stars/yilewang/llm-for-zotero?style=flat-square" alt="GitHub Stars" /></a>
+  <a href="https://yilewang.github.io"><img src="https://img.shields.io/badge/网站-yilewang.github.io-informational?style=flat-square&amp;logo=github" alt="个人网站" /></a>
+</div>
+
+<p style="margin: 4px 0 20px; font-size: 0.9em;">📖 <a href="/llm-for-zotero/"><strong>English Documentation</strong></a></p>
+
+<p><strong>llm-for-zotero</strong> 是一款免费的开源 <a href="https://www.zotero.org/">Zotero</a> 插件，可将大型语言模型直接集成到 PDF 阅读器中。与需要将 PDF 上传到网页端的工具不同，本插件让您无需离开 Zotero 即可与论文对话。它静静地驻留在阅读器侧栏——随时待命的研究助手。</p>
+
+<p><img src="/images/llm-for-zotero/demo.png" alt="llm-for-zotero 侧栏在 Zotero PDF 阅读器中的截图" /></p>
+
+<div class="rtd-feature-grid">
+  <div class="rtd-feature-card">
+    <strong>与论文对话</strong>
+    <p>就任意打开的 PDF 提问，回答基于论文内容并附带可点击的引用跳转。</p>
+  </div>
+  <div class="rtd-feature-card">
+    <strong>多模型支持</strong>
+    <p>OpenAI、Anthropic、Google Gemini、DeepSeek、本地模型——使用任何您偏好的 LLM。</p>
+  </div>
+  <div class="rtd-feature-card">
+    <strong>Agent 模式</strong>
+    <p>让 LLM 自主搜索、标记、整理并注释您整个 Zotero 文库。</p>
+  </div>
+  <div class="rtd-feature-card">
+    <strong>隐私优先</strong>
+    <p>使用您自己的 API 密钥，数据不会发送到任何第三方平台，隐私完全由您的服务商保障。</p>
+  </div>
+</div>
+
+<hr />
+
+<h2 id="安装">安装</h2>
+
+<ol>
+  <li>
+    <p><strong>下载最新的 <code class="language-plaintext highlighter-rouge">.xpi</code> 安装包</strong>
+前往 <a href="https://github.com/yilewang/llm-for-zotero/releases">Releases 页面</a> 下载最新的 <code class="language-plaintext highlighter-rouge">.xpi</code> 文件。</p>
+  </li>
+  <li>
+    <p><strong>在 Zotero 中安装插件</strong>
+打开 Zotero → <code class="language-plaintext highlighter-rouge">工具</code> → <code class="language-plaintext highlighter-rouge">附加组件</code> → 点击齿轮图标 → <strong>从文件安装附加组件</strong> → 选择 <code class="language-plaintext highlighter-rouge">.xpi</code> 文件。</p>
+  </li>
+  <li>
+    <p><strong>重启 Zotero</strong>
+重启 Zotero 完成安装。插件会在每次启动时自动检查更新。</p>
+  </li>
+</ol>
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">提示</div>
+  本插件同时支持 <strong>Zotero 7</strong> 和 <strong>Zotero 8</strong>，请确保您运行的是兼容版本。
+</div>
+
+<hr />
+
+<h2 id="配置">配置</h2>
+
+<p>打开 <strong>首选项</strong> → 切换到 <strong>llm-for-zotero</strong> 标签页。</p>
+
+<ol>
+  <li>选择您的<strong>服务商</strong>（如 OpenAI、Gemini、DeepSeek）。</li>
+  <li>填写 <strong>API 基础 URL</strong>、<strong>API 密钥</strong> 和<strong>模型名称</strong>。</li>
+  <li>点击 <strong>测试连接</strong> 以验证配置。</li>
+</ol>
+
+<p><img src="/images/llm-for-zotero/model_setting.gif" alt="服务商与模型配置动图" /></p>
+
+<h3 id="支持的服务商与协议">支持的服务商与协议</h3>
+
+<p>插件原生支持以下五种服务商协议：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>协议</th>
+      <th>说明</th>
+      <th>主要功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">responses_api</code></td>
+      <td>OpenAI Responses API</td>
+      <td>流式输出、工具调用、文件上传、多模态</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">openai_chat_compat</code></td>
+      <td>OpenAI 兼容聊天 API</td>
+      <td>流式输出、工具调用、多模态</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">anthropic_messages</code></td>
+      <td>Anthropic Messages API</td>
+      <td>流式输出、工具调用、多模态</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">gemini_native</code></td>
+      <td>Google Gemini API</td>
+      <td>流式输出、工具调用、多模态</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">codex_responses</code></td>
+      <td>ChatGPT/Codex 认证</td>
+      <td>ChatGPT Plus 直连，无需单独 API 密钥</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="支持的模型">支持的模型</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>API 地址</th>
+      <th>模型</th>
+      <th>推理等级</th>
+      <th>备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://api.openai.com/v1/responses</code></td>
+      <td>gpt-5.4</td>
+      <td>default, low, medium, high, xhigh</td>
+      <td>支持 PDF 上传</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://api.openai.com/v1/responses</code></td>
+      <td>gpt-5.4-pro</td>
+      <td>medium, high, xhigh</td>
+      <td>支持 PDF 上传</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://api.deepseek.com/v1</code></td>
+      <td>deepseek-chat</td>
+      <td>default</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://api.deepseek.com/v1</code></td>
+      <td>deepseek-reasoner</td>
+      <td>default</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://generativelanguage.googleapis.com</code></td>
+      <td>gemini-3-pro-preview</td>
+      <td>low, high</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://generativelanguage.googleapis.com</code></td>
+      <td>gemini-2.5-flash</td>
+      <td>medium</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://generativelanguage.googleapis.com</code></td>
+      <td>gemini-2.5-pro</td>
+      <td>default, low, high</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">https://api.moonshot.ai/v1</code></td>
+      <td>kimi-k2.5</td>
+      <td>default</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>任何提供 <strong>OpenAI 兼容 HTTP API</strong> 的模型均可使用，包括通过 Ollama、LM Studio 或 vLLM 本地部署的模型。</p>
+
+<h3 id="多服务商配置">多服务商配置</h3>
+
+<p>您可以配置<strong>最多 10 个服务商组</strong>，每组包含多个模型，从而：</p>
+
+<ul>
+  <li>用多模态模型解读图表，用文本模型生成摘要。</li>
+  <li>通过多个模型交叉验证答案，获得更全面的理解。</li>
+  <li>在对话中随时通过模型选择器切换模型。</li>
+</ul>
+
+<h3 id="推理等级与超参数">推理等级与超参数</h3>
+
+<p>对于支持的模型，您可以为每次请求设置<strong>推理等级</strong>：<code class="language-plaintext highlighter-rouge">default</code>、<code class="language-plaintext highlighter-rouge">low</code>、<code class="language-plaintext highlighter-rouge">medium</code>、<code class="language-plaintext highlighter-rouge">high</code> 或 <code class="language-plaintext highlighter-rouge">xhigh</code>，用于控制模型在回答前的思考深度。</p>
+
+<p>其他可调参数：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>说明</th>
+      <th>默认值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Temperature</td>
+      <td>控制输出随机性（0 = 确定性，2 = 创意性）</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>最大输出 Token 数</td>
+      <td>限制模型回复长度</td>
+      <td>2048</td>
+    </tr>
+    <tr>
+      <td>输入 Token 上限</td>
+      <td>限制发送给模型的上下文大小</td>
+      <td>模型默认值</td>
+    </tr>
+    <tr>
+      <td>系统提示词</td>
+      <td>每次请求前置的自定义指令</td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="使用指南">使用指南</h2>
+
+<ol>
+  <li>在 Zotero 阅读器中<strong>打开任意 PDF</strong>。</li>
+  <li><strong>点击右侧工具栏中的 LLM 助手图标</strong>以打开侧栏。</li>
+  <li><strong>输入问题</strong>，例如<em>“这篇论文的主要结论是什么？”</em></li>
+</ol>
+
+<p>首条消息会将整篇论文作为上下文加载，后续问题则通过检索定位相关段落，保持对话快速且精准。</p>
+
+<h3 id="对话模式">对话模式</h3>
+
+<p>插件支持三种对话模式：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>模式</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>论文对话</strong></td>
+      <td>针对当前打开的 PDF 进行对话，上下文来自该论文。</td>
+    </tr>
+    <tr>
+      <td><strong>全局对话</strong></td>
+      <td>覆盖整个文库的对话，不限定于某篇论文。</td>
+    </tr>
+    <tr>
+      <td><strong>笔记对话</strong></td>
+      <td>编辑 Zotero 笔记时进行对话，以笔记内容为上下文。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="界面控件">界面控件</h3>
+
+<ul>
+  <li><strong>模型选择器</strong> — 在对话中随时切换已配置的模型。</li>
+  <li><strong>推理等级选择器</strong> — 为当前请求选择推理深度。</li>
+  <li><strong>字体缩放</strong> — 将侧栏字体大小从 80% 调整至 180%。</li>
+  <li><strong>自动滚动</strong> — 自动滚动至最新消息。</li>
+  <li><strong>Token 用量</strong> — 实时显示输入、输出及推理 Token 消耗。</li>
+</ul>
+
+<hr />
+
+<h2 id="带引用跳转的有据答案">带引用跳转的有据答案</h2>
+
+<p><img src="/images/llm-for-zotero/citation_jump.gif" alt="一键从 AI 引用跳转到论文原文" /></p>
+
+<p>提问时，模型会生成<strong>基于论文内容</strong>的答案，每条结论均附有引用——点击即可跳转到 PDF 中的原始段落，方便核实答案并快速定位相关章节。</p>
+
+<hr />
+
+<h2 id="论文摘要生成">论文摘要生成</h2>
+
+<p><img src="/images/llm-for-zotero/summarize.gif" alt="侧栏中即时生成论文摘要" /></p>
+
+<p>数秒内为任意论文生成简洁摘要。摘要基于完整 PDF 全文生成，您可以自定义提示词，聚焦于研究方法、结果、启示或其他任何方面。</p>
+
+<hr />
+
+<h2 id="选中文本解释">选中文本解释</h2>
+
+<p><img src="/images/llm-for-zotero/text.gif" alt="模型对选中文本进行解释" /></p>
+
+<p>选中 PDF 中任意复杂段落或专业术语，请模型为其解释。您最多可添加 <strong>5 条上下文</strong>（来自论文或之前的回答）以进一步细化解释。</p>
+
+<p>可选弹窗会自动建议将选中文本添加到对话，不喜欢可在设置中关闭。</p>
+
+<hr />
+
+<h2 id="图表解读">图表解读</h2>
+
+<p><img src="/images/llm-for-zotero/screenshot.gif" alt="基于截图的图表解读" /></p>
+
+<p>截取任意图形、图表或示意图，请模型进行解读。每次最多支持 <strong>10 张截图</strong>，适合分析复杂的多面板图表或跨章节对比视觉内容。</p>
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">提示</div>
+  解读图表时，建议使用支持图像输入的多模态模型（如 GPT-4o、Gemini Pro、Claude）以获得最佳效果。
+</div>
+
+<hr />
+
+<h2 id="跨论文对比">跨论文对比</h2>
+
+<p><img src="/images/llm-for-zotero/multi.gif" alt="使用斜杠命令进行跨论文对比" /></p>
+
+<p>在不同标签页中打开多篇论文，并排对比。在输入框中输入 <strong><code class="language-plaintext highlighter-rouge">/</code></strong> 可引用其他已打开的论文作为额外上下文，单次对话最多可引用 <strong>10 篇论文</strong>，实现深度跨文献分析。</p>
+
+<hr />
+
+<h2 id="外部文档上传">外部文档上传</h2>
+
+<p><img src="/images/llm-for-zotero/upload_files.gif" alt="上传外部文件作为额外上下文" /></p>
+
+<p>从本地磁盘上传文档作为额外上下文，支持格式：</p>
+
+<ul>
+  <li><strong>PDF</strong>（每个文件最大 50 MB）</li>
+  <li><strong>DOCX</strong>（Word 文档）</li>
+  <li><strong>PPTX</strong>（PowerPoint 演示文稿）</li>
+  <li><strong>TXT</strong>（纯文本）</li>
+  <li><strong>Markdown</strong>（.md 文件）</li>
+</ul>
+
+<hr />
+
+<h2 id="保存至笔记">保存至笔记</h2>
+
+<p><img src="/images/llm-for-zotero/save_notes.gif" alt="将模型回答保存到 Zotero 笔记" /></p>
+
+<p>一键将任意回答或选中文本直接保存到 <strong>Zotero 笔记</strong>，与您现有的笔记工作流无缝集成，无需手动复制粘贴。</p>
+
+<hr />
+
+<h2 id="对话历史与导出">对话历史与导出</h2>
+
+<p><img src="/images/llm-for-zotero/save_chat.gif" alt="将对话导出到 Zotero 笔记" /></p>
+
+<p>对话会<strong>自动保存</strong>到本地并与对应论文关联。您可以：</p>
+
+<ul>
+  <li>在历史记录面板中浏览过往对话。</li>
+  <li>将<strong>完整对话</strong>以 Markdown 格式导出到 Zotero 笔记。</li>
+  <li>导出内容包含选中文本、截图，以及正确渲染的 LaTeX 数学公式。</li>
+</ul>
+
+<hr />
+
+<h2 id="自定义快捷预设">自定义快捷预设</h2>
+
+<p><img src="/images/llm-for-zotero/shortcuts.gif" alt="自定义快捷预设配置" /></p>
+
+<p>创建<strong>最多 10 个自定义预设</strong>，将常用提示词一键触发。内置预设包括：</p>
+
+<ul>
+  <li><strong>总结</strong> — 生成简洁摘要</li>
+  <li><strong>关键要点</strong> — 提取主要发现</li>
+  <li><strong>研究方法</strong> — 描述研究方法</li>
+  <li><strong>局限性</strong> — 识别不足或局限</li>
+</ul>
+
+<p>您可以修改这些预设或添加自定义内容，以适配您的研究工作流。</p>
+
+<hr />
+
+<h2 id="agent-模式beta">Agent 模式（Beta）</h2>
+
+<div class="rtd-warning">
+  <div class="rtd-admonition-title">注意</div>
+  Agent 模式默认禁用。请在<strong>首选项</strong>中启用，然后在上下文栏中切换 <strong>Agent (beta)</strong>。
+</div>
+
+<p>启用后，LLM 将成为一个<strong>自主 Agent</strong>，可在您的 Zotero 文库中执行读取、搜索和写入操作。采用人机协作设计——所有写入操作均需您明确审批后方可执行。</p>
+
+<h3 id="可用工具">可用工具</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>工具</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">query_library</code></td>
+      <td>搜索和列举 Zotero 条目、文集、相关论文及重复项</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">read_library</code></td>
+      <td>读取元数据、笔记、注释、附件及文集详情</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">inspect_pdf</code></td>
+      <td>读取前置内容、搜索页面、提取证据、检查当前阅读器视图</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">search_literature_online</code></td>
+      <td>搜索在线学术资源（Crossref、Semantic Scholar、arXiv、PubMed 等）或获取外部元数据</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mutate_library</code></td>
+      <td>批量写入操作——元数据编辑、标签管理、文集管理、笔记写入、文献导入</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">undo_last_action</code></td>
+      <td>撤销上一次已审批的写入批次</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>设计理念是<strong>少而通用的工具</strong>，而非一长串特定任务工具。直接问 Agent 它能做什么——它会告诉您。</p>
+
+<h3 id="内置动作">内置动作</h3>
+
+<p>Agent 内置以下预设工作流：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>功能说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>审计文库</strong></td>
+      <td>检查文库的质量与完整性问题</td>
+    </tr>
+    <tr>
+      <td><strong>同步元数据</strong></td>
+      <td>从在线来源同步并更新论文元数据</td>
+    </tr>
+    <tr>
+      <td><strong>整理未归类文献</strong></td>
+      <td>将未归类文献分配到合适的文集</td>
+    </tr>
+    <tr>
+      <td><strong>自动标签</strong></td>
+      <td>自动生成并应用相关标签</td>
+    </tr>
+    <tr>
+      <td><strong>发现相关文献</strong></td>
+      <td>在文库或在线来源中查找相关论文</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="agent-演示">Agent 演示</h3>
+
+<h4 id="多步骤工作流">多步骤工作流</h4>
+
+<p>Agent 可以串联多个工具完成复杂任务——例如查找论文、读取元数据、搜索相关文献并撰写摘要笔记。</p>
+
+<p><img src="/images/llm-for-zotero/agent/multi_steps.gif" alt="多步骤 Agent 工作流" style="max-width:512px;" /></p>
+
+<h4 id="直接读取图表">直接读取图表</h4>
+
+<p><img src="/images/llm-for-zotero/agent/single_figure.gif" alt="Agent 从 PDF 读取图表" /></p>
+
+<h4 id="读取多页内容">读取多页内容</h4>
+
+<p><img src="/images/llm-for-zotero/agent/full_docs.gif" alt="Agent 读取多页内容" /></p>
+
+<h4 id="查找相关论文">查找相关论文</h4>
+
+<p><img src="/images/llm-for-zotero/agent/related_papers.gif" alt="Agent 查找相关论文" /></p>
+
+<h4 id="自动应用标签">自动应用标签</h4>
+
+<p><img src="/images/llm-for-zotero/agent/apply_tags.gif" alt="Agent 为论文应用标签" /></p>
+
+<h4 id="撰写笔记">撰写笔记</h4>
+
+<p><img src="/images/llm-for-zotero/agent/write_note.gif" alt="Agent 撰写笔记" /></p>
+
+<h3 id="安全与审批">安全与审批</h3>
+
+<p>所有写入操作均通过<strong>人机协作确认</strong>流程：</p>
+
+<ul>
+  <li>Agent 提出一批变更建议（如添加标签、编辑元数据）。</li>
+  <li>您在审批表单中查看拟定变更。</li>
+  <li>您可以在任何变更生效前选择<strong>批准</strong>、<strong>拒绝</strong>或<strong>修改</strong>。</li>
+  <li>如有问题，使用 <code class="language-plaintext highlighter-rouge">undo_last_action</code> 进行撤销。</li>
+</ul>
+
+<hr />
+
+<h2 id="codex-认证配置">Codex 认证配置</h2>
+
+<p>如果您拥有 <strong>ChatGPT Plus</strong> 订阅，可以使用 <strong>Codex 认证</strong>免 API 密钥访问 <code class="language-plaintext highlighter-rouge">gpt-5.4</code> 等模型。插件通过 Codex CLI 复用您的 ChatGPT 登录凭据。</p>
+
+<h3 id="配置步骤">配置步骤</h3>
+
+<p><strong>1. 安装 Codex CLI</strong>（一次性操作）：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># macOS / Linux（需要 Node.js 18+）</span>
+npm <span class="nb">install</span> <span class="nt">-g</span> @openai/codex
+
+<span class="c"># macOS 替代方案（无需 Node.js）</span>
+brew <span class="nb">install</span> <span class="nt">--cask</span> codex
+</code></pre></div></div>
+
+<p><strong>2. 登录 ChatGPT 账号：</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>codex login
+</code></pre></div></div>
+
+<p>浏览器窗口将自动打开——使用您的 ChatGPT Plus 账号登录。凭据保存至 <code class="language-plaintext highlighter-rouge">~/.codex/auth.json</code>。</p>
+
+<p><strong>3. 配置插件：</strong></p>
+
+<p>在 Zotero → <strong>首选项</strong> → <strong>llm-for-zotero</strong> 中：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>设置项</th>
+      <th>值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>认证模式</td>
+      <td><code class="language-plaintext highlighter-rouge">codex auth</code></td>
+    </tr>
+    <tr>
+      <td>API 地址</td>
+      <td><code class="language-plaintext highlighter-rouge">https://chatgpt.com/backend-api/codex/responses</code></td>
+    </tr>
+    <tr>
+      <td>模型</td>
+      <td>例如 <code class="language-plaintext highlighter-rouge">gpt-5.4</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>点击<strong>测试连接</strong>以验证。</p>
+
+<p><img src="/images/llm-for-zotero/codex.png" alt="Codex 认证配置截图" /></p>
+
+<h3 id="技术说明">技术说明</h3>
+
+<ul>
+  <li>从 <code class="language-plaintext highlighter-rouge">~/.codex/auth.json</code>（或 <code class="language-plaintext highlighter-rouge">$CODEX_HOME/auth.json</code>）读取本地凭据。</li>
+  <li>遇到 401 响应时自动尝试刷新 Token。</li>
+  <li>支持本地 PDF 内容定位和截图/图像输入。</li>
+  <li>Codex 认证模式暂不支持嵌入向量和 <code class="language-plaintext highlighter-rouge">/files</code> 上传流程。</li>
+</ul>
+
+<hr />
+
+<h2 id="常见问题">常见问题</h2>
+
+<p><strong>是否免费使用？</strong></p>
+
+<p>是的，插件完全免费且开源（AGPL v3）。您只需为调用所选服务商的 API 付费。使用 Codex 认证时，ChatGPT Plus 订阅用户无需单独 API 密钥。</p>
+
+<p><strong>是否支持本地模型？</strong></p>
+
+<p>支持——任何提供 OpenAI 兼容 HTTP API 的模型均可使用，包括通过 <a href="https://ollama.ai/">Ollama</a>、<a href="https://lmstudio.ai/">LM Studio</a>、<a href="https://docs.vllm.ai/">vLLM</a> 等工具本地部署的模型。在设置中填写本地 API 地址和模型名称即可。</p>
+
+<p><strong>我的数据是否会用于训练模型？</strong></p>
+
+<p>不会。您使用自己的 API 密钥，数据隐私由您所选服务商的条款约束。大多数 API 服务商（如 OpenAI、Anthropic）不会将 API 数据用于模型训练。</p>
+
+<p><strong>能否同时使用多个模型？</strong></p>
+
+<p>可以。配置最多 10 个服务商组，每组包含多个模型，通过模型选择器在对话中随时切换。</p>
+
+<p><strong>上下文检索是如何工作的？</strong></p>
+
+<p>首条消息会加载论文全文作为上下文，后续问题使用<strong>混合检索</strong>（BM25 + 嵌入向量搜索）并结合多样性优化，定位最相关段落，保持响应快速准确。</p>
+
+<p><strong>如何报告 Bug 或提交功能请求？</strong></p>
+
+<p>请在 GitHub 上 <a href="https://github.com/yilewang/llm-for-zotero/issues">提交 Issue</a>。</p>
+
+<hr />
+
+<h2 id="贡献与支持">贡献与支持</h2>
+
+<p>欢迎贡献！无论是 Bug 反馈、功能请求还是 Pull Request——欢迎在 <a href="https://github.com/yilewang/llm-for-zotero">GitHub</a> 上提交 Issue 或 PR。</p>
+
+<p>如果本插件对您有帮助，欢迎：</p>
+<ul>
+  <li>在 <a href="https://github.com/yilewang/llm-for-zotero">GitHub</a> 上给个 Star ⭐</li>
+  <li><a href="https://buymeacoffee.com/yat.lok">请我喝杯咖啡</a></li>
+  <li>通过支付宝扫码捐赠：</li>
+</ul>
+
+<p><img src="/images/llm-for-zotero/alipay.png" alt="支付宝捐赠二维码" style="max-width:200px;" /></p>
+
+      </div>
+
+      <div class="rst-footer">
+        
+        &copy; 2026 <a href="https://github.com/yilewang">Yile Wang</a>。基于 Jekyll 构建。使用 <a href="https://www.gnu.org/licenses/agpl-3.0">AGPL v3</a> 协议开源。
+        
+      </div>
+    </div>
+
+    <!-- Scroll-spy for active sidebar link -->
+    <script>
+    (function() {
+      var links = document.querySelectorAll('.wy-menu a[href^="#"]');
+      var sections = [];
+      links.forEach(function(link) {
+        var id = link.getAttribute('href').slice(1);
+        var el = document.getElementById(id);
+        if (el) sections.push({ el: el, link: link });
+      });
+
+      function update() {
+        var y = window.scrollY + 100;
+        var hit = null;
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].el.offsetTop <= y) hit = sections[i];
+        }
+        links.forEach(function(l) { l.classList.remove('current'); });
+        if (hit) hit.link.classList.add('current');
+      }
+
+      window.addEventListener('scroll', update);
+      update();
+
+      /* simple client-side search filter */
+      var input = document.getElementById('rtd-search-input');
+      if (input) {
+        input.addEventListener('input', function() {
+          var q = this.value.toLowerCase();
+          document.querySelectorAll('.wy-menu li').forEach(function(li) {
+            var a = li.querySelector(':scope > a');
+            if (!a) return;
+            li.style.display = (!q || a.textContent.toLowerCase().indexOf(q) !== -1) ? '' : 'none';
+          });
+        });
+      }
+
+      /* mobile: close sidebar when clicking a nav link */
+      links.forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open');
+            document.querySelector('.wy-nav-overlay').classList.remove('active');
+          }
+        });
+      });
+    })();
+    </script>
+  </body>
+</html>
