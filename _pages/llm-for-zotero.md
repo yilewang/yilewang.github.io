@@ -3,6 +3,8 @@ layout: docs
 title: "LLM for Zotero — Documentation"
 permalink: /llm-for-zotero/
 author_profile: false
+lang: en
+lang_alt: /llm-for-zotero/zh/
 ---
 
 <h1 id="overview">LLM for Zotero</h1>
@@ -13,7 +15,10 @@ author_profile: false
   <a href="https://www.gnu.org/licenses/agpl-3.0"><img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg?style=flat-square" alt="AGPL v3"></a>
   <a href="https://github.com/yilewang/llm-for-zotero/releases"><img src="https://img.shields.io/github/v/release/yilewang/llm-for-zotero?style=flat-square" alt="Latest release"></a>
   <a href="https://github.com/yilewang/llm-for-zotero/stargazers"><img src="https://img.shields.io/github/stars/yilewang/llm-for-zotero?style=flat-square" alt="GitHub Stars"></a>
+  <a href="https://yilewang.github.io"><img src="https://img.shields.io/badge/website-yilewang.github.io-informational?style=flat-square&logo=github" alt="Personal website"></a>
 </div>
+
+<p style="margin: 4px 0 20px; font-size: 0.9em;">📖 <a href="/llm-for-zotero/zh/"><strong>中文版使用手册</strong></a></p>
 
 **llm-for-zotero** is a free, open-source plugin for [Zotero](https://www.zotero.org/) that brings Large Language Models directly into the PDF reader. Unlike tools that require uploading PDFs to a web portal, this plugin lets you chat with your papers *without leaving Zotero*. It sits quietly in the reader sidebar — your standby research assistant, ready whenever you need it.
 
@@ -397,3 +402,5 @@ Contributions are welcome! Whether it's bug reports, feature requests, or pull r
 If you find this plugin helpful, consider:
 - Leaving a star on [GitHub](https://github.com/yilewang/llm-for-zotero)
 - [Buying me a coffee](https://buymeacoffee.com/yat.lok)
+- Donating via Alipay QR code below:
+<img src="/images/llm-for-zotero/alipay.png" alt="Alipay donation QR code" style="max-width:200px;">
