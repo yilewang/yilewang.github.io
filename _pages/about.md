@@ -3,7 +3,7 @@ permalink: /
 title: "About Me"
 excerpt: "Yile Wang"
 author_profile: true
-redirect_from: 
+redirect_from:
   - /about/
   - /about.html
 ---
