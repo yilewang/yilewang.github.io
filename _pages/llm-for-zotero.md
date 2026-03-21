@@ -35,7 +35,7 @@ lang_alt: /llm-for-zotero/zh/
   </div>
   <div class="rtd-feature-card">
     <strong>Agent Mode (Beta)</strong>
-    <p>Let the assistant read, search, and write inside your Zotero library with approval before changes are applied.</p>
+    <p>An autonomous agent that manages your library, runs terminal commands, and accesses local files — with approval before changes are applied.</p>
   </div>
   <div class="rtd-feature-card">
     <strong>MinerU PDF Parsing</strong>
@@ -48,6 +48,8 @@ lang_alt: /llm-for-zotero/zh/
 ## Recent Updates
 
 - **Agent Mode (Beta)**: LLM-for-Zotero can now act as an autonomous agent inside your Zotero library.
+- **Terminal & File Access**: The agent can execute shell commands and read/write files on your local machine — like a coding agent inside Zotero.
+- **MCP Server**: External AI agents can connect to Zotero via the built-in Model Context Protocol server.
 - **Codex auth**: ChatGPT Plus subscribers can use Codex models such as `gpt-5.4` without a separate API key.
 - **MinerU PDF parsing**: High-fidelity extraction now preserves tables, equations, and figures more accurately.
 - **Renamed**: the plugin is now published as `llm-for-zotero`.
@@ -228,32 +230,80 @@ Customize quick-action presets to match your research workflow. Built-in presets
   Agent Mode is disabled by default. Enable it in <strong>Preferences</strong>, then toggle <strong>Agent (beta)</strong> in the context bar.
 </div>
 
-When enabled, the LLM becomes an **autonomous agent** that can read, search, and write within your Zotero library. It operates with a human-in-the-loop design — all write operations require your explicit approval before execution.
+When enabled, the LLM becomes an **autonomous agent** that can read, search, and write within your Zotero library — and beyond. In addition to library operations, the agent can execute terminal commands and access files on your local machine, functioning like a coding agent inside Zotero. All write operations require your explicit approval before execution.
 
-### Available Tools
+### Read Tools
+
+These tools let the agent explore your library and the scholarly web without modifying anything.
 
 | Tool | Description |
 |---|---|
-| `query_library` | Search and list Zotero items, collections, related papers, and duplicates |
-| `read_library` | Read metadata, notes, annotations, attachments, and collection details |
-| `inspect_pdf` | Read front matter, search pages, retrieve evidence, inspect the active reader view |
-| `search_literature_online` | Search live scholarly sources or fetch external metadata |
-| `mutate_library` | Batch write operations such as metadata edits, tagging, collection changes, note writes, and imports |
+| `query_library` | Search and list Zotero items, collections, related papers, and duplicates. Supports multiple query modes (list, search, duplicates, unfiled, untagged) with filtering by collection, PDF status, and tags |
+| `read_library` | Read structured item state: metadata, notes, annotations, attachments (all types), and collection membership |
+| `inspect_pdf` | Advanced PDF operations: read front matter, search pages, retrieve evidence, render pages, capture the active reader view, and read specific chunks or full documents |
+| `search_literature_online` | Search live scholarly sources (OpenAlex, arXiv, EuropePMC) or fetch external metadata (CrossRef, Semantic Scholar). Modes: recommendations, references, citations, search, metadata |
+
+### Write Tools
+
+All write tools require human confirmation before changes take effect.
+
+| Tool | Description |
+|---|---|
+| `apply_tags` | Add or remove tags on one or more papers, with batch support |
+| `update_metadata` | Update metadata fields (title, authors, DOI, journal, abstract, etc.) on items |
+| `move_to_collection` | Move items between Zotero collections |
+| `manage_collections` | Create or delete collections (folders) with optional nesting |
+| `edit_current_note` | Create or edit Zotero notes, with local image import support |
+| `import_identifiers` | Import papers by DOI, arXiv ID, or other identifiers — Zotero auto-retrieves metadata |
+| `import_local_files` | Import local files (PDFs, documents) from the filesystem into Zotero |
+| `manage_attachments` | Add or remove attachments (PDFs, supplementary files) on items |
+| `merge_items` | Merge duplicate items: keeps master, moves all children from duplicates, then trashes duplicates |
+| `trash_items` | Move items to trash |
 | `undo_last_action` | Revert the last approved write batch |
 
-The design philosophy is **fewer, more general tools** rather than a long list of task-specific ones. Ask the agent what it can do — it will tell you.
+### Terminal & File System Access
+
+The agent includes two system-level tools that turn it into a **coding agent** capable of running scripts and processing data — all from within Zotero.
+
+| Tool | Description |
+|---|---|
+| `run_command` | Execute shell commands on your local machine (zsh on macOS, bash on Linux, cmd.exe on Windows). Pipes, redirects, globbing, and all shell features work. 300-second timeout per command |
+| `file_io` | Read and write files on your local filesystem. Supports UTF-8 and other encodings |
+
+**Example use cases:**
+
+- Run a Python or R script to analyze data extracted from your library.
+- Export metadata as CSV/JSON for external processing.
+- Invoke CLI tools (e.g. `pandoc`, `ffmpeg`, `pdftotext`) as part of an agent workflow.
+- Write and execute scripts dynamically to transform or visualize your research data.
+- Read local data files and incorporate results back into Zotero notes.
+
+<div class="rtd-warning">
+  <div class="rtd-admonition-title">Important</div>
+  Terminal and file access tools require confirmation before execution. The agent will show you the command or file operation it wants to perform, and you must approve it before it runs.
+</div>
 
 ### Built-in Actions
 
-The latest release emphasizes general tools over a fixed action menu. Common agent workflows include:
+The agent provides high-level actions for common library workflows. These chain multiple tools together automatically.
 
 | Action | What it does |
 |---|---|
-| **Inspect papers** | Read metadata, notes, annotations, and grounded PDF evidence |
-| **Find related work** | Search your library or online scholarly sources for related papers |
-| **Apply tags** | Draft tag changes for your approval before batch application |
-| **Write notes** | Prepare notes or summaries tied to the active paper |
-| **Undo changes** | Revert the most recent approved write batch |
+| **Audit Library** | Scan your library (or a collection) for items with incomplete metadata — missing abstract, DOI, tags, or PDF attachment. Optionally saves the report as a Zotero note |
+| **Auto-Tag** | Find all papers without tags and open a batch tag-assignment dialog for your review |
+| **Discover Related** | Find related papers to a seed paper through recommendations, references, or citations from scholarly sources |
+| **Sync Metadata** | Fetch external metadata (CrossRef, Semantic Scholar) and apply updates across items |
+| **Organize Unfiled** | Find unfiled items and organize them into collections via an interactive review workflow |
+
+### MCP Server
+
+The plugin runs a built-in **Model Context Protocol (MCP)** server, allowing external AI agents and tools to interact with your Zotero library programmatically.
+
+- **Endpoint**: `http://localhost:23119/llm-for-zotero/mcp`
+- **Protocol**: JSON-RPC 2.0 (MCP v2024-11-05)
+- **Methods**: `initialize`, `tools/list`, `tools/call`
+
+This means you can connect any MCP-compatible AI agent (e.g. Claude Desktop, Cursor, custom agents) to your Zotero library and use all the tools listed above.
 
 ### Agent Demos
 
@@ -291,6 +341,7 @@ All write operations go through a **human-in-the-loop confirmation** workflow:
 - You review the proposed changes in a rich approval form.
 - You can **approve**, **reject**, or **modify** before any changes are applied.
 - If something goes wrong, use `undo_last_action` to revert.
+- Terminal commands and file operations also require explicit approval before execution.
 
 ---
 
