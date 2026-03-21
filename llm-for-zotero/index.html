@@ -679,7 +679,7 @@
   </div>
   <div class="rtd-feature-card">
     <strong>Agent Mode (Beta)</strong>
-    <p>Let the assistant read, search, and write inside your Zotero library with approval before changes are applied.</p>
+    <p>An autonomous agent that manages your library, runs terminal commands, and accesses local files — with approval before changes are applied.</p>
   </div>
   <div class="rtd-feature-card">
     <strong>MinerU PDF Parsing</strong>
@@ -693,6 +693,8 @@
 
 <ul>
   <li><strong>Agent Mode (Beta)</strong>: LLM-for-Zotero can now act as an autonomous agent inside your Zotero library.</li>
+  <li><strong>Terminal &amp; File Access</strong>: The agent can execute shell commands and read/write files on your local machine — like a coding agent inside Zotero.</li>
+  <li><strong>MCP Server</strong>: External AI agents can connect to Zotero via the built-in Model Context Protocol server.</li>
   <li><strong>Codex auth</strong>: ChatGPT Plus subscribers can use Codex models such as <code class="language-plaintext highlighter-rouge">gpt-5.4</code> without a separate API key.</li>
   <li><strong>MinerU PDF parsing</strong>: High-fidelity extraction now preserves tables, equations, and figures more accurately.</li>
   <li><strong>Renamed</strong>: the plugin is now published as <code class="language-plaintext highlighter-rouge">llm-for-zotero</code>.</li>
@@ -957,9 +959,11 @@ Restart Zotero to complete the installation. The plugin automatically checks for
   Agent Mode is disabled by default. Enable it in <strong>Preferences</strong>, then toggle <strong>Agent (beta)</strong> in the context bar.
 </div>
 
-<p>When enabled, the LLM becomes an <strong>autonomous agent</strong> that can read, search, and write within your Zotero library. It operates with a human-in-the-loop design — all write operations require your explicit approval before execution.</p>
+<p>When enabled, the LLM becomes an <strong>autonomous agent</strong> that can read, search, and write within your Zotero library — and beyond. In addition to library operations, the agent can execute terminal commands and access files on your local machine, functioning like a coding agent inside Zotero. All write operations require your explicit approval before execution.</p>
 
-<h3 id="available-tools">Available Tools</h3>
+<h3 id="read-tools">Read Tools</h3>
+
+<p>These tools let the agent explore your library and the scholarly web without modifying anything.</p>
 
 <table>
   <thead>
@@ -971,23 +975,74 @@ Restart Zotero to complete the installation. The plugin automatically checks for
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">query_library</code></td>
-      <td>Search and list Zotero items, collections, related papers, and duplicates</td>
+      <td>Search and list Zotero items, collections, related papers, and duplicates. Supports multiple query modes (list, search, duplicates, unfiled, untagged) with filtering by collection, PDF status, and tags</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">read_library</code></td>
-      <td>Read metadata, notes, annotations, attachments, and collection details</td>
+      <td>Read structured item state: metadata, notes, annotations, attachments (all types), and collection membership</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">inspect_pdf</code></td>
-      <td>Read front matter, search pages, retrieve evidence, inspect the active reader view</td>
+      <td>Advanced PDF operations: read front matter, search pages, retrieve evidence, render pages, capture the active reader view, and read specific chunks or full documents</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">search_literature_online</code></td>
-      <td>Search live scholarly sources or fetch external metadata</td>
+      <td>Search live scholarly sources (OpenAlex, arXiv, EuropePMC) or fetch external metadata (CrossRef, Semantic Scholar). Modes: recommendations, references, citations, search, metadata</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="write-tools">Write Tools</h3>
+
+<p>All write tools require human confirmation before changes take effect.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tool</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">apply_tags</code></td>
+      <td>Add or remove tags on one or more papers, with batch support</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">mutate_library</code></td>
-      <td>Batch write operations such as metadata edits, tagging, collection changes, note writes, and imports</td>
+      <td><code class="language-plaintext highlighter-rouge">update_metadata</code></td>
+      <td>Update metadata fields (title, authors, DOI, journal, abstract, etc.) on items</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">move_to_collection</code></td>
+      <td>Move items between Zotero collections</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">manage_collections</code></td>
+      <td>Create or delete collections (folders) with optional nesting</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">edit_current_note</code></td>
+      <td>Create or edit Zotero notes, with local image import support</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">import_identifiers</code></td>
+      <td>Import papers by DOI, arXiv ID, or other identifiers — Zotero auto-retrieves metadata</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">import_local_files</code></td>
+      <td>Import local files (PDFs, documents) from the filesystem into Zotero</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">manage_attachments</code></td>
+      <td>Add or remove attachments (PDFs, supplementary files) on items</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">merge_items</code></td>
+      <td>Merge duplicate items: keeps master, moves all children from duplicates, then trashes duplicates</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">trash_items</code></td>
+      <td>Move items to trash</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">undo_last_action</code></td>
@@ -996,11 +1051,47 @@ Restart Zotero to complete the installation. The plugin automatically checks for
   </tbody>
 </table>
 
-<p>The design philosophy is <strong>fewer, more general tools</strong> rather than a long list of task-specific ones. Ask the agent what it can do — it will tell you.</p>
+<h3 id="terminal--file-system-access">Terminal &amp; File System Access</h3>
+
+<p>The agent includes two system-level tools that turn it into a <strong>coding agent</strong> capable of running scripts and processing data — all from within Zotero.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tool</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">run_command</code></td>
+      <td>Execute shell commands on your local machine (zsh on macOS, bash on Linux, cmd.exe on Windows). Pipes, redirects, globbing, and all shell features work. 300-second timeout per command</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">file_io</code></td>
+      <td>Read and write files on your local filesystem. Supports UTF-8 and other encodings</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Example use cases:</strong></p>
+
+<ul>
+  <li>Run a Python or R script to analyze data extracted from your library.</li>
+  <li>Export metadata as CSV/JSON for external processing.</li>
+  <li>Invoke CLI tools (e.g. <code class="language-plaintext highlighter-rouge">pandoc</code>, <code class="language-plaintext highlighter-rouge">ffmpeg</code>, <code class="language-plaintext highlighter-rouge">pdftotext</code>) as part of an agent workflow.</li>
+  <li>Write and execute scripts dynamically to transform or visualize your research data.</li>
+  <li>Read local data files and incorporate results back into Zotero notes.</li>
+</ul>
+
+<div class="rtd-warning">
+  <div class="rtd-admonition-title">Important</div>
+  Terminal and file access tools require confirmation before execution. The agent will show you the command or file operation it wants to perform, and you must approve it before it runs.
+</div>
 
 <h3 id="built-in-actions">Built-in Actions</h3>
 
-<p>The latest release emphasizes general tools over a fixed action menu. Common agent workflows include:</p>
+<p>The agent provides high-level actions for common library workflows. These chain multiple tools together automatically.</p>
 
 <table>
   <thead>
@@ -1011,27 +1102,39 @@ Restart Zotero to complete the installation. The plugin automatically checks for
   </thead>
   <tbody>
     <tr>
-      <td><strong>Inspect papers</strong></td>
-      <td>Read metadata, notes, annotations, and grounded PDF evidence</td>
+      <td><strong>Audit Library</strong></td>
+      <td>Scan your library (or a collection) for items with incomplete metadata — missing abstract, DOI, tags, or PDF attachment. Optionally saves the report as a Zotero note</td>
     </tr>
     <tr>
-      <td><strong>Find related work</strong></td>
-      <td>Search your library or online scholarly sources for related papers</td>
+      <td><strong>Auto-Tag</strong></td>
+      <td>Find all papers without tags and open a batch tag-assignment dialog for your review</td>
     </tr>
     <tr>
-      <td><strong>Apply tags</strong></td>
-      <td>Draft tag changes for your approval before batch application</td>
+      <td><strong>Discover Related</strong></td>
+      <td>Find related papers to a seed paper through recommendations, references, or citations from scholarly sources</td>
     </tr>
     <tr>
-      <td><strong>Write notes</strong></td>
-      <td>Prepare notes or summaries tied to the active paper</td>
+      <td><strong>Sync Metadata</strong></td>
+      <td>Fetch external metadata (CrossRef, Semantic Scholar) and apply updates across items</td>
     </tr>
     <tr>
-      <td><strong>Undo changes</strong></td>
-      <td>Revert the most recent approved write batch</td>
+      <td><strong>Organize Unfiled</strong></td>
+      <td>Find unfiled items and organize them into collections via an interactive review workflow</td>
     </tr>
   </tbody>
 </table>
+
+<h3 id="mcp-server">MCP Server</h3>
+
+<p>The plugin runs a built-in <strong>Model Context Protocol (MCP)</strong> server, allowing external AI agents and tools to interact with your Zotero library programmatically.</p>
+
+<ul>
+  <li><strong>Endpoint</strong>: <code class="language-plaintext highlighter-rouge">http://localhost:23119/llm-for-zotero/mcp</code></li>
+  <li><strong>Protocol</strong>: JSON-RPC 2.0 (MCP v2024-11-05)</li>
+  <li><strong>Methods</strong>: <code class="language-plaintext highlighter-rouge">initialize</code>, <code class="language-plaintext highlighter-rouge">tools/list</code>, <code class="language-plaintext highlighter-rouge">tools/call</code></li>
+</ul>
+
+<p>This means you can connect any MCP-compatible AI agent (e.g. Claude Desktop, Cursor, custom agents) to your Zotero library and use all the tools listed above.</p>
 
 <h3 id="agent-demos">Agent Demos</h3>
 
@@ -1070,6 +1173,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
   <li>You review the proposed changes in a rich approval form.</li>
   <li>You can <strong>approve</strong>, <strong>reject</strong>, or <strong>modify</strong> before any changes are applied.</li>
   <li>If something goes wrong, use <code class="language-plaintext highlighter-rouge">undo_last_action</code> to revert.</li>
+  <li>Terminal commands and file operations also require explicit approval before execution.</li>
 </ul>
 
 <hr />
