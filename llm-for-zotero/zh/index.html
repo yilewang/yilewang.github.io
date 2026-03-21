@@ -627,6 +627,7 @@
             </ul>
           </li>
           <li><a href="#codex-认证配置">Codex 认证配置</a></li>
+          <li><a href="#mineru-pdf-解析">MinerU PDF 解析</a></li>
         </ul>
 
         <span class="caption">帮助</span>
@@ -681,10 +682,21 @@
     <p>让 LLM 自主搜索、标记、整理并注释您整个 Zotero 文库。</p>
   </div>
   <div class="rtd-feature-card">
-    <strong>隐私优先</strong>
-    <p>使用您自己的 API 密钥，数据不会发送到任何第三方平台，隐私完全由您的服务商保障。</p>
+    <strong>MinerU PDF 解析</strong>
+    <p>使用高保真 PDF 解析，完整保留表格、公式、图表和复杂版式。</p>
   </div>
 </div>
+
+<hr />
+
+<h2 id="最新更新">最新更新</h2>
+
+<ul>
+  <li><strong>Agent 模式（Beta）</strong>：LLM-for-Zotero 现在可以作为自主 Agent 在您的 Zotero 文库中工作。</li>
+  <li><strong>Codex 认证</strong>：ChatGPT Plus 订阅用户可以使用 <code class="language-plaintext highlighter-rouge">gpt-5.4</code> 等 Codex 模型，无需单独的 API 密钥。</li>
+  <li><strong>MinerU PDF 解析</strong>：高保真提取现可更准确地保留表格、公式和图表。</li>
+  <li><strong>更名</strong>：插件现已更名为 <code class="language-plaintext highlighter-rouge">llm-for-zotero</code>。</li>
+</ul>
 
 <hr />
 
@@ -1081,7 +1093,7 @@
 
 <h3 id="内置动作">内置动作</h3>
 
-<p>Agent 内置以下预设工作流：</p>
+<p>最新版本强调通用工具而非固定的动作菜单。常见 Agent 工作流包括：</p>
 
 <table>
   <thead>
@@ -1092,24 +1104,24 @@
   </thead>
   <tbody>
     <tr>
-      <td><strong>审计文库</strong></td>
-      <td>检查文库的质量与完整性问题</td>
+      <td><strong>检查论文</strong></td>
+      <td>读取元数据、笔记、注释和基于 PDF 的证据</td>
     </tr>
     <tr>
-      <td><strong>同步元数据</strong></td>
-      <td>从在线来源同步并更新论文元数据</td>
+      <td><strong>查找相关文献</strong></td>
+      <td>在文库或在线学术资源中搜索相关论文</td>
     </tr>
     <tr>
-      <td><strong>整理未归类文献</strong></td>
-      <td>将未归类文献分配到合适的文集</td>
+      <td><strong>应用标签</strong></td>
+      <td>起草标签变更，经您批准后批量应用</td>
     </tr>
     <tr>
-      <td><strong>自动标签</strong></td>
-      <td>自动生成并应用相关标签</td>
+      <td><strong>撰写笔记</strong></td>
+      <td>准备与当前论文关联的笔记或摘要</td>
     </tr>
     <tr>
-      <td><strong>发现相关文献</strong></td>
-      <td>在文库或在线来源中查找相关论文</td>
+      <td><strong>撤销变更</strong></td>
+      <td>撤销最近一次已审批的写入批次</td>
     </tr>
   </tbody>
 </table>
@@ -1140,7 +1152,7 @@
 
 <h4 id="撰写笔记">撰写笔记</h4>
 
-<p><img src="/images/llm-for-zotero/agent/write_note.gif" alt="Agent 撰写笔记" /></p>
+<p><img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/agent/write_note.png" alt="Agent 撰写笔记" /></p>
 
 <h3 id="安全与审批">安全与审批</h3>
 
@@ -1219,6 +1231,38 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
 
 <hr />
 
+<h2 id="mineru-pdf-解析">MinerU PDF 解析</h2>
+
+<p><strong>MinerU</strong> 是一款先进的 PDF 解析引擎，可从 PDF 中提取高保真 Markdown，同时保留表格、公式、图表和复杂版式——这些内容在标准文本提取中往往会被破坏。</p>
+
+<p><img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/minerU.png" alt="MinerU PDF 解析结果截图" /></p>
+
+<p>启用后，插件会将 PDF 发送到 MinerU API 进行解析并在本地缓存结果。此后与该论文的所有交互都将使用 MinerU 解析的内容，为模型提供更丰富、更准确的上下文。</p>
+
+<h3 id="启用方法">启用方法</h3>
+
+<ol>
+  <li>打开 Zotero → <strong>首选项</strong> → <strong>llm-for-zotero</strong>。</li>
+  <li>找到 <strong>MinerU</strong> 部分，勾选<strong>启用 MinerU</strong>。</li>
+  <li>可选填入您自己的 MinerU API 密钥。</li>
+  <li>打开任意 PDF 开始对话，插件会在首次使用时解析 PDF 并缓存结果。</li>
+</ol>
+
+<h3 id="使用自有-api-密钥">使用自有 API 密钥</h3>
+
+<p>插件提供共享社区代理，开箱即用无需 API 密钥，但共享配额有限。如需更大用量：</p>
+
+<ol>
+  <li>前往 <a href="https://mineru.net">mineru.net</a> 注册账号。</li>
+  <li>在账号设置中生成 API 密钥。</li>
+  <li>将密钥粘贴到 Zotero → <strong>首选项</strong> → <strong>llm-for-zotero</strong> → <strong>MinerU</strong>。</li>
+  <li>点击<strong>测试连接</strong>以验证。</li>
+</ol>
+
+<p>提供个人 API 密钥后，插件将直接调用 <code class="language-plaintext highlighter-rouge">https://mineru.net/api/v4</code>。未提供密钥时，使用社区代理。</p>
+
+<hr />
+
 <h2 id="常见问题">常见问题</h2>
 
 <p><strong>是否免费使用？</strong></p>
@@ -1259,6 +1303,12 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
 </ul>
 
 <p><img src="/images/llm-for-zotero/alipay.png" alt="支付宝捐赠二维码" style="max-width:200px;" /></p>
+
+<hr />
+
+<h2 id="star-趋势">Star 趋势</h2>
+
+<p><a href="https://www.star-history.com/?repos=yilewang%2Fllm-for-zotero&amp;type=date&amp;legend=top-left"><img src="https://api.star-history.com/image?repos=yilewang/llm-for-zotero&amp;type=date&amp;legend=top-left" alt="Star History Chart" /></a></p>
 
       </div>
 

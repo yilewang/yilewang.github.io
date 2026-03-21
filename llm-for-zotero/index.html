@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>LLM for Zotero — Documentation</title>
+    <title>LLM-for-Zotero — Documentation</title>
     <style>
       /* ───────────────────────────────────────────────
          Sphinx Read-the-Docs theme — faithful replica
@@ -627,6 +627,7 @@
             </ul>
           </li>
           <li><a href="#codex-auth-setup">Codex Auth Setup</a></li>
+          <li><a href="#mineru-pdf-parsing">MinerU PDF Parsing</a></li>
         </ul>
 
         <span class="caption">Help</span>
@@ -650,7 +651,7 @@
           <li class="wy-breadcrumbs-aside"><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">Edit on GitHub</a></li>
         </ul>
 
-        <h1 id="overview">LLM for Zotero</h1>
+        <h1 id="overview">LLM-for-Zotero</h1>
 
 <div class="rtd-badges">
   <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-7-green?style=flat-square&amp;logo=zotero&amp;logoColor=CC2936" alt="Zotero 7" /></a>
@@ -663,28 +664,39 @@
 
 <p style="margin: 4px 0 20px; font-size: 0.9em;">📖 <a href="/llm-for-zotero/zh/"><strong>中文版使用手册</strong></a></p>
 
-<p><strong>llm-for-zotero</strong> is a free, open-source plugin for <a href="https://www.zotero.org/">Zotero</a> that brings Large Language Models directly into the PDF reader. Unlike tools that require uploading PDFs to a web portal, this plugin lets you chat with your papers <em>without leaving Zotero</em>. It sits quietly in the reader sidebar — your standby research assistant, ready whenever you need it.</p>
+<p><strong>llm-for-zotero</strong> is a plugin for <a href="https://www.zotero.org/">Zotero</a> that integrates Large Language Models directly into the Zotero PDF reader. Unlike tools that require uploading PDFs to a web portal, this plugin lets you chat with your papers without leaving Zotero. It sits quietly in the reader sidebar, ready whenever you need it.</p>
 
 <p><img src="/images/llm-for-zotero/demo.png" alt="Screenshot of the llm-for-zotero sidebar inside the Zotero PDF reader" /></p>
 
 <div class="rtd-feature-grid">
   <div class="rtd-feature-card">
-    <strong>Chat with Papers</strong>
-    <p>Ask questions about any open PDF. Answers are grounded in the paper with clickable citations.</p>
+    <strong>Grounded Paper Chat</strong>
+    <p>Ask questions about any open PDF and jump from model citations back to the source passage.</p>
   </div>
   <div class="rtd-feature-card">
     <strong>Multi-Provider Support</strong>
-    <p>OpenAI, Anthropic, Google Gemini, DeepSeek, local models — use any LLM you prefer.</p>
+    <p>OpenAI, Gemini, DeepSeek, local OpenAI-compatible models, and more.</p>
   </div>
   <div class="rtd-feature-card">
-    <strong>Agent Mode</strong>
-    <p>Let the LLM autonomously search, tag, organize, and annotate your entire Zotero library.</p>
+    <strong>Agent Mode (Beta)</strong>
+    <p>Let the assistant read, search, and write inside your Zotero library with approval before changes are applied.</p>
   </div>
   <div class="rtd-feature-card">
-    <strong>Privacy-First</strong>
-    <p>Uses your own API keys. No data is sent to third-party portals — privacy governed by your provider.</p>
+    <strong>MinerU PDF Parsing</strong>
+    <p>Use high-fidelity PDF parsing that preserves tables, equations, figures, and complex layouts.</p>
   </div>
 </div>
+
+<hr />
+
+<h2 id="recent-updates">Recent Updates</h2>
+
+<ul>
+  <li><strong>Agent Mode (Beta)</strong>: LLM-for-Zotero can now act as an autonomous agent inside your Zotero library.</li>
+  <li><strong>Codex auth</strong>: ChatGPT Plus subscribers can use Codex models such as <code class="language-plaintext highlighter-rouge">gpt-5.4</code> without a separate API key.</li>
+  <li><strong>MinerU PDF parsing</strong>: High-fidelity extraction now preserves tables, equations, and figures more accurately.</li>
+  <li><strong>Renamed</strong>: the plugin is now published as <code class="language-plaintext highlighter-rouge">llm-for-zotero</code>.</li>
+</ul>
 
 <hr />
 
@@ -718,54 +730,15 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <ol>
   <li>Select your <strong>Provider</strong> (e.g. OpenAI, Gemini, DeepSeek).</li>
-  <li>Paste your <strong>API Base URL</strong>, <strong>API key</strong>, and <strong>model name</strong>.</li>
+  <li>Paste your <strong>API Base URL</strong>, <strong>secret key</strong>, and <strong>model name</strong>.</li>
   <li>Click <strong>Test Connection</strong> to verify.</li>
 </ol>
 
 <p><img src="/images/llm-for-zotero/model_setting.gif" alt="Provider and model configuration" /></p>
 
-<h3 id="supported-providers--protocols">Supported Providers &amp; Protocols</h3>
+<p>The plugin natively supports multiple provider protocols: <code class="language-plaintext highlighter-rouge">responses_api</code>, <code class="language-plaintext highlighter-rouge">openai_chat_compat</code>, <code class="language-plaintext highlighter-rouge">anthropic_messages</code>, <code class="language-plaintext highlighter-rouge">gemini_native</code>, and more.</p>
 
-<p>The plugin natively supports five provider protocols:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Protocol</th>
-      <th>Description</th>
-      <th>Key Capabilities</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">responses_api</code></td>
-      <td>OpenAI Responses API</td>
-      <td>Streaming, tool calls, file uploads, multimodal</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">openai_chat_compat</code></td>
-      <td>OpenAI-compatible chat APIs</td>
-      <td>Streaming, tool calls, multimodal</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">anthropic_messages</code></td>
-      <td>Anthropic Messages API</td>
-      <td>Streaming, tool calls, multimodal</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">gemini_native</code></td>
-      <td>Google Gemini API</td>
-      <td>Streaming, tool calls, multimodal</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">codex_responses</code></td>
-      <td>ChatGPT/Codex auth</td>
-      <td>ChatGPT Plus integration, no separate API key</td>
-    </tr>
-  </tbody>
-</table>
-
-<h3 id="supported-models">Supported Models</h3>
+<h3 id="supported-models-examples">Supported Models (Examples)</h3>
 
 <table>
   <thead>
@@ -828,55 +801,11 @@ Restart Zotero to complete the installation. The plugin automatically checks for
   </tbody>
 </table>
 
-<p>Any model that exposes an <strong>OpenAI-compatible HTTP API</strong> also works — including locally hosted models via tools like Ollama, LM Studio, or vLLM.</p>
+<p>You can also set up <strong>multiple providers</strong>, each with multiple models for different tasks, such as a multimodal model for figures and a text model for summaries. Cross-check answers across models when you want broader coverage.</p>
 
-<h3 id="multiple-providers">Multiple Providers</h3>
+<h3 id="advanced-reasoning-levels--hyperparameters">Advanced: Reasoning Levels &amp; Hyperparameters</h3>
 
-<p>You can configure <strong>up to 10 provider groups</strong>, each with multiple models. This lets you:</p>
-
-<ul>
-  <li>Use a multimodal model for figure interpretation and a text model for summaries.</li>
-  <li>Cross-check answers across different models for more comprehensive understanding.</li>
-  <li>Switch models mid-conversation from the model selector dropdown.</li>
-</ul>
-
-<h3 id="reasoning-levels--hyperparameters">Reasoning Levels &amp; Hyperparameters</h3>
-
-<p>For models that support it, you can set <strong>reasoning levels</strong> per request: <code class="language-plaintext highlighter-rouge">default</code>, <code class="language-plaintext highlighter-rouge">low</code>, <code class="language-plaintext highlighter-rouge">medium</code>, <code class="language-plaintext highlighter-rouge">high</code>, or <code class="language-plaintext highlighter-rouge">xhigh</code>. This controls how deeply the model thinks before answering.</p>
-
-<p>Additional per-model settings include:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Temperature</td>
-      <td>Controls output randomness (0 = deterministic, 2 = creative)</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <td>Max output tokens</td>
-      <td>Limit the length of model responses</td>
-      <td>2048</td>
-    </tr>
-    <tr>
-      <td>Input token cap</td>
-      <td>Restrict the context size sent to the model</td>
-      <td>Model default</td>
-    </tr>
-    <tr>
-      <td>System prompt</td>
-      <td>Custom instructions prepended to every request</td>
-      <td>—</td>
-    </tr>
-  </tbody>
-</table>
+<p>You can set different reasoning levels per model in the conversation panel, such as <code class="language-plaintext highlighter-rouge">default</code>, <code class="language-plaintext highlighter-rouge">low</code>, <code class="language-plaintext highlighter-rouge">medium</code>, <code class="language-plaintext highlighter-rouge">high</code>, and <code class="language-plaintext highlighter-rouge">xhigh</code>, depending on model support. You can also adjust hyperparameters like <code class="language-plaintext highlighter-rouge">temperature</code> and <code class="language-plaintext highlighter-rouge">max_tokens_output</code> for more creative or more deterministic responses.</p>
 
 <hr />
 
@@ -892,7 +821,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <h3 id="conversation-modes">Conversation Modes</h3>
 
-<p>The plugin supports three distinct conversation modes:</p>
+<p>The plugin supports multiple conversation contexts:</p>
 
 <table>
   <thead>
@@ -933,7 +862,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <p><img src="/images/llm-for-zotero/citation_jump.gif" alt="One-click jump from an AI citation to the paper source" /></p>
 
-<p>When you ask a question, the model generates answers <strong>grounded in the paper’s content</strong>. Each claim is backed by a citation — click any citation to jump straight to the source passage in the PDF. This makes it easy to verify answers and find relevant sections.</p>
+<p>When you ask a question, the model generates answers grounded in the paper’s content. Click any citation to jump straight to the source passage in your Zotero library.</p>
 
 <hr />
 
@@ -941,7 +870,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <p><img src="/images/llm-for-zotero/summarize.gif" alt="Instant paper summary in the sidebar" /></p>
 
-<p>Get a concise summary of any paper in seconds. The summary is generated from the full text of the open PDF. You can customize the summary prompt to focus on specific aspects — methodology, results, implications, or anything else.</p>
+<p>Get a concise summary of any paper in seconds. The summary is generated from the full text of the open PDF, and you can customize the prompt to focus on methodology, results, implications, or anything else.</p>
 
 <hr />
 
@@ -949,7 +878,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <p><img src="/images/llm-for-zotero/text.gif" alt="Selected text being explained by the model" /></p>
 
-<p>Select any complex paragraph or technical term in the PDF and ask the model to explain it. You can add <strong>up to 5 pieces of context</strong> from the paper or previous answers to refine the explanation.</p>
+<p>Select any complex paragraph or technical term in the PDF and ask the model to explain it. You can add up to <strong>5 pieces of context</strong> from the paper or previous answers to refine the explanation.</p>
 
 <p>An optional pop-up automatically suggests adding selected text to the chat. This can be disabled in settings if you prefer manual control.</p>
 
@@ -959,7 +888,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <p><img src="/images/llm-for-zotero/screenshot.gif" alt="Screenshot-based figure interpretation" /></p>
 
-<p>Take a screenshot of any figure, chart, or diagram and ask the model to interpret it. The plugin supports <strong>up to 10 screenshots</strong> at a time, making it easy to analyze complex multi-panel figures or compare visuals across sections.</p>
+<p>Take a screenshot of any figure, chart, or diagram and ask the model to interpret it. The plugin supports up to <strong>10 screenshots</strong> at a time.</p>
 
 <div class="rtd-tip">
   <div class="rtd-admonition-title">Tip</div>
@@ -980,15 +909,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <p><img src="/images/llm-for-zotero/upload_files.gif" alt="External file upload for additional context" /></p>
 
-<p>Upload documents from your local drive as additional context. Supported formats:</p>
-
-<ul>
-  <li><strong>PDF</strong> (up to 50 MB per file)</li>
-  <li><strong>DOCX</strong> (Word documents)</li>
-  <li><strong>PPTX</strong> (PowerPoint presentations)</li>
-  <li><strong>TXT</strong> (plain text)</li>
-  <li><strong>Markdown</strong> (.md files)</li>
-</ul>
+<p>Upload documents from your local drive as additional context. Supported formats include <strong>PDF</strong>, <strong>DOCX</strong>, <strong>PPTX</strong>, <strong>TXT</strong>, and <strong>Markdown</strong>.</p>
 
 <hr />
 
@@ -1018,7 +939,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <p><img src="/images/llm-for-zotero/shortcuts.gif" alt="Custom quick-action preset configuration" /></p>
 
-<p>Create <strong>up to 10 custom presets</strong> for frequently used prompts — available at the tap of a button. Built-in presets include:</p>
+<p>Customize quick-action presets to match your research workflow. Built-in presets include:</p>
 
 <ul>
   <li><strong>Summarize</strong> — generate a concise summary</li>
@@ -1026,8 +947,6 @@ Restart Zotero to complete the installation. The plugin automatically checks for
   <li><strong>Methodology</strong> — describe the research methods</li>
   <li><strong>Limitations</strong> — identify weaknesses or gaps</li>
 </ul>
-
-<p>You can customize these or add your own to match your research workflow.</p>
 
 <hr />
 
@@ -1064,11 +983,11 @@ Restart Zotero to complete the installation. The plugin automatically checks for
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">search_literature_online</code></td>
-      <td>Search live scholarly sources (Crossref, Semantic Scholar, arXiv, PubMed, and more) or fetch external metadata</td>
+      <td>Search live scholarly sources or fetch external metadata</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">mutate_library</code></td>
-      <td>Batch write operations — metadata edits, tagging, collection management, note writing, paper imports</td>
+      <td>Batch write operations such as metadata edits, tagging, collection changes, note writes, and imports</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">undo_last_action</code></td>
@@ -1081,7 +1000,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <h3 id="built-in-actions">Built-in Actions</h3>
 
-<p>The agent comes with several pre-built workflows:</p>
+<p>The latest release emphasizes general tools over a fixed action menu. Common agent workflows include:</p>
 
 <table>
   <thead>
@@ -1092,24 +1011,24 @@ Restart Zotero to complete the installation. The plugin automatically checks for
   </thead>
   <tbody>
     <tr>
-      <td><strong>Audit Library</strong></td>
-      <td>Checks your library for quality and completeness issues</td>
+      <td><strong>Inspect papers</strong></td>
+      <td>Read metadata, notes, annotations, and grounded PDF evidence</td>
     </tr>
     <tr>
-      <td><strong>Sync Metadata</strong></td>
-      <td>Synchronizes and updates paper metadata from online sources</td>
+      <td><strong>Find related work</strong></td>
+      <td>Search your library or online scholarly sources for related papers</td>
     </tr>
     <tr>
-      <td><strong>Organize Unfiled</strong></td>
-      <td>Sorts unfiled papers into appropriate collections</td>
+      <td><strong>Apply tags</strong></td>
+      <td>Draft tag changes for your approval before batch application</td>
     </tr>
     <tr>
-      <td><strong>Auto Tag</strong></td>
-      <td>Automatically generates and applies relevant tags</td>
+      <td><strong>Write notes</strong></td>
+      <td>Prepare notes or summaries tied to the active paper</td>
     </tr>
     <tr>
-      <td><strong>Discover Related</strong></td>
-      <td>Finds related papers in your library or online</td>
+      <td><strong>Undo changes</strong></td>
+      <td>Revert the most recent approved write batch</td>
     </tr>
   </tbody>
 </table>
@@ -1118,7 +1037,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <h4 id="multi-step-workflow">Multi-step workflow</h4>
 
-<p>The agent can chain multiple tools together to accomplish complex tasks — for example, finding a paper, reading its metadata, searching for related work, and writing a summary note.</p>
+<p>The agent can chain multiple tools together to accomplish complex tasks, such as finding a paper, reading its metadata, searching for related work, and writing a summary note.</p>
 
 <p><img src="/images/llm-for-zotero/agent/multi_steps.gif" alt="Multi-step agent workflow" style="max-width:512px;" /></p>
 
@@ -1140,7 +1059,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <h4 id="write-a-note">Write a note</h4>
 
-<p><img src="/images/llm-for-zotero/agent/write_note.gif" alt="Agent writing a note" /></p>
+<p><img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/agent/write_note.png" alt="Agent writing a note" /></p>
 
 <h3 id="safety--confirmation">Safety &amp; Confirmation</h3>
 
@@ -1158,6 +1077,8 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 <h2 id="codex-auth-setup">Codex Auth Setup</h2>
 
 <p>If you have a <strong>ChatGPT Plus</strong> subscription, you can use <strong>Codex auth</strong> to access models like <code class="language-plaintext highlighter-rouge">gpt-5.4</code> without a separate API key. The plugin reuses your ChatGPT login via the Codex CLI.</p>
+
+<p><em>Special thanks to <a href="https://github.com/jianghao-zhang">@jianghao-zhang</a> for contributions to this feature.</em></p>
 
 <h3 id="step-by-step-setup">Step-by-step setup</h3>
 
@@ -1213,9 +1134,42 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
 <ul>
   <li>Reads local credentials from <code class="language-plaintext highlighter-rouge">~/.codex/auth.json</code> (or <code class="language-plaintext highlighter-rouge">$CODEX_HOME/auth.json</code>).</li>
   <li>Automatically attempts token refresh on 401 responses.</li>
-  <li>Local PDF grounding and screenshot inputs are supported.</li>
-  <li>Embeddings and the <code class="language-plaintext highlighter-rouge">/files</code> upload flow are not yet supported in Codex auth mode.</li>
+  <li>Embeddings are not supported in codex auth mode yet.</li>
+  <li>Local PDF/reference text grounding and screenshot/image inputs are supported.</li>
+  <li>The Responses <code class="language-plaintext highlighter-rouge">/files</code> upload + <code class="language-plaintext highlighter-rouge">file_id</code> attachment flow is not supported yet.</li>
 </ul>
+
+<hr />
+
+<h2 id="mineru-pdf-parsing">MinerU PDF Parsing</h2>
+
+<p><strong>MinerU</strong> is an advanced PDF parsing engine that extracts high-fidelity Markdown from PDFs while preserving tables, equations, figures, and complex layouts that standard text extraction often mangles.</p>
+
+<p><img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/minerU.png" alt="Screenshot showing MinerU PDF parsing results in the plugin" /></p>
+
+<p>When enabled, the plugin sends your PDF to the MinerU API for parsing and caches the result locally. All later interactions with that paper reuse the MinerU-parsed content, giving the model richer and more accurate context.</p>
+
+<h3 id="how-to-enable-mineru">How to Enable MinerU</h3>
+
+<ol>
+  <li>Open Zotero → <strong>Preferences</strong> → <strong>llm-for-zotero</strong>.</li>
+  <li>Find the <strong>MinerU</strong> section and check <strong>Enable MinerU</strong>.</li>
+  <li>Optionally enter your own MinerU API key.</li>
+  <li>Open any PDF and start chatting. The plugin will parse the PDF on first use and cache the result for later conversations.</li>
+</ol>
+
+<h3 id="using-your-own-api-key">Using Your Own API Key</h3>
+
+<p>The plugin provides a shared community proxy so MinerU works out of the box without an API key, but the shared quota is limited. For heavier usage:</p>
+
+<ol>
+  <li>Go to <a href="https://mineru.net">mineru.net</a> and create an account.</li>
+  <li>Generate an API key in your account settings.</li>
+  <li>Paste the key into Zotero → <strong>Preferences</strong> → <strong>llm-for-zotero</strong> → <strong>MinerU</strong>.</li>
+  <li>Click <strong>Test Connection</strong> to verify.</li>
+</ol>
+
+<p>When a personal API key is provided, the plugin calls the MinerU API directly at <code class="language-plaintext highlighter-rouge">https://mineru.net/api/v4</code>. Without a key, it uses the community proxy.</p>
 
 <hr />
 
@@ -1227,19 +1181,11 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
 
 <p><strong>Does it work with local models?</strong></p>
 
-<p>Yes — any model that provides an OpenAI-compatible HTTP API works. This includes models served via <a href="https://ollama.ai/">Ollama</a>, <a href="https://lmstudio.ai/">LM Studio</a>, <a href="https://docs.vllm.ai/">vLLM</a>, or any other compatible server. Just enter the local API URL and model name in settings.</p>
+<p>Yes. As long as the local model provides an OpenAI-compatible HTTP API, you can connect it by entering the appropriate API Base URL and key in settings.</p>
 
 <p><strong>Is my data used to train models?</strong></p>
 
-<p>No. You use your own API key, so data privacy is governed by the terms of your chosen provider. Most API providers (e.g. OpenAI, Anthropic) do not use API data for model training.</p>
-
-<p><strong>Can I use multiple models at the same time?</strong></p>
-
-<p>Yes. Configure up to 10 provider groups, each with multiple models. Switch between models mid-conversation using the model selector dropdown.</p>
-
-<p><strong>How does context retrieval work?</strong></p>
-
-<p>On the first message about a paper, the plugin loads the full text as context. Follow-up questions use <strong>hybrid retrieval</strong> (BM25 + embedding-based search) with diversity optimization to find the most relevant passages, keeping responses fast and accurate.</p>
+<p>No. You use your own API key, so data privacy is governed by the terms of your chosen provider.</p>
 
 <p><strong>How do I report a bug or request a feature?</strong></p>
 
@@ -1258,6 +1204,12 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
   <li>Donating via Alipay QR code below:
 <img src="/images/llm-for-zotero/alipay.png" alt="Alipay donation QR code" style="max-width:200px;" /></li>
 </ul>
+
+<hr />
+
+<h2 id="star-history">Star History</h2>
+
+<p><a href="https://www.star-history.com/?repos=yilewang%2Fllm-for-zotero&amp;type=date&amp;legend=top-left"><img src="https://api.star-history.com/image?repos=yilewang/llm-for-zotero&amp;type=date&amp;legend=top-left" alt="Star History Chart" /></a></p>
 
       </div>
 
