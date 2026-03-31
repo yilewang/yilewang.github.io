@@ -1178,13 +1178,85 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <hr />
 
+<h2 id="webchat-setup-chatgpt-web-sync">WebChat Setup (ChatGPT Web Sync)</h2>
+
+<p><strong>WebChat mode</strong> sends your questions directly to <a href="https://chatgpt.com">chatgpt.com</a> through a browser extension — no API key needed. Queries are relayed from Zotero to the ChatGPT web interface, and responses stream back into the plugin.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<ul>
+  <li>A ChatGPT account (Free, Plus, or Team)</li>
+  <li>A Chromium-based browser (Chrome, Edge, Brave, Arc, etc.)</li>
+</ul>
+
+<h3 id="step-by-step-setup">Step-by-step setup</h3>
+
+<p><strong>1. Download the browser extension:</strong></p>
+
+<p>Go to <a href="https://github.com/yilewang/sync-for-zotero">github.com/yilewang/sync-for-zotero</a> → <strong>Releases</strong>, download the latest <code class="language-plaintext highlighter-rouge">sync-for-zotero-extension.zip</code>, and unzip it to a folder on your computer.</p>
+
+<p><strong>2. Install the extension (sideload):</strong></p>
+
+<ul>
+  <li>Open your browser and navigate to <code class="language-plaintext highlighter-rouge">chrome://extensions</code></li>
+  <li>Enable <strong>Developer Mode</strong> (toggle in the top-right corner)</li>
+  <li>Click <strong>Load unpacked</strong> and select the unzipped extension folder</li>
+  <li>The “Sync for Zotero” extension should now appear in your extensions list</li>
+</ul>
+
+<p><strong>3. Configure the plugin:</strong></p>
+
+<p>In Zotero → <strong>Preferences</strong> → <strong>llm-for-zotero</strong>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Auth Mode</td>
+      <td><code class="language-plaintext highlighter-rouge">WebChat</code></td>
+    </tr>
+    <tr>
+      <td>Model</td>
+      <td>(auto-set to <code class="language-plaintext highlighter-rouge">chatgpt.com</code>)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>4. Start chatting:</strong></p>
+
+<p>Open a ChatGPT tab in your browser and keep it open. In Zotero, the plugin panel shows a “chatgpt.com” indicator with a connection dot (green = connected, red = not detected). Type a question and send.</p>
+
+<h3 id="webchat-features">WebChat features</h3>
+
+<ul>
+  <li><strong>PDF attachment</strong> — Right-click the paper chip to toggle PDF sending (purple = send, grey = skip).</li>
+  <li><strong>Screenshots</strong> — Use the camera button to attach figure screenshots to your message.</li>
+  <li><strong>Conversation history</strong> — Click the clock icon to browse and load past ChatGPT conversations.</li>
+  <li><strong>Exit</strong> — Click the “Exit” button to return to regular API mode.</li>
+</ul>
+
+<h3 id="technical-notes">Technical Notes</h3>
+
+<ul>
+  <li>The plugin embeds a lightweight HTTP relay server on Zotero’s built-in port (23119). The browser extension polls this relay to exchange queries and responses.</li>
+  <li>Agent mode, slash commands (<code class="language-plaintext highlighter-rouge">/</code>), and the reference picker (<code class="language-plaintext highlighter-rouge">@</code>) are disabled in WebChat mode.</li>
+  <li>Reasoning/thinking mode is controlled on the ChatGPT side, not through the plugin’s reasoning toggle.</li>
+</ul>
+
+<hr />
+
 <h2 id="codex-auth-setup">Codex Auth Setup</h2>
 
 <p>If you have a <strong>ChatGPT Plus</strong> subscription, you can use <strong>Codex auth</strong> to access models like <code class="language-plaintext highlighter-rouge">gpt-5.4</code> without a separate API key. The plugin reuses your ChatGPT login via the Codex CLI.</p>
 
 <p><em>Special thanks to <a href="https://github.com/jianghao-zhang">@jianghao-zhang</a> for contributions to this feature.</em></p>
 
-<h3 id="step-by-step-setup">Step-by-step setup</h3>
+<h3 id="step-by-step-setup-1">Step-by-step setup</h3>
 
 <p><strong>1. Install the Codex CLI</strong> (one-time):</p>
 
@@ -1233,7 +1305,7 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
 
 <p><img src="/images/llm-for-zotero/codex.png" alt="Codex auth configuration" /></p>
 
-<h3 id="technical-notes">Technical Notes</h3>
+<h3 id="technical-notes-1">Technical Notes</h3>
 
 <ul>
   <li>Reads local credentials from <code class="language-plaintext highlighter-rouge">~/.codex/auth.json</code> (or <code class="language-plaintext highlighter-rouge">$CODEX_HOME/auth.json</code>).</li>

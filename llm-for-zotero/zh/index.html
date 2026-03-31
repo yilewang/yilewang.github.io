@@ -1271,11 +1271,83 @@
 
 <hr />
 
+<h2 id="webchat-配置chatgpt-网页同步">WebChat 配置（ChatGPT 网页同步）</h2>
+
+<p><strong>WebChat 模式</strong>通过浏览器扩展将您的问题直接发送到 <a href="https://chatgpt.com">chatgpt.com</a>——无需 API 密钥。查询从 Zotero 转发到 ChatGPT 网页界面，回复实时流式传回插件。</p>
+
+<h3 id="前置条件">前置条件</h3>
+
+<ul>
+  <li>ChatGPT 账号（免费版、Plus 或 Team 均可）</li>
+  <li>Chromium 内核浏览器（Chrome、Edge、Brave、Arc 等）</li>
+</ul>
+
+<h3 id="配置步骤">配置步骤</h3>
+
+<p><strong>1. 下载浏览器扩展：</strong></p>
+
+<p>前往 <a href="https://github.com/yilewang/sync-for-zotero">github.com/yilewang/sync-for-zotero</a> → <strong>Releases</strong>，下载最新的 <code class="language-plaintext highlighter-rouge">sync-for-zotero-extension.zip</code>，解压到电脑上的文件夹。</p>
+
+<p><strong>2. 安装扩展（侧载）：</strong></p>
+
+<ul>
+  <li>打开浏览器，访问 <code class="language-plaintext highlighter-rouge">chrome://extensions</code></li>
+  <li>开启右上角的<strong>开发者模式</strong></li>
+  <li>点击<strong>加载已解压的扩展程序</strong>，选择解压后的扩展文件夹</li>
+  <li>“Sync for Zotero” 扩展应出现在扩展列表中</li>
+</ul>
+
+<p><strong>3. 配置插件：</strong></p>
+
+<p>打开 Zotero → <strong>首选项</strong> → <strong>llm-for-zotero</strong>：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>设置项</th>
+      <th>值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>认证模式</td>
+      <td><code class="language-plaintext highlighter-rouge">WebChat</code></td>
+    </tr>
+    <tr>
+      <td>模型</td>
+      <td>（自动设为 <code class="language-plaintext highlighter-rouge">chatgpt.com</code>）</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>4. 开始对话：</strong></p>
+
+<p>在浏览器中打开一个 ChatGPT 标签页并保持打开。在 Zotero 中，插件面板会显示 “chatgpt.com” 指示器及连接状态点（绿色 = 已连接，红色 = 未检测到）。输入问题并发送即可。</p>
+
+<h3 id="webchat-功能">WebChat 功能</h3>
+
+<ul>
+  <li><strong>PDF 附件</strong> — 右键点击论文标签切换 PDF 发送状态（紫色 = 发送，灰色 = 跳过）。</li>
+  <li><strong>截图</strong> — 使用截图按钮将图片上下文附加到消息中。</li>
+  <li><strong>对话历史</strong> — 点击时钟图标浏览和加载过往 ChatGPT 对话。</li>
+  <li><strong>退出</strong> — 点击 “Exit” 按钮返回常规 API 模式。</li>
+</ul>
+
+<h3 id="技术说明">技术说明</h3>
+
+<ul>
+  <li>插件在 Zotero 内置端口（23119）上嵌入轻量级 HTTP 中继服务器，浏览器扩展通过轮询该中继交换查询和响应。</li>
+  <li>WebChat 模式下禁用 Agent 模式、斜杠命令（<code class="language-plaintext highlighter-rouge">/</code>）和引用选择器（<code class="language-plaintext highlighter-rouge">@</code>）。</li>
+  <li>推理/思考模式在 ChatGPT 端控制，而非通过插件的推理切换按钮。</li>
+</ul>
+
+<hr />
+
 <h2 id="codex-认证配置">Codex 认证配置</h2>
 
 <p>如果您拥有 <strong>ChatGPT Plus</strong> 订阅，可以使用 <strong>Codex 认证</strong>免 API 密钥访问 <code class="language-plaintext highlighter-rouge">gpt-5.4</code> 等模型。插件通过 Codex CLI 复用您的 ChatGPT 登录凭据。</p>
 
-<h3 id="配置步骤">配置步骤</h3>
+<h3 id="配置步骤-1">配置步骤</h3>
 
 <p><strong>1. 安装 Codex CLI</strong>（一次性操作）：</p>
 
@@ -1324,7 +1396,7 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
 
 <p><img src="/images/llm-for-zotero/codex.png" alt="Codex 认证配置截图" /></p>
 
-<h3 id="技术说明">技术说明</h3>
+<h3 id="技术说明-1">技术说明</h3>
 
 <ul>
   <li>从 <code class="language-plaintext highlighter-rouge">~/.codex/auth.json</code>（或 <code class="language-plaintext highlighter-rouge">$CODEX_HOME/auth.json</code>）读取本地凭据。</li>
