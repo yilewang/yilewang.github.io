@@ -345,6 +345,56 @@ All write operations go through a **human-in-the-loop confirmation** workflow:
 
 ---
 
+## WebChat Setup (ChatGPT Web Sync)
+
+**WebChat mode** sends your questions directly to [chatgpt.com](https://chatgpt.com) through a browser extension — no API key needed. Queries are relayed from Zotero to the ChatGPT web interface, and responses stream back into the plugin.
+
+### Prerequisites
+
+- A ChatGPT account (Free, Plus, or Team)
+- A Chromium-based browser (Chrome, Edge, Brave, Arc, etc.)
+
+### Step-by-step setup
+
+**1. Download the browser extension:**
+
+Go to [github.com/yilewang/sync-for-zotero](https://github.com/yilewang/sync-for-zotero) &rarr; **Releases**, download the latest `sync-for-zotero-extension.zip`, and unzip it to a folder on your computer.
+
+**2. Install the extension (sideload):**
+
+- Open your browser and navigate to `chrome://extensions`
+- Enable **Developer Mode** (toggle in the top-right corner)
+- Click **Load unpacked** and select the unzipped extension folder
+- The "Sync for Zotero" extension should now appear in your extensions list
+
+**3. Configure the plugin:**
+
+In Zotero &rarr; **Preferences** &rarr; **llm-for-zotero**:
+
+| Setting | Value |
+|---|---|
+| Auth Mode | `WebChat` |
+| Model | (auto-set to `chatgpt.com`) |
+
+**4. Start chatting:**
+
+Open a ChatGPT tab in your browser and keep it open. In Zotero, the plugin panel shows a "chatgpt.com" indicator with a connection dot (green = connected, red = not detected). Type a question and send.
+
+### WebChat features
+
+- **PDF attachment** &mdash; Right-click the paper chip to toggle PDF sending (purple = send, grey = skip).
+- **Screenshots** &mdash; Use the camera button to attach figure screenshots to your message.
+- **Conversation history** &mdash; Click the clock icon to browse and load past ChatGPT conversations.
+- **Exit** &mdash; Click the "Exit" button to return to regular API mode.
+
+### Technical Notes
+
+- The plugin embeds a lightweight HTTP relay server on Zotero's built-in port (23119). The browser extension polls this relay to exchange queries and responses.
+- Agent mode, slash commands (`/`), and the reference picker (`@`) are disabled in WebChat mode.
+- Reasoning/thinking mode is controlled on the ChatGPT side, not through the plugin's reasoning toggle.
+
+---
+
 ## Codex Auth Setup
 
 If you have a **ChatGPT Plus** subscription, you can use **Codex auth** to access models like `gpt-5.4` without a separate API key. The plugin reuses your ChatGPT login via the Codex CLI.
