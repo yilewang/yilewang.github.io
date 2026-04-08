@@ -49,12 +49,17 @@ lang_alt: /llm-for-zotero/zh/
     <strong>Obsidian Integration</strong>
     <p>Write notes from Zotero papers directly to your Obsidian vault with metadata, citations, and extracted figures.</p>
   </div>
+  <div class="rtd-feature-card">
+    <strong>Customizable Skills</strong>
+    <p>9 built-in skills guide the agent's workflows for common tasks. Create your own with simple Markdown files.</p>
+  </div>
 </div>
 
 ---
 
 ## Recent Updates
 
+- **Skills**: Customizable guidance files that shape how the agent handles different tasks. 9 built-in skills included, plus a portal for creating your own. See [Skills](#skills).
 - **Standalone Window Mode**: Open the LLM Assistant in its own dedicated window, separate from the reader sidebar. See [Standalone Window Mode](#standalone-window-mode).
 - **Obsidian Integration**: Write notes from Zotero papers directly to your Obsidian vault with customizable templates. See [Obsidian Integration](#obsidian-integration).
 - **Agent Mode (Beta)**: LLM-for-Zotero can now act as an autonomous agent inside your Zotero library.
@@ -242,7 +247,6 @@ Open the LLM Assistant in its own dedicated window, separate from the Zotero rea
 
 | Method | Action |
 |---|---|
-| **Menu** | `Tools` &rarr; `LLM Chat Window` |
 | **Keyboard shortcut** | `Ctrl+Shift+L` (macOS: `Cmd+Shift+L`) |
 
 ### Features
@@ -415,6 +419,83 @@ All write operations go through a **human-in-the-loop confirmation** workflow:
 - You can **approve**, **reject**, or **modify** before any changes are applied.
 - If something goes wrong, use `undo_last_action` to revert.
 - Terminal commands and file operations also require explicit approval before execution.
+
+---
+
+## Skills
+
+<img src="/images/llm-for-zotero/skills.png" alt="Skills management portal" style="max-width:512px;">
+
+Skills are customizable guidance files that shape how the agent approaches different types of requests. Each skill is a Markdown file with regex trigger patterns: when your message matches a skill's patterns, its instructions are automatically injected into the agent's system prompt, guiding it to use the most efficient tools and workflows for the task at hand.
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Note</div>
+  Skills require <strong>Agent Mode</strong> to be enabled. They have no effect in standard chat mode.
+</div>
+
+### Built-in Skills
+
+The plugin ships with **9 built-in skills** covering common research workflows. They are automatically copied to your skills folder on first run.
+
+| Skill | Triggers on | What it guides the agent to do |
+|---|---|---|
+| `simple-paper-qa` | General questions about a paper (summary, findings, authors, TLDR) | Read the paper once and answer immediately &mdash; avoids unnecessary retrieval calls |
+| `evidence-based-qa` | Questions about specific methods, results, data, or claims | Read first, then use targeted `search_paper` retrieval for specific evidence |
+| `analyze-figures` | References to figures, tables, or diagrams by number | Use MinerU-cached images when available; send images directly to the model |
+| `compare-papers` | Requests to compare or contrast multiple papers | Batch front-matter reads, then targeted evidence retrieval for comparison points |
+| `library-analysis` | Requests to summarize, analyze, or audit your library | Use efficient scripting to iterate all items at once instead of paginating |
+| `literature-review` | Requests for a literature review or research synthesis | Three-phase workflow: discover papers, deep-read the top 3&ndash;5, then synthesize thematically |
+| `note-from-paper` | Requests to create reading notes from a paper | Read the paper, optionally include MinerU-extracted figures, write a Zotero note |
+| `note-editing` | Requests to save, edit, or create notes | Smart defaults for note target (paper vs. standalone), prefer patches over full rewrites |
+| `write-to-obsidian` | Requests to export to Obsidian | Compose with YAML frontmatter, Pandoc citations, and optional figure copying |
+
+### How Skills Work
+
+1. When you send a message in Agent Mode, the plugin tests your text against every skill's `match` patterns.
+2. If **any** pattern in a skill matches (OR semantics), that skill's instruction is injected into the agent's system prompt for that request.
+3. Multiple skills can activate simultaneously if your message matches more than one.
+4. The agent uses these instructions as guidance for tool selection and workflow &mdash; they teach the agent *how* to approach a task, not *what* tasks it can do.
+
+### Creating Custom Skills
+
+1. Open the **Standalone Window** (`Ctrl+Shift+L` / macOS: `Cmd+Shift+L`).
+2. Click the **Skills icon** in the top toolbar to open the Skills portal.
+3. Click the **"+ New skill"** button to create a template file.
+4. The template opens in your default text editor. Edit the three key parts:
+
+```
+---
+id: my-custom-skill
+match: /your regex pattern here/i
+match: /another trigger pattern/i
+---
+
+Instructions for the agent when this skill matches.
+Describe the workflow, which tools to prefer, and any constraints.
+```
+
+{:start="5"}
+5. Save the file. The skill is loaded immediately &mdash; no restart needed.
+
+**Skill file format:**
+
+| Field | Required | Description |
+|---|---|---|
+| `id` | Yes | Unique identifier for the skill |
+| `match` | Yes (at least one) | Regex pattern with optional flags (`i`, `g`, `m`, etc.). Repeatable &mdash; multiple `match` lines use OR semantics |
+| Instruction body | Yes | Markdown text after the closing `---`. Injected into the agent's system prompt when the skill matches |
+
+### Managing Skills
+
+- **Left-click** a skill in the portal to open it in your default text editor.
+- **Right-click** a skill for a context menu with **Show in file system** and **Delete** options.
+- Skills are stored in `{ZoteroDataDir}/llm-for-zotero/skills/` as `.md` files.
+- If you delete a built-in skill, it stays deleted across restarts &mdash; the plugin respects your choice. New built-in skills added in plugin updates are seeded automatically without restoring skills you removed.
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Tip</div>
+  You can share custom skills with others by exchanging <code>.md</code> files. Drop a skill file into your skills folder and it will be picked up on the next plugin startup or after creating/deleting any skill in the portal.
+</div>
 
 ---
 
