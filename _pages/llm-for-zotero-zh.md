@@ -41,18 +41,27 @@ lang_alt: /llm-for-zotero/
     <strong>MinerU PDF 解析</strong>
     <p>使用高保真 PDF 解析，完整保留表格、公式、图表和复杂版式。</p>
   </div>
+  <div class="rtd-feature-card">
+    <strong>独立窗口模式</strong>
+    <p>在独立窗口中打开 LLM 助手，提供全尺寸聊天界面和对话历史侧栏。</p>
+  </div>
+  <div class="rtd-feature-card">
+    <strong>Obsidian 集成</strong>
+    <p>将 Zotero 论文笔记直接写入 Obsidian 知识库，支持元数据、引用和图表提取。</p>
+  </div>
 </div>
 
 ---
 
 ## 最新更新
 
+- **独立窗口模式**：在独立窗口中打开 LLM 助手，脱离 Zotero 阅读器侧栏使用。详见[独立窗口模式](#独立窗口模式)。
+- **Obsidian 集成**：将 Zotero 论文笔记直接写入 Obsidian 知识库，支持自定义模板。详见 [Obsidian 集成](#obsidian-集成)。
 - **Agent 模式（Beta）**：LLM-for-Zotero 现在可以作为自主 Agent 在您的 Zotero 文库中工作。
 - **终端与文件访问**：Agent 可执行终端命令并读写本地文件——如同 Zotero 内置的编程 Agent。
 - **MCP 服务器**：外部 AI Agent 可通过内置的 Model Context Protocol 服务器连接 Zotero。
 - **Codex 认证**：ChatGPT Plus 订阅用户可以使用 `gpt-5.4` 等 Codex 模型，无需单独的 API 密钥。
 - **MinerU PDF 解析**：高保真提取现可更准确地保留表格、公式和图表。
-- **更名**：插件现已更名为 `llm-for-zotero`。
 
 ---
 
@@ -255,6 +264,70 @@ lang_alt: /llm-for-zotero/
 - **局限性** — 识别不足或局限
 
 您可以修改这些预设或添加自定义内容，以适配您的研究工作流。
+
+---
+
+## 独立窗口模式
+
+<img src="/images/llm-for-zotero/standalone_window.png" alt="LLM 助手独立窗口">
+
+在独立窗口中打开 LLM 助手，脱离 Zotero 阅读器侧栏。独立窗口提供全尺寸聊天界面，左侧配有可折叠的对话历史面板。
+
+### 打开方式
+
+| 方式 | 操作 |
+|---|---|
+| **菜单** | `工具` &rarr; `LLM Chat Window` |
+| **快捷键** | `Ctrl+Shift+L`（macOS：`Cmd+Shift+L`） |
+
+### 功能特点
+
+- **论文对话与文库对话** &mdash; 通过顶部标签页切换论文级对话和文库级对话。
+- **对话历史** &mdash; 在可折叠的左侧面板中按日期分组（今天、昨天、最近 7/30 天、更早）浏览历史对话。
+- **功能完全一致** &mdash; 阅读器侧栏中的所有功能（截图、文件上传、Agent 模式、快捷预设、引用选择器）在独立窗口中均可正常使用。
+- **搜索** &mdash; 通过搜索浮层快速查找历史对话。
+
+独立窗口打开时，阅读器侧栏面板会显示占位提示，提供**聚焦窗口**（将独立窗口置于前台）和**关闭窗口并返回侧栏**两个选项。
+
+---
+
+## Obsidian 集成
+
+Agent 可以将 Zotero 论文笔记直接写入您的 [Obsidian](https://obsidian.md/) 知识库——包含完整的元数据、引用，以及可选的图表提取。
+
+### 配置
+
+打开 **首选项** &rarr; **llm-for-zotero**，滚动到 **Obsidian Integration** 部分。
+
+<img src="/images/llm-for-zotero/obsidian_setting.png" alt="Obsidian 集成设置" style="max-width:512px;">
+
+| 设置项 | 说明 | 默认值 |
+|---|---|---|
+| **Vault Path** | Obsidian 知识库根目录的绝对路径 | _（必填）_ |
+| **Default Folder** | 笔记存放的子文件夹（不存在时自动创建） | `Logs` |
+| **Attachments Folder** | 图片和附件的子文件夹 | `imgs` |
+| **Note Template** | 支持 `{% raw %}{{title}}{% endraw %}`、`{% raw %}{{date}}{% endraw %}`、`{% raw %}{{content}}{% endraw %}` 占位符的 Markdown 模板 | 内置默认模板 |
+
+点击 **Test Write Access** 验证插件是否有权限写入您的知识库。
+
+### 工作原理
+
+要求 Agent 将笔记写入 Obsidian（例如*"总结这篇论文并保存到 Obsidian"*），Agent 将：
+
+1. **采集内容**：从论文中提取元数据、摘要、关键要点等。
+2. **编写 Markdown 笔记**：使用您配置的模板。
+3. **添加 YAML 前置信息**：包含标题、日期、标签、作者、年份和引用键。
+4. **复制图表**（可选）：将 MinerU 解析的 PDF 图表复制到附件文件夹。
+5. **写入笔记**：保存到 `{知识库路径}/{默认文件夹}/{标题}.md`。
+
+<img src="/images/llm-for-zotero/obsidian_example.png" alt="Obsidian 中的 Zotero 论文笔记">
+
+笔记使用 [Pandoc 引用语法](https://pandoc.org/MANUAL.html#citations)（`[@citekey]`），兼容 Obsidian 的 Zotero Integration 和 Pandoc 插件。
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">提示</div>
+  Obsidian 集成在 <strong>Agent 模式</strong> 启用时效果最佳。Agent 会自动处理内容提取、模板填充和文件写入。
+</div>
 
 ---
 
