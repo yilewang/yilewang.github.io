@@ -702,6 +702,10 @@
     <strong>Obsidian Integration</strong>
     <p>Write notes from Zotero papers directly to your Obsidian vault with metadata, citations, and extracted figures.</p>
   </div>
+  <div class="rtd-feature-card">
+    <strong>Customizable Skills</strong>
+    <p>9 built-in skills guide the agent's workflows for common tasks. Create your own with simple Markdown files.</p>
+  </div>
 </div>
 
 <hr />
@@ -709,6 +713,7 @@
 <h2 id="recent-updates">Recent Updates</h2>
 
 <ul>
+  <li><strong>Skills</strong>: Customizable guidance files that shape how the agent handles different tasks. 9 built-in skills included, plus a portal for creating your own. See <a href="#skills">Skills</a>.</li>
   <li><strong>Standalone Window Mode</strong>: Open the LLM Assistant in its own dedicated window, separate from the reader sidebar. See <a href="#standalone-window-mode">Standalone Window Mode</a>.</li>
   <li><strong>Obsidian Integration</strong>: Write notes from Zotero papers directly to your Obsidian vault with customizable templates. See <a href="#obsidian-integration">Obsidian Integration</a>.</li>
   <li><strong>Agent Mode (Beta)</strong>: LLM-for-Zotero can now act as an autonomous agent inside your Zotero library.</li>
@@ -986,10 +991,6 @@ Restart Zotero to complete the installation. The plugin automatically checks for
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td><strong>Menu</strong></td>
-      <td><code class="language-plaintext highlighter-rouge">Tools</code> → <code class="language-plaintext highlighter-rouge">LLM Chat Window</code></td>
-    </tr>
     <tr>
       <td><strong>Keyboard shortcut</strong></td>
       <td><code class="language-plaintext highlighter-rouge">Ctrl+Shift+L</code> (macOS: <code class="language-plaintext highlighter-rouge">Cmd+Shift+L</code>)</td>
@@ -1300,6 +1301,155 @@ Restart Zotero to complete the installation. The plugin automatically checks for
   <li>If something goes wrong, use <code class="language-plaintext highlighter-rouge">undo_last_action</code> to revert.</li>
   <li>Terminal commands and file operations also require explicit approval before execution.</li>
 </ul>
+
+<hr />
+
+<h2 id="skills">Skills</h2>
+
+<p><img src="/images/llm-for-zotero/skills.png" alt="Skills management portal" style="max-width:512px;" /></p>
+
+<p>Skills are customizable guidance files that shape how the agent approaches different types of requests. Each skill is a Markdown file with regex trigger patterns: when your message matches a skill’s patterns, its instructions are automatically injected into the agent’s system prompt, guiding it to use the most efficient tools and workflows for the task at hand.</p>
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Note</div>
+  Skills require <strong>Agent Mode</strong> to be enabled. They have no effect in standard chat mode.
+</div>
+
+<h3 id="built-in-skills">Built-in Skills</h3>
+
+<p>The plugin ships with <strong>9 built-in skills</strong> covering common research workflows. They are automatically copied to your skills folder on first run.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Skill</th>
+      <th>Triggers on</th>
+      <th>What it guides the agent to do</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">simple-paper-qa</code></td>
+      <td>General questions about a paper (summary, findings, authors, TLDR)</td>
+      <td>Read the paper once and answer immediately — avoids unnecessary retrieval calls</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">evidence-based-qa</code></td>
+      <td>Questions about specific methods, results, data, or claims</td>
+      <td>Read first, then use targeted <code class="language-plaintext highlighter-rouge">search_paper</code> retrieval for specific evidence</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">analyze-figures</code></td>
+      <td>References to figures, tables, or diagrams by number</td>
+      <td>Use MinerU-cached images when available; send images directly to the model</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">compare-papers</code></td>
+      <td>Requests to compare or contrast multiple papers</td>
+      <td>Batch front-matter reads, then targeted evidence retrieval for comparison points</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">library-analysis</code></td>
+      <td>Requests to summarize, analyze, or audit your library</td>
+      <td>Use efficient scripting to iterate all items at once instead of paginating</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">literature-review</code></td>
+      <td>Requests for a literature review or research synthesis</td>
+      <td>Three-phase workflow: discover papers, deep-read the top 3–5, then synthesize thematically</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">note-from-paper</code></td>
+      <td>Requests to create reading notes from a paper</td>
+      <td>Read the paper, optionally include MinerU-extracted figures, write a Zotero note</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">note-editing</code></td>
+      <td>Requests to save, edit, or create notes</td>
+      <td>Smart defaults for note target (paper vs. standalone), prefer patches over full rewrites</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">write-to-obsidian</code></td>
+      <td>Requests to export to Obsidian</td>
+      <td>Compose with YAML frontmatter, Pandoc citations, and optional figure copying</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="how-skills-work">How Skills Work</h3>
+
+<ol>
+  <li>When you send a message in Agent Mode, the plugin tests your text against every skill’s <code class="language-plaintext highlighter-rouge">match</code> patterns.</li>
+  <li>If <strong>any</strong> pattern in a skill matches (OR semantics), that skill’s instruction is injected into the agent’s system prompt for that request.</li>
+  <li>Multiple skills can activate simultaneously if your message matches more than one.</li>
+  <li>The agent uses these instructions as guidance for tool selection and workflow — they teach the agent <em>how</em> to approach a task, not <em>what</em> tasks it can do.</li>
+</ol>
+
+<h3 id="creating-custom-skills">Creating Custom Skills</h3>
+
+<ol>
+  <li>Open the <strong>Standalone Window</strong> (<code class="language-plaintext highlighter-rouge">Ctrl+Shift+L</code> / macOS: <code class="language-plaintext highlighter-rouge">Cmd+Shift+L</code>).</li>
+  <li>Click the <strong>Skills icon</strong> in the top toolbar to open the Skills portal.</li>
+  <li>Click the <strong>”+ New skill”</strong> button to create a template file.</li>
+  <li>The template opens in your default text editor. Edit the three key parts:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
+id: my-custom-skill
+match: /your regex pattern here/i
+match: /another trigger pattern/i
+---
+
+Instructions for the agent when this skill matches.
+Describe the workflow, which tools to prefer, and any constraints.
+</code></pre></div></div>
+
+<ol start="5">
+  <li>Save the file. The skill is loaded immediately — no restart needed.</li>
+</ol>
+
+<p><strong>Skill file format:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Required</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">id</code></td>
+      <td>Yes</td>
+      <td>Unique identifier for the skill</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">match</code></td>
+      <td>Yes (at least one)</td>
+      <td>Regex pattern with optional flags (<code class="language-plaintext highlighter-rouge">i</code>, <code class="language-plaintext highlighter-rouge">g</code>, <code class="language-plaintext highlighter-rouge">m</code>, etc.). Repeatable — multiple <code class="language-plaintext highlighter-rouge">match</code> lines use OR semantics</td>
+    </tr>
+    <tr>
+      <td>Instruction body</td>
+      <td>Yes</td>
+      <td>Markdown text after the closing <code class="language-plaintext highlighter-rouge">---</code>. Injected into the agent’s system prompt when the skill matches</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="managing-skills">Managing Skills</h3>
+
+<ul>
+  <li><strong>Left-click</strong> a skill in the portal to open it in your default text editor.</li>
+  <li><strong>Right-click</strong> a skill for a context menu with <strong>Show in file system</strong> and <strong>Delete</strong> options.</li>
+  <li>Skills are stored in <code class="language-plaintext highlighter-rouge">{ZoteroDataDir}/llm-for-zotero/skills/</code> as <code class="language-plaintext highlighter-rouge">.md</code> files.</li>
+  <li>If you delete a built-in skill, it stays deleted across restarts — the plugin respects your choice. New built-in skills added in plugin updates are seeded automatically without restoring skills you removed.</li>
+</ul>
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Tip</div>
+  You can share custom skills with others by exchanging <code>.md</code> files. Drop a skill file into your skills folder and it will be picked up on the next plugin startup or after creating/deleting any skill in the portal.
+</div>
 
 <hr />
 

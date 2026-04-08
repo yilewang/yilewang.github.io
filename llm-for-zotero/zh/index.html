@@ -702,6 +702,10 @@
     <strong>Obsidian 集成</strong>
     <p>将 Zotero 论文笔记直接写入 Obsidian 知识库，支持元数据、引用和图表提取。</p>
   </div>
+  <div class="rtd-feature-card">
+    <strong>可自定义技能</strong>
+    <p>9 个内置技能引导 Agent 针对常见任务采用最优工作流，支持通过 Markdown 文件创建自定义技能。</p>
+  </div>
 </div>
 
 <hr />
@@ -709,6 +713,7 @@
 <h2 id="最新更新">最新更新</h2>
 
 <ul>
+  <li><strong>Skills 技能系统</strong>：可自定义的引导文件，让 Agent 针对不同任务采用最优工作流。内置 9 个技能，并支持创建自定义技能。详见 <a href="#skills-技能系统">Skills 技能系统</a>。</li>
   <li><strong>独立窗口模式</strong>：在独立窗口中打开 LLM 助手，脱离 Zotero 阅读器侧栏使用。详见<a href="#独立窗口模式">独立窗口模式</a>。</li>
   <li><strong>Obsidian 集成</strong>：将 Zotero 论文笔记直接写入 Obsidian 知识库，支持自定义模板。详见 <a href="#obsidian-集成">Obsidian 集成</a>。</li>
   <li><strong>Agent 模式（Beta）</strong>：LLM-for-Zotero 现在可以作为自主 Agent 在您的 Zotero 文库中工作。</li>
@@ -1080,10 +1085,6 @@
   </thead>
   <tbody>
     <tr>
-      <td><strong>菜单</strong></td>
-      <td><code class="language-plaintext highlighter-rouge">工具</code> → <code class="language-plaintext highlighter-rouge">LLM Chat Window</code></td>
-    </tr>
-    <tr>
       <td><strong>快捷键</strong></td>
       <td><code class="language-plaintext highlighter-rouge">Ctrl+Shift+L</code>（macOS：<code class="language-plaintext highlighter-rouge">Cmd+Shift+L</code>）</td>
     </tr>
@@ -1393,6 +1394,155 @@
   <li>如有问题，使用 <code class="language-plaintext highlighter-rouge">undo_last_action</code> 进行撤销。</li>
   <li>终端命令和文件操作同样需要明确审批后才会执行。</li>
 </ul>
+
+<hr />
+
+<h2 id="skills-技能系统">Skills 技能系统</h2>
+
+<p><img src="/images/llm-for-zotero/skills.png" alt="Skills 技能管理面板" style="max-width:512px;" /></p>
+
+<p>Skills（技能）是可自定义的引导文件，用于调整 Agent 处理不同类型请求的方式。每个技能是一个 Markdown 文件，包含正则表达式触发模式：当您的消息匹配某个技能的模式时，该技能的指令会自动注入 Agent 的系统提示词中，引导它使用最高效的工具和工作流来完成任务。</p>
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">注意</div>
+  Skills 需要启用 <strong>Agent 模式</strong>才能生效，在标准聊天模式下无效。
+</div>
+
+<h3 id="内置技能">内置技能</h3>
+
+<p>插件内置 <strong>9 个技能</strong>，覆盖常见的研究工作流。首次运行时会自动复制到您的技能文件夹。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>技能</th>
+      <th>触发场景</th>
+      <th>引导 Agent 执行的操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">simple-paper-qa</code></td>
+      <td>关于论文的一般性问题（摘要、发现、作者、TLDR）</td>
+      <td>读取论文一次后直接回答——避免不必要的检索调用</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">evidence-based-qa</code></td>
+      <td>关于具体方法、结果、数据或论断的问题</td>
+      <td>先读取论文，再通过定向 <code class="language-plaintext highlighter-rouge">search_paper</code> 检索特定证据</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">analyze-figures</code></td>
+      <td>按编号引用图表、表格或示意图</td>
+      <td>优先使用 MinerU 缓存的图像；将图像直接发送给模型分析</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">compare-papers</code></td>
+      <td>比较或对比多篇论文的请求</td>
+      <td>批量读取前置信息，再针对比较要点进行定向证据检索</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">library-analysis</code></td>
+      <td>总结、分析或审计整个文库的请求</td>
+      <td>使用高效脚本一次性遍历所有条目，而非分页查询</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">literature-review</code></td>
+      <td>文献综述或研究综合的请求</td>
+      <td>三阶段工作流：发现论文、深度阅读前 3–5 篇、主题式综合</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">note-from-paper</code></td>
+      <td>从论文创建阅读笔记的请求</td>
+      <td>读取论文，可选包含 MinerU 提取的图表，写入 Zotero 笔记</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">note-editing</code></td>
+      <td>保存、编辑或创建笔记的请求</td>
+      <td>智能默认笔记目标（论文级 vs. 独立笔记），优先使用局部修改而非全文重写</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">write-to-obsidian</code></td>
+      <td>导出到 Obsidian 的请求</td>
+      <td>使用 YAML 前置信息、Pandoc 引用语法编写笔记，可选复制图表</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="工作原理-1">工作原理</h3>
+
+<ol>
+  <li>在 Agent 模式下发送消息时，插件会将您的文本与每个技能的 <code class="language-plaintext highlighter-rouge">match</code> 模式进行匹配。</li>
+  <li>如果技能中的<strong>任何一个</strong>模式匹配成功（OR 语义），该技能的指令会被注入 Agent 的系统提示词中。</li>
+  <li>多个技能可以同时激活——如果您的消息匹配了多个技能的模式。</li>
+  <li>Agent 将这些指令作为工具选择和工作流的引导——技能教会 Agent <strong>如何</strong>完成任务，而非定义它<strong>能做什么</strong>。</li>
+</ol>
+
+<h3 id="创建自定义技能">创建自定义技能</h3>
+
+<ol>
+  <li>打开<strong>独立窗口</strong>（<code class="language-plaintext highlighter-rouge">Ctrl+Shift+L</code> / macOS：<code class="language-plaintext highlighter-rouge">Cmd+Shift+L</code>）。</li>
+  <li>点击顶部工具栏中的 <strong>Skills 图标</strong>打开技能管理面板。</li>
+  <li>点击 <strong>”+ New skill”</strong> 按钮创建模板文件。</li>
+  <li>模板会在默认文本编辑器中打开，编辑以下三个关键部分：</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
+id: my-custom-skill
+match: /你的正则表达式模式/i
+match: /另一个触发模式/i
+---
+
+当此技能匹配时，Agent 应遵循的指令。
+描述工作流程、优先使用哪些工具以及任何约束条件。
+</code></pre></div></div>
+
+<ol start="5">
+  <li>保存文件。技能会立即加载——无需重启。</li>
+</ol>
+
+<p><strong>技能文件格式：</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>必需</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">id</code></td>
+      <td>是</td>
+      <td>技能的唯一标识符</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">match</code></td>
+      <td>是（至少一个）</td>
+      <td>正则表达式模式，支持可选标志（<code class="language-plaintext highlighter-rouge">i</code>、<code class="language-plaintext highlighter-rouge">g</code>、<code class="language-plaintext highlighter-rouge">m</code> 等）。可重复——多个 <code class="language-plaintext highlighter-rouge">match</code> 行使用 OR 语义</td>
+    </tr>
+    <tr>
+      <td>指令正文</td>
+      <td>是</td>
+      <td>结束标记 <code class="language-plaintext highlighter-rouge">---</code> 之后的 Markdown 文本。技能匹配时会注入 Agent 的系统提示词</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="管理技能">管理技能</h3>
+
+<ul>
+  <li><strong>左键点击</strong>面板中的技能可在默认文本编辑器中打开编辑。</li>
+  <li><strong>右键点击</strong>技能弹出上下文菜单，包含<strong>在文件系统中显示</strong>和<strong>删除</strong>选项。</li>
+  <li>技能以 <code class="language-plaintext highlighter-rouge">.md</code> 文件形式存储在 <code class="language-plaintext highlighter-rouge">{Zotero数据目录}/llm-for-zotero/skills/</code> 中。</li>
+  <li>如果您删除了内置技能，它将在重启后保持删除状态——插件尊重您的选择。插件更新中新增的内置技能会自动添加，但不会恢复您已删除的技能。</li>
+</ul>
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">提示</div>
+  您可以通过交换 <code>.md</code> 文件与他人分享自定义技能。将技能文件放入您的技能文件夹，在下次插件启动或在面板中创建/删除任何技能后即会被加载。
+</div>
 
 <hr />
 
