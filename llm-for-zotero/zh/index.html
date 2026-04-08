@@ -685,6 +685,14 @@
     <strong>MinerU PDF 解析</strong>
     <p>使用高保真 PDF 解析，完整保留表格、公式、图表和复杂版式。</p>
   </div>
+  <div class="rtd-feature-card">
+    <strong>独立窗口模式</strong>
+    <p>在独立窗口中打开 LLM 助手，提供全尺寸聊天界面和对话历史侧栏。</p>
+  </div>
+  <div class="rtd-feature-card">
+    <strong>Obsidian 集成</strong>
+    <p>将 Zotero 论文笔记直接写入 Obsidian 知识库，支持元数据、引用和图表提取。</p>
+  </div>
 </div>
 
 <hr />
@@ -692,12 +700,13 @@
 <h2 id="最新更新">最新更新</h2>
 
 <ul>
+  <li><strong>独立窗口模式</strong>：在独立窗口中打开 LLM 助手，脱离 Zotero 阅读器侧栏使用。详见<a href="#独立窗口模式">独立窗口模式</a>。</li>
+  <li><strong>Obsidian 集成</strong>：将 Zotero 论文笔记直接写入 Obsidian 知识库，支持自定义模板。详见 <a href="#obsidian-集成">Obsidian 集成</a>。</li>
   <li><strong>Agent 模式（Beta）</strong>：LLM-for-Zotero 现在可以作为自主 Agent 在您的 Zotero 文库中工作。</li>
   <li><strong>终端与文件访问</strong>：Agent 可执行终端命令并读写本地文件——如同 Zotero 内置的编程 Agent。</li>
   <li><strong>MCP 服务器</strong>：外部 AI Agent 可通过内置的 Model Context Protocol 服务器连接 Zotero。</li>
   <li><strong>Codex 认证</strong>：ChatGPT Plus 订阅用户可以使用 <code class="language-plaintext highlighter-rouge">gpt-5.4</code> 等 Codex 模型，无需单独的 API 密钥。</li>
   <li><strong>MinerU PDF 解析</strong>：高保真提取现可更准确地保留表格、公式和图表。</li>
-  <li><strong>更名</strong>：插件现已更名为 <code class="language-plaintext highlighter-rouge">llm-for-zotero</code>。</li>
 </ul>
 
 <hr />
@@ -1042,6 +1051,113 @@
 </ul>
 
 <p>您可以修改这些预设或添加自定义内容，以适配您的研究工作流。</p>
+
+<hr />
+
+<h2 id="独立窗口模式">独立窗口模式</h2>
+
+<p><img src="/images/llm-for-zotero/standalone_window.png" alt="LLM 助手独立窗口" /></p>
+
+<p>在独立窗口中打开 LLM 助手，脱离 Zotero 阅读器侧栏。独立窗口提供全尺寸聊天界面，左侧配有可折叠的对话历史面板。</p>
+
+<h3 id="打开方式">打开方式</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>方式</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>菜单</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">工具</code> → <code class="language-plaintext highlighter-rouge">LLM Chat Window</code></td>
+    </tr>
+    <tr>
+      <td><strong>快捷键</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">Ctrl+Shift+L</code>（macOS：<code class="language-plaintext highlighter-rouge">Cmd+Shift+L</code>）</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="功能特点">功能特点</h3>
+
+<ul>
+  <li><strong>论文对话与文库对话</strong> — 通过顶部标签页切换论文级对话和文库级对话。</li>
+  <li><strong>对话历史</strong> — 在可折叠的左侧面板中按日期分组（今天、昨天、最近 7/30 天、更早）浏览历史对话。</li>
+  <li><strong>功能完全一致</strong> — 阅读器侧栏中的所有功能（截图、文件上传、Agent 模式、快捷预设、引用选择器）在独立窗口中均可正常使用。</li>
+  <li><strong>搜索</strong> — 通过搜索浮层快速查找历史对话。</li>
+</ul>
+
+<p>独立窗口打开时，阅读器侧栏面板会显示占位提示，提供<strong>聚焦窗口</strong>（将独立窗口置于前台）和<strong>关闭窗口并返回侧栏</strong>两个选项。</p>
+
+<hr />
+
+<h2 id="obsidian-集成">Obsidian 集成</h2>
+
+<p>Agent 可以将 Zotero 论文笔记直接写入您的 <a href="https://obsidian.md/">Obsidian</a> 知识库——包含完整的元数据、引用，以及可选的图表提取。</p>
+
+<h3 id="配置-1">配置</h3>
+
+<p>打开 <strong>首选项</strong> → <strong>llm-for-zotero</strong>，滚动到 <strong>Obsidian Integration</strong> 部分。</p>
+
+<p><img src="/images/llm-for-zotero/obsidian_setting.png" alt="Obsidian 集成设置" style="max-width:512px;" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>设置项</th>
+      <th>说明</th>
+      <th>默认值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Vault Path</strong></td>
+      <td>Obsidian 知识库根目录的绝对路径</td>
+      <td><em>（必填）</em></td>
+    </tr>
+    <tr>
+      <td><strong>Default Folder</strong></td>
+      <td>笔记存放的子文件夹（不存在时自动创建）</td>
+      <td><code class="language-plaintext highlighter-rouge">Logs</code></td>
+    </tr>
+    <tr>
+      <td><strong>Attachments Folder</strong></td>
+      <td>图片和附件的子文件夹</td>
+      <td><code class="language-plaintext highlighter-rouge">imgs</code></td>
+    </tr>
+    <tr>
+      <td><strong>Note Template</strong></td>
+      <td>支持 <code class="language-plaintext highlighter-rouge">{{title}}</code>、<code class="language-plaintext highlighter-rouge">{{date}}</code>、<code class="language-plaintext highlighter-rouge">{{content}}</code> 占位符的 Markdown 模板</td>
+      <td>内置默认模板</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>点击 <strong>Test Write Access</strong> 验证插件是否有权限写入您的知识库。</p>
+
+<h3 id="工作原理">工作原理</h3>
+
+<p>要求 Agent 将笔记写入 Obsidian（例如<em>“总结这篇论文并保存到 Obsidian”</em>），Agent 将：</p>
+
+<ol>
+  <li><strong>采集内容</strong>：从论文中提取元数据、摘要、关键要点等。</li>
+  <li><strong>编写 Markdown 笔记</strong>：使用您配置的模板。</li>
+  <li><strong>添加 YAML 前置信息</strong>：包含标题、日期、标签、作者、年份和引用键。</li>
+  <li><strong>复制图表</strong>（可选）：将 MinerU 解析的 PDF 图表复制到附件文件夹。</li>
+  <li><strong>写入笔记</strong>：保存到 <code class="language-plaintext highlighter-rouge">{知识库路径}/{默认文件夹}/{标题}.md</code>。</li>
+</ol>
+
+<p><img src="/images/llm-for-zotero/obsidian_example.png" alt="Obsidian 中的 Zotero 论文笔记" /></p>
+
+<p>笔记使用 <a href="https://pandoc.org/MANUAL.html#citations">Pandoc 引用语法</a>（<code class="language-plaintext highlighter-rouge">[@citekey]</code>），兼容 Obsidian 的 Zotero Integration 和 Pandoc 插件。</p>
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">提示</div>
+  Obsidian 集成在 <strong>Agent 模式</strong> 启用时效果最佳。Agent 会自动处理内容提取、模板填充和文件写入。
+</div>
 
 <hr />
 

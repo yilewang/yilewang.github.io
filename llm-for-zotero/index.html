@@ -685,6 +685,14 @@
     <strong>MinerU PDF Parsing</strong>
     <p>Use high-fidelity PDF parsing that preserves tables, equations, figures, and complex layouts.</p>
   </div>
+  <div class="rtd-feature-card">
+    <strong>Standalone Window</strong>
+    <p>Open the LLM Assistant in its own dedicated window with a full-sized chat interface and conversation history sidebar.</p>
+  </div>
+  <div class="rtd-feature-card">
+    <strong>Obsidian Integration</strong>
+    <p>Write notes from Zotero papers directly to your Obsidian vault with metadata, citations, and extracted figures.</p>
+  </div>
 </div>
 
 <hr />
@@ -692,12 +700,13 @@
 <h2 id="recent-updates">Recent Updates</h2>
 
 <ul>
+  <li><strong>Standalone Window Mode</strong>: Open the LLM Assistant in its own dedicated window, separate from the reader sidebar. See <a href="#standalone-window-mode">Standalone Window Mode</a>.</li>
+  <li><strong>Obsidian Integration</strong>: Write notes from Zotero papers directly to your Obsidian vault with customizable templates. See <a href="#obsidian-integration">Obsidian Integration</a>.</li>
   <li><strong>Agent Mode (Beta)</strong>: LLM-for-Zotero can now act as an autonomous agent inside your Zotero library.</li>
   <li><strong>Terminal &amp; File Access</strong>: The agent can execute shell commands and read/write files on your local machine — like a coding agent inside Zotero.</li>
   <li><strong>MCP Server</strong>: External AI agents can connect to Zotero via the built-in Model Context Protocol server.</li>
   <li><strong>Codex auth</strong>: ChatGPT Plus subscribers can use Codex models such as <code class="language-plaintext highlighter-rouge">gpt-5.4</code> without a separate API key.</li>
   <li><strong>MinerU PDF parsing</strong>: High-fidelity extraction now preserves tables, equations, and figures more accurately.</li>
-  <li><strong>Renamed</strong>: the plugin is now published as <code class="language-plaintext highlighter-rouge">llm-for-zotero</code>.</li>
 </ul>
 
 <hr />
@@ -949,6 +958,113 @@ Restart Zotero to complete the installation. The plugin automatically checks for
   <li><strong>Methodology</strong> — describe the research methods</li>
   <li><strong>Limitations</strong> — identify weaknesses or gaps</li>
 </ul>
+
+<hr />
+
+<h2 id="standalone-window-mode">Standalone Window Mode</h2>
+
+<p><img src="/images/llm-for-zotero/standalone_window.png" alt="LLM Assistant standalone window" /></p>
+
+<p>Open the LLM Assistant in its own dedicated window, separate from the Zotero reader sidebar. The standalone window provides a full-sized chat interface with a collapsible conversation history panel on the left.</p>
+
+<h3 id="how-to-open">How to open</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Menu</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">Tools</code> → <code class="language-plaintext highlighter-rouge">LLM Chat Window</code></td>
+    </tr>
+    <tr>
+      <td><strong>Keyboard shortcut</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">Ctrl+Shift+L</code> (macOS: <code class="language-plaintext highlighter-rouge">Cmd+Shift+L</code>)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="features">Features</h3>
+
+<ul>
+  <li><strong>Paper chat &amp; Library chat</strong> — Switch between paper-specific and library-wide conversations using the tabs at the top.</li>
+  <li><strong>Conversation history</strong> — Browse past conversations organized by date (Today, Yesterday, Last 7/30 days, Older) in the collapsible left sidebar.</li>
+  <li><strong>Full feature parity</strong> — Everything available in the reader sidebar — screenshots, file uploads, agent mode, quick-action presets, reference picker — works identically in the standalone window.</li>
+  <li><strong>Search</strong> — Search through your conversation history using the search overlay.</li>
+</ul>
+
+<p>While the standalone window is open, the reader sidebar panels show a placeholder with options to <strong>Focus Window</strong> (bring the standalone window to the foreground) or <strong>Close Window &amp; Return Here</strong> (close standalone and restore the sidebar).</p>
+
+<hr />
+
+<h2 id="obsidian-integration">Obsidian Integration</h2>
+
+<p>The agent can write notes from your Zotero papers directly into your <a href="https://obsidian.md/">Obsidian</a> vault — with full metadata, citations, and optionally extracted figures.</p>
+
+<h3 id="configuration-1">Configuration</h3>
+
+<p>Open <strong>Preferences</strong> → <strong>llm-for-zotero</strong> and scroll to the <strong>Obsidian Integration</strong> section.</p>
+
+<p><img src="/images/llm-for-zotero/obsidian_setting.png" alt="Obsidian Integration settings" style="max-width:512px;" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Vault Path</strong></td>
+      <td>Absolute path to your Obsidian vault root</td>
+      <td><em>(required)</em></td>
+    </tr>
+    <tr>
+      <td><strong>Default Folder</strong></td>
+      <td>Subfolder for notes (created if it doesn’t exist)</td>
+      <td><code class="language-plaintext highlighter-rouge">Logs</code></td>
+    </tr>
+    <tr>
+      <td><strong>Attachments Folder</strong></td>
+      <td>Subfolder for copied figures and images</td>
+      <td><code class="language-plaintext highlighter-rouge">imgs</code></td>
+    </tr>
+    <tr>
+      <td><strong>Note Template</strong></td>
+      <td>Markdown template with <code class="language-plaintext highlighter-rouge">{{title}}</code>, <code class="language-plaintext highlighter-rouge">{{date}}</code>, <code class="language-plaintext highlighter-rouge">{{content}}</code> placeholders</td>
+      <td>Built-in default</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Click <strong>Test Write Access</strong> to verify the plugin can write to your vault.</p>
+
+<h3 id="how-it-works">How it works</h3>
+
+<p>Ask the agent to write a note to Obsidian (e.g. <em>“Summarize this paper and save it to Obsidian”</em>). The agent will:</p>
+
+<ol>
+  <li><strong>Gather content</strong> from the paper (metadata, summary, key points, etc.).</li>
+  <li><strong>Compose a Markdown note</strong> using your configured template.</li>
+  <li><strong>Add YAML frontmatter</strong> with title, date, tags, authors, year, and citation key.</li>
+  <li><strong>Copy figures</strong> (optional) from MinerU-parsed PDFs into the attachments folder.</li>
+  <li><strong>Write the note</strong> to <code class="language-plaintext highlighter-rouge">{vault_path}/{default_folder}/{title}.md</code>.</li>
+</ol>
+
+<p><img src="/images/llm-for-zotero/obsidian_example.png" alt="A Zotero paper note in Obsidian" /></p>
+
+<p>Notes use <a href="https://pandoc.org/MANUAL.html#citations">Pandoc citation syntax</a> (<code class="language-plaintext highlighter-rouge">[@citekey]</code>), compatible with Obsidian’s Zotero Integration and Pandoc plugins.</p>
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Tip</div>
+  The Obsidian integration works best when <strong>Agent Mode</strong> is enabled. The agent handles content extraction, template formatting, and file writing automatically.
+</div>
 
 <hr />
 
