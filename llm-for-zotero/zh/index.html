@@ -713,7 +713,7 @@
 <h2 id="最新更新">最新更新</h2>
 
 <ul>
-  <li><strong>Codex App Server（推荐）</strong>：ChatGPT Plus 订阅用户应优先使用新的 <code class="language-plaintext highlighter-rouge">Codex App Server</code> 认证方式，通过官方本地 <code class="language-plaintext highlighter-rouge">codex app-server</code> 流程免 API 密钥调用 <code class="language-plaintext highlighter-rouge">gpt-5.4</code> 等 Codex 模型。旧的直连后端方式仍作为 <code class="language-plaintext highlighter-rouge">Codex Auth (Legacy)</code> 保留给现有用户。此功能由 <a href="https://github.com/jianghao-zhang">@jianghao-zhang</a> 和 <a href="https://github.com/boltma">@boltma</a> 贡献。详见 <a href="#codex-配置chatgpt-plus-订阅用户">Codex 配置</a>。</li>
+  <li><strong>Codex App Server（推荐）</strong>：ChatGPT Plus 订阅用户应优先使用新的 <code class="language-plaintext highlighter-rouge">Codex App Server</code> 认证方式，通过官方本地 <code class="language-plaintext highlighter-rouge">codex app-server</code> 流程免 API 密钥调用 <code class="language-plaintext highlighter-rouge">gpt-5.4</code> 等 Codex 模型。旧的直连后端方式仍作为 <code class="language-plaintext highlighter-rouge">Codex Auth (Legacy)</code> 保留给现有用户。最初的 Codex Auth 集成由 <a href="https://github.com/jianghao-zhang">@jianghao-zhang</a> 贡献；新的 Codex App Server 集成由 <a href="https://github.com/boltma">@boltma</a> 设计。详见 <a href="#codex-配置chatgpt-plus-订阅用户">Codex 配置</a>。</li>
   <li><strong>Agent 动作支持灵活论文范围</strong>：<code class="language-plaintext highlighter-rouge">auto_tag</code> 和 <code class="language-plaintext highlighter-rouge">complete_metadata</code> 现在可作用于当前论文、已选择论文、已选择文集或整个文库，并在批量变更前打开审阅卡片。</li>
   <li><strong>文件笔记</strong>：笔记目录不再硬编码为 Obsidian。您可以配置任意本地 Markdown 目录，包括 Obsidian、Logseq 或普通文件夹。详见 <a href="#文件笔记">文件笔记</a>。</li>
   <li><strong>独立窗口笔记编辑修复</strong>：独立窗口现在会在上下文区域保留当前笔记编辑状态。</li>
@@ -1647,7 +1647,7 @@ match: /另一个触发模式/i
   <li><strong>Codex Auth (Legacy)</strong>：直接调用 ChatGPT/Codex Responses 后端。现有用户暂时可以保留该配置，但新用户应选择 <code class="language-plaintext highlighter-rouge">Codex App Server</code>。</li>
 </ul>
 
-<p><em>特别感谢 <a href="https://github.com/jianghao-zhang">@jianghao-zhang</a> 和 <a href="https://github.com/boltma">@boltma</a> 贡献 Codex App Server 集成。</em></p>
+<p><em>特别感谢 <a href="https://github.com/jianghao-zhang">@jianghao-zhang</a> 贡献最初的 Codex Auth 集成，以及 <a href="https://github.com/boltma">@boltma</a> 设计 Codex App Server 集成。</em></p>
 
 <h3 id="配置步骤-1">配置步骤</h3>
 
