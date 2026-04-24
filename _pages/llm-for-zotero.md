@@ -59,7 +59,7 @@ lang_alt: /llm-for-zotero/zh/
 
 ## Recent Updates
 
-- **Codex App Server (recommended)**: ChatGPT Plus subscribers should use `Codex App Server`, the official local `codex app-server` auth flow, for Codex models such as `gpt-5.4` without an API key. The older direct backend flow remains available as `Codex Auth (Legacy)` for current users. Feature contributed by [@boltma](https://github.com/boltma) and [@jianghao-zhang](https://github.com/jianghao-zhang). See [Codex Setup](#codex-setup-chatgpt-plus-subscribers).
+- **Codex App Server (recommended)**: ChatGPT Plus subscribers should use `Codex App Server`, the official local `codex app-server` auth flow, for Codex models such as `gpt-5.4` without an API key. The older direct backend flow remains available as `Codex Auth (Legacy)` for current users. The original Codex Auth integration was contributed by [@jianghao-zhang](https://github.com/jianghao-zhang); the new Codex App Server integration was designed by [@boltma](https://github.com/boltma). See [Codex Setup](#codex-setup-chatgpt-plus-subscribers).
 - **Agent actions on flexible paper scopes**: `auto_tag` and `complete_metadata` now work on the current paper, selected papers, selected collections, or the whole library, with review cards before batch changes are applied.
 - **File-Based Notes**: Notes are no longer hard-coded to Obsidian. Configure any local Markdown directory, including Obsidian, Logseq, or a plain folder. See [File-Based Notes](#file-based-notes).
 - **Standalone note editing fixes**: Standalone windows now preserve the active note-editing context in the context area.
@@ -562,7 +562,7 @@ There are two Codex-backed modes in the plugin. New users should choose **Codex 
 - **Codex App Server (Recommended)**: Spawns the local `codex app-server` CLI and talks to it over stdio. This is the official way to use Codex in third-party apps and the preferred setup for new users.
 - **Codex Auth (Legacy)**: Uses the ChatGPT/Codex Responses backend directly. Existing users can keep this configuration for now, but new users should choose `Codex App Server`.
 
-_Special thanks to [@boltma](https://github.com/boltma) for contributing the Codex App Server integration._
+_Special thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) for contributing the original Codex Auth integration, and to [@boltma](https://github.com/boltma) for designing the Codex App Server integration._
 
 ### Step-by-step setup
 

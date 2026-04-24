@@ -59,7 +59,7 @@ lang_alt: /llm-for-zotero/
 
 ## 最新更新
 
-- **Codex App Server（推荐）**：ChatGPT Plus 订阅用户应优先使用新的 `Codex App Server` 认证方式，通过官方本地 `codex app-server` 流程免 API 密钥调用 `gpt-5.4` 等 Codex 模型。旧的直连后端方式仍作为 `Codex Auth (Legacy)` 保留给现有用户。此功能由 [@jianghao-zhang](https://github.com/jianghao-zhang) 和 [@boltma](https://github.com/boltma) 贡献。详见 [Codex 配置](#codex-配置chatgpt-plus-订阅用户)。
+- **Codex App Server（推荐）**：ChatGPT Plus 订阅用户应优先使用新的 `Codex App Server` 认证方式，通过官方本地 `codex app-server` 流程免 API 密钥调用 `gpt-5.4` 等 Codex 模型。旧的直连后端方式仍作为 `Codex Auth (Legacy)` 保留给现有用户。最初的 Codex Auth 集成由 [@jianghao-zhang](https://github.com/jianghao-zhang) 贡献；新的 Codex App Server 集成由 [@boltma](https://github.com/boltma) 设计。详见 [Codex 配置](#codex-配置chatgpt-plus-订阅用户)。
 - **Agent 动作支持灵活论文范围**：`auto_tag` 和 `complete_metadata` 现在可作用于当前论文、已选择论文、已选择文集或整个文库，并在批量变更前打开审阅卡片。
 - **文件笔记**：笔记目录不再硬编码为 Obsidian。您可以配置任意本地 Markdown 目录，包括 Obsidian、Logseq 或普通文件夹。详见 [文件笔记](#文件笔记)。
 - **独立窗口笔记编辑修复**：独立窗口现在会在上下文区域保留当前笔记编辑状态。
@@ -597,7 +597,7 @@ match: /另一个触发模式/i
 - **Codex App Server（推荐）**：启动本地 `codex app-server` CLI，并通过 stdio 与其通信。这是第三方应用使用 Codex 的官方方式，也是新用户首选配置。
 - **Codex Auth (Legacy)**：直接调用 ChatGPT/Codex Responses 后端。现有用户暂时可以保留该配置，但新用户应选择 `Codex App Server`。
 
-_特别感谢 [@jianghao-zhang](https://github.com/jianghao-zhang) 和 [@boltma](https://github.com/boltma) 贡献 Codex App Server 集成。_
+_特别感谢 [@jianghao-zhang](https://github.com/jianghao-zhang) 贡献最初的 Codex Auth 集成，以及 [@boltma](https://github.com/boltma) 设计 Codex App Server 集成。_
 
 ### 配置步骤
 
