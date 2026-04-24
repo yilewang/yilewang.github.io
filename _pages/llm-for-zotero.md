@@ -31,7 +31,7 @@ lang_alt: /llm-for-zotero/zh/
   </div>
   <div class="rtd-feature-card">
     <strong>Multi-Provider Support</strong>
-    <p>OpenAI, Gemini, DeepSeek, local OpenAI-compatible models, and more.</p>
+    <p>OpenAI, Anthropic, Gemini, DeepSeek, local OpenAI-compatible models, and more.</p>
   </div>
   <div class="rtd-feature-card">
     <strong>Agent Mode (Beta)</strong>
@@ -46,12 +46,12 @@ lang_alt: /llm-for-zotero/zh/
     <p>Open the LLM Assistant in its own dedicated window with a full-sized chat interface and conversation history sidebar.</p>
   </div>
   <div class="rtd-feature-card">
-    <strong>Obsidian Integration</strong>
-    <p>Write notes from Zotero papers directly to your Obsidian vault with metadata, citations, and extracted figures.</p>
+    <strong>File-Based Notes</strong>
+    <p>Save research notes as Markdown files in Obsidian, Logseq, or any local notes folder with metadata, citations, and extracted figures.</p>
   </div>
   <div class="rtd-feature-card">
     <strong>Customizable Skills</strong>
-    <p>9 built-in skills guide the agent's workflows for common tasks. Create your own with simple Markdown files.</p>
+    <p>8 built-in skills guide the agent's workflows for common tasks. Create your own with simple Markdown files.</p>
   </div>
 </div>
 
@@ -59,14 +59,13 @@ lang_alt: /llm-for-zotero/zh/
 
 ## Recent Updates
 
-- **Skills**: Customizable guidance files that shape how the agent handles different tasks. 9 built-in skills included, plus a portal for creating your own. See [Skills](#skills).
-- **Standalone Window Mode**: Open the LLM Assistant in its own dedicated window, separate from the reader sidebar. See [Standalone Window Mode](#standalone-window-mode).
-- **Obsidian Integration**: Write notes from Zotero papers directly to your Obsidian vault with customizable templates. See [Obsidian Integration](#obsidian-integration).
-- **Agent Mode (Beta)**: LLM-for-Zotero can now act as an autonomous agent inside your Zotero library.
-- **Terminal & File Access**: The agent can execute shell commands and read/write files on your local machine — like a coding agent inside Zotero.
-- **MCP Server**: External AI agents can connect to Zotero via the built-in Model Context Protocol server.
-- **Codex auth**: ChatGPT Plus subscribers can use Codex models such as `gpt-5.4` without a separate API key.
-- **MinerU PDF parsing**: High-fidelity extraction now preserves tables, equations, and figures more accurately.
+- **Codex App Server (recommended)**: ChatGPT Plus subscribers should use `Codex App Server`, the official local `codex app-server` auth flow, for Codex models such as `gpt-5.4` without an API key. The older direct backend flow remains available as `Codex Auth (Legacy)` for current users. Feature contributed by [@boltma](https://github.com/boltma) and [@jianghao-zhang](https://github.com/jianghao-zhang). See [Codex Setup](#codex-setup-chatgpt-plus-subscribers).
+- **Agent actions on flexible paper scopes**: `auto_tag` and `complete_metadata` now work on the current paper, selected papers, selected collections, or the whole library, with review cards before batch changes are applied.
+- **File-Based Notes**: Notes are no longer hard-coded to Obsidian. Configure any local Markdown directory, including Obsidian, Logseq, or a plain folder. See [File-Based Notes](#file-based-notes).
+- **Standalone note editing fixes**: Standalone windows now preserve the active note-editing context in the context area.
+- **Claude/Anthropic compatibility fixes**: Anthropic message sequencing was updated and Claude Opus 4.7 support was added.
+- **Skills**: Customizable guidance files shape how the agent handles different tasks. 8 built-in skills are included, plus a portal for creating your own. See [Skills](#skills).
+- **MinerU PDF parsing**: High-fidelity extraction preserves tables, equations, and figures more accurately.
 
 ---
 
@@ -260,42 +259,42 @@ While the standalone window is open, the reader sidebar panels show a placeholde
 
 ---
 
-## Obsidian Integration
+## File-Based Notes
 
-The agent can write notes from your Zotero papers directly into your [Obsidian](https://obsidian.md/) vault &mdash; with full metadata, citations, and optionally extracted figures.
+Beyond Zotero's built-in notes, the agent can save research notes as Markdown files in any local directory you choose. The plugin is **not tied to any specific note-taking app**: point it at an Obsidian vault, a Logseq graph, or a plain folder of `.md` files.
 
 ### Configuration
 
-Open **Preferences** &rarr; **llm-for-zotero** and scroll to the **Obsidian Integration** section.
+Open **Preferences** &rarr; **llm-for-zotero** and scroll to the **Notes Directory** section.
 
-<img src="/images/llm-for-zotero/obsidian_setting.png" alt="Obsidian Integration settings" style="max-width:512px;">
+<img src="/images/llm-for-zotero/outside_notes.png" alt="Notes Directory settings" style="max-width:512px;">
 
-| Setting | Description | Default |
+| Setting | Description | Example |
 |---|---|---|
-| **Vault Path** | Absolute path to your Obsidian vault root | _(required)_ |
-| **Default Folder** | Subfolder for notes (created if it doesn't exist) | `Logs` |
-| **Attachments Folder** | Subfolder for copied figures and images | `imgs` |
-| **Note Template** | Markdown template with `{% raw %}{{title}}{% endraw %}`, `{% raw %}{{date}}{% endraw %}`, `{% raw %}{{content}}{% endraw %}` placeholders | Built-in default |
+| **Nickname** | How you refer to this directory in chat; the agent recognizes the name when you mention it | `Obsidian`, `Logseq` |
+| **Notes Directory Path** | Absolute path to the root directory where notes are saved | `/Users/me/MyVault` |
+| **Default Folder** | Default subfolder for new notes; the agent can write elsewhere if you ask it to | `Logs` |
+| **Attachments Folder** | Folder for copied figures and images, relative to the directory root | `Logs/imgs` |
 
-Click **Test Write Access** to verify the plugin can write to your vault.
+Click **Test Write Access** to verify the plugin can write to your directory.
 
 ### How it works
 
-Ask the agent to write a note to Obsidian (e.g. *"Summarize this paper and save it to Obsidian"*). The agent will:
+Ask the agent to write a note using the nickname you configured, for example *"Summarize this paper and save it to Obsidian"* or *"Log this to my Logseq"*. The agent will:
 
-1. **Gather content** from the paper (metadata, summary, key points, etc.).
-2. **Compose a Markdown note** using your configured template.
-3. **Add YAML frontmatter** with title, date, tags, authors, year, and citation key.
-4. **Copy figures** (optional) from MinerU-parsed PDFs into the attachments folder.
-5. **Write the note** to `{vault_path}/{default_folder}/{title}.md`.
+1. **Gather content** from the paper, including metadata, summary, key points, and figures when available.
+2. **Compose a Markdown note** following the `write-note` skill.
+3. **Add YAML frontmatter** matching the `write-note` template: `title`, `created`, `tags`, `citekey`, `doi`, and `journal`; author information stays in the note body.
+4. **Copy figures** from MinerU-parsed PDFs into the attachments folder when requested.
+5. **Write the note** to `{notes_directory}/{default_folder}/{title}.md`.
 
-<img src="/images/llm-for-zotero/obsidian_example.png" alt="A Zotero paper note in Obsidian">
+<img src="/images/llm-for-zotero/obsidian_example.png" alt="A Zotero paper note rendered in Obsidian">
 
-Notes use [Pandoc citation syntax](https://pandoc.org/MANUAL.html#citations) (`[@citekey]`), compatible with Obsidian's Zotero Integration and Pandoc plugins.
+Notes use [Pandoc citation syntax](https://pandoc.org/MANUAL.html#citations) (`[@citekey]`), compatible with Obsidian's Zotero Integration and Pandoc plugins, as well as most Markdown readers.
 
 <div class="rtd-tip">
   <div class="rtd-admonition-title">Tip</div>
-  The Obsidian integration works best when <strong>Agent Mode</strong> is enabled. The agent handles content extraction, template formatting, and file writing automatically.
+  Note templates and figure-embedding rules live in the <code>write-note</code> skill. Open the Standalone Window, then the Skills portal, to customize them.
 </div>
 
 ---
@@ -307,45 +306,49 @@ Notes use [Pandoc citation syntax](https://pandoc.org/MANUAL.html#citations) (`[
   Agent Mode is disabled by default. Enable it in <strong>Preferences</strong>, then toggle <strong>Agent (beta)</strong> in the context bar.
 </div>
 
-When enabled, the LLM becomes an **autonomous agent** that can read, search, and write within your Zotero library — and beyond. In addition to library operations, the agent can execute terminal commands and access files on your local machine, functioning like a coding agent inside Zotero. All write operations require your explicit approval before execution.
+When enabled, the LLM becomes an **autonomous agent** that can read, search, and write within your Zotero library. Read tools run directly; write tools route through confirmation cards and stay undoable.
 
-### Read Tools
+### Library & PDF Reading Tools
 
-These tools let the agent explore your library and the scholarly web without modifying anything.
+These tools let the agent explore your library, PDFs, attachments, and scholarly sources without modifying anything.
 
 | Tool | Description |
 |---|---|
-| `query_library` | Search and list Zotero items, collections, related papers, and duplicates. Supports multiple query modes (list, search, duplicates, unfiled, untagged) with filtering by collection, PDF status, and tags |
-| `read_library` | Read structured item state: metadata, notes, annotations, attachments (all types), and collection membership |
-| `inspect_pdf` | Advanced PDF operations: read front matter, search pages, retrieve evidence, render pages, capture the active reader view, and read specific chunks or full documents |
-| `search_literature_online` | Search live scholarly sources (OpenAlex, arXiv, EuropePMC) or fetch external metadata (CrossRef, Semantic Scholar). Modes: recommendations, references, citations, search, metadata |
+| `query_library` | Discover Zotero items and collections: search or list any item type, filter by author, year, collection, item type, or tag, browse the collection tree, find related papers, and detect duplicates |
+| `read_library` | Read structured item state for one or more items: metadata, notes, annotations, attachments, and collection membership |
+| `read_paper` | Read text content from a PDF, either opening sections by default or specific section indexes, with up to 20 papers per call |
+| `search_paper` | Find evidence in papers via a question and return ranked relevant passages, with up to 10 papers per call |
+| `view_pdf_pages` | Render PDF pages as images for visual analysis, by question, by page number, or by capturing the currently visible page |
+| `read_attachment` | Read any Zotero attachment by ID, including HTML snapshots, text files, and images, or send the whole file to the model |
+| `search_literature_online` | Search live scholarly sources such as CrossRef and Semantic Scholar for metadata, recommendations, references, and citations |
 
-### Write Tools
+### Library Write Tools
 
 All write tools require human confirmation before changes take effect.
 
 | Tool | Description |
 |---|---|
-| `apply_tags` | Add or remove tags on one or more papers, with batch support |
-| `update_metadata` | Update metadata fields (title, authors, DOI, journal, abstract, etc.) on items |
-| `move_to_collection` | Move items between Zotero collections |
-| `manage_collections` | Create or delete collections (folders) with optional nesting |
-| `edit_current_note` | Create or edit Zotero notes, with local image import support |
-| `import_identifiers` | Import papers by DOI, arXiv ID, or other identifiers — Zotero auto-retrieves metadata |
-| `import_local_files` | Import local files (PDFs, documents) from the filesystem into Zotero |
-| `manage_attachments` | Add or remove attachments (PDFs, supplementary files) on items |
-| `merge_items` | Merge duplicate items: keeps master, moves all children from duplicates, then trashes duplicates |
-| `trash_items` | Move items to trash |
-| `undo_last_action` | Revert the last approved write batch |
+| `apply_tags` | Add or remove tags on one or more papers |
+| `update_metadata` | Update metadata fields such as title, authors, DOI, journal, or abstract |
+| `move_to_collection` | Add or remove papers from collections |
+| `manage_collections` | Create or delete collections |
+| `manage_attachments` | Delete, rename, or re-link broken attachment file paths |
+| `merge_items` | Merge duplicates: keep the master item, move children from the others, and trash the rest |
+| `trash_items` | Move items to the trash |
+| `import_identifiers` | Import papers by DOI, ISBN, arXiv ID, or URL |
+| `import_local_files` | Import local files into Zotero; Zotero auto-fetches metadata for recognized PDFs |
+| `edit_current_note` | Edit the active Zotero note or create a new one using plain text, Markdown, or HTML |
+| `undo_last_action` | Undo the most recent approved write action in this conversation |
 
-### Terminal & File System Access
+### Filesystem & Scripting Tools
 
-The agent includes two system-level tools that turn it into a **coding agent** capable of running scripts and processing data — all from within Zotero.
+The agent includes system-level tools for local files, scripts, and Zotero runtime automation.
 
 | Tool | Description |
 |---|---|
-| `run_command` | Execute shell commands on your local machine (zsh on macOS, bash on Linux, cmd.exe on Windows). Pipes, redirects, globbing, and all shell features work. 300-second timeout per command |
-| `file_io` | Read and write files on your local filesystem. Supports UTF-8 and other encodings |
+| `file_io` | Read or write files on the local filesystem, including text and image files, with offset and length support for partial reads |
+| `run_command` | Run a shell command on your local machine (zsh on macOS, bash on Linux, cmd.exe on Windows) for analysis scripts and CLI tools |
+| `zotero_script` | Execute JavaScript inside Zotero's runtime; use read mode for bulk data and write mode for custom mutations |
 
 **Example use cases:**
 
@@ -366,11 +369,13 @@ The agent provides high-level actions for common library workflows. These chain 
 
 | Action | What it does |
 |---|---|
-| **Audit Library** | Scan your library (or a collection) for items with incomplete metadata — missing abstract, DOI, tags, or PDF attachment. Optionally saves the report as a Zotero note |
-| **Auto-Tag** | Find all papers without tags and open a batch tag-assignment dialog for your review |
-| **Discover Related** | Find related papers to a seed paper through recommendations, references, or citations from scholarly sources |
-| **Sync Metadata** | Fetch external metadata (CrossRef, Semantic Scholar) and apply updates across items |
+| **Audit Library** | Scan your library or a collection for incomplete metadata, missing PDFs, missing tags, and other gaps; optionally save the report as a Zotero note |
+| **Auto-Tag** | Suggest tags for the current paper, selected papers, selected collections, or the whole library, then open an editable batch tag-review dialog |
+| **Complete Metadata** | Audit targeted papers for missing bibliographic fields, fetch canonical metadata, and open one review card for the proposed updates |
+| **Discover Related** | Find related papers from recommendations, references, or citations |
 | **Organize Unfiled** | Find unfiled items and organize them into collections via an interactive review workflow |
+| **Literature Review** | Launch the guided literature review workflow |
+| **Library Statistics** | Summarize library or collection statistics such as item types, years, authors, journals, collections, tags, annotations, and growth over time |
 
 ### MCP Server
 
@@ -408,7 +413,7 @@ The agent can chain multiple tools together to accomplish complex tasks, such as
 
 #### Write a note
 
-<img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/agent/write_note.png" alt="Agent writing a note">
+<img src="/images/llm-for-zotero/agent/write_note.gif" alt="Agent writing a note">
 
 ### Safety & Confirmation
 
@@ -435,19 +440,18 @@ Skills are customizable guidance files that shape how the agent approaches diffe
 
 ### Built-in Skills
 
-The plugin ships with **9 built-in skills** covering common research workflows. They are automatically copied to your skills folder on first run.
+The plugin ships with **8 built-in skills** covering common research workflows. They are automatically copied to your skills folder on first run.
 
 | Skill | Triggers on | What it guides the agent to do |
 |---|---|---|
-| `simple-paper-qa` | General questions about a paper (summary, findings, authors, TLDR) | Read the paper once and answer immediately &mdash; avoids unnecessary retrieval calls |
+| `simple-paper-qa` | General questions about a paper, such as summaries, findings, authors, or TLDR requests | Read the paper once and answer immediately, avoiding unnecessary retrieval calls |
 | `evidence-based-qa` | Questions about specific methods, results, data, or claims | Read first, then use targeted `search_paper` retrieval for specific evidence |
-| `analyze-figures` | References to figures, tables, or diagrams by number | Use MinerU-cached images when available; send images directly to the model |
-| `compare-papers` | Requests to compare or contrast multiple papers | Batch front-matter reads, then targeted evidence retrieval for comparison points |
-| `library-analysis` | Requests to summarize, analyze, or audit your library | Use efficient scripting to iterate all items at once instead of paginating |
-| `literature-review` | Requests for a literature review or research synthesis | Three-phase workflow: discover papers, deep-read the top 3&ndash;5, then synthesize thematically |
-| `note-from-paper` | Requests to create reading notes from a paper | Read the paper, optionally include MinerU-extracted figures, write a Zotero note |
-| `note-editing` | Requests to save, edit, or create notes | Smart defaults for note target (paper vs. standalone), prefer patches over full rewrites |
-| `write-to-obsidian` | Requests to export to Obsidian | Compose with YAML frontmatter, Pandoc citations, and optional figure copying |
+| `analyze-figures` | References to figures, tables, or diagrams by number | Use MinerU-cached images when available and send images directly to the model |
+| `compare-papers` | Requests to compare or contrast multiple papers | Batch paper reads and then retrieve focused evidence for comparison points |
+| `library-analysis` | Requests to summarize, analyze, or audit your library | Use efficient scripting to iterate library items instead of paginating through context |
+| `literature-review` | Requests for a literature review or research synthesis | Discover papers, deep-read the most relevant few, and synthesize thematically |
+| `write-note` | Requests to write reading notes as Zotero notes or Markdown files in your notes directory | Compose notes with metadata, Pandoc citations, and optional figure copying |
+| `import-cited-reference` | Requests to import papers cited in the current PDF | Extract references and import the selected cited papers into Zotero |
 
 ### How Skills Work
 
@@ -549,11 +553,16 @@ Open a ChatGPT tab in your browser and keep it open. In Zotero, the plugin panel
 
 ---
 
-## Codex Auth Setup
+## Codex Setup (ChatGPT Plus Subscribers)
 
-If you have a **ChatGPT Plus** subscription, you can use **Codex auth** to access models like `gpt-5.4` without a separate API key. The plugin reuses your ChatGPT login via the Codex CLI.
+If you have a **ChatGPT Plus** subscription, you can use Codex models such as `gpt-5.4` in the plugin without a separate API key by signing in through the Codex CLI.
 
-_Special thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) for contributions to this feature._
+There are two Codex-backed modes in the plugin. New users should choose **Codex App Server**.
+
+- **Codex App Server (Recommended)**: Spawns the local `codex app-server` CLI and talks to it over stdio. This is the official way to use Codex in third-party apps and the preferred setup for new users.
+- **Codex Auth (Legacy)**: Uses the ChatGPT/Codex Responses backend directly. Existing users can keep this configuration for now, but new users should choose `Codex App Server`.
+
+_Special thanks to [@boltma](https://github.com/boltma) for contributing the Codex App Server integration._
 
 ### Step-by-step setup
 
@@ -579,21 +588,23 @@ A browser window opens — sign in with your ChatGPT Plus account. Credentials a
 
 In Zotero &rarr; **Preferences** &rarr; **llm-for-zotero**:
 
-| Setting | Value |
+| Setting | Recommended value |
 |---|---|
-| Auth Mode | `codex auth` |
-| API URL | `https://chatgpt.com/backend-api/codex/responses` |
+| Auth Mode | `Codex App Server` |
+| API URL | Leave blank |
 | Model | e.g. `gpt-5.4` |
 
 Click **Test Connection** to verify.
 
-<img src="/images/llm-for-zotero/codex.png" alt="Codex auth configuration">
+Existing users who need the old path can choose `Codex Auth (Legacy)`, keep API URL `https://chatgpt.com/backend-api/codex/responses`, and use the same Codex model name.
 
-### Technical Notes
+<img src="/images/llm-for-zotero/codex.png" alt="Recommended Codex App Server configuration">
+
+### Codex Auth (Legacy) Technical Notes
 
 - Reads local credentials from `~/.codex/auth.json` (or `$CODEX_HOME/auth.json`).
 - Automatically attempts token refresh on 401 responses.
-- Embeddings are not supported in codex auth mode yet.
+- Embeddings are not supported in legacy direct mode yet.
 - Local PDF/reference text grounding and screenshot/image inputs are supported.
 - The Responses `/files` upload + `file_id` attachment flow is not supported yet.
 
@@ -631,7 +642,7 @@ When a personal API key is provided, the plugin calls the MinerU API directly at
 
 **Is it free to use?**
 
-Yes, the plugin is completely free and open source (AGPL v3). You only pay for API calls to your chosen provider. With Codex auth, ChatGPT Plus subscribers can use their existing subscription without a separate API key.
+Yes, the plugin is completely free and open source (AGPL v3). You only pay for API calls to your chosen provider. With Codex App Server auth, ChatGPT Plus subscribers can use their existing subscription without a separate API key.
 
 **Does it work with local models?**
 
