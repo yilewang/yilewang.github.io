@@ -53,13 +53,18 @@ lang_alt: /llm-for-zotero/
     <strong>可自定义技能</strong>
     <p>8 个内置技能引导 Agent 针对常见任务采用合适工作流，支持通过 Markdown 文件创建自定义技能。</p>
   </div>
+  <div class="rtd-feature-card">
+    <strong>Codex 与 Claude Code</strong>
+    <p>通过本地 app-server 使用 Codex，或通过本地桥接服务运行实验性的 Claude Code 对话。</p>
+  </div>
 </div>
 
 ---
 
 ## 最新更新
 
-- **Codex App Server（推荐）**：ChatGPT Plus 订阅用户应优先使用新的 `Codex App Server` 认证方式，通过官方本地 `codex app-server` 流程免 API 密钥调用 `gpt-5.4` 等 Codex 模型。旧的直连后端方式仍作为 `Codex Auth (Legacy)` 保留给现有用户。最初的 Codex Auth 集成由 [@jianghao-zhang](https://github.com/jianghao-zhang) 贡献；新的 Codex App Server 集成由 [@boltma](https://github.com/boltma) 设计。详见 [Codex 配置](#codex-配置chatgpt-plus-订阅用户)。
+- **Codex App Server（推荐）**：ChatGPT Plus 订阅用户应优先使用新的 `Codex App Server` 本地运行时，通过官方本地 `codex app-server` 流程免 API 密钥调用 `gpt-5.4` 等 Codex 模型。请在 **Agent** 标签页中启用；旧的直连后端方式仍作为 `Codex Auth (Legacy)` 保留给现有用户。最初的 Codex Auth 集成由 [@jianghao-zhang](https://github.com/jianghao-zhang) 贡献；新的 Codex App Server 集成由 [@boltma](https://github.com/boltma) 设计。详见 [Codex 配置](#codex-配置chatgpt-plus-订阅用户)。
+- **Claude Code 模式（实验性）**：通过配套本地桥接服务，将 Claude Code 作为 Zotero 内部独立的对话系统运行。该模式仍在开发中，目前尚不支持原生 Zotero API 操作；后续计划加入原生 Zotero 工具支持。详见 [Claude Code 配置](#claude-code-配置实验性)。
 - **Agent 动作支持灵活论文范围**：`auto_tag` 和 `complete_metadata` 现在可作用于当前论文、已选择论文、已选择文集或整个文库，并在批量变更前打开审阅卡片。
 - **文件笔记**：笔记目录不再硬编码为 Obsidian。您可以配置任意本地 Markdown 目录，包括 Obsidian、Logseq 或普通文件夹。详见 [文件笔记](#文件笔记)。
 - **独立窗口笔记编辑修复**：独立窗口现在会在上下文区域保留当前笔记编辑状态。
@@ -592,9 +597,9 @@ match: /另一个触发模式/i
 
 如果您拥有 **ChatGPT Plus** 订阅，可以通过 Codex CLI 登录，在插件中免单独 API 密钥使用 `gpt-5.4` 等 Codex 模型。
 
-插件现在提供两种 Codex 相关模式。新用户应选择 **Codex App Server**。
+插件现在提供两种 Codex 相关路径。新用户应选择 **Codex App Server**。
 
-- **Codex App Server（推荐）**：启动本地 `codex app-server` CLI，并通过 stdio 与其通信。这是第三方应用使用 Codex 的官方方式，也是新用户首选配置。
+- **Codex App Server（推荐）**：启动本地 `codex app-server` CLI，并通过 stdio 与其通信。这是第三方应用使用 Codex 的官方方式，也是新用户首选配置。该模式在 **Agent** 标签页中配置，并会在聊天标题栏显示独立的 **Codex** 按钮。
 - **Codex Auth (Legacy)**：直接调用 ChatGPT/Codex Responses 后端。现有用户暂时可以保留该配置，但新用户应选择 `Codex App Server`。
 
 _特别感谢 [@jianghao-zhang](https://github.com/jianghao-zhang) 贡献最初的 Codex Auth 集成，以及 [@boltma](https://github.com/boltma) 设计 Codex App Server 集成。_
@@ -619,21 +624,23 @@ codex login
 
 浏览器窗口将自动打开——使用您的 ChatGPT Plus 账号登录。凭据保存至 `~/.codex/auth.json`。
 
-**3. 配置插件：**
+**3. 在 Zotero 中启用 Codex App Server：**
 
-在 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** 中：
+打开 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** &rarr; **Agent** 标签页：
 
 | 设置项 | 推荐值 |
 |---|---|
-| 认证模式 | `Codex App Server` |
-| API 地址 | 留空 |
+| 启用 Codex App Server 集成 | `On` |
 | 模型 | 例如 `gpt-5.4` |
+| 推理等级 | `auto`、`low`、`medium`、`high` 或 `xhigh` |
 
-点击**测试连接**以验证。
+点击**测试连接**，验证 Zotero 能否启动 `codex app-server`，然后在聊天标题栏点击 **Codex** 按钮进入 Codex 对话系统。
 
-仍需旧方式的现有用户可以选择 `Codex Auth (Legacy)`，API 地址保持 `https://chatgpt.com/backend-api/codex/responses`，模型名称保持不变。
+`Codex App Server` 与 `Claude Code` 是 Agent 标签页中的互斥运行时模式。启用其中一个之前，需要先关闭另一个。
 
-<img src="/images/llm-for-zotero/codex.png" alt="推荐的 Codex App Server 配置截图">
+仍需旧方式的现有用户可以打开 **AI Providers** 标签页，选择 `Codex Auth (Legacy)`，API 地址保持 `https://chatgpt.com/backend-api/codex/responses`，模型名称保持不变。
+
+<img src="/images/llm-for-zotero/codex_claude.png" alt="推荐的 Codex App Server 配置截图">
 
 ### Codex Auth (Legacy) 技术说明
 
@@ -641,6 +648,109 @@ codex login
 - 遇到 401 响应时自动尝试刷新 Token。
 - 支持本地 PDF 内容定位和截图/图像输入。
 - Legacy 直连模式暂不支持嵌入向量和 `/files` 上传流程。
+
+---
+
+## Claude Code 配置（实验性）
+
+Claude Code 模式会将 Claude Code 作为 Zotero 内部独立的对话系统运行。它复用熟悉的侧栏和独立窗口界面，但拥有独立的对话历史、`paper` / `open` 范围状态、模型/推理设置、权限语义、斜杠命令和项目技能。
+
+<div class="rtd-warning">
+  <div class="rtd-admonition-title">仍在开发中</div>
+  Claude Code 模式目前<strong>不支持</strong>从 Claude Code 直接执行原生 Zotero API 操作。需要结构化读取条目、编辑笔记、打标签、更新元数据或导入条目等原生 Zotero 文库工具时，请使用内置 Agent 模式。Claude Code 的原生 Zotero API 支持计划在后续版本加入。
+</div>
+
+### 前置条件
+
+- 已安装并可正常运行 Claude Code CLI。请参考官方 [Claude Code 安装](https://code.claude.com/docs/en/installation.md)、[快速开始](https://code.claude.com/docs/en/quickstart.md) 和 [认证](https://code.claude.com/docs/en/authentication.md) 文档。
+- `claude` 命令必须位于 `PATH` 中，并且已经完成登录认证。请先在终端运行 `claude`；如果 Claude Code 未安装、不在 `PATH` 中或尚未登录，Zotero 侧 Claude Code 模式无法工作。
+- 已安装 Node.js 和 npm，用于运行配套桥接适配器。
+
+### 1. 安装并验证 Claude Code
+
+按照 Anthropic 官方说明安装 Claude Code，然后运行：
+
+```bash
+claude
+```
+
+继续之前，请先完成 Claude Code 中的登录或认证提示。
+
+### 2. 启动 Zotero Claude 桥接服务
+
+Claude Code 模式依赖配套桥接仓库 [`cc-llm4zotero-adapter`](https://github.com/jianghao-zhang/cc-llm4zotero-adapter)。桥接服务不会替代 Claude Code；它只是把 Zotero 连接到您本地的 Claude Code 运行时。
+
+```bash
+git clone https://github.com/jianghao-zhang/cc-llm4zotero-adapter.git
+cd cc-llm4zotero-adapter
+npm install
+npm run build
+npm run serve:bridge
+```
+
+在另一个终端中检查桥接服务是否存活：
+
+```bash
+curl -fsS http://127.0.0.1:19787/healthz
+```
+
+如果您使用 macOS，并希望桥接服务在后台长期运行，可以在适配器仓库中安装 LaunchAgent：
+
+```bash
+./scripts/install-macos-daemon.sh
+```
+
+常用后台服务命令：
+
+```bash
+npm run daemon:status
+npm run daemon:start
+npm run daemon:stop
+npm run daemon:restart
+npm run daemon:uninstall
+```
+
+如果 Claude Code 模式无响应，请先重启桥接服务，并重新检查 `/healthz`。`/healthz` 通过只说明适配器正在运行；它不能证明底层 `claude` CLI 已安装、已认证或配置正确。
+
+### 3. 在 Zotero 中启用 Claude Code
+
+打开 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** &rarr; **Agent** 标签页。
+
+| 设置项 | 推荐值 |
+|---|---|
+| 启用 Claude Code 集成 | `On` |
+| Bridge URL | `http://127.0.0.1:19787` |
+| Claude Config Source | `default — user + project + local` |
+| Permission Mode | `safe` |
+| Default Model | `sonnet` |
+| Default Reasoning | `auto` |
+
+除非您已经熟悉 Claude Code 的设置层级，否则建议保持 **Claude Config Source** 为 `default`。在 `default` 下，Claude Code 会同时使用您的用户级设置、Zotero 管理的项目级设置和每个对话的本地设置。
+
+启用集成后，在聊天标题栏点击 **Claude Code** 按钮即可进入 Claude Code 模式。Claude 对话系统与上游聊天和内置 Agent 相互隔离，因此切换模式时会打开对应系统自己的对话历史，而不会混合不同运行时的 transcript。
+
+### 4. 准备 Claude 项目技能与命令
+
+Zotero 会在您的用户目录下创建 Claude 运行时根目录，通常类似：
+
+```text
+~/Zotero/agent-runtime/profile-.../
+```
+
+在该运行时根目录中，共享 Claude 项目资产位于：
+
+```text
+CLAUDE.md
+.claude/settings.json
+.claude/skills/
+.claude/commands/
+```
+
+每个 Claude 对话还会在运行时 `scopes/` 树下拥有自己的本地 `.claude` 文件夹，因此单个对话的本地覆盖不会泄漏到其他聊天。您可以手动把共享 Claude 技能放入 `.claude/skills/` 或 `.claude/commands/`，但通常更简单的做法是直接让 Claude Code 在 Zotero 项目级 Claude 配置中创建或安装技能。
+
+### 非 Anthropic 原生 Claude Code 配置
+
+Zotero UI 中显示的 `opus`、`sonnet`、`haiku` 是能力层级，不要求底层一定是 Anthropic 托管模型。如果您通过兼容的 provider 层或代理路由 Claude Code，请在 Claude Code 自身配置中完成；Zotero 只负责选择层级并把请求转发给桥接服务。
 
 ---
 
@@ -676,7 +786,7 @@ codex login
 
 **是否免费使用？**
 
-是的，插件完全免费且开源（AGPL v3）。您只需为调用所选服务商的 API 付费。使用 Codex App Server 认证时，ChatGPT Plus 订阅用户无需单独 API 密钥。
+是的，插件完全免费且开源（AGPL v3）。您只需为调用所选服务商的 API 付费。使用 Codex App Server 时，ChatGPT Plus 订阅用户无需单独 API 密钥。
 
 **是否支持本地模型？**
 
