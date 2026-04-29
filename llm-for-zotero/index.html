@@ -706,6 +706,10 @@
     <strong>Customizable Skills</strong>
     <p>8 built-in skills guide the agent's workflows for common tasks. Create your own with simple Markdown files.</p>
   </div>
+  <div class="rtd-feature-card">
+    <strong>Codex &amp; Claude Code</strong>
+    <p>Use Codex through the local app-server runtime, or run experimental Claude Code conversations through a local bridge.</p>
+  </div>
 </div>
 
 <hr />
@@ -713,7 +717,8 @@
 <h2 id="recent-updates">Recent Updates</h2>
 
 <ul>
-  <li><strong>Codex App Server (recommended)</strong>: ChatGPT Plus subscribers should use <code class="language-plaintext highlighter-rouge">Codex App Server</code>, the official local <code class="language-plaintext highlighter-rouge">codex app-server</code> auth flow, for Codex models such as <code class="language-plaintext highlighter-rouge">gpt-5.4</code> without an API key. The older direct backend flow remains available as <code class="language-plaintext highlighter-rouge">Codex Auth (Legacy)</code> for current users. The original Codex Auth integration was contributed by <a href="https://github.com/jianghao-zhang">@jianghao-zhang</a>; the new Codex App Server integration was designed by <a href="https://github.com/boltma">@boltma</a>. See <a href="#codex-setup-chatgpt-plus-subscribers">Codex Setup</a>.</li>
+  <li><strong>Codex App Server (recommended)</strong>: ChatGPT Plus subscribers should use <code class="language-plaintext highlighter-rouge">Codex App Server</code>, the official local <code class="language-plaintext highlighter-rouge">codex app-server</code> runtime, for Codex models such as <code class="language-plaintext highlighter-rouge">gpt-5.4</code> without an API key. Enable it from the <strong>Agent</strong> tab; the older direct backend flow remains available as <code class="language-plaintext highlighter-rouge">Codex Auth (Legacy)</code> for current users. The original Codex Auth integration was contributed by <a href="https://github.com/jianghao-zhang">@jianghao-zhang</a>; the new Codex App Server integration was designed by <a href="https://github.com/boltma">@boltma</a>. See <a href="#codex-setup-chatgpt-plus-subscribers">Codex Setup</a>.</li>
+  <li><strong>Claude Code Mode (experimental)</strong>: Run Claude Code as a separate conversation system inside Zotero through the companion local bridge. This mode is still under development and does not yet support native Zotero API operations; native Zotero tool support is planned. See <a href="#claude-code-setup-experimental">Claude Code Setup</a>.</li>
   <li><strong>Agent actions on flexible paper scopes</strong>: <code class="language-plaintext highlighter-rouge">auto_tag</code> and <code class="language-plaintext highlighter-rouge">complete_metadata</code> now work on the current paper, selected papers, selected collections, or the whole library, with review cards before batch changes are applied.</li>
   <li><strong>File-Based Notes</strong>: Notes are no longer hard-coded to Obsidian. Configure any local Markdown directory, including Obsidian, Logseq, or a plain folder. See <a href="#file-based-notes">File-Based Notes</a>.</li>
   <li><strong>Standalone note editing fixes</strong>: Standalone windows now preserve the active note-editing context in the context area.</li>
@@ -1547,10 +1552,10 @@ Describe the workflow, which tools to prefer, and any constraints.
 
 <p>If you have a <strong>ChatGPT Plus</strong> subscription, you can use Codex models such as <code class="language-plaintext highlighter-rouge">gpt-5.4</code> in the plugin without a separate API key by signing in through the Codex CLI.</p>
 
-<p>There are two Codex-backed modes in the plugin. New users should choose <strong>Codex App Server</strong>.</p>
+<p>There are two Codex-backed paths in the plugin. New users should choose <strong>Codex App Server</strong>.</p>
 
 <ul>
-  <li><strong>Codex App Server (Recommended)</strong>: Spawns the local <code class="language-plaintext highlighter-rouge">codex app-server</code> CLI and talks to it over stdio. This is the official way to use Codex in third-party apps and the preferred setup for new users.</li>
+  <li><strong>Codex App Server (Recommended)</strong>: Spawns the local <code class="language-plaintext highlighter-rouge">codex app-server</code> CLI and talks to it over stdio. This is the official way to use Codex in third-party apps and the preferred setup for new users. It is configured from the <strong>Agent</strong> tab and appears as a dedicated <strong>Codex</strong> button in the chat header.</li>
   <li><strong>Codex Auth (Legacy)</strong>: Uses the ChatGPT/Codex Responses backend directly. Existing users can keep this configuration for now, but new users should choose <code class="language-plaintext highlighter-rouge">Codex App Server</code>.</li>
 </ul>
 
@@ -1574,9 +1579,9 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
 
 <p>A browser window opens — sign in with your ChatGPT Plus account. Credentials are saved to <code class="language-plaintext highlighter-rouge">~/.codex/auth.json</code>.</p>
 
-<p><strong>3. Configure the plugin:</strong></p>
+<p><strong>3. Enable Codex App Server in Zotero:</strong></p>
 
-<p>In Zotero → <strong>Preferences</strong> → <strong>llm-for-zotero</strong>:</p>
+<p>Open Zotero → <strong>Preferences</strong> → <strong>llm-for-zotero</strong> → <strong>Agent</strong> tab:</p>
 
 <table>
   <thead>
@@ -1587,25 +1592,27 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
   </thead>
   <tbody>
     <tr>
-      <td>Auth Mode</td>
-      <td><code class="language-plaintext highlighter-rouge">Codex App Server</code></td>
-    </tr>
-    <tr>
-      <td>API URL</td>
-      <td>Leave blank</td>
+      <td>Enable Codex App Server integration</td>
+      <td><code class="language-plaintext highlighter-rouge">On</code></td>
     </tr>
     <tr>
       <td>Model</td>
       <td>e.g. <code class="language-plaintext highlighter-rouge">gpt-5.4</code></td>
     </tr>
+    <tr>
+      <td>Reasoning</td>
+      <td><code class="language-plaintext highlighter-rouge">auto</code>, <code class="language-plaintext highlighter-rouge">low</code>, <code class="language-plaintext highlighter-rouge">medium</code>, <code class="language-plaintext highlighter-rouge">high</code>, or <code class="language-plaintext highlighter-rouge">xhigh</code></td>
+    </tr>
   </tbody>
 </table>
 
-<p>Click <strong>Test Connection</strong> to verify.</p>
+<p>Click <strong>Test connection</strong> to verify that Zotero can launch <code class="language-plaintext highlighter-rouge">codex app-server</code>, then click the <strong>Codex</strong> button in the chat header to enter the Codex conversation system.</p>
 
-<p>Existing users who need the old path can choose <code class="language-plaintext highlighter-rouge">Codex Auth (Legacy)</code>, keep API URL <code class="language-plaintext highlighter-rouge">https://chatgpt.com/backend-api/codex/responses</code>, and use the same Codex model name.</p>
+<p><code class="language-plaintext highlighter-rouge">Codex App Server</code> and <code class="language-plaintext highlighter-rouge">Claude Code</code> are mutually exclusive runtime modes in the Agent tab. Disable one before enabling the other.</p>
 
-<p><img src="/images/llm-for-zotero/codex.png" alt="Recommended Codex App Server configuration" /></p>
+<p>Existing users who need the old path can open the <strong>AI Providers</strong> tab, choose <code class="language-plaintext highlighter-rouge">Codex Auth (Legacy)</code>, keep API URL <code class="language-plaintext highlighter-rouge">https://chatgpt.com/backend-api/codex/responses</code>, and use the same Codex model name.</p>
+
+<p><img src="/images/llm-for-zotero/codex_claude.png" alt="Recommended Codex App Server configuration" /></p>
 
 <h3 id="codex-auth-legacy-technical-notes">Codex Auth (Legacy) Technical Notes</h3>
 
@@ -1616,6 +1623,130 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
   <li>Local PDF/reference text grounding and screenshot/image inputs are supported.</li>
   <li>The Responses <code class="language-plaintext highlighter-rouge">/files</code> upload + <code class="language-plaintext highlighter-rouge">file_id</code> attachment flow is not supported yet.</li>
 </ul>
+
+<hr />
+
+<h2 id="claude-code-setup-experimental">Claude Code Setup (Experimental)</h2>
+
+<p>Claude Code mode runs Claude Code as a separate conversation system inside Zotero. It reuses the familiar sidebar and standalone-window UI, but keeps its own conversation history, <code class="language-plaintext highlighter-rouge">paper</code> / <code class="language-plaintext highlighter-rouge">open</code> scope state, model/reasoning settings, permission semantics, slash commands, and project skills.</p>
+
+<div class="rtd-warning">
+  <div class="rtd-admonition-title">Under development</div>
+  Claude Code mode currently does <strong>not</strong> support native Zotero API operations from Claude Code. Use the built-in Agent Mode for native Zotero library tools such as structured item reads, note edits, tagging, metadata updates, and imports. Native Zotero API support for Claude Code is planned for a later release.
+</div>
+
+<h3 id="prerequisites-1">Prerequisites</h3>
+
+<ul>
+  <li>A working Claude Code CLI installation. Follow the official <a href="https://code.claude.com/docs/en/installation.md">Claude Code installation</a>, <a href="https://code.claude.com/docs/en/quickstart.md">quickstart</a>, and <a href="https://code.claude.com/docs/en/authentication.md">authentication</a> docs.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">claude</code> command must be on <code class="language-plaintext highlighter-rouge">PATH</code> and authenticated. Run <code class="language-plaintext highlighter-rouge">claude</code> in a terminal first; if Claude Code is not installed, not on <code class="language-plaintext highlighter-rouge">PATH</code>, or not logged in, Zotero’s Claude Code mode will not work.</li>
+  <li>Node.js and npm for the companion bridge adapter.</li>
+</ul>
+
+<h3 id="1-install-and-verify-claude-code">1. Install and Verify Claude Code</h3>
+
+<p>Install Claude Code using Anthropic’s official instructions, then run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>claude
+</code></pre></div></div>
+
+<p>Complete any login or authentication prompts in Claude Code before continuing.</p>
+
+<h3 id="2-start-the-zotero-claude-bridge">2. Start the Zotero Claude Bridge</h3>
+
+<p>Claude Code mode depends on the companion bridge repo <a href="https://github.com/jianghao-zhang/cc-llm4zotero-adapter"><code class="language-plaintext highlighter-rouge">cc-llm4zotero-adapter</code></a>. The bridge does not replace Claude Code; it connects Zotero to your local Claude Code runtime.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/jianghao-zhang/cc-llm4zotero-adapter.git
+<span class="nb">cd </span>cc-llm4zotero-adapter
+npm <span class="nb">install
+</span>npm run build
+npm run serve:bridge
+</code></pre></div></div>
+
+<p>In another terminal, check that the bridge is alive:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-fsS</span> http://127.0.0.1:19787/healthz
+</code></pre></div></div>
+
+<p>For macOS users who want the bridge to run in the background, install the LaunchAgent from the adapter repo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./scripts/install-macos-daemon.sh
+</code></pre></div></div>
+
+<p>Useful bridge daemon commands:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run daemon:status
+npm run daemon:start
+npm run daemon:stop
+npm run daemon:restart
+npm run daemon:uninstall
+</code></pre></div></div>
+
+<p>If Claude Code mode stops responding, restart the bridge and re-check <code class="language-plaintext highlighter-rouge">/healthz</code>. A passing <code class="language-plaintext highlighter-rouge">/healthz</code> check only proves that the adapter is running; it does not prove that the underlying <code class="language-plaintext highlighter-rouge">claude</code> CLI is installed, authenticated, or correctly configured.</p>
+
+<h3 id="3-enable-claude-code-inside-zotero">3. Enable Claude Code inside Zotero</h3>
+
+<p>Open Zotero → <strong>Preferences</strong> → <strong>llm-for-zotero</strong> → <strong>Agent</strong> tab.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Recommended value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Enable Claude Code integration</td>
+      <td><code class="language-plaintext highlighter-rouge">On</code></td>
+    </tr>
+    <tr>
+      <td>Bridge URL</td>
+      <td><code class="language-plaintext highlighter-rouge">http://127.0.0.1:19787</code></td>
+    </tr>
+    <tr>
+      <td>Claude Config Source</td>
+      <td><code class="language-plaintext highlighter-rouge">default — user + project + local</code></td>
+    </tr>
+    <tr>
+      <td>Permission Mode</td>
+      <td><code class="language-plaintext highlighter-rouge">safe</code></td>
+    </tr>
+    <tr>
+      <td>Default Model</td>
+      <td><code class="language-plaintext highlighter-rouge">sonnet</code></td>
+    </tr>
+    <tr>
+      <td>Default Reasoning</td>
+      <td><code class="language-plaintext highlighter-rouge">auto</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Keep <strong>Claude Config Source</strong> on <code class="language-plaintext highlighter-rouge">default</code> unless you already understand Claude Code settings layers. In <code class="language-plaintext highlighter-rouge">default</code>, Claude Code can use your normal user settings plus Zotero-managed project and per-conversation local settings.</p>
+
+<p>After enabling the integration, click the <strong>Claude Code</strong> button in the chat header to enter Claude Code mode. The Claude conversation system is separate from upstream chat and the built-in agent, so switching modes opens the matching conversation history instead of mixing transcripts.</p>
+
+<h3 id="4-prepare-claude-project-skills-and-commands">4. Prepare Claude Project Skills and Commands</h3>
+
+<p>Zotero creates a Claude runtime root under your home directory, usually shaped like:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/Zotero/agent-runtime/profile-.../
+</code></pre></div></div>
+
+<p>Inside that runtime root, shared Claude project assets live in:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CLAUDE.md
+.claude/settings.json
+.claude/skills/
+.claude/commands/
+</code></pre></div></div>
+
+<p>Each Claude conversation also gets its own local <code class="language-plaintext highlighter-rouge">.claude</code> folder under the runtime <code class="language-plaintext highlighter-rouge">scopes/</code> tree, so per-conversation overrides do not leak into other chats. You can add shared Claude skills manually under <code class="language-plaintext highlighter-rouge">.claude/skills/</code> or <code class="language-plaintext highlighter-rouge">.claude/commands/</code>, but the easiest path is usually to ask Claude Code to create or install the skill in the Zotero project-level Claude config.</p>
+
+<h3 id="non-anthropic-claude-code-setups">Non-Anthropic Claude Code Setups</h3>
+
+<p>The Zotero UI exposes <code class="language-plaintext highlighter-rouge">opus</code>, <code class="language-plaintext highlighter-rouge">sonnet</code>, and <code class="language-plaintext highlighter-rouge">haiku</code> as capability tiers. They do not require Anthropic-hosted models specifically. If you route Claude Code through a compatible provider layer or proxy, configure that in Claude Code itself; Zotero only selects the tier and forwards the request to the bridge.</p>
 
 <hr />
 
@@ -1655,7 +1786,7 @@ brew <span class="nb">install</span> <span class="nt">--cask</span> codex
 
 <p><strong>Is it free to use?</strong></p>
 
-<p>Yes, the plugin is completely free and open source (AGPL v3). You only pay for API calls to your chosen provider. With Codex App Server auth, ChatGPT Plus subscribers can use their existing subscription without a separate API key.</p>
+<p>Yes, the plugin is completely free and open source (AGPL v3). You only pay for API calls to your chosen provider. With Codex App Server, ChatGPT Plus subscribers can use their existing subscription without a separate API key.</p>
 
 <p><strong>Does it work with local models?</strong></p>
 
