@@ -1,26 +1,34 @@
 ---
 layout: docs
-title: "LLM-for-Zotero — Documentation"
+title: "LLM-for-Zotero: AI Research Assistant for Zotero"
 permalink: /llm-for-zotero/
 author_profile: false
 lang: en
 lang_alt: /llm-for-zotero/zh/
 ---
 
-<h1 id="overview">LLM-for-Zotero</h1>
+<h1 id="overview">llm-for-zotero: AI Research Assistant for Zotero</h1>
 
 <div class="rtd-badges">
   <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-7-green?style=flat-square&logo=zotero&logoColor=CC2936" alt="Zotero 7"></a>
   <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-8-green?style=flat-square&logo=zotero&logoColor=CC2936" alt="Zotero 8"></a>
+  <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-9-green?style=flat-square&logo=zotero&logoColor=CC2936" alt="Zotero 9"></a>
+  <a href="https://github.com/windingwind/zotero-plugin-template"><img src="https://img.shields.io/badge/Using-Zotero%20Plugin%20Template-blue?style=flat-square&logo=github" alt="Using Zotero Plugin Template"></a>
   <a href="https://www.gnu.org/licenses/agpl-3.0"><img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg?style=flat-square" alt="AGPL v3"></a>
   <a href="https://github.com/yilewang/llm-for-zotero/releases"><img src="https://img.shields.io/github/v/release/yilewang/llm-for-zotero?style=flat-square" alt="Latest release"></a>
   <a href="https://github.com/yilewang/llm-for-zotero/stargazers"><img src="https://img.shields.io/github/stars/yilewang/llm-for-zotero?style=flat-square" alt="GitHub Stars"></a>
+  <a href="https://github.com/yilewang/llm-for-zotero/releases"><img src="https://img.shields.io/github/downloads/yilewang/llm-for-zotero/total?style=flat-square" alt="GitHub Downloads"></a>
+  <a href="https://buymeacoffee.com/yat.lok"><img src="https://img.shields.io/badge/Support-Buy%20Me%20A%20Coffee-FF813F?style=flat-square&logo=buy-me-a-coffee&logoColor=white" alt="Buy Me A Coffee"></a>
   <a href="https://yilewang.github.io"><img src="https://img.shields.io/badge/website-yilewang.github.io-informational?style=flat-square&logo=github" alt="Personal website"></a>
 </div>
 
 <p style="margin: 4px 0 20px; font-size: 0.9em;">📖 <a href="/llm-for-zotero/zh/"><strong>中文版使用手册</strong></a></p>
 
-**llm-for-zotero** is a plugin for [Zotero](https://www.zotero.org/) that integrates Large Language Models directly into the Zotero PDF reader. Unlike tools that require uploading PDFs to a web portal, this plugin lets you chat with your papers without leaving Zotero. It sits quietly in the reader sidebar, ready whenever you need it.
+<p style="text-align:center;">
+  <img src="/images/llm-for-zotero/label.png" alt="LLM for Zotero logo: a brain icon merged with the Zotero shield" style="max-width:512px;">
+</p>
+
+**llm-for-zotero** brings Large Language Models into the Zotero reader, so you can ask questions, summarize papers, inspect figures, compare sources, and save notes without leaving your library. It works with standard API providers, local OpenAI-compatible models, WebChat, Codex App Server, and Claude Code.
 
 <img src="/images/llm-for-zotero/demo.png" alt="Screenshot of the llm-for-zotero sidebar inside the Zotero PDF reader">
 
@@ -31,7 +39,11 @@ lang_alt: /llm-for-zotero/zh/
   </div>
   <div class="rtd-feature-card">
     <strong>Multi-Provider Support</strong>
-    <p>OpenAI, Anthropic, Gemini, DeepSeek, local OpenAI-compatible models, and more.</p>
+    <p>OpenAI, Anthropic, Gemini, DeepSeek, Moonshot, local OpenAI-compatible models, and more.</p>
+  </div>
+  <div class="rtd-feature-card">
+    <strong>WebChat</strong>
+    <p>Use ChatGPT or DeepSeek through the browser with Sync for Zotero when you do not want a provider API key.</p>
   </div>
   <div class="rtd-feature-card">
     <strong>Agent Mode (Beta)</strong>
@@ -61,16 +73,48 @@ lang_alt: /llm-for-zotero/zh/
 
 ---
 
-## Recent Updates
+## Quick Start
 
-- **Codex App Server (recommended)**: ChatGPT Plus subscribers should use `Codex App Server`, the official local `codex app-server` runtime, for Codex models such as `gpt-5.4` without an API key. Enable it from the **Agent** tab; the older direct backend flow remains available as `Codex Auth (Legacy)` for current users. The original Codex Auth integration was contributed by [@jianghao-zhang](https://github.com/jianghao-zhang); the new Codex App Server integration was designed by [@boltma](https://github.com/boltma). See [Codex Setup](#codex-setup-chatgpt-plus-subscribers).
+1. Download the latest `.xpi` file from the [Releases page](https://github.com/yilewang/llm-for-zotero/releases).
+2. In Zotero, open `Tools` &rarr; `Add-ons` &rarr; gear icon &rarr; **Install Add-on From File**, then select the `.xpi`.
+3. Restart Zotero.
+4. Open `Preferences` &rarr; `llm-for-zotero`, choose a provider, enter the base URL, key, and model, then click **Test Connection**.
+5. Open a PDF in Zotero and click the LLM Assistant icon in the right-hand toolbar.
+
+If you do not want to use a provider API key, start with [WebChat](#webchat-setup-chatgpt--deepseek-web-sync) or [Codex App Server](#codex-setup-chatgpt-plus-subscribers).
+
+## Requirements
+
+- Zotero
+- A model backend: provider API key, local OpenAI-compatible model, WebChat, Codex App Server, or Claude Code.
+- A Chromium-based browser for WebChat mode.
+- Node.js 18+ for npm-based Codex CLI installation and the Claude Code bridge. The macOS Codex cask does not require a separate Node.js install.
+- A personal MinerU API key is recommended if you enable MinerU parsing.
+
+## Choose Your Setup
+
+| Goal | Recommended path | API key required? |
+|---|---|---|
+| Use OpenAI, Gemini, DeepSeek, Moonshot, or another provider | Configure an API provider in Zotero preferences | Yes |
+| Use a local model | Connect any OpenAI-compatible local HTTP API | Usually no |
+| Use ChatGPT or DeepSeek in the browser | [WebChat](#webchat-setup-chatgpt--deepseek-web-sync) with the Sync for Zotero extension | No |
+| Use Codex models with ChatGPT Plus | [Codex App Server](#codex-setup-chatgpt-plus-subscribers) | No separate API key |
+| Use Claude Code inside Zotero | [Claude Code bridge](#claude-code-setup-experimental) | Claude Code auth |
+| Improve PDF extraction for tables, equations, and figures | [MinerU PDF parsing](#mineru-pdf-parsing) | Personal MinerU key recommended |
+
+---
+
+## What's New
+
+- **Codex App Server** is the recommended Codex path for ChatGPT Plus users. It runs through the local `codex app-server` runtime and is configured from the **Agent** tab.
 - **Claude Code Mode (experimental)**: Run Claude Code as a separate conversation system inside Zotero through the companion local bridge. This mode is still under development and does not yet support native Zotero API operations; native Zotero tool support is planned. See [Claude Code Setup](#claude-code-setup-experimental).
-- **Agent actions on flexible paper scopes**: `auto_tag` and `complete_metadata` now work on the current paper, selected papers, selected collections, or the whole library, with review cards before batch changes are applied.
+- **WebChat Mode** supports ChatGPT and DeepSeek web sync through the Sync for Zotero browser extension.
 - **File-Based Notes**: Notes are no longer hard-coded to Obsidian. Configure any local Markdown directory, including Obsidian, Logseq, or a plain folder. See [File-Based Notes](#file-based-notes).
-- **Standalone note editing fixes**: Standalone windows now preserve the active note-editing context in the context area.
-- **Claude/Anthropic compatibility fixes**: Anthropic message sequencing was updated and Claude Opus 4.7 support was added.
 - **Skills**: Customizable guidance files shape how the agent handles different tasks. 8 built-in skills are included, plus a portal for creating your own. See [Skills](#skills).
+- **Standalone Window Mode** opens the assistant in a dedicated window with paper chat, library chat, and conversation history.
 - **MinerU PDF parsing**: High-fidelity extraction preserves tables, equations, and figures more accurately.
+
+Thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) and [@boltma](https://github.com/boltma) for major contributions to the Codex App Server, Claude Code, and file upload workflows.
 
 ---
 
@@ -87,7 +131,7 @@ lang_alt: /llm-for-zotero/zh/
 
 <div class="rtd-tip">
   <div class="rtd-admonition-title">Tip</div>
-  The plugin supports both <strong>Zotero 7</strong> and <strong>Zotero 8</strong>. Make sure you are running a compatible version.
+  The plugin supports <strong>Zotero 7</strong>, <strong>Zotero 8</strong>, and <strong>Zotero 9</strong>. Make sure you are running a compatible version.
 </div>
 
 ---
@@ -111,7 +155,7 @@ The plugin natively supports multiple provider protocols: `responses_api`, `open
 | `https://api.openai.com/v1/responses` | gpt-5.4 | default, low, medium, high, xhigh | PDF uploads supported |
 | `https://api.openai.com/v1/responses` | gpt-5.4-pro | medium, high, xhigh | PDF uploads supported |
 | `https://api.deepseek.com/v1` | deepseek-chat | default | |
-| `https://api.deepseek.com/v1` | deepseek-reasoner | default | |
+| `https://api.deepseek.com/anthropic` | deepseek-v4-flash | default | |
 | `https://generativelanguage.googleapis.com` | gemini-3-pro-preview | low, high | |
 | `https://generativelanguage.googleapis.com` | gemini-2.5-flash | medium | |
 | `https://generativelanguage.googleapis.com` | gemini-2.5-pro | default, low, high | |
@@ -293,6 +337,12 @@ Ask the agent to write a note using the nickname you configured, for example *"S
 4. **Copy figures** from MinerU-parsed PDFs into the attachments folder when requested.
 5. **Write the note** to `{notes_directory}/{default_folder}/{title}.md`.
 
+If you want to keep notes inside Zotero, the agent can also write to internal item notes with the `write-note` skill. Ask it to "save a note for this paper" without mentioning an external directory.
+
+### Zotero Notes vs. File-Based Notes
+
+<img src="/images/llm-for-zotero/note2.jpeg" alt="Zotero internal note" style="max-width:512px;">
+
 <img src="/images/llm-for-zotero/obsidian_example.png" alt="A Zotero paper note rendered in Obsidian">
 
 Notes use [Pandoc citation syntax](https://pandoc.org/MANUAL.html#citations) (`[@citekey]`), compatible with Obsidian's Zotero Integration and Pandoc plugins, as well as most Markdown readers.
@@ -418,7 +468,7 @@ The agent can chain multiple tools together to accomplish complex tasks, such as
 
 #### Write a note
 
-<img src="/images/llm-for-zotero/agent/write_note.gif" alt="Agent writing a note">
+<img src="/images/llm-for-zotero/agent/write_note.png" alt="Agent writing a note">
 
 ### Safety & Confirmation
 
@@ -508,20 +558,22 @@ Describe the workflow, which tools to prefer, and any constraints.
 
 ---
 
-## WebChat Setup (ChatGPT Web Sync)
+## WebChat Setup (ChatGPT & DeepSeek Web Sync)
 
-**WebChat mode** sends your questions directly to [chatgpt.com](https://chatgpt.com) through a browser extension — no API key needed. Queries are relayed from Zotero to the ChatGPT web interface, and responses stream back into the plugin.
+**WebChat mode** sends your questions to [chatgpt.com](https://chatgpt.com) and [deepseek.com](https://chat.deepseek.com) through a browser extension, then streams responses back into Zotero. It is useful when you want ChatGPT or DeepSeek web access without a provider API key.
+
+<img src="/images/llm-for-zotero/webchat.jpeg" alt="Screenshot of WebChat mode connected to chatgpt.com">
 
 ### Prerequisites
 
-- A ChatGPT account (Free, Plus, or Team)
-- A Chromium-based browser (Chrome, Edge, Brave, Arc, etc.)
+- A ChatGPT account for `chatgpt.com` WebChat or a DeepSeek account for `deepseek.com` WebChat.
+- A Chromium-based browser such as Chrome, Edge, Brave, or Arc.
 
 ### Step-by-step setup
 
 **1. Download the browser extension:**
 
-Go to [github.com/yilewang/sync-for-zotero](https://github.com/yilewang/sync-for-zotero) &rarr; **Releases**, download the latest `sync-for-zotero-extension.zip`, and unzip it to a folder on your computer.
+Go to [github.com/yilewang/sync-for-zotero](https://github.com/yilewang/sync-for-zotero) &rarr; **Releases**, download the latest `extension.zip`, and unzip it to a folder on your computer.
 
 **2. Install the extension (sideload):**
 
@@ -537,32 +589,37 @@ In Zotero &rarr; **Preferences** &rarr; **llm-for-zotero**:
 | Setting | Value |
 |---|---|
 | Auth Mode | `WebChat` |
-| Model | (auto-set to `chatgpt.com`) |
+| Model | `chatgpt.com` or `chat.deepseek.com` |
 
 **4. Start chatting:**
 
-Open a ChatGPT tab in your browser and keep it open. In Zotero, the plugin panel shows a "chatgpt.com" indicator with a connection dot (green = connected, red = not detected). Type a question and send.
+Open a ChatGPT or DeepSeek tab in your browser and keep it open. In Zotero, the plugin panel shows a WebChat indicator with a connection dot (green = connected, red = not detected). Type a question and send.
 
 ### WebChat features
 
 - **PDF attachment** &mdash; Right-click the paper chip to toggle PDF sending (purple = send, grey = skip).
 - **Screenshots** &mdash; Use the camera button to attach figure screenshots to your message.
-- **Conversation history** &mdash; Click the clock icon to browse and load past ChatGPT conversations.
+- **Conversation history** &mdash; Click the clock icon to browse and load past web conversations.
 - **Exit** &mdash; Click the "Exit" button to return to regular API mode.
+
+<div class="rtd-warning">
+  <div class="rtd-admonition-title">Important</div>
+  WebChat mode requires a browser tab to stay open with the Sync for Zotero extension active. The browser and Zotero should run in the same desktop environment, and WebChat currently supports paper chat only; library chat is not supported yet.
+</div>
 
 ### Technical Notes
 
 - The plugin embeds a lightweight HTTP relay server on Zotero's built-in port (23119). The browser extension polls this relay to exchange queries and responses.
 - Agent mode, slash commands (`/`), and the reference picker (`@`) are disabled in WebChat mode.
-- Reasoning/thinking mode is controlled on the ChatGPT side, not through the plugin's reasoning toggle.
+- Reasoning/thinking mode is controlled on the web app side, not through the plugin's reasoning toggle.
 
 ---
 
 ## Codex Setup (ChatGPT Plus Subscribers)
 
-If you have a **ChatGPT Plus** subscription, you can use Codex models such as `gpt-5.4` in the plugin without a separate API key by signing in through the Codex CLI.
+If you have a **ChatGPT Plus** subscription, you can use Codex models in the plugin without a separate API key by signing in through the Codex CLI.
 
-There are two Codex-backed paths in the plugin. New users should choose **Codex App Server**.
+New users should choose **Codex App Server** from the **Agent** tab. The older **Codex Auth (Legacy)** path remains available for existing users, but is planned for future deprecation after app-server validation.
 
 - **Codex App Server (Recommended)**: Spawns the local `codex app-server` CLI and talks to it over stdio. This is the official way to use Codex in third-party apps and the preferred setup for new users. It is configured from the **Agent** tab and appears as a dedicated **Codex** button in the chat header.
 - **Codex Auth (Legacy)**: Uses the ChatGPT/Codex Responses backend directly. Existing users can keep this configuration for now, but new users should choose `Codex App Server`.
@@ -580,6 +637,8 @@ npm install -g @openai/codex
 # macOS alternative (no Node.js needed)
 brew install --cask codex
 ```
+
+On Windows, install Codex from PowerShell or Command Prompt rather than WSL, so Zotero MCP can use the Windows-local loopback connection.
 
 **2. Log in with your ChatGPT account:**
 
@@ -603,7 +662,7 @@ Click **Test connection** to verify that Zotero can launch `codex app-server`, t
 
 `Codex App Server` and `Claude Code` are mutually exclusive runtime modes in the Agent tab. Disable one before enabling the other.
 
-Existing users who need the old path can open the **AI Providers** tab, choose `Codex Auth (Legacy)`, keep API URL `https://chatgpt.com/backend-api/codex/responses`, and use the same Codex model name.
+Existing users who need the old path can open the **AI Providers** tab, choose `Codex Auth (Legacy)`, keep API URL `https://chatgpt.com/backend-api/codex/responses`, and use the same Codex model name, for example `gpt-5.5`.
 
 <img src="/images/llm-for-zotero/codex_claude.png" alt="Recommended Codex App Server configuration">
 
@@ -724,7 +783,7 @@ The Zotero UI exposes `opus`, `sonnet`, and `haiku` as capability tiers. They do
 
 **MinerU** is an advanced PDF parsing engine that extracts high-fidelity Markdown from PDFs while preserving tables, equations, figures, and complex layouts that standard text extraction often mangles.
 
-<img src="https://raw.githubusercontent.com/yilewang/llm-for-zotero/main/assets/minerU.png" alt="Screenshot showing MinerU PDF parsing results in the plugin">
+<img src="/images/llm-for-zotero/minerU.png" alt="Screenshot showing MinerU PDF parsing results in the plugin">
 
 When enabled, the plugin sends your PDF to the MinerU API for parsing and caches the result locally. All later interactions with that paper reuse the MinerU-parsed content, giving the model richer and more accurate context.
 
@@ -737,14 +796,60 @@ When enabled, the plugin sends your PDF to the MinerU API for parsing and caches
 
 ### Using Your Own API Key
 
-The plugin provides a shared community proxy so MinerU works out of the box without an API key, but the shared quota is limited. For heavier usage:
+MinerU can start without an API key through the built-in API, but a personal key is strongly recommended. The built-in API may no longer be supported after **June 1, 2026**.
+
+To get a free personal key:
 
 1. Go to [mineru.net](https://mineru.net) and create an account.
 2. Generate an API key in your account settings.
 3. Paste the key into Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **MinerU**.
 4. Click **Test Connection** to verify.
 
-When a personal API key is provided, the plugin calls the MinerU API directly at `https://mineru.net/api/v4`. Without a key, it uses the community proxy.
+When a personal API key is provided, the plugin calls the MinerU API directly at `https://mineru.net/api/v4`.
+
+---
+
+## Privacy and Data Flow
+
+- In standard provider mode, paper content and user messages are sent to the model provider you configure.
+- In local-model mode, requests go to the local OpenAI-compatible endpoint you configure.
+- In WebChat mode, requests are relayed through the browser extension to `chatgpt.com` or `chat.deepseek.com`.
+- In MinerU mode, PDFs are sent to MinerU for parsing when parsing is enabled.
+- Conversation history and cached paper context are stored locally by the plugin.
+- Agent Mode write operations are routed through reviewable actions and session undo where supported.
+
+---
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| **Test Connection fails** | Confirm the base URL, API key, model name, and provider protocol. |
+| **The assistant cannot see a paper** | Reopen the PDF tab, then send a new message so the plugin can rebuild context. |
+| **WebChat shows a red dot** | Keep a ChatGPT or DeepSeek tab open and confirm the Sync for Zotero extension is loaded. |
+| **Codex App Server fails** | Run `codex login`, confirm `codex` is on `PATH`, then click **Test connection** again. |
+| **Claude Code mode hangs** | Restart the bridge and check `curl -fsS http://127.0.0.1:19787/healthz`. |
+| **MinerU parsing fails** | Add a personal MinerU API key and retry **Test Connection**. |
+
+For bugs or unclear failures, please [open an issue](https://github.com/yilewang/llm-for-zotero/issues).
+
+---
+
+## Roadmap
+
+- [x] Agent mode (beta)
+- [x] MinerU PDF parsing
+- [x] GitHub Copilot auth
+- [x] WebChat mode (ChatGPT web sync)
+- [x] Standalone window mode ([#78](https://github.com/yilewang/llm-for-zotero/issues/78))
+- [x] File-based notes (Obsidian, Logseq, any Markdown directory)
+- [x] Claude Code integration
+- [x] Codex App Server integration
+- [x] Customized skills
+- [ ] Local MinerU support
+- [ ] Customized parameter of MinerU parsing
+- [ ] Cross-device synchronization (MinerU cache or conversation history)
+- [ ] Agent memory system
 
 ---
 
@@ -760,7 +865,7 @@ Yes. As long as the local model provides an OpenAI-compatible HTTP API, you can 
 
 **Is my data used to train models?**
 
-No. You use your own API key, so data privacy is governed by the terms of your chosen provider.
+The plugin does not train models. Data handling depends on the backend you choose: your configured API provider, local model, WebChat, Codex, Claude Code, or MinerU.
 
 **How do I report a bug or request a feature?**
 
