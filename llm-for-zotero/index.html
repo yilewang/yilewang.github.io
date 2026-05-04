@@ -559,16 +559,16 @@
   <body>
     <!-- Mobile hamburger -->
     <button class="wy-nav-top-hamburger" onclick="document.querySelector('.wy-nav-side').classList.toggle('wy-nav-side--open'); document.querySelector('.wy-nav-overlay').classList.toggle('active');">
-      &#9776;&nbsp; LLM for Zotero
+      &#9776;&nbsp; llm-for-zotero
     </button>
     <div class="wy-nav-overlay" onclick="document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open'); this.classList.remove('active');"></div>
 
     <!-- ─── Sidebar ─── -->
     <nav class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <img src="/images/llm-for-zotero/icon.png" alt="LLM for Zotero">
-        <span class="wy-project-name">LLM for Zotero</span>
-        <span class="wy-version">stable &middot; v3.7.6</span>
+        <img src="/images/llm-for-zotero/icon.png" alt="llm-for-zotero">
+        <span class="wy-project-name">llm-for-zotero</span>
+        <span class="wy-version">stable &middot; v3.8.2</span>
         <input type="text" placeholder="Search docs ..." id="rtd-search-input">
       </div>
 
@@ -579,21 +579,22 @@
 
       <div class="wy-menu">
         
-        <span class="caption">Recent Updates</span>
+        <span class="caption">What's New</span>
         <ul>
-          <li><a href="#recent-updates">Recent Updates</a></li>
+          <li><a href="#whats-new">What's New</a></li>
         </ul>
 
         <span class="caption">Getting Started</span>
         <ul>
           <li><a href="#overview">Overview</a></li>
+          <li><a href="#quick-start">Quick Start</a></li>
+          <li><a href="#requirements">Requirements</a></li>
+          <li><a href="#choose-your-setup">Choose Your Setup</a></li>
           <li><a href="#installation">Installation</a></li>
           <li><a href="#configuration">Configuration</a>
             <ul>
-              <li><a href="#supported-providers--protocols">Providers &amp; Protocols</a></li>
-              <li><a href="#supported-models">Supported Models</a></li>
-              <li><a href="#multiple-providers">Multiple Providers</a></li>
-              <li><a href="#reasoning-levels--hyperparameters">Reasoning &amp; Hyperparameters</a></li>
+              <li><a href="#supported-models-examples">Supported Models</a></li>
+              <li><a href="#advanced-reasoning-levels--hyperparameters">Reasoning &amp; Hyperparameters</a></li>
             </ul>
           </li>
         </ul>
@@ -620,26 +621,34 @@
           <li><a href="#conversation-history--export">History &amp; Export</a></li>
           <li><a href="#custom-quick-action-presets">Quick-Action Presets</a></li>
           <li><a href="#standalone-window-mode">Standalone Window Mode</a></li>
-          <li><a href="#obsidian-integration">Obsidian Integration</a></li>
+          <li><a href="#file-based-notes">File-Based Notes</a></li>
         </ul>
 
         <span class="caption">Advanced</span>
         <ul>
           <li><a href="#agent-mode-beta">Agent Mode (Beta)</a>
             <ul>
-              <li><a href="#available-tools">Available Tools</a></li>
+              <li><a href="#library--pdf-reading-tools">Reading Tools</a></li>
+              <li><a href="#library-write-tools">Write Tools</a></li>
+              <li><a href="#filesystem--scripting-tools">Files &amp; Scripting</a></li>
               <li><a href="#built-in-actions">Built-in Actions</a></li>
+              <li><a href="#mcp-server">MCP Server</a></li>
               <li><a href="#agent-demos">Demos</a></li>
               <li><a href="#safety--confirmation">Safety &amp; Confirmation</a></li>
             </ul>
           </li>
-          <li><a href="#webchat-setup-chatgpt-web-sync">WebChat Setup</a></li>
-          <li><a href="#codex-auth-setup">Codex Auth Setup</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#webchat-setup-chatgpt--deepseek-web-sync">WebChat Setup</a></li>
+          <li><a href="#codex-setup-chatgpt-plus-subscribers">Codex Setup</a></li>
+          <li><a href="#claude-code-setup-experimental">Claude Code Setup</a></li>
           <li><a href="#mineru-pdf-parsing">MinerU PDF Parsing</a></li>
         </ul>
 
         <span class="caption">Help</span>
         <ul>
+          <li><a href="#privacy-and-data-flow">Privacy &amp; Data Flow</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
           <li><a href="#frequently-asked-questions">FAQ</a></li>
           <li><a href="#contributing--support">Contributing</a></li>
           <li><a href="#star-history">Star History</a></li>
@@ -655,7 +664,7 @@
         <ul class="wy-breadcrumbs">
           <li><a href="/">Home</a></li>
           <span class="sep">/</span>
-          <li>LLM for Zotero Documentation</li>
+          <li>llm-for-zotero Documentation</li>
           <li style="flex:1"></li>
           <li class="wy-breadcrumbs-aside"><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">Edit on GitHub</a></li>
         </ul>
@@ -2004,6 +2013,26 @@ npm run daemon:uninstall
     <!-- Scroll-spy for active sidebar link -->
     <script>
     (function() {
+      function slugifyHeading(text) {
+        return text
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '-')
+          .replace(/&/g, '')
+          .replace(/[’'"“”‘`:：,，.。!?！？()（）\[\]{}<>\/\\]/g, '');
+      }
+
+      document.querySelectorAll('.rst-content h1, .rst-content h2, .rst-content h3, .rst-content h4').forEach(function(heading) {
+        var slug = slugifyHeading(heading.textContent || '');
+        if (!slug || document.getElementById(slug)) return;
+        var alias = document.createElement('span');
+        alias.id = slug;
+        alias.setAttribute('aria-hidden', 'true');
+        alias.style.position = 'relative';
+        alias.style.top = '-12px';
+        heading.parentNode.insertBefore(alias, heading);
+      });
+
       var links = document.querySelectorAll('.wy-menu a[href^="#"]');
       var sections = [];
       links.forEach(function(link) {

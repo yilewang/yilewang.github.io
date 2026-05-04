@@ -559,16 +559,16 @@
   <body>
     <!-- Mobile hamburger -->
     <button class="wy-nav-top-hamburger" onclick="document.querySelector('.wy-nav-side').classList.toggle('wy-nav-side--open'); document.querySelector('.wy-nav-overlay').classList.toggle('active');">
-      &#9776;&nbsp; LLM for Zotero
+      &#9776;&nbsp; llm-for-zotero
     </button>
     <div class="wy-nav-overlay" onclick="document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open'); this.classList.remove('active');"></div>
 
     <!-- ─── Sidebar ─── -->
     <nav class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <img src="/images/llm-for-zotero/icon.png" alt="LLM for Zotero">
-        <span class="wy-project-name">LLM for Zotero</span>
-        <span class="wy-version">stable &middot; v3.7.6</span>
+        <img src="/images/llm-for-zotero/icon.png" alt="llm-for-zotero">
+        <span class="wy-project-name">llm-for-zotero</span>
+        <span class="wy-version">stable &middot; v3.8.2</span>
         <input type="text" placeholder="搜索文档…" id="rtd-search-input">
       </div>
 
@@ -587,6 +587,9 @@
         <span class="caption">快速开始</span>
         <ul>
           <li><a href="#overview">概述</a></li>
+          <li><a href="#快速开始">快速开始</a></li>
+          <li><a href="#环境要求">环境要求</a></li>
+          <li><a href="#选择配置方式">选择配置方式</a></li>
           <li><a href="#安装">安装</a></li>
           <li><a href="#配置">配置</a>
             <ul>
@@ -620,26 +623,34 @@
           <li><a href="#对话历史与导出">历史与导出</a></li>
           <li><a href="#自定义快捷预设">快捷预设</a></li>
           <li><a href="#独立窗口模式">独立窗口模式</a></li>
-          <li><a href="#obsidian-集成">Obsidian 集成</a></li>
+          <li><a href="#文件笔记">文件笔记</a></li>
         </ul>
 
         <span class="caption">高级功能</span>
         <ul>
           <li><a href="#agent-模式beta">Agent 模式（Beta）</a>
             <ul>
-              <li><a href="#可用工具">可用工具</a></li>
+              <li><a href="#文库与-pdf-读取工具">读取工具</a></li>
+              <li><a href="#文库写入工具">写入工具</a></li>
+              <li><a href="#文件系统与脚本工具">文件与脚本</a></li>
               <li><a href="#内置动作">内置动作</a></li>
+              <li><a href="#mcp-服务器">MCP 服务器</a></li>
               <li><a href="#agent-演示">演示</a></li>
               <li><a href="#安全与审批">安全与审批</a></li>
             </ul>
           </li>
-          <li><a href="#webchat-配置chatgpt-网页同步">WebChat 配置</a></li>
-          <li><a href="#codex-认证配置">Codex 认证配置</a></li>
+          <li><a href="#skills-技能系统">Skills 技能系统</a></li>
+          <li><a href="#webchat-配置chatgpt--deepseek-网页同步">WebChat 配置</a></li>
+          <li><a href="#codex-配置chatgpt-plus-订阅用户">Codex 配置</a></li>
+          <li><a href="#claude-code-配置实验性">Claude Code 配置</a></li>
           <li><a href="#mineru-pdf-解析">MinerU PDF 解析</a></li>
         </ul>
 
         <span class="caption">帮助</span>
         <ul>
+          <li><a href="#隐私与数据流">隐私与数据流</a></li>
+          <li><a href="#故障排查">故障排查</a></li>
+          <li><a href="#路线图">路线图</a></li>
           <li><a href="#常见问题">常见问题</a></li>
           <li><a href="#贡献与支持">贡献与支持</a></li>
           <li><a href="#star-趋势">Star 趋势</a></li>
@@ -655,7 +666,7 @@
         <ul class="wy-breadcrumbs">
           <li><a href="/">首页</a></li>
           <span class="sep">/</span>
-          <li>LLM for Zotero 文档</li>
+          <li>llm-for-zotero 文档</li>
           <li style="flex:1"></li>
           <li class="wy-breadcrumbs-aside"><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">在 GitHub 上查看</a></li>
         </ul>
@@ -2105,6 +2116,26 @@ npm run daemon:uninstall
     <!-- Scroll-spy for active sidebar link -->
     <script>
     (function() {
+      function slugifyHeading(text) {
+        return text
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '-')
+          .replace(/&/g, '')
+          .replace(/[’'"“”‘`:：,，.。!?！？()（）\[\]{}<>\/\\]/g, '');
+      }
+
+      document.querySelectorAll('.rst-content h1, .rst-content h2, .rst-content h3, .rst-content h4').forEach(function(heading) {
+        var slug = slugifyHeading(heading.textContent || '');
+        if (!slug || document.getElementById(slug)) return;
+        var alias = document.createElement('span');
+        alias.id = slug;
+        alias.setAttribute('aria-hidden', 'true');
+        alias.style.position = 'relative';
+        alias.style.top = '-12px';
+        heading.parentNode.insertBefore(alias, heading);
+      });
+
       var links = document.querySelectorAll('.wy-menu a[href^="#"]');
       var sections = [];
       links.forEach(function(link) {
