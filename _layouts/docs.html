@@ -548,13 +548,27 @@
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
-        gap: 6px;
-        margin: 12px 0 20px;
+        align-items: center;
+        column-gap: 6px;
+        row-gap: 4px;
+        margin: 10px 0 16px;
+      }
+
+      .rst-badges a, .rtd-badges a {
+        display: inline-flex;
+        align-items: center;
+        line-height: 0;
       }
 
       .rst-badges img, .rtd-badges img {
         height: 20px;
-        display: inline;
+        width: auto;
+        max-width: none;
+        display: block;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
       }
     </style>
   </head>

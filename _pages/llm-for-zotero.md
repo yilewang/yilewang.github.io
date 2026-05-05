@@ -356,7 +356,7 @@ If you want to keep notes inside Zotero, the agent can also write to internal it
 
 <img src="/images/llm-for-zotero/note2.jpeg" alt="Zotero internal note" style="max-width:512px;">
 
-<img src="/images/llm-for-zotero/obsidian_example.png" alt="A Zotero paper note rendered in Obsidian">
+<img src="/images/llm-for-zotero/obsidian_example.png" alt="A Zotero paper note rendered in Obsidian" style="max-width:512px;">
 
 Notes use [Pandoc citation syntax](https://pandoc.org/MANUAL.html#citations) (`[@citekey]`), compatible with Obsidian's Zotero Integration and Pandoc plugins, as well as most Markdown readers.
 

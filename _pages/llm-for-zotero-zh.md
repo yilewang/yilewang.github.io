@@ -381,7 +381,7 @@ lang_alt: /llm-for-zotero/
 
 <img src="/images/llm-for-zotero/note2.jpeg" alt="Zotero 内部笔记" style="max-width:512px;">
 
-<img src="/images/llm-for-zotero/obsidian_example.png" alt="Obsidian 中渲染的 Zotero 论文笔记">
+<img src="/images/llm-for-zotero/obsidian_example.png" alt="Obsidian 中渲染的 Zotero 论文笔记" style="max-width:512px;">
 
 笔记使用 [Pandoc 引用语法](https://pandoc.org/MANUAL.html#citations)（`[@citekey]`），兼容 Obsidian 的 Zotero Integration 和 Pandoc 插件，也适用于大多数 Markdown 阅读器。
 
