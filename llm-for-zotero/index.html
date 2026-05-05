@@ -545,13 +545,27 @@
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
-        gap: 6px;
-        margin: 12px 0 20px;
+        align-items: center;
+        column-gap: 6px;
+        row-gap: 4px;
+        margin: 10px 0 16px;
+      }
+
+      .rst-badges a, .rtd-badges a {
+        display: inline-flex;
+        align-items: center;
+        line-height: 0;
       }
 
       .rst-badges img, .rtd-badges img {
         height: 20px;
-        display: inline;
+        width: auto;
+        max-width: none;
+        display: block;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
       }
     </style>
   </head>
@@ -1218,7 +1232,7 @@ Restart Zotero to complete the installation. The plugin automatically checks for
 
 <p><img src="/images/llm-for-zotero/note2.jpeg" alt="Zotero internal note" style="max-width:512px;" /></p>
 
-<p><img src="/images/llm-for-zotero/obsidian_example.png" alt="A Zotero paper note rendered in Obsidian" /></p>
+<p><img src="/images/llm-for-zotero/obsidian_example.png" alt="A Zotero paper note rendered in Obsidian" style="max-width:512px;" /></p>
 
 <p>Notes use <a href="https://pandoc.org/MANUAL.html#citations">Pandoc citation syntax</a> (<code class="language-plaintext highlighter-rouge">[@citekey]</code>), compatible with Obsidian’s Zotero Integration and Pandoc plugins, as well as most Markdown readers.</p>
 
