@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>llm-for-zotero：Zotero AI 研究助手</title>
+    <title>llm-for-zotero：面向 Zotero 文库的研究 Agent 系统</title>
     <style>
       /* ───────────────────────────────────────────────
          Sphinx Read-the-Docs theme — faithful replica
@@ -568,7 +568,7 @@
       <div class="wy-side-nav-search">
         <img src="/images/llm-for-zotero/icon.png" alt="llm-for-zotero">
         <span class="wy-project-name">llm-for-zotero</span>
-        <span class="wy-version">stable &middot; v3.8.2</span>
+        <span class="wy-version">stable &middot; v3.8.4</span>
         <input type="text" placeholder="搜索文档…" id="rtd-search-input">
       </div>
 
@@ -640,10 +640,14 @@
             </ul>
           </li>
           <li><a href="#skills-技能系统">Skills 技能系统</a></li>
-          <li><a href="#webchat-配置chatgpt--deepseek-网页同步">WebChat 配置</a></li>
+          <li><a href="#webchat-配置chatgpt-网页同步">WebChat 配置</a></li>
           <li><a href="#codex-配置chatgpt-plus-订阅用户">Codex 配置</a></li>
           <li><a href="#claude-code-配置实验性">Claude Code 配置</a></li>
-          <li><a href="#mineru-pdf-解析">MinerU PDF 解析</a></li>
+          <li><a href="#mineru-pdf-解析">MinerU PDF 解析</a>
+            <ul>
+              <li><a href="#使用本地-mineru-服务">本地 MinerU 服务</a></li>
+            </ul>
+          </li>
         </ul>
 
         <span class="caption">帮助</span>
@@ -671,7 +675,7 @@
           <li class="wy-breadcrumbs-aside"><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">在 GitHub 上查看</a></li>
         </ul>
 
-        <h1 id="overview">llm-for-zotero：Zotero AI 研究助手</h1>
+        <h1 id="overview">llm-for-zotero：面向 Zotero 文库的研究 Agent 系统</h1>
 
 <div class="rtd-badges">
   <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-7-green?style=flat-square&amp;logo=zotero&amp;logoColor=CC2936" alt="Zotero 7" /></a>
@@ -696,6 +700,8 @@
 
 <p><img src="/images/llm-for-zotero/demo.png" alt="llm-for-zotero 侧栏在 Zotero PDF 阅读器中的截图" /></p>
 
+<p><img src="/images/llm-for-zotero/demo2.png" alt="llm-for-zotero 助手在 Zotero 中的第二张截图" /></p>
+
 <div class="rtd-feature-grid">
   <div class="rtd-feature-card">
     <strong>与论文对话</strong>
@@ -715,7 +721,7 @@
   </div>
   <div class="rtd-feature-card">
     <strong>MinerU PDF 解析</strong>
-    <p>使用高保真 PDF 解析，完整保留表格、公式、图表和复杂版式。</p>
+    <p>可使用云端 MinerU 或本地 mineru-api 服务，进行高保真 PDF 解析，保留表格、公式、图表和复杂版式。</p>
   </div>
   <div class="rtd-feature-card">
     <strong>独立窗口模式</strong>
@@ -747,7 +753,7 @@
   <li>在 Zotero 中打开一篇 PDF，点击右侧工具栏的 LLM Assistant 图标。</li>
 </ol>
 
-<p>如果您不想使用服务商 API 密钥，可以从 <a href="#webchat-配置chatgpt--deepseek-网页同步">WebChat</a> 或 <a href="#codex-配置chatgpt-plus-订阅用户">Codex App Server</a> 开始。</p>
+<p>如果您不想使用服务商 API 密钥，可以从 <a href="#webchat-配置chatgpt-网页同步">WebChat</a> 或 <a href="#codex-配置chatgpt-plus-订阅用户">Codex App Server</a> 开始。</p>
 
 <h2 id="环境要求">环境要求</h2>
 
@@ -756,7 +762,7 @@
   <li>一种模型后端：服务商 API 密钥、本地 OpenAI 兼容模型、WebChat、Codex App Server 或 Claude Code。</li>
   <li>WebChat 模式需要 Chromium 内核浏览器。</li>
   <li>通过 npm 安装 Codex CLI 和运行 Claude Code 桥接服务需要 Node.js 18+。macOS Codex cask 不需要单独安装 Node.js。</li>
-  <li>如果启用 MinerU 解析，建议使用个人 MinerU API 密钥。</li>
+  <li>如果启用 MinerU 解析，建议使用个人 MinerU API 密钥或本地 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务。</li>
 </ul>
 
 <h2 id="选择配置方式">选择配置方式</h2>
@@ -782,7 +788,7 @@
     </tr>
     <tr>
       <td>在浏览器中使用 ChatGPT 或 DeepSeek</td>
-      <td>通过 Sync for Zotero 扩展使用 <a href="#webchat-配置chatgpt--deepseek-网页同步">WebChat</a></td>
+      <td>通过 Sync for Zotero 扩展使用 <a href="#webchat-配置chatgpt-网页同步">WebChat</a></td>
       <td>不需要</td>
     </tr>
     <tr>
@@ -814,7 +820,7 @@
   <li><strong>文件笔记</strong>：笔记目录不再硬编码为 Obsidian。您可以配置任意本地 Markdown 目录，包括 Obsidian、Logseq 或普通文件夹。详见 <a href="#文件笔记">文件笔记</a>。</li>
   <li><strong>Skills 技能系统</strong>：可自定义的引导文件会影响 Agent 的任务处理方式。内置 8 个技能，并支持创建自定义技能。详见 <a href="#skills-技能系统">Skills 技能系统</a>。</li>
   <li><strong>独立窗口模式</strong>：在专用窗口中打开助手，支持论文对话、文库对话和对话历史。</li>
-  <li><strong>MinerU PDF 解析</strong>：高保真提取可更准确地保留表格、公式和图表。</li>
+  <li><strong>MinerU PDF 解析</strong>：高保真提取可更准确地保留表格、公式和图表，并支持云端 MinerU 与本地 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务。</li>
 </ul>
 
 <p>感谢 <a href="https://github.com/jianghao-zhang">@jianghao-zhang</a> 和 <a href="https://github.com/boltma">@boltma</a> 对 Codex App Server、Claude Code 和文件上传工作流的重要贡献。</p>
@@ -859,7 +865,9 @@
 
 <h3 id="支持的服务商与协议">支持的服务商与协议</h3>
 
-<p>插件原生支持以下五种服务商协议：</p>
+<p>预设服务商包括 <strong>OpenAI</strong>、<strong>Gemini</strong>、<strong>Anthropic</strong>、<strong>MiniMax</strong>、<strong>GLM</strong>、<strong>DeepSeek</strong>、<strong>Grok</strong>、<strong>Qwen</strong>、<strong>Kimi</strong> 和 <strong>GitHub Copilot</strong>。您也可以添加任意自定义 OpenAI 兼容 HTTP 端点，包括 Ollama、LM Studio、vLLM 或远程代理。</p>
+
+<p>插件原生支持以下服务商协议：</p>
 
 <table>
   <thead>
@@ -894,6 +902,11 @@
       <td><code class="language-plaintext highlighter-rouge">codex_responses</code></td>
       <td>Codex App Server / Codex Auth (Legacy)</td>
       <td>ChatGPT Plus 订阅用户可免单独 API 密钥使用 Codex 模型，推荐选择 Codex App Server</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">web_sync</code></td>
+      <td>ChatGPT / DeepSeek 的 WebChat 桥接协议</td>
+      <td>通过浏览器扩展转发，无需服务商 API 密钥</td>
     </tr>
   </tbody>
 </table>
@@ -1165,8 +1178,6 @@
 <hr />
 
 <h2 id="独立窗口模式">独立窗口模式</h2>
-
-<p><img src="/images/llm-for-zotero/standalone_window.png" alt="LLM 助手独立窗口" /></p>
 
 <p>在独立窗口中打开 LLM 助手，脱离 Zotero 阅读器侧栏。独立窗口提供全尺寸聊天界面，左侧配有可折叠的对话历史面板。</p>
 
@@ -1489,14 +1500,6 @@
 
 <p><img src="/images/llm-for-zotero/agent/multi_steps.gif" alt="多步骤 Agent 工作流" style="max-width:512px;" /></p>
 
-<h4 id="直接读取图表">直接读取图表</h4>
-
-<p><img src="/images/llm-for-zotero/agent/single_figure.gif" alt="Agent 从 PDF 读取图表" /></p>
-
-<h4 id="读取多页内容">读取多页内容</h4>
-
-<p><img src="/images/llm-for-zotero/agent/full_docs.gif" alt="Agent 读取多页内容" /></p>
-
 <h4 id="查找相关论文">查找相关论文</h4>
 
 <p><img src="/images/llm-for-zotero/agent/related_papers.gif" alt="Agent 查找相关论文" /></p>
@@ -1667,11 +1670,13 @@ match: /另一个触发模式/i
 
 <hr />
 
+<p><a id="webchat-配置chatgpt-网页同步"></a></p>
+
 <h2 id="webchat-配置chatgpt--deepseek-网页同步">WebChat 配置（ChatGPT &amp; DeepSeek 网页同步）</h2>
 
 <p><strong>WebChat 模式</strong>通过浏览器扩展将您的问题发送到 <a href="https://chatgpt.com">chatgpt.com</a> 或 <a href="https://chat.deepseek.com">deepseek.com</a>，再把回复实时流式传回 Zotero。它适合不想配置服务商 API 密钥、但想使用 ChatGPT 或 DeepSeek 网页端的场景。</p>
 
-<p><img src="/images/llm-for-zotero/webchat.jpeg" alt="WebChat 模式连接到 chatgpt.com 的截图" /></p>
+<p><img src="/images/llm-for-zotero/webchat.gif" alt="WebChat 模式连接到 chatgpt.com 的动图" /></p>
 
 <h3 id="前置条件">前置条件</h3>
 
@@ -1733,7 +1738,7 @@ match: /另一个触发模式/i
 
 <div class="rtd-warning">
   <div class="rtd-admonition-title">注意</div>
-  WebChat 模式需要保持浏览器标签页打开，并确保 Sync for Zotero 扩展处于活动状态。浏览器和 Zotero 应运行在同一个桌面环境中；WebChat 目前仅支持论文对话，暂不支持文库对话。
+  WebChat 模式需要保持浏览器标签页打开，并确保 Sync for Zotero 扩展处于活动状态。请让浏览器与 Zotero 保持在同一个桌面会话中，请求期间尽量不要最小化或后台挂起 WebChat 标签页，并留意绿色连接点。WebChat 目前仅支持论文对话，暂不支持文库对话。
 </div>
 
 <h3 id="技术说明">技术说明</h3>
@@ -1962,8 +1967,10 @@ npm run daemon:uninstall
 <ol>
   <li>打开 Zotero → <strong>首选项</strong> → <strong>llm-for-zotero</strong>。</li>
   <li>找到 <strong>MinerU</strong> 部分，勾选<strong>启用 MinerU</strong>。</li>
-  <li>可选填入您自己的 MinerU API 密钥。</li>
-  <li>打开任意 PDF 开始对话，插件会在首次使用时解析 PDF 并缓存结果。</li>
+  <li>保持云端模式，或勾选 <strong>Use local MinerU server</strong> 使用本地模式。</li>
+  <li>云端模式下，可选填入您自己的 MinerU API 密钥。</li>
+  <li>本地模式下，运行自托管 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务；除非服务使用了其他地址，否则保持默认 Base URL <code class="language-plaintext highlighter-rouge">http://127.0.0.1:8000</code>。</li>
+  <li>打开任意 PDF 开始对话，插件会在首次使用时自动通过 MinerU 解析 PDF，并缓存结果供后续对话复用。</li>
 </ol>
 
 <h3 id="使用自有-api-密钥">使用自有 API 密钥</h3>
@@ -1981,6 +1988,33 @@ npm run daemon:uninstall
 
 <p>提供个人 API 密钥后，插件将直接调用 <code class="language-plaintext highlighter-rouge">https://mineru.net/api/v4</code>。</p>
 
+<h3 id="使用本地-mineru-服务">使用本地 MinerU 服务</h3>
+
+<p>本地 MinerU 服务支持由 <a href="https://github.com/renyong18">@renyong18</a> 在 <a href="https://github.com/yilewang/llm-for-zotero/pull/152">PR #152</a> 中贡献。</p>
+
+<p>本地模式会通过 <code class="language-plaintext highlighter-rouge">POST /file_parse</code> 将 PDF 发送到自托管 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务，并把返回的 ZIP 输出保存为与云端解析相同的本地缓存格式。默认 Base URL 为 <code class="language-plaintext highlighter-rouge">http://127.0.0.1:8000</code>。</p>
+
+<p><strong>本地模式前置条件：</strong></p>
+
+<ol>
+  <li>安装 MinerU 并运行 <code class="language-plaintext highlighter-rouge">mineru-api</code>；安装方式请参考 <a href="https://github.com/opendatalab/MinerU">MinerU 文档</a>。</li>
+  <li>确保所需模型已经下载。<code class="language-plaintext highlighter-rouge">mineru-api</code> 会在首次请求时懒加载模型，因此启动服务后第一次解析，或切换 backend 后第一次解析，通常会比稳定状态更慢。</li>
+</ol>
+
+<p>本地设置中可以选择 <code class="language-plaintext highlighter-rouge">Backend</code>：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pipeline</code>（默认）— 通用、多语言、对 CPU 更友好。</li>
+  <li><code class="language-plaintext highlighter-rouge">vlm</code> — 基于 VLM，对中英文文档准确率高，需要 GPU。</li>
+  <li><code class="language-plaintext highlighter-rouge">hybrid</code> — 较新的高准确率混合流程，支持多语言，需要本地算力。</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">Test Connection</code> 只检查服务进程是否在 <code class="language-plaintext highlighter-rouge">/health</code> 响应；它不能保证所有模型已经预热完成。</p>
+
+<p>使用默认 <code class="language-plaintext highlighter-rouge">127.0.0.1</code> 地址时，PDF 会留在本机。如果您把 Base URL 改为局域网或远程服务器，PDF 会被发送到该服务器。</p>
+
+<p><strong>暂停 / 取消限制：</strong> <code class="language-plaintext highlighter-rouge">mineru-api</code> 没有提供取消或 DELETE 端点。点击 Pause 后，插件会暂停队列并中止 HTTP 等待，但服务器上已经开始的解析仍会继续运行直到结束。如果需要立即中止，例如想立刻切换 backend，请自行重启 <code class="language-plaintext highlighter-rouge">mineru-api</code> 进程。</p>
+
 <hr />
 
 <h2 id="隐私与数据流">隐私与数据流</h2>
@@ -1989,7 +2023,8 @@ npm run daemon:uninstall
   <li>标准服务商模式下，论文内容和用户消息会发送给您配置的模型服务商。</li>
   <li>本地模型模式下，请求会发送到您配置的本地 OpenAI 兼容端点。</li>
   <li>WebChat 模式下，请求会通过浏览器扩展转发到 <code class="language-plaintext highlighter-rouge">chatgpt.com</code> 或 <code class="language-plaintext highlighter-rouge">chat.deepseek.com</code>。</li>
-  <li>MinerU 模式下，启用解析时 PDF 会发送给 MinerU 进行解析。</li>
+  <li>云端 MinerU 模式下，启用解析时 PDF 会发送给 MinerU 进行解析。</li>
+  <li>本地 MinerU 模式下，PDF 会发送到您配置的本地或远程 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务。</li>
   <li>对话历史和缓存的论文上下文由插件存储在本地。</li>
   <li>Agent 模式的写入操作会尽可能通过可审阅动作和会话内撤销机制处理。</li>
 </ul>
@@ -2028,7 +2063,7 @@ npm run daemon:uninstall
     </tr>
     <tr>
       <td><strong>MinerU 解析失败</strong></td>
-      <td>添加个人 MinerU API 密钥，并重新尝试<strong>测试连接</strong>。</td>
+      <td>云端模式下添加个人 MinerU API 密钥；本地模式下确认 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务能在 <code class="language-plaintext highlighter-rouge">/health</code> 响应，然后重新尝试<strong>测试连接</strong>。</td>
     </tr>
   </tbody>
 </table>
@@ -2049,9 +2084,9 @@ npm run daemon:uninstall
   <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Claude Code 集成</li>
   <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Codex App Server 集成</li>
   <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />自定义技能</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />本地 MinerU 支持</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />本地 MinerU 支持</li>
   <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />MinerU 解析参数自定义</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />跨设备同步（MinerU 缓存或对话历史）</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />跨设备同步（MinerU 缓存）</li>
   <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Agent 记忆系统</li>
 </ul>
 
