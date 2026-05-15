@@ -834,7 +834,9 @@
   <li><strong>文件笔记</strong>：笔记目录不再硬编码为 Obsidian。您可以配置任意本地 Markdown 目录，包括 Obsidian、Logseq 或普通文件夹。详见 <a href="#文件笔记">文件笔记</a>。</li>
   <li><strong>Skills 技能系统</strong>：可自定义的引导文件会影响 Agent 的任务处理方式。内置 8 个技能，并支持创建自定义技能。详见 <a href="#skills-技能系统">Skills 技能系统</a>。</li>
   <li><strong>独立窗口模式</strong>：在专用窗口中打开助手，支持论文对话、文库对话和对话历史。</li>
-  <li><strong>MinerU PDF 解析</strong>：高保真提取可更准确地保留表格、公式和图表，并支持云端 MinerU 与本地 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务。</li>
+  <li><strong>缓存感知的 Agent 模式</strong>：在较长研究回合中保留稳定的论文上下文、已读取证据和覆盖状态，并在上下文窗口拥挤时自动压缩旧对话历史。</li>
+  <li><strong>引用跳转</strong>：在页码位置经过验证前保持保守的引用标签；基于原文片段的引用可跳回 Zotero 中匹配的段落。</li>
+  <li><strong>MinerU PDF 解析</strong>：高保真提取可更准确地保留表格、公式和图表，并支持云端 MinerU、本地 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务、批量解析、缓存修复、同步包、标签和解析过滤器。</li>
 </ul>
 
 <p>感谢 <a href="https://github.com/jianghao-zhang">@jianghao-zhang</a> 和 <a href="https://github.com/boltma">@boltma</a> 对 Codex App Server、Claude Code 和文件上传工作流的重要贡献。</p>
@@ -1093,7 +1095,7 @@
 
 <p><img src="/images/llm-for-zotero/citation_jump.gif" alt="一键从 AI 引用跳转到论文原文" /></p>
 
-<p>提问时，模型会生成<strong>基于论文内容</strong>的答案，每条结论均附有引用——点击即可跳转到 PDF 中的原始段落，方便核实答案并快速定位相关章节。</p>
+<p>提问时，模型会生成<strong>基于论文内容</strong>的答案。引用标签会在页码位置经过验证前保持保守；点击已验证的引用或基于原文片段的引用，即可跳回 Zotero 中匹配的段落，方便核实答案并快速定位相关内容。</p>
 
 <hr />
 
@@ -1306,6 +1308,8 @@
 </div>
 
 <p>启用后，LLM 将成为一个<strong>自主 Agent</strong>，可在 Zotero 文库中执行读取、搜索和写入操作。读取工具可直接运行；写入工具会进入确认卡片，并支持撤销。</p>
+
+<p>较长的 Agent 运行具有缓存感知能力。插件会将稳定的 Zotero 上下文和已读取证据，与不断变化的聊天记录分开保存，跟踪哪些论文和段落已经被检查，并在模型上下文填满时自动压缩旧回合。后续问题可以在证据仍然相关时复用这些来源；当缺少所需来源或覆盖层级时，Agent 会重新读取。</p>
 
 <h3 id="文库与-pdf-读取工具">文库与 PDF 读取工具</h3>
 
@@ -1974,7 +1978,9 @@ npm run daemon:uninstall
 
 <p><img src="/images/llm-for-zotero/minerU.png" alt="MinerU PDF 解析结果截图" /></p>
 
-<p>启用后，插件会将 PDF 发送到 MinerU API 进行解析并在本地缓存结果。此后与该论文的所有交互都将使用 MinerU 解析的内容，为模型提供更丰富、更准确的上下文。</p>
+<p>解析结果会缓存在本地，并在后续对话中复用。启用 <strong>Auto-parse newly added items</strong> 后，新添加的 PDF 附件会在进入 Zotero 文库时发送给 MinerU 解析。如果不启用自动解析，也可以在 <strong>Manage Files</strong> 面板中手动解析选中或过滤后的 PDF。</p>
+
+<p>MinerU 缓存是为 AI 准备的，不是第二套给人阅读的 PDF 界面。Zotero 仍然是阅读、标注和管理原始 PDF 的地方。MinerU 会生成模型更容易使用的结构化旁路材料：干净的 Markdown、章节范围、页码提示、表格、公式和提取出的图像资源。这样可以尽量不打扰原有 Zotero UI，同时为助手提供比普通 PDF 文本提取更好的论文上下文。</p>
 
 <h3 id="启用方法">启用方法</h3>
 
@@ -1984,7 +1990,7 @@ npm run daemon:uninstall
   <li>保持云端模式，或勾选 <strong>Use local MinerU server</strong> 使用本地模式。</li>
   <li>云端模式下，可选填入您自己的 MinerU API 密钥。</li>
   <li>本地模式下，运行自托管 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务；除非服务使用了其他地址，否则保持默认 Base URL <code class="language-plaintext highlighter-rouge">http://127.0.0.1:8000</code>。</li>
-  <li>打开任意 PDF 开始对话，插件会在首次使用时自动通过 MinerU 解析 PDF，并缓存结果供后续对话复用。</li>
+  <li>如果希望新导入的 PDF 自动解析，请勾选 <strong>Auto-parse newly added items</strong>。之后将 PDF 添加或导入 Zotero 文库，插件会通过 MinerU 解析新添加的 PDF 附件，并缓存结果供后续对话复用。</li>
 </ol>
 
 <h3 id="使用自有-api-密钥">使用自有 API 密钥</h3>
@@ -2027,7 +2033,36 @@ npm run daemon:uninstall
 
 <p>使用默认 <code class="language-plaintext highlighter-rouge">127.0.0.1</code> 地址时，PDF 会留在本机。如果您把 Base URL 改为局域网或远程服务器，PDF 会被发送到该服务器。</p>
 
-<p><strong>暂停 / 取消限制：</strong> <code class="language-plaintext highlighter-rouge">mineru-api</code> 没有提供取消或 DELETE 端点。点击 Pause 后，插件会暂停队列并中止 HTTP 等待，但服务器上已经开始的解析仍会继续运行直到结束。如果需要立即中止，例如想立刻切换 backend，请自行重启 <code class="language-plaintext highlighter-rouge">mineru-api</code> 进程。</p>
+<p><strong>暂停 / 取消限制：</strong> <code class="language-plaintext highlighter-rouge">mineru-api</code> 没有提供取消或 DELETE 端点，只提供 <code class="language-plaintext highlighter-rouge">POST /file_parse</code>、<code class="language-plaintext highlighter-rouge">POST /tasks</code>、<code class="language-plaintext highlighter-rouge">GET /tasks/{id}</code>、<code class="language-plaintext highlighter-rouge">GET /tasks/{id}/result</code> 和 <code class="language-plaintext highlighter-rouge">GET /health</code>。点击 Pause 后，插件会暂停队列并中止 HTTP 等待，但服务器上已经开始的解析仍会继续运行直到结束，GPU/CPU 计算不会立刻停止。如果需要立即中止，例如想立刻切换 backend，请自行重启 <code class="language-plaintext highlighter-rouge">mineru-api</code> 进程。</p>
+
+<h3 id="管理-mineru-缓存">管理 MinerU 缓存</h3>
+
+<p><strong>MinerU</strong> 首选项标签页包含 <strong>Manage Files</strong> 面板，用于维护已解析的 PDF 缓存：</p>
+
+<ul>
+  <li>按文集、标签、标题、作者、年份和添加日期浏览已缓存与未缓存的 PDF。</li>
+  <li>对所有可见文件、过滤后的文件或选中的文件开始解析。</li>
+  <li>当元数据或文件发生漂移时，修复本地 MinerU 缓存和已同步的缓存包。</li>
+  <li>从管理器中删除全部、过滤后、选中或单个条目的缓存。</li>
+  <li>使用标签过滤器，包括 Zotero 自动标签，选择哪些论文参与批量操作。</li>
+</ul>
+
+<p>自动缓存管理是事件驱动的。插件监听 Zotero 条目添加事件，识别普通论文条目下的 PDF 附件或独立 PDF 附件，并在处理前短暂等待，让 Zotero 完成文件导入。如果 Zotero 条目已经出现，但 PDF 文件路径或父条目的附件列表还没准备好，队列会按短延迟重试，而不是立刻判定失败。已删除的附件会从队列移除，已经有缓存的 PDF 会被跳过。</p>
+
+<p>自动队列和批量解析使用同一套过滤规则。它会跳过已经有本地 MinerU 缓存或可用同步包的 PDF，避免重复入队，并通过 MinerU 状态点显示 ready、processing 或 failed。普通元数据修改不会反复重解析已经完成的 PDF；modify 事件主要用于恢复正在处理、失败或文件尚未就绪的情况。</p>
+
+<p>解析成功后，插件会在 Zotero 数据目录下的 <code class="language-plaintext highlighter-rouge">llm-for-zotero-mineru/&lt;attachmentId&gt;/</code> 写入缓存。核心文件包括 <code class="language-plaintext highlighter-rouge">full.md</code>、<code class="language-plaintext highlighter-rouge">manifest.json</code>、<code class="language-plaintext highlighter-rouge">content_list.json</code>、提取出的图像等资源，以及记录来源的 <code class="language-plaintext highlighter-rouge">_llm_source.json</code>。<code class="language-plaintext highlighter-rouge">manifest.json</code> 是为 AI 访问设计的：它把章节标题映射到字符范围、页码提示和章节级图表，让 Agent 可以按问题读取 <code class="language-plaintext highlighter-rouge">full.md</code> 中相关片段，而不是每次都加载整篇论文。</p>
+
+<p>写入 MinerU 缓存后，插件会清理该 PDF 旧的内存文本缓存和嵌入缓存。下一次提问会使用 MinerU 质量的文本块，并基于更好的解析文本重新生成检索数据。</p>
+
+<p>高级解析过滤器可以在自动解析或批量解析前跳过文件：</p>
+
+<ul>
+  <li><strong>Skip files over N pages</strong> 控制 Start All、Start Filtered、Start Selected 和自动解析使用的最大页数。默认值为 100 页。</li>
+  <li><strong>Exclude PDFs by Filename</strong> 支持逗号分隔的子字符串，或用 <code class="language-plaintext highlighter-rouge">/slashes/</code> 包裹的正则表达式，可用于排除翻译副本、补充材料或其他不希望自动解析的文件。</li>
+</ul>
+
+<p>如果启用 <strong>Sync MinerU cache with Zotero file sync</strong>，插件可以创建包含 <code class="language-plaintext highlighter-rouge">full.md</code>、<code class="language-plaintext highlighter-rouge">manifest.json</code>、<code class="language-plaintext highlighter-rouge">content_list.json</code> 和提取资源的配套 ZIP 附件。同步是可选功能，默认关闭。已有本地缓存只会在您从 MinerU 标签页主动请求时同步；同步包也可以在需要时恢复缺失的本地缓存。修复流程会验证同步包的元数据和内容哈希，清理同一来源 PDF 的重复同步包，移除孤立的本地缓存，并从可用的同步 ZIP 中恢复本地缓存文件夹。</p>
 
 <hr />
 
@@ -2037,8 +2072,8 @@ npm run daemon:uninstall
   <li>标准服务商模式下，论文内容和用户消息会发送给您配置的模型服务商。</li>
   <li>本地模型模式下，请求会发送到您配置的本地 OpenAI 兼容端点。</li>
   <li>WebChat 模式下，请求会通过浏览器扩展转发到 <code class="language-plaintext highlighter-rouge">chatgpt.com</code> 或 <code class="language-plaintext highlighter-rouge">chat.deepseek.com</code>。</li>
-  <li>云端 MinerU 模式下，启用解析时 PDF 会发送给 MinerU 进行解析。</li>
-  <li>本地 MinerU 模式下，PDF 会发送到您配置的本地或远程 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务。</li>
+  <li>云端 MinerU 模式下，被自动解析或手动解析选中的 PDF 会发送给 MinerU。</li>
+  <li>本地 MinerU 模式下，被自动解析或手动解析选中的 PDF 会发送到您配置的本地或远程 <code class="language-plaintext highlighter-rouge">mineru-api</code> 服务。</li>
   <li>对话历史和缓存的论文上下文由插件存储在本地。</li>
   <li>Agent 模式的写入操作会尽可能通过可审阅动作和会话内撤销机制处理。</li>
 </ul>
@@ -2099,7 +2134,6 @@ npm run daemon:uninstall
   <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Codex App Server 集成</li>
   <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />自定义技能</li>
   <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />本地 MinerU 支持</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />MinerU 解析参数自定义</li>
   <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />跨设备同步（MinerU 缓存）</li>
   <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Agent 记忆系统</li>
 </ul>
