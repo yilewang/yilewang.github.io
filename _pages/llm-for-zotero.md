@@ -114,7 +114,9 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 - **File-Based Notes**: Notes are no longer hard-coded to Obsidian. Configure any local Markdown directory, including Obsidian, Logseq, or a plain folder. See [File-Based Notes](#file-based-notes).
 - **Skills**: Customizable guidance files shape how the agent handles different tasks. 8 built-in skills are included, plus a portal for creating your own. See [Skills](#skills).
 - **Standalone Window Mode** opens the assistant in a dedicated window with paper chat, library chat, and conversation history.
-- **MinerU PDF parsing**: High-fidelity extraction preserves tables, equations, and figures more accurately, with support for cloud MinerU and local `mineru-api` servers.
+- **Cache-aware Agent Mode** preserves stable paper context, prior read evidence, and coverage state across longer research turns, then compacts old transcript history automatically when the context window gets crowded.
+- **Citation navigation** keeps citation labels conservative until page locations are verified, while quote-based citations can jump back to the matching Zotero passage.
+- **MinerU PDF parsing**: High-fidelity extraction preserves tables, equations, and figures more accurately, with support for cloud MinerU, local `mineru-api` servers, bulk parsing, cache repair, sync packages, tags, and parsing filters.
 
 Thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) and [@boltma](https://github.com/boltma) for major contributions to the Codex App Server, Claude Code, and file upload workflows.
 
@@ -216,7 +218,7 @@ The plugin supports multiple conversation contexts:
 
 <img src="/images/llm-for-zotero/citation_jump.gif" alt="One-click jump from an AI citation to the paper source">
 
-When you ask a question, the model generates answers grounded in the paper's content. Click any citation to jump straight to the source passage in your Zotero library.
+When you ask a question, the model generates answers grounded in the paper's content. Citation labels stay conservative until page locations are verified; click a verified citation or quote-based citation to jump back to the matching Zotero passage.
 
 ---
 
@@ -375,6 +377,8 @@ Notes use [Pandoc citation syntax](https://pandoc.org/MANUAL.html#citations) (`[
 </div>
 
 When enabled, the LLM becomes an **autonomous agent** that can read, search, and write within your Zotero library. Read tools run directly; write tools route through confirmation cards and stay undoable.
+
+Long agent runs are cache-aware. The plugin keeps stable Zotero context and previously read evidence separate from the changing chat transcript, tracks which papers and passages have already been inspected, and automatically compacts old turns when the model context fills up. Follow-up questions can reuse grounded evidence when it is still relevant, while the agent reads again when the needed source or coverage layer is missing.
 
 ### Library & PDF Reading Tools
 
@@ -792,7 +796,9 @@ The Zotero UI exposes `opus`, `sonnet`, and `haiku` as capability tiers. They do
 
 <img src="/images/llm-for-zotero/minerU.png" alt="Screenshot showing MinerU PDF parsing results in the plugin">
 
-When enabled, the plugin sends your PDF to the MinerU API for parsing and caches the result locally. All later interactions with that paper reuse the MinerU-parsed content, giving the model richer and more accurate context.
+Parsed results are cached locally and reused in later conversations. When **Auto-parse newly added items** is enabled, newly added PDF attachments are sent to MinerU as they enter the Zotero library. If auto-parse is off, you can still parse selected or filtered PDFs from the **Manage Files** panel.
+
+The MinerU cache is designed for AI, not as a second human PDF reader. Zotero stays the place where you read, annotate, and manage the original PDF. MinerU creates structured sidecar material that models can use: clean Markdown, section ranges, page hints, tables, equations, and extracted figure assets. This keeps the original Zotero UI mostly untouched while giving the assistant much better paper context than raw PDF text extraction.
 
 ### How to Enable MinerU
 
@@ -801,7 +807,7 @@ When enabled, the plugin sends your PDF to the MinerU API for parsing and caches
 3. Keep cloud mode enabled, or check **Use local MinerU server** for local mode.
 4. For cloud mode, optionally enter your own MinerU API key.
 5. For local mode, run a self-hosted `mineru-api` server and keep the default base URL (`http://127.0.0.1:8000`) unless your server uses a different address.
-6. Open any PDF and start chatting. The plugin will automatically parse the PDF with MinerU on first use and cache the result for future conversations.
+6. To parse new imports automatically, check **Auto-parse newly added items**. Then add or import a PDF into your Zotero library. The plugin will parse newly added PDF attachments with MinerU and cache the result for future conversations.
 
 ### Using Your Own API Key
 
@@ -837,7 +843,32 @@ You can pick a `Backend` in the local section:
 
 With the default `127.0.0.1` address, PDFs stay on your machine. If you change the base URL to a LAN or remote server, PDFs are sent to that server.
 
-**Pause / cancel limitation:** `mineru-api` exposes no cancel or DELETE endpoint. When you click Pause, the plugin stops the queue and aborts the HTTP wait, but the parse already running on the server keeps executing until it finishes. Restart the `mineru-api` process yourself if you need to abort immediately, such as when switching backend without waiting.
+**Pause / cancel limitation:** `mineru-api` exposes no cancel or DELETE endpoint, only `POST /file_parse`, `POST /tasks`, `GET /tasks/{id}`, `GET /tasks/{id}/result`, and `GET /health`. When you click Pause, the plugin stops the queue and aborts the HTTP wait, but the parse already running on the server keeps executing until it finishes, so GPU/CPU work will not stop immediately. Restart the `mineru-api` process yourself if you need to abort immediately, such as when switching backend without waiting.
+
+### Managing MinerU Caches
+
+The **MinerU** preferences tab includes a **Manage Files** panel for maintaining parsed PDF caches:
+
+- Browse cached and uncached PDFs by collection, tag, title, author, year, and added date.
+- Start parsing all visible files, only filtered files, or selected files.
+- Repair local MinerU caches and synced packages when metadata or files drift.
+- Delete all, filtered, selected, or single-item caches from the manager.
+- Use tag filters, including automatic Zotero tags, to choose which papers are included in bulk actions.
+
+Automatic cache management is event-driven. The plugin watches Zotero item additions, finds PDF attachments on regular items or standalone PDFs, and waits briefly before processing so Zotero can finish importing the file. If the Zotero item exists but the PDF file path or parent attachment list is not ready yet, the queue retries after short delays instead of failing immediately. Deleted attachments are removed from the queue, and already cached PDFs are skipped.
+
+The queue respects the same filters as bulk parsing. It skips PDFs that already have a local MinerU cache or an available synced package, avoids duplicate queue entries, and shows live status through the MinerU dots: ready, processing, or failed. A normal metadata edit does not repeatedly reparse a finished PDF; modify events are mainly used to recover in-progress, failed, or file-readiness cases.
+
+When a parse succeeds, the plugin writes a cache under Zotero's data directory in `llm-for-zotero-mineru/<attachmentId>/`. The canonical files include `full.md`, `manifest.json`, `content_list.json`, extracted assets such as images, and `_llm_source.json` provenance. The manifest is built for AI access: it maps section titles to character ranges, page hints, and section-level figures so the agent can read the relevant slice of `full.md` instead of loading the whole paper for every question.
+
+After writing a MinerU cache, the plugin clears stale in-memory text and embedding caches for that PDF. The next question can then use MinerU-quality chunks and regenerate retrieval data from the better parsed text.
+
+Advanced parsing filters can skip files before automatic or bulk parsing:
+
+- **Skip files over N pages** controls the maximum page count used by Start All, Start Filtered, Start Selected, and auto-parse. The default is 100 pages.
+- **Exclude PDFs by Filename** accepts comma-separated substrings, or regex patterns wrapped in `/slashes/`, for translated copies, supplements, or other files you do not want parsed automatically.
+
+If **Sync MinerU cache with Zotero file sync** is enabled, the plugin can create companion ZIP attachments containing `full.md`, `manifest.json`, `content_list.json`, and extracted assets. Sync is optional and default-off. Existing local caches sync only when you request it from the MinerU tab, and synced packages can restore a missing local cache when needed. The repair path validates package metadata and content hashes, prunes duplicate packages for the same source PDF, removes orphaned local caches, and restores usable local cache folders from synced ZIP packages.
 
 ---
 
@@ -846,8 +877,8 @@ With the default `127.0.0.1` address, PDFs stay on your machine. If you change t
 - In standard provider mode, paper content and user messages are sent to the model provider you configure.
 - In local-model mode, requests go to the local OpenAI-compatible endpoint you configure.
 - In WebChat mode, requests are relayed through the browser extension to `chatgpt.com` or `chat.deepseek.com`.
-- In cloud MinerU mode, PDFs are sent to MinerU for parsing when parsing is enabled.
-- In local MinerU mode, PDFs are sent to the local or remote `mineru-api` server you configure.
+- In cloud MinerU mode, PDFs selected for automatic or manual MinerU parsing are sent to MinerU.
+- In local MinerU mode, PDFs selected for automatic or manual MinerU parsing are sent to the local or remote `mineru-api` server you configure.
 - Conversation history and cached paper context are stored locally by the plugin.
 - Agent Mode write operations are routed through reviewable actions and session undo where supported.
 
@@ -880,7 +911,6 @@ For bugs or unclear failures, please [open an issue](https://github.com/yilewang
 - [x] Codex App Server integration
 - [x] Customized skills
 - [x] Local MinerU support
-- [ ] Customized parameter of MinerU parsing
 - [x] Cross-device synchronization (MinerU cache)
 - [ ] Agent memory system
 
