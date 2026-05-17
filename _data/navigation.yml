@@ -4,7 +4,7 @@ main:
     url: /files/CV_yilewang.pdf
 
   - title: "Publications"
-    url: /publications/    
+    url: /publications/
 
   - title: "LLM-for-Zotero"
     url: /llm-for-zotero/

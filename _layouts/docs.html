@@ -603,13 +603,27 @@
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
-        gap: 6px;
-        margin: 12px 0 20px;
+        align-items: center;
+        column-gap: 6px;
+        row-gap: 4px;
+        margin: 10px 0 16px;
+      }
+
+      .rst-badges a, .rtd-badges a {
+        display: inline-flex;
+        align-items: center;
+        line-height: 0;
       }
 
       .rst-badges img, .rtd-badges img {
         height: 20px;
-        display: inline;
+        width: auto;
+        max-width: none;
+        display: block;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
       }
     </style>
   </head>
@@ -617,16 +631,16 @@
   <body>
     <!-- Mobile hamburger -->
     <button class="wy-nav-top-hamburger" onclick="document.querySelector('.wy-nav-side').classList.toggle('wy-nav-side--open'); document.querySelector('.wy-nav-overlay').classList.toggle('active');">
-      &#9776;&nbsp; LLM for Zotero
+      &#9776;&nbsp; llm-for-zotero
     </button>
     <div class="wy-nav-overlay" onclick="document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open'); this.classList.remove('active');"></div>
 
     <!-- ─── Sidebar ─── -->
     <nav class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <img src="/images/llm-for-zotero/icon.png" alt="LLM for Zotero">
-        <span class="wy-project-name">LLM for Zotero</span>
-        <span class="wy-version">stable &middot; v3.7.6</span>
+        <img src="/images/llm-for-zotero/icon.png" alt="llm-for-zotero">
+        <span class="wy-project-name">llm-for-zotero</span>
+        <span class="wy-version">stable &middot; v3.8.4</span>
         <input type="text" placeholder="{% if page.lang == 'zh' %}搜索文档…{% else %}Search docs ...{% endif %}" id="rtd-search-input">
       </div>
 
@@ -637,9 +651,17 @@
 
       <div class="wy-menu">
         {% if page.lang == 'zh' %}
+        <span class="caption">最新更新</span>
+        <ul>
+          <li><a href="#最新更新">最新更新</a></li>
+        </ul>
+
         <span class="caption">快速开始</span>
         <ul>
           <li><a href="#overview">概述</a></li>
+          <li><a href="#快速开始">快速开始</a></li>
+          <li><a href="#环境要求">环境要求</a></li>
+          <li><a href="#选择配置方式">选择配置方式</a></li>
           <li><a href="#安装">安装</a></li>
           <li><a href="#配置">配置</a>
             <ul>
@@ -673,38 +695,62 @@
           <li><a href="#保存至笔记">保存至笔记</a></li>
           <li><a href="#对话历史与导出">历史与导出</a></li>
           <li><a href="#自定义快捷预设">快捷预设</a></li>
+          <li><a href="#独立窗口模式">独立窗口模式</a></li>
+          <li><a href="#文件笔记">文件笔记</a></li>
         </ul>
 
         <span class="caption">高级功能</span>
         <ul>
           <li><a href="#agent-模式beta">Agent 模式（Beta）</a>
             <ul>
-              <li><a href="#可用工具">可用工具</a></li>
+              <li><a href="#文库与-pdf-读取工具">读取工具</a></li>
+              <li><a href="#文库写入工具">写入工具</a></li>
+              <li><a href="#文件系统与脚本工具">文件与脚本</a></li>
               <li><a href="#内置动作">内置动作</a></li>
+              <li><a href="#mcp-服务器">MCP 服务器</a></li>
               <li><a href="#agent-演示">演示</a></li>
               <li><a href="#安全与审批">安全与审批</a></li>
             </ul>
           </li>
-          <li><a href="#codex-认证配置">Codex 认证配置</a></li>
+          <li><a href="#skills-技能系统">Skills 技能系统</a></li>
+          <li><a href="#webchat-配置chatgpt-网页同步">WebChat 配置</a></li>
+          <li><a href="#codex-配置chatgpt-plus-订阅用户">Codex 配置</a></li>
+          <li><a href="#claude-code-配置实验性">Claude Code 配置</a></li>
+          <li><a href="#mineru-pdf-解析">MinerU PDF 解析</a>
+            <ul>
+              <li><a href="#使用本地-mineru-服务">本地 MinerU 服务</a></li>
+            </ul>
+          </li>
         </ul>
 
         <span class="caption">帮助</span>
         <ul>
+          <li><a href="#隐私与数据流">隐私与数据流</a></li>
+          <li><a href="#故障排查">故障排查</a></li>
+          <li><a href="#路线图">路线图</a></li>
           <li><a href="#常见问题">常见问题</a></li>
           <li><a href="#贡献与支持">贡献与支持</a></li>
+          <li><a href="#star-趋势">Star 趋势</a></li>
           <li><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">GitHub &#8599;</a></li>
         </ul>
         {% else %}
+        <span class="caption">What's New</span>
+        <ul>
+          <li><a href="#whats-new">What's New</a></li>
+        </ul>
+
         <span class="caption">Getting Started</span>
         <ul>
           <li><a href="#overview">Overview</a></li>
+          <li><a href="#quick-start">Quick Start</a></li>
+          <li><a href="#requirements">Requirements</a></li>
+          <li><a href="#choose-your-setup">Choose Your Setup</a></li>
           <li><a href="#installation">Installation</a></li>
           <li><a href="#configuration">Configuration</a>
             <ul>
               <li><a href="#supported-providers--protocols">Providers &amp; Protocols</a></li>
-              <li><a href="#supported-models">Supported Models</a></li>
-              <li><a href="#multiple-providers">Multiple Providers</a></li>
-              <li><a href="#reasoning-levels--hyperparameters">Reasoning &amp; Hyperparameters</a></li>
+              <li><a href="#supported-models-examples">Supported Models</a></li>
+              <li><a href="#advanced-reasoning-levels--hyperparameters">Reasoning &amp; Hyperparameters</a></li>
             </ul>
           </li>
         </ul>
@@ -731,25 +777,42 @@
           <li><a href="#save-to-notes">Save to Notes</a></li>
           <li><a href="#conversation-history--export">History &amp; Export</a></li>
           <li><a href="#custom-quick-action-presets">Quick-Action Presets</a></li>
+          <li><a href="#standalone-window-mode">Standalone Window Mode</a></li>
+          <li><a href="#file-based-notes">File-Based Notes</a></li>
         </ul>
 
         <span class="caption">Advanced</span>
         <ul>
           <li><a href="#agent-mode-beta">Agent Mode (Beta)</a>
             <ul>
-              <li><a href="#available-tools">Available Tools</a></li>
+              <li><a href="#library--pdf-reading-tools">Reading Tools</a></li>
+              <li><a href="#library-write-tools">Write Tools</a></li>
+              <li><a href="#filesystem--scripting-tools">Files &amp; Scripting</a></li>
               <li><a href="#built-in-actions">Built-in Actions</a></li>
+              <li><a href="#mcp-server">MCP Server</a></li>
               <li><a href="#agent-demos">Demos</a></li>
               <li><a href="#safety--confirmation">Safety &amp; Confirmation</a></li>
             </ul>
           </li>
-          <li><a href="#codex-auth-setup">Codex Auth Setup</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#webchat-setup-chatgpt-web-sync">WebChat Setup</a></li>
+          <li><a href="#codex-setup-chatgpt-plus-subscribers">Codex Setup</a></li>
+          <li><a href="#claude-code-setup-experimental">Claude Code Setup</a></li>
+          <li><a href="#mineru-pdf-parsing">MinerU PDF Parsing</a>
+            <ul>
+              <li><a href="#using-a-local-mineru-server">Local MinerU Server</a></li>
+            </ul>
+          </li>
         </ul>
 
         <span class="caption">Help</span>
         <ul>
+          <li><a href="#privacy-and-data-flow">Privacy &amp; Data Flow</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
           <li><a href="#frequently-asked-questions">FAQ</a></li>
           <li><a href="#contributing--support">Contributing</a></li>
+          <li><a href="#star-history">Star History</a></li>
           <li><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">GitHub &#8599;</a></li>
         </ul>
         {% endif %}
@@ -762,7 +825,7 @@
         <ul class="wy-breadcrumbs">
           <li><a href="/">{% if page.lang == 'zh' %}首页{% else %}Home{% endif %}</a></li>
           <span class="sep">/</span>
-          <li>{% if page.lang == 'zh' %}LLM for Zotero 文档{% else %}LLM for Zotero Documentation{% endif %}</li>
+          <li>{% if page.lang == 'zh' %}llm-for-zotero 文档{% else %}llm-for-zotero Documentation{% endif %}</li>
           <li style="flex:1"></li>
           <li class="wy-breadcrumbs-aside"><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">{% if page.lang == 'zh' %}在 GitHub 上查看{% else %}Edit on GitHub{% endif %}</a></li>
         </ul>
@@ -782,6 +845,26 @@
     <!-- Scroll-spy for active sidebar link -->
     <script>
     (function() {
+      function slugifyHeading(text) {
+        return text
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '-')
+          .replace(/&/g, '')
+          .replace(/[’'"“”‘`:：,，.。!?！？()（）\[\]{}<>\/\\]/g, '');
+      }
+
+      document.querySelectorAll('.rst-content h1, .rst-content h2, .rst-content h3, .rst-content h4').forEach(function(heading) {
+        var slug = slugifyHeading(heading.textContent || '');
+        if (!slug || document.getElementById(slug)) return;
+        var alias = document.createElement('span');
+        alias.id = slug;
+        alias.setAttribute('aria-hidden', 'true');
+        alias.style.position = 'relative';
+        alias.style.top = '-12px';
+        heading.parentNode.insertBefore(alias, heading);
+      });
+
       var links = document.querySelectorAll('.wy-menu a[href^="#"]');
       var sections = [];
       links.forEach(function(link) {
