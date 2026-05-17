@@ -141,6 +141,18 @@ lang_alt: /llm-for-zotero/
 | **全局对话** | 覆盖整个文库的对话，不限定于某篇论文。 |
 | **笔记对话** | 编辑 Zotero 笔记时进行对话，以笔记内容为上下文。 |
 
+### WebChat 模式使用要求 {#webchat-mode-requirements}
+
+<div class="rtd-warning rtd-webchat-warning">
+  <div class="rtd-admonition-title">⚠️⚠️⚠️ <p><strong>注意：WebChat 要求</strong></p></div>
+  <p><strong>WebChat 模式需要保持浏览器标签页打开，并确保 Sync for Zotero 扩展处于活动状态。</strong>请求期间请让浏览器与 Zotero 保持在同一个桌面会话中，尽量不要最小化或后台挂起 WebChat 标签页，并留意绿色连接点 <span class="rtd-status-dot" aria-hidden="true"></span> 是否显示。</p>
+  <ul>
+    <li>请求运行期间不要关闭 WebChat 标签页。</li>
+    <li>不要停用、暂停或禁用 Sync for Zotero 浏览器扩展。</li>
+    <li>WebChat 目前仅支持<strong>论文对话</strong>，暂不支持文库对话。</li>
+  </ul>
+</div>
+
 ### 界面控件
 
 - **模型选择器** — 在对话中随时切换已配置的模型。

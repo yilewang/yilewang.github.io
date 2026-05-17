@@ -141,6 +141,18 @@ The plugin supports three distinct conversation modes:
 | **Global conversation** | Library-wide chat, not tied to any specific paper. |
 | **Note conversation** | Chat while editing a Zotero note, with note content as context. |
 
+### WebChat Mode Requirements {#webchat-mode-requirements}
+
+<div class="rtd-warning rtd-webchat-warning">
+  <div class="rtd-admonition-title">⚠️⚠️⚠️ <p><strong>Important: keep WebChat connected</strong></p></div>
+  <p><strong>WebChat mode requires the browser tab to stay open and the Sync for Zotero extension to remain active.</strong> During a request, keep the browser and Zotero in the same desktop session, avoid minimizing or background-suspending the WebChat tab, and check that the green connection dot <span class="rtd-status-dot" aria-hidden="true"></span> is visible.</p>
+  <ul>
+    <li>Do not close the WebChat tab while a request is running.</li>
+    <li>Do not disable or pause the Sync for Zotero browser extension.</li>
+    <li>WebChat currently supports <strong>paper conversations only</strong>; library-wide conversations are not supported yet.</li>
+  </ul>
+</div>
+
 ### Interface Controls
 
 - **Model selector** — switch between configured models mid-conversation.

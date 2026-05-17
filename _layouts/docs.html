@@ -424,6 +424,61 @@
       .admonition.danger .admonition-title,
       .admonition.error .admonition-title { color: #e74c3c; }
 
+      .rtd-tip,
+      .rtd-warning {
+        margin: 20px 0;
+        padding: 12px 16px;
+        border-radius: 2px;
+        font-size: 0.92em;
+      }
+
+      .rtd-tip {
+        background: #dbfaf4;
+        border: 1px solid #1abc9c;
+      }
+
+      .rtd-warning {
+        background: #ffedcc;
+        border: 1px solid #f0b37e;
+      }
+
+      .rtd-admonition-title {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 700;
+      }
+
+      .rtd-tip .rtd-admonition-title { color: #1abc9c; }
+      .rtd-warning .rtd-admonition-title { color: #e67e22; }
+
+      .rtd-warning.rtd-webchat-warning {
+        background: #fff7e8;
+        border: 2px solid #f0b37e;
+        border-left-width: 6px;
+        box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+      }
+
+      .rtd-warning.rtd-webchat-warning .rtd-admonition-title {
+        color: #9a4d00;
+        font-size: 1.05em;
+      }
+
+      .rtd-warning.rtd-webchat-warning p:last-child,
+      .rtd-warning.rtd-webchat-warning ul:last-child {
+        margin-bottom: 0;
+      }
+
+      .rtd-status-dot {
+        display: inline-block;
+        width: 0.72em;
+        height: 0.72em;
+        margin: 0 0.12em;
+        border-radius: 50%;
+        background: var(--rtd-green);
+        box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.18);
+        vertical-align: -0.05em;
+      }
+
       /* ── Footer ── */
       .rst-footer {
         max-width: 100%;
@@ -601,6 +656,7 @@
           <li><a href="#使用指南">基本用法</a>
             <ul>
               <li><a href="#对话模式">对话模式</a></li>
+              <li><a href="#webchat-mode-requirements">WebChat 要求</a></li>
               <li><a href="#界面控件">界面控件</a></li>
             </ul>
           </li>
@@ -658,6 +714,7 @@
           <li><a href="#usage-guide">Basic Usage</a>
             <ul>
               <li><a href="#conversation-modes">Conversation Modes</a></li>
+              <li><a href="#webchat-mode-requirements">WebChat Requirements</a></li>
               <li><a href="#interface-controls">Interface Controls</a></li>
             </ul>
           </li>
