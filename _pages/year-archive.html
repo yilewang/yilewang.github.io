@@ -16,13 +16,13 @@ redirect_from:
     {% if all_tags.size > 0 %}
       {% for tag in all_tags %}
         {% if tag != nil and tag != '' %}
-          <button class="btn btn--primary tag-filter-btn" data-tag="{{ tag | slugify }}" style="margin: 0.25em;">{{ tag }}</button>
+          <button class="tag-filter-btn" data-tag="{{ tag | slugify }}">{{ tag }}</button>
         {% endif %}
       {% endfor %}
     {% endif %}
-    <button class="btn btn--primary tag-filter-btn" id="clear-filters" style="margin: 0.25em;">Clear All</button>
+    <button class="tag-filter-btn tag-filter-clear" id="clear-filters">Clear All</button>
   </p>
-  <p id="active-filters" style="margin-top: 1em; font-style: italic; color: #666;"></p>
+  <p id="active-filters" style="margin-top: 1em; font-style: italic; color: var(--text-muted);"></p>
 </div>
 
 <div id="posts-container">
@@ -45,10 +45,3 @@ redirect_from:
 </div>
 
 <script src="{{ base_path }}/assets/js/tag-filter.js"></script>
-
-<style>
-.tag-filter-btn.active {
-  background-color: #2e7d32;
-  border-color: #2e7d32;
-}
-</style>

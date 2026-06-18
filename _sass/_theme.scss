@@ -1,0 +1,322 @@
+/* ==========================================================================
+   THEME - design tokens, dark mode, and minimal component refinements
+   Imported last in main.scss so these rules win over the base theme.
+   ========================================================================== */
+
+:root {
+  --bg:             #ffffff;
+  --surface:        #f7f8fa;
+  --surface-2:      #eef0f2;
+  --text:           #1a1d21;
+  --text-muted:     #5a616a;
+  --text-faint:     #9aa1a9;
+  --border:         #e7e9ec;
+  --border-strong:  #d8dbe0;
+  --link:           #2f6fb3;
+  --link-hover:     #21507f;
+  --accent:         #2f6fb3;
+  --accent-contrast:#ffffff;
+  --code-bg:        #f7f8fa;
+  --code-text:      #3a4047;
+  --selection:      rgba(47, 111, 179, 0.16);
+}
+
+html[data-theme="dark"] {
+  --bg:             #15171b;
+  --surface:        #1d2025;
+  --surface-2:      #24272d;
+  --text:           #e4e6e9;
+  --text-muted:     #aab0b8;
+  --text-faint:     #7d848d;
+  --border:         #2a2d33;
+  --border-strong:  #343941;
+  --link:           #74a8ec;
+  --link-hover:     #9cc1f2;
+  --accent:         #3b7fc4;
+  --accent-contrast:#ffffff;
+  --code-bg:        #1d2025;
+  --code-text:      #c2c7cd;
+  --selection:      rgba(116, 168, 236, 0.22);
+}
+
+/* gentle cross-fade on the large surfaces when the theme flips */
+body,
+.masthead,
+.greedy-nav,
+.page__footer,
+.theme-toggle {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Base surfaces
+   -------------------------------------------------------------------------- */
+html { background-color: var(--bg); }
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+::selection { background: var(--selection); }
+
+a { color: var(--link); }
+a:hover { color: var(--link-hover); }
+
+hr { border-top-color: var(--border); }
+
+u, ins { border-bottom-color: var(--border-strong); }
+
+/* --------------------------------------------------------------------------
+   Masthead / navigation
+   -------------------------------------------------------------------------- */
+.masthead {
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.masthead__inner-wrap { position: relative; padding-right: 4em; }
+
+.masthead__menu-item--lg { font-weight: 500; }
+
+.greedy-nav { background: var(--bg); }
+.greedy-nav a { color: var(--text-muted); }
+.greedy-nav a:hover { color: var(--text); }
+.greedy-nav .visible-links li:first-child a { color: var(--text); font-weight: 500; }
+.greedy-nav .visible-links a:before { background: var(--accent); }
+.greedy-nav .hidden-links { background: var(--surface); border-color: var(--border); }
+.greedy-nav .hidden-links a:hover { background: var(--surface-2); color: var(--text); }
+.greedy-nav button { background: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   Theme toggle
+   -------------------------------------------------------------------------- */
+.theme-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.7em;
+  transform: translateY(-50%);
+  z-index: 21;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--border-strong); }
+.theme-toggle__icon { width: 18px; height: 18px; }
+.theme-toggle__sun { display: none; }
+html[data-theme="dark"] .theme-toggle__moon { display: none; }
+html[data-theme="dark"] .theme-toggle__sun { display: inline-block; }
+
+@include breakpoint(max-width $small) {
+  .theme-toggle { width: 32px; height: 32px; }
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+.page__footer {
+  background-color: var(--surface);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.page__footer a { color: var(--text-muted); }
+.page__footer a:hover { color: var(--text); }
+.page__footer .fas,
+.page__footer .fab,
+.page__footer .far,
+.page__footer .fal { color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   Reading column (single posts / pages)
+   -------------------------------------------------------------------------- */
+.page__content {
+  max-width: 720px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.page__content h1,
+.page__content h2,
+.page__content h3,
+.page__content h4,
+.page__content h5,
+.page__content h6 { color: var(--text); }
+
+.page__content h2 {
+  padding-bottom: 0.3em;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+
+.page__title { color: var(--text); font-weight: 500; }
+.page__meta, .page__date { color: var(--text-faint); }
+
+.page__content a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 2px;
+}
+.page__content a:hover {
+  color: var(--link-hover);
+  text-decoration-color: currentColor;
+}
+
+/* let figures, code, tables and display math breathe past the text measure */
+.page__content figure,
+.page__content .highlighter-rouge,
+.page__content figure.highlight,
+.page__content table,
+.page__content .MathJax_Display {
+  max-width: 860px;
+}
+
+/* MathJax (v2 CHTML) - keep equations in the body text color in both themes */
+.MathJax,
+.MathJax_Display,
+.MathJax_CHTML { color: var(--text); }
+
+/* --------------------------------------------------------------------------
+   Blockquotes
+   -------------------------------------------------------------------------- */
+blockquote {
+  border-left: 2px solid var(--border-strong);
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Code - flat, hairline, no shadow, no clipboard glyph
+   -------------------------------------------------------------------------- */
+p > code, a > code, li > code, figcaption > code, td > code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  color: var(--code-text);
+  box-shadow: none;
+}
+
+div.highlighter-rouge, figure.highlight {
+  background-color: var(--code-bg);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+div.highlighter-rouge:before, figure.highlight:before { display: none; }
+
+/* dark-mode syntax fixes: lift the Solarized base text; accent hues stay */
+html[data-theme="dark"] {
+  .highlight .err, .highlight .g, .highlight .l, .highlight .n, .highlight .p,
+  .highlight .ld, .highlight .ge, .highlight .go, .highlight .gp, .highlight .gs,
+  .highlight .gt, .highlight .na, .highlight .nl, .highlight .nn, .highlight .nx,
+  .highlight .py, .highlight .w, .highlight .sd, .highlight .sh { color: #c2c7cd; }
+  .highlight .c, .highlight .cm, .highlight .c1, .highlight .sb { color: #6f7c86; }
+}
+
+/* --------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
+table { border-color: var(--border); }
+thead { background-color: var(--surface); border-bottom-color: var(--border); }
+th { color: var(--text); border-right-color: var(--border); }
+td { border-bottom-color: var(--border); border-right-color: var(--border); }
+
+/* --------------------------------------------------------------------------
+   Tags / taxonomy chips
+   -------------------------------------------------------------------------- */
+.page__taxonomy-item {
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.page__taxonomy-item:hover { color: var(--accent); border-color: var(--border-strong); }
+
+.page__related,
+.page__share,
+.page__content + .pagination,
+.page__meta + .pagination,
+.page__share + .pagination,
+.page__comments + .pagination { border-top-color: var(--border); }
+
+/* ==========================================================================
+   Archive / listing
+   ========================================================================== */
+.archive a { text-decoration: none; }
+
+.archive__subtitle {
+  margin: 2.2em 0 0;
+  padding-bottom: 0.5em;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+}
+
+.archive__item { padding: 1.1em 0; border-bottom: 1px solid var(--border); }
+
+.archive__item-title {
+  margin-top: 0.6em;
+  margin-bottom: 0.3em;
+  font-size: 1.15rem;
+  font-weight: 500;
+  font-family: $global-font-family;
+}
+.archive__item-title a { color: var(--text); text-decoration: none; }
+.archive__item-title a:hover { color: var(--accent); }
+
+.archive__item-meta {
+  margin: 0 0 0.3em;
+  color: var(--text-faint);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.archive__item-excerpt {
+  margin-top: 0.3em;
+  max-width: 640px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   Tag filter chips (year-archive)
+   ========================================================================== */
+.tag-filter-btn {
+  display: inline-block;
+  margin: 0 0.45em 0.45em 0;
+  padding: 0.34em 0.85em;
+  font-family: $global-font-family;
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.tag-filter-btn:hover { color: var(--text); border-color: var(--border-strong); }
+.tag-filter-btn.active {
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.tag-filter-clear { color: var(--text-faint); }
+
+/* ==========================================================================
+   Author profile
+   ========================================================================== */
+.author__avatar img { border-color: var(--border) !important; }
+.sidebar .author__name { color: var(--text); font-weight: 500; }
+.author__bio { color: var(--text-muted); }
+.author__urls a { color: var(--text-muted); }
+.author__urls a:hover { color: var(--accent); text-decoration: none; }
+.author__urls li { color: var(--text-muted); }
