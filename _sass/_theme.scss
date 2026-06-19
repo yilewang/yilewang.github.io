@@ -320,3 +320,18 @@ td { border-bottom-color: var(--border); border-right-color: var(--border); }
 .author__urls a { color: var(--text-muted); }
 .author__urls a:hover { color: var(--accent); text-decoration: none; }
 .author__urls li { color: var(--text-muted); }
+
+/* Sidebar social/contact icons: the base theme hardcodes near-black colors
+   (.social-icons .fa -> #000, .fa-github -> #171516) which vanish in dark mode.
+   Override them to the theme's muted text color so they track light/dark and
+   match the already-monochrome labels. Accent on hover, mirroring the links. */
+.author__urls .fa,
+.author__urls .fas,
+.author__urls .fab,
+.author__urls .far,
+.author__urls .ai { color: var(--text-muted); }
+.author__urls a:hover .fa,
+.author__urls a:hover .fas,
+.author__urls a:hover .fab,
+.author__urls a:hover .far,
+.author__urls a:hover .ai { color: var(--accent); }
