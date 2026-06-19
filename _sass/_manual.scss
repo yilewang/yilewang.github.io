@@ -245,11 +245,21 @@ html[data-theme="dark"] {
   margin: 1.5em 0;
 }
 .rtd-feature-card {
+  display: block;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 0.9rem 1rem;
+  transition: border-color 0.14s ease, background 0.14s ease, transform 0.14s ease;
 }
+/* Cards link to their section — beat .page__content a underline/color */
+.manual__content a.rtd-feature-card { color: var(--text); text-decoration: none; }
+.manual__content a.rtd-feature-card:hover {
+  border-color: var(--accent);
+  background: var(--surface-2);
+  transform: translateY(-1px);
+}
+.manual__content a.rtd-feature-card:hover strong { color: var(--accent); }
 .rtd-feature-card strong {
   display: block;
   margin-bottom: 0.3em;

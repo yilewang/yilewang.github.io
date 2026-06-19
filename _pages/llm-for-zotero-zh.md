@@ -35,42 +35,42 @@ lang_alt: /llm-for-zotero/
 <img src="/images/llm-for-zotero/demo2.png" alt="llm-for-zotero 助手在 Zotero 中的第二张截图">
 
 <div class="rtd-feature-grid">
-  <div class="rtd-feature-card">
+  <a class="rtd-feature-card" href="#带引用跳转的有据答案">
     <strong>与论文对话</strong>
     <p>就任意打开的 PDF 提问，回答基于论文内容并附带可点击的引用跳转。</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#支持的服务商与协议">
     <strong>多模型支持</strong>
     <p>OpenAI、Anthropic、Google Gemini、DeepSeek、Moonshot、本地 OpenAI 兼容模型等。</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#webchat-配置chatgpt-网页同步">
     <strong>WebChat</strong>
     <p>不想配置 API 密钥时，可通过 Sync for Zotero 浏览器扩展使用 ChatGPT 或 DeepSeek 网页端。</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#agent-模式beta">
     <strong>Agent 模式</strong>
     <p>自主管理文库、执行终端命令、访问本地文件的智能代理——所有变更均需您审批。</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#mineru-pdf-解析">
     <strong>MinerU PDF 解析</strong>
     <p>可使用云端 MinerU 或本地 mineru-api 服务，进行高保真 PDF 解析，保留表格、公式、图表和复杂版式。</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#独立窗口模式">
     <strong>独立窗口模式</strong>
     <p>在独立窗口中打开 LLM 助手，提供全尺寸聊天界面和对话历史侧栏。</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#文件笔记">
     <strong>文件笔记</strong>
     <p>将研究笔记保存为 Markdown 文件，可写入 Obsidian、Logseq 或任意本地笔记目录，并保留元数据、引用和图表。</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#skills-技能系统">
     <strong>可自定义技能</strong>
     <p>8 个内置技能引导 Agent 针对常见任务采用合适工作流，支持通过 Markdown 文件创建自定义技能。</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#codex-配置chatgpt-plus-订阅用户">
     <strong>Codex 与 Claude Code</strong>
     <p>通过本地 app-server 使用 Codex，或通过本地桥接服务运行实验性的 Claude Code 对话。</p>
-  </div>
+  </a>
 </div>
 
 ---

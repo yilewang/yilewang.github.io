@@ -35,42 +35,42 @@ lang_alt: /llm-for-zotero/zh/
 <img src="/images/llm-for-zotero/demo2.png" alt="Second screenshot of the llm-for-zotero assistant inside Zotero">
 
 <div class="rtd-feature-grid">
-  <div class="rtd-feature-card">
+  <a class="rtd-feature-card" href="#grounded-answers-with-citation-navigation">
     <strong>Grounded Paper Chat</strong>
     <p>Ask questions about any open PDF and jump from model citations back to the source passage.</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#supported-providers--protocols">
     <strong>Multi-Provider Support</strong>
     <p>OpenAI, Anthropic, Gemini, DeepSeek, Moonshot, local OpenAI-compatible models, and more.</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#webchat-setup-chatgpt-web-sync">
     <strong>WebChat</strong>
     <p>Use ChatGPT or DeepSeek through the browser with Sync for Zotero when you do not want a provider API key.</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#agent-mode-beta">
     <strong>Agent Mode (Beta)</strong>
     <p>An autonomous agent that manages your library, runs terminal commands, and accesses local files — with approval before changes are applied.</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#mineru-pdf-parsing">
     <strong>MinerU PDF Parsing</strong>
     <p>Use cloud MinerU or a local mineru-api server for high-fidelity parsing that preserves tables, equations, figures, and complex layouts.</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#standalone-window-mode">
     <strong>Standalone Window</strong>
     <p>Open the LLM Assistant in its own dedicated window with a full-sized chat interface and conversation history sidebar.</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#file-based-notes">
     <strong>File-Based Notes</strong>
     <p>Save research notes as Markdown files in Obsidian, Logseq, or any local notes folder with metadata, citations, and extracted figures.</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#skills">
     <strong>Customizable Skills</strong>
     <p>8 built-in skills guide the agent's workflows for common tasks. Create your own with simple Markdown files.</p>
-  </div>
-  <div class="rtd-feature-card">
+  </a>
+  <a class="rtd-feature-card" href="#codex-setup-chatgpt-plus-subscribers">
     <strong>Codex & Claude Code</strong>
     <p>Use Codex through the local app-server runtime, or run experimental Claude Code conversations through a local bridge.</p>
-  </div>
+  </a>
 </div>
 
 ---
