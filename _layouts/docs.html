@@ -219,6 +219,10 @@ layout: default
   </div>
 </div>
 
+<button type="button" class="manual__top" aria-label="{% if page.lang == 'zh' %}返回顶部{% else %}Back to top{% endif %}" title="{% if page.lang == 'zh' %}返回顶部{% else %}Back to top{% endif %}">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
 <script>
 (function() {
   function slugify(text) {
@@ -279,6 +283,14 @@ layout: default
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ if (d && d.tag_name) { ver.textContent = /^v/i.test(d.tag_name) ? d.tag_name : 'v' + d.tag_name; } })
       .catch(function(){});
+  }
+
+  var topBtn = document.querySelector('.manual__top');
+  if (topBtn) {
+    var toggleTopBtn = function() { topBtn.classList.toggle('is-visible', window.scrollY > 400); };
+    window.addEventListener('scroll', toggleTopBtn, { passive: true });
+    toggleTopBtn();
+    topBtn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
   }
 
   var toggle = document.querySelector('.manual__toc-toggle');
