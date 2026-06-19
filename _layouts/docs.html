@@ -18,7 +18,7 @@ layout: default
 
       <div class="manual__toc-head">
         <a class="manual__toc-name" href="https://github.com/yilewang/llm-for-zotero">llm-for-zotero</a>
-        <span class="manual__toc-ver">v3.8.4</span>
+        <span class="manual__toc-ver" id="manualVer" data-repo="yilewang/llm-for-zotero">v3.8.20</span>
       </div>
 
       <div class="manual__lang">
@@ -271,6 +271,14 @@ layout: default
         li.style.display = (!q || a.textContent.toLowerCase().indexOf(q) !== -1) ? '' : 'none';
       });
     });
+  }
+
+  var ver = document.getElementById('manualVer');
+  if (ver && ver.getAttribute('data-repo')) {
+    fetch('https://api.github.com/repos/' + ver.getAttribute('data-repo') + '/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ if (d && d.tag_name) { ver.textContent = /^v/i.test(d.tag_name) ? d.tag_name : 'v' + d.tag_name; } })
+      .catch(function(){});
   }
 
   var toggle = document.querySelector('.manual__toc-toggle');
