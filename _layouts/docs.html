@@ -1,1009 +1,293 @@
 ---
+layout: default
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ page.title | default: site.title }}</title>
-    <script>
-      (function(){try{var t=localStorage.getItem('theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}window.toggleTheme=function(){var c=document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('theme',n);}catch(e){}};})();
-    </script>
-    <style>
-      /* ───────────────────────────────────────────────
-         Sphinx Read-the-Docs theme — faithful replica
-         ─────────────────────────────────────────────── */
-      :root {
-        --rtd-teal: #2980b9;
-        --rtd-teal-dark: #2472a4;
-        --rtd-green: #27ae60;
-        --rtd-sidebar-w: 300px;
-        --rtd-bg: #fcfcfc;
-        --rtd-text: #404040;
-        --rtd-heading: #1a1a1a;
-      }
+{% include base_path %}
 
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<div id="main" class="manual" role="main">
 
-      html { scroll-behavior: smooth; }
+  <button type="button" class="manual__toc-toggle" aria-expanded="false" aria-controls="manualToc">
+    <i class="fas fa-bars" aria-hidden="true"></i>
+    {% if page.lang == 'zh' %}目录{% else %}Contents{% endif %}
+  </button>
 
-      body {
-        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 16px;
-        color: var(--rtd-text);
-        background: var(--rtd-bg);
-        line-height: 1.6;
-      }
+  <div class="manual__wrap">
 
-      /* ── Sidebar ── */
-      .wy-nav-side {
-        position: fixed;
-        top: 0; left: 0; bottom: 0;
-        width: var(--rtd-sidebar-w);
-        background: #343131;
-        overflow-y: auto;
-        z-index: 200;
-        display: flex;
-        flex-direction: column;
-      }
+    <!-- ─── Table of contents ─── -->
+    <nav class="manual__toc" id="manualToc" aria-label="{% if page.lang == 'zh' %}文档目录{% else %}Documentation navigation{% endif %}">
 
-      .wy-nav-side::-webkit-scrollbar { width: 6px; }
-      .wy-nav-side::-webkit-scrollbar-track { background: #343131; }
-      .wy-nav-side::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
-
-      /* Sidebar header / brand */
-      .wy-side-nav-search {
-        background: var(--rtd-teal);
-        padding: 18px 20px;
-        text-align: center;
-        color: #fff;
-      }
-
-      .wy-side-nav-search img {
-        display: block;
-        margin: 0 auto 10px;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: #fff;
-        padding: 2px;
-      }
-
-      .wy-side-nav-search .wy-project-name {
-        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 1.3em;
-        font-weight: 700;
-        color: #fff;
-        display: block;
-        margin-bottom: 6px;
-      }
-
-      .wy-side-nav-search .wy-version {
-        display: inline-block;
-        font-size: 0.8em;
-        color: rgba(255,255,255,0.85);
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.2);
-        border-radius: 3px;
-        padding: 2px 10px;
-        margin-bottom: 12px;
-      }
-
-      /* Sidebar search */
-      .wy-side-nav-search input[type="text"] {
-        width: 100%;
-        padding: 8px 12px;
-        border: none;
-        border-radius: 3px;
-        font-size: 0.9em;
-        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
-        color: #333;
-        outline: none;
-      }
-
-      .wy-side-nav-search input[type="text"]::placeholder {
-        color: #999;
-      }
-
-      /* Sidebar navigation */
-      .wy-menu {
-        padding: 12px 0 30px;
-        flex: 1;
-      }
-
-      .wy-menu .caption {
-        display: block;
-        padding: 8px 20px 4px;
-        font-size: 0.82em;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        color: var(--rtd-teal);
-        margin-top: 4px;
-      }
-
-      .wy-menu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .wy-menu li {}
-
-      .wy-menu li a {
-        display: block;
-        padding: 5px 20px 5px 24px;
-        color: #d9d9d9;
-        text-decoration: none;
-        font-size: 0.9em;
-        line-height: 1.5;
-        border-left: 3px solid transparent;
-        transition: background 0.1s;
-      }
-
-      .wy-menu li a:hover {
-        background: rgba(255,255,255,0.05);
-        color: #fff;
-      }
-
-      .wy-menu li a.current {
-        background: #4e4a4a;
-        color: #fff;
-        font-weight: 700;
-        border-left-color: var(--rtd-teal);
-      }
-
-      /* Sub-level nav */
-      .wy-menu li ul a {
-        padding-left: 40px;
-        font-size: 0.85em;
-      }
-
-      .wy-menu li ul ul a {
-        padding-left: 56px;
-        font-size: 0.83em;
-      }
-
-      /* ── Content wrapper ── */
-      .wy-nav-content-wrap {
-        margin-left: var(--rtd-sidebar-w);
-        background: var(--rtd-bg);
-        min-height: 100vh;
-      }
-
-      /* ── Top breadcrumb bar ── */
-      .wy-breadcrumbs-aside {
-        float: right;
-      }
-
-      .wy-nav-top {
-        display: none;
-        background: var(--rtd-teal);
-        color: #fff;
-        padding: 10px 16px;
-        font-size: 0.95em;
-        cursor: pointer;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .wy-nav-top .fa-bars {
-        font-size: 1.2em;
-      }
-
-      .rst-content {
-        max-width: 100%;
-        padding: 28px 60px 60px;
-      }
-
-      /* Breadcrumbs */
-      .wy-breadcrumbs {
-        list-style: none;
-        padding: 0 0 12px;
-        margin: 0 0 20px;
-        border-bottom: 1px solid #e1e4e5;
-        font-size: 0.85em;
-        display: flex;
-        align-items: center;
-        gap: 0;
-      }
-
-      .wy-breadcrumbs li {
-        display: inline;
-        color: #666;
-      }
-
-      .wy-breadcrumbs li a {
-        color: var(--rtd-teal);
-        text-decoration: none;
-      }
-
-      .wy-breadcrumbs li a:hover { text-decoration: underline; }
-
-      .wy-breadcrumbs .sep {
-        margin: 0 8px;
-        color: #ccc;
-      }
-
-      .wy-breadcrumbs-aside a {
-        color: var(--rtd-teal);
-        text-decoration: none;
-        font-size: 0.85em;
-      }
-
-      .wy-breadcrumbs-aside a:hover { text-decoration: underline; }
-
-      /* ── Typography — matches Sphinx RTD theme exactly ── */
-      .rst-content h1 {
-        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 1.75em;
-        font-weight: 700;
-        color: var(--rtd-heading);
-        margin: 0 0 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #e1e4e5;
-      }
-
-      .rst-content h2 {
-        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 1.45em;
-        font-weight: 700;
-        color: var(--rtd-heading);
-        margin: 40px 0 16px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #e1e4e5;
-      }
-
-      .rst-content h3 {
-        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 1.2em;
-        font-weight: 700;
-        color: var(--rtd-heading);
-        margin: 30px 0 12px;
-      }
-
-      .rst-content h4 {
-        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 1.05em;
-        font-weight: 700;
-        color: var(--rtd-heading);
-        margin: 24px 0 10px;
-      }
-
-      .rst-content p {
-        margin: 0 0 16px;
-        line-height: 1.65;
-      }
-
-      .rst-content a {
-        color: var(--rtd-teal);
-        text-decoration: none;
-      }
-
-      .rst-content a:hover { text-decoration: underline; }
-
-      /* Inline code */
-      .rst-content code,
-      .rst-content tt {
-        background: #fff;
-        border: 1px solid #e1e4e5;
-        padding: 1px 5px;
-        font-size: 0.88em;
-        color: #e74c3c;
-        border-radius: 2px;
-        white-space: nowrap;
-        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-      }
-
-      /* Code blocks */
-      .rst-content pre {
-        background: #f8f8f8;
-        border: 1px solid #e1e4e5;
-        padding: 12px 16px;
-        overflow-x: auto;
-        margin: 0 0 20px;
-        line-height: 1.5;
-        border-radius: 2px;
-      }
-
-      .rst-content pre code {
-        background: none;
-        border: none;
-        color: #333;
-        padding: 0;
-        white-space: pre;
-      }
-
-      /* Images */
-      .rst-content img {
-        max-width: 100%;
-        height: auto;
-        margin: 16px 0;
-        border: 1px solid #e1e4e5;
-        border-radius: 3px;
-        display: block;
-      }
-
-      /* Tables — RTD style */
-      .rst-content table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 16px 0 24px;
-        font-size: 0.9em;
-      }
-
-      .rst-content table th {
-        background: #e1e4e5;
-        padding: 8px 12px;
-        text-align: left;
-        font-weight: 700;
-        border: 1px solid #d1d4d5;
-        color: #333;
-      }
-
-      .rst-content table td {
-        padding: 8px 12px;
-        border: 1px solid #e1e4e5;
-        vertical-align: top;
-      }
-
-      .rst-content table tr:nth-child(even) {
-        background: #f3f6f6;
-      }
-
-      /* Lists */
-      .rst-content ul,
-      .rst-content ol {
-        margin: 0 0 16px;
-        padding-left: 24px;
-      }
-
-      .rst-content li {
-        margin-bottom: 6px;
-        line-height: 1.6;
-      }
-
-      .rst-content li p {
-        margin-bottom: 8px;
-      }
-
-      /* Blockquotes */
-      .rst-content blockquote {
-        border-left: 3px solid #e1e4e5;
-        margin: 0 0 16px;
-        padding: 6px 16px;
-        color: #555;
-      }
-
-      /* Horizontal rules */
-      .rst-content hr {
-        border: none;
-        border-top: 1px solid #e1e4e5;
-        margin: 30px 0;
-      }
-
-      /* ── Admonitions — exact RTD style ── */
-      .admonition {
-        margin: 20px 0;
-        padding: 12px 16px;
-        border-radius: 2px;
-        font-size: 0.92em;
-      }
-
-      .admonition-title {
-        font-weight: 700;
-        margin-bottom: 6px;
-        display: block;
-      }
-
-      .admonition.note {
-        background: #e7f2fa;
-        border: 1px solid #6ab0de;
-      }
-      .admonition.note .admonition-title { color: #6ab0de; }
-
-      .admonition.tip,
-      .admonition.hint {
-        background: #dbfaf4;
-        border: 1px solid #1abc9c;
-      }
-      .admonition.tip .admonition-title,
-      .admonition.hint .admonition-title { color: #1abc9c; }
-
-      .admonition.warning,
-      .admonition.important {
-        background: #ffedcc;
-        border: 1px solid #f0b37e;
-      }
-      .admonition.warning .admonition-title,
-      .admonition.important .admonition-title { color: #e67e22; }
-
-      .admonition.danger,
-      .admonition.error {
-        background: #fdf3f2;
-        border: 1px solid #f29f97;
-      }
-      .admonition.danger .admonition-title,
-      .admonition.error .admonition-title { color: #e74c3c; }
-
-      .rtd-tip,
-      .rtd-warning {
-        margin: 20px 0;
-        padding: 12px 16px;
-        border-radius: 2px;
-        font-size: 0.92em;
-      }
-
-      .rtd-tip {
-        background: #dbfaf4;
-        border: 1px solid #1abc9c;
-      }
-
-      .rtd-warning {
-        background: #ffedcc;
-        border: 1px solid #f0b37e;
-      }
-
-      .rtd-admonition-title {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: 700;
-      }
-
-      .rtd-tip .rtd-admonition-title { color: #1abc9c; }
-      .rtd-warning .rtd-admonition-title { color: #e67e22; }
-
-      .rtd-warning.rtd-webchat-warning {
-        background: #fff7e8;
-        border: 2px solid #f0b37e;
-        border-left-width: 6px;
-        box-shadow: 0 1px 0 rgba(0,0,0,0.04);
-      }
-
-      .rtd-warning.rtd-webchat-warning .rtd-admonition-title {
-        color: #9a4d00;
-        font-size: 1.05em;
-      }
-
-      .rtd-warning.rtd-webchat-warning p:last-child,
-      .rtd-warning.rtd-webchat-warning ul:last-child {
-        margin-bottom: 0;
-      }
-
-      .rtd-status-dot {
-        display: inline-block;
-        width: 0.72em;
-        height: 0.72em;
-        margin: 0 0.12em;
-        border-radius: 50%;
-        background: var(--rtd-green);
-        box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.18);
-        vertical-align: -0.05em;
-      }
-
-      /* ── Footer ── */
-      .rst-footer {
-        max-width: 100%;
-        padding: 16px 60px 30px;
-        border-top: 1px solid #e1e4e5;
-        margin-top: 20px;
-        font-size: 0.8em;
-        color: #999;
-      }
-
-      .rst-footer a { color: var(--rtd-teal); text-decoration: none; }
-      .rst-footer a:hover { text-decoration: underline; }
-
-      /* ── Previous / Next ── */
-      .rst-footer-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid #e1e4e5;
-      }
-
-      .rst-footer-buttons a {
-        color: #fff;
-        background: var(--rtd-teal);
-        text-decoration: none;
-        padding: 8px 16px;
-        border-radius: 2px;
-        font-size: 0.9em;
-        transition: background 0.15s;
-      }
-
-      .rst-footer-buttons a:hover {
-        background: var(--rtd-teal-dark);
-        text-decoration: none;
-      }
-
-      /* ── Mobile ── */
-      .wy-nav-top-hamburger {
-        display: none;
-        background: var(--rtd-teal);
-        color: #fff;
-        padding: 12px 16px;
-        font-size: 1em;
-        cursor: pointer;
-        border: none;
-        width: 100%;
-        text-align: left;
-        font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
-      }
-
-      @media (max-width: 768px) {
-        .wy-nav-side {
-          transform: translateX(-100%);
-          transition: transform 0.25s ease;
-          width: 280px;
-        }
-
-        .wy-nav-side.wy-nav-side--open {
-          transform: translateX(0);
-        }
-
-        .wy-nav-content-wrap {
-          margin-left: 0;
-        }
-
-        .wy-nav-top-hamburger {
-          display: block;
-        }
-
-        .rst-content {
-          padding: 20px 16px 40px;
-        }
-
-        /* Overlay */
-        .wy-nav-overlay {
-          display: none;
-          position: fixed;
-          inset: 0;
-          background: rgba(0,0,0,0.5);
-          z-index: 150;
-        }
-
-        .wy-nav-overlay.active { display: block; }
-      }
-
-      /* ── Language switcher ── */
-      .lang-switcher {
-        display: flex;
-        gap: 0;
-        margin: 12px 20px 4px;
-        border-radius: 4px;
-        overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.15);
-      }
-
-      .lang-switcher a {
-        flex: 1;
-        text-align: center;
-        padding: 5px 0;
-        font-size: 0.82em;
-        font-weight: 700;
-        text-decoration: none;
-        color: rgba(255,255,255,0.6);
-        background: transparent;
-        transition: all 0.15s;
-        letter-spacing: 0.03em;
-      }
-
-      .lang-switcher a:hover {
-        background: rgba(255,255,255,0.08);
-        color: #fff;
-      }
-
-      .lang-switcher a.active {
-        background: var(--rtd-teal);
-        color: #fff;
-      }
-
-      /* ── Badges ── */
-      .rst-badges, .rtd-badges {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        align-items: center;
-        column-gap: 6px;
-        row-gap: 4px;
-        margin: 10px 0 16px;
-      }
-
-      .rst-badges a, .rtd-badges a {
-        display: inline-flex;
-        align-items: center;
-        line-height: 0;
-      }
-
-      .rst-badges img, .rtd-badges img {
-        height: 20px;
-        width: auto;
-        max-width: none;
-        display: block;
-        margin: 0;
-        border: 0;
-        border-radius: 0;
-        background: transparent;
-      }
-
-      /* ── Theme toggle button ── */
-      .docs-theme-toggle {
-        position: fixed;
-        top: 14px;
-        right: 18px;
-        z-index: 300;
-        width: 38px;
-        height: 38px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        border: 1px solid #d6dadf;
-        background: #fff;
-        color: #5a616a;
-        cursor: pointer;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-      }
-      .docs-theme-toggle:hover { color: #1a1d21; }
-      .docs-theme-toggle svg { width: 18px; height: 18px; }
-      .docs-theme-toggle .ico-sun { display: none; }
-      html[data-theme="dark"] .docs-theme-toggle .ico-moon { display: none; }
-      html[data-theme="dark"] .docs-theme-toggle .ico-sun { display: inline; }
-      html[data-theme="dark"] .docs-theme-toggle {
-        background: #1d2025;
-        border-color: #343941;
-        color: #c4c8cd;
-        box-shadow: none;
-      }
-
-      /* ── Dark mode ── */
-      html[data-theme="dark"] {
-        --rtd-bg: #15171b;
-        --rtd-text: #c4c8cd;
-        --rtd-heading: #e6e8ea;
-      }
-      html[data-theme="dark"] .wy-nav-content-wrap { background: var(--rtd-bg); }
-      html[data-theme="dark"] .rst-content a { color: #5fa8e6; }
-      html[data-theme="dark"] .wy-breadcrumbs { border-bottom-color: #2a2d33; }
-      html[data-theme="dark"] .wy-breadcrumbs li { color: #8a929b; }
-      html[data-theme="dark"] .wy-breadcrumbs-aside a,
-      html[data-theme="dark"] .wy-breadcrumbs li a { color: #5fa8e6; }
-      html[data-theme="dark"] .wy-breadcrumbs .sep { color: #44484f; }
-      html[data-theme="dark"] .rst-content h1,
-      html[data-theme="dark"] .rst-content h2 { border-bottom-color: #2a2d33; }
-      html[data-theme="dark"] .rst-content code,
-      html[data-theme="dark"] .rst-content tt {
-        background: #1d2025;
-        border-color: #2a2d33;
-        color: #e3868d;
-      }
-      html[data-theme="dark"] .rst-content pre {
-        background: #1b1e23;
-        border-color: #2a2d33;
-      }
-      html[data-theme="dark"] .rst-content pre code { color: #c4c8cd; }
-      html[data-theme="dark"] .rst-content img { border-color: #2a2d33; }
-      html[data-theme="dark"] .rst-content table th {
-        background: #24272d;
-        border-color: #34383f;
-        color: #e6e8ea;
-      }
-      html[data-theme="dark"] .rst-content table td { border-color: #2a2d33; }
-      html[data-theme="dark"] .rst-content table tr:nth-child(even) { background: #1a1d22; }
-      html[data-theme="dark"] .rst-content blockquote {
-        border-left-color: #34383f;
-        color: #9aa0a8;
-      }
-      html[data-theme="dark"] .rst-content hr { border-top-color: #2a2d33; }
-      html[data-theme="dark"] .rst-footer { border-top-color: #2a2d33; color: #7d848d; }
-      html[data-theme="dark"] .rst-footer-buttons { border-top-color: #2a2d33; }
-      html[data-theme="dark"] .admonition.note { background: #15242e; border-color: #2c5670; }
-      html[data-theme="dark"] .admonition.tip,
-      html[data-theme="dark"] .admonition.hint,
-      html[data-theme="dark"] .rtd-tip { background: #11271f; border-color: #1f6a55; }
-      html[data-theme="dark"] .admonition.warning,
-      html[data-theme="dark"] .admonition.important,
-      html[data-theme="dark"] .rtd-warning { background: #2a2212; border-color: #7a5a2e; }
-      html[data-theme="dark"] .admonition.danger,
-      html[data-theme="dark"] .admonition.error { background: #2a1614; border-color: #7a3a34; }
-      html[data-theme="dark"] .rtd-warning.rtd-webchat-warning {
-        background: #2a2212;
-        border-color: #7a5a2e;
-        box-shadow: 0 1px 0 rgba(0,0,0,0.2);
-      }
-      html[data-theme="dark"] .rtd-warning.rtd-webchat-warning .rtd-admonition-title { color: #e0a85a; }
-    </style>
-  </head>
-
-  <body>
-    <button type="button" class="docs-theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-    </button>
-
-    <!-- Mobile hamburger -->
-    <button class="wy-nav-top-hamburger" onclick="document.querySelector('.wy-nav-side').classList.toggle('wy-nav-side--open'); document.querySelector('.wy-nav-overlay').classList.toggle('active');">
-      &#9776;&nbsp; llm-for-zotero
-    </button>
-    <div class="wy-nav-overlay" onclick="document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open'); this.classList.remove('active');"></div>
-
-    <!-- ─── Sidebar ─── -->
-    <nav class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <img src="/images/llm-for-zotero/icon.png" alt="llm-for-zotero">
-        <span class="wy-project-name">llm-for-zotero</span>
-        <span class="wy-version">stable &middot; v3.8.4</span>
-        <input type="text" placeholder="{% if page.lang == 'zh' %}搜索文档…{% else %}Search docs ...{% endif %}" id="rtd-search-input">
+      <div class="manual__toc-head">
+        <a class="manual__toc-name" href="https://github.com/yilewang/llm-for-zotero">llm-for-zotero</a>
+        <span class="manual__toc-ver">v3.8.4</span>
       </div>
 
-      <div class="lang-switcher">
-        <a href="/llm-for-zotero/" {% if page.lang != 'zh' %}class="active"{% endif %}>EN</a>
-        <a href="/llm-for-zotero/zh/" {% if page.lang == 'zh' %}class="active"{% endif %}>中文</a>
+      <div class="manual__lang">
+        <a href="/llm-for-zotero/" {% if page.lang != 'zh' %}class="is-active"{% endif %}>EN</a>
+        <a href="/llm-for-zotero/zh/" {% if page.lang == 'zh' %}class="is-active"{% endif %}>中文</a>
       </div>
 
-      <div class="wy-menu">
-        {% if page.lang == 'zh' %}
-        <span class="caption">最新更新</span>
-        <ul>
-          <li><a href="#最新更新">最新更新</a></li>
-        </ul>
+      <input type="text" class="manual__search" id="manualSearch" placeholder="{% if page.lang == 'zh' %}搜索文档…{% else %}Search docs …{% endif %}">
 
-        <span class="caption">快速开始</span>
-        <ul>
-          <li><a href="#overview">概述</a></li>
-          <li><a href="#快速开始">快速开始</a></li>
-          <li><a href="#环境要求">环境要求</a></li>
-          <li><a href="#选择配置方式">选择配置方式</a></li>
-          <li><a href="#安装">安装</a></li>
-          <li><a href="#配置">配置</a>
-            <ul>
-              <li><a href="#支持的服务商与协议">服务商与协议</a></li>
-              <li><a href="#支持的模型">支持的模型</a></li>
-              <li><a href="#多服务商配置">多服务商配置</a></li>
-              <li><a href="#推理等级与超参数">推理等级与超参数</a></li>
-            </ul>
-          </li>
-        </ul>
+      {% if page.lang == 'zh' %}
+      <span class="manual__cap">最新更新</span>
+      <ul>
+        <li><a href="#最新更新">最新更新</a></li>
+      </ul>
 
-        <span class="caption">使用指南</span>
-        <ul>
-          <li><a href="#使用指南">基本用法</a>
-            <ul>
-              <li><a href="#对话模式">对话模式</a></li>
-              <li><a href="#webchat-mode-requirements">WebChat 要求</a></li>
-              <li><a href="#界面控件">界面控件</a></li>
-            </ul>
-          </li>
-        </ul>
+      <span class="manual__cap">快速开始</span>
+      <ul>
+        <li><a href="#overview">概述</a></li>
+        <li><a href="#快速开始">快速开始</a></li>
+        <li><a href="#环境要求">环境要求</a></li>
+        <li><a href="#选择配置方式">选择配置方式</a></li>
+        <li><a href="#安装">安装</a></li>
+        <li><a href="#配置">配置</a>
+          <ul>
+            <li><a href="#支持的服务商与协议">服务商与协议</a></li>
+            <li><a href="#支持的模型">支持的模型</a></li>
+            <li><a href="#多服务商配置">多服务商配置</a></li>
+            <li><a href="#推理等级与超参数">推理等级与超参数</a></li>
+          </ul>
+        </li>
+      </ul>
 
-        <span class="caption">功能</span>
-        <ul>
-          <li><a href="#带引用跳转的有据答案">引用跳转</a></li>
-          <li><a href="#论文摘要生成">摘要生成</a></li>
-          <li><a href="#选中文本解释">文本解释</a></li>
-          <li><a href="#图表解读">图表解读</a></li>
-          <li><a href="#跨论文对比">跨论文对比</a></li>
-          <li><a href="#外部文档上传">文档上传</a></li>
-          <li><a href="#保存至笔记">保存至笔记</a></li>
-          <li><a href="#对话历史与导出">历史与导出</a></li>
-          <li><a href="#自定义快捷预设">快捷预设</a></li>
-          <li><a href="#独立窗口模式">独立窗口模式</a></li>
-          <li><a href="#文件笔记">文件笔记</a></li>
-        </ul>
+      <span class="manual__cap">使用指南</span>
+      <ul>
+        <li><a href="#使用指南">基本用法</a>
+          <ul>
+            <li><a href="#对话模式">对话模式</a></li>
+            <li><a href="#webchat-mode-requirements">WebChat 要求</a></li>
+            <li><a href="#界面控件">界面控件</a></li>
+          </ul>
+        </li>
+      </ul>
 
-        <span class="caption">高级功能</span>
-        <ul>
-          <li><a href="#agent-模式beta">Agent 模式（Beta）</a>
-            <ul>
-              <li><a href="#文库与-pdf-读取工具">读取工具</a></li>
-              <li><a href="#文库写入工具">写入工具</a></li>
-              <li><a href="#文件系统与脚本工具">文件与脚本</a></li>
-              <li><a href="#内置动作">内置动作</a></li>
-              <li><a href="#mcp-服务器">MCP 服务器</a></li>
-              <li><a href="#agent-演示">演示</a></li>
-              <li><a href="#安全与审批">安全与审批</a></li>
-            </ul>
-          </li>
-          <li><a href="#skills-技能系统">Skills 技能系统</a></li>
-          <li><a href="#webchat-配置chatgpt-网页同步">WebChat 配置</a></li>
-          <li><a href="#codex-配置chatgpt-plus-订阅用户">Codex 配置</a></li>
-          <li><a href="#claude-code-配置实验性">Claude Code 配置</a></li>
-          <li><a href="#mineru-pdf-解析">MinerU PDF 解析</a>
-            <ul>
-              <li><a href="#使用本地-mineru-服务">本地 MinerU 服务</a></li>
-            </ul>
-          </li>
-        </ul>
+      <span class="manual__cap">功能</span>
+      <ul>
+        <li><a href="#带引用跳转的有据答案">引用跳转</a></li>
+        <li><a href="#论文摘要生成">摘要生成</a></li>
+        <li><a href="#选中文本解释">文本解释</a></li>
+        <li><a href="#图表解读">图表解读</a></li>
+        <li><a href="#跨论文对比">跨论文对比</a></li>
+        <li><a href="#外部文档上传">文档上传</a></li>
+        <li><a href="#保存至笔记">保存至笔记</a></li>
+        <li><a href="#对话历史与导出">历史与导出</a></li>
+        <li><a href="#自定义快捷预设">快捷预设</a></li>
+        <li><a href="#独立窗口模式">独立窗口模式</a></li>
+        <li><a href="#文件笔记">文件笔记</a></li>
+      </ul>
 
-        <span class="caption">帮助</span>
-        <ul>
-          <li><a href="#隐私与数据流">隐私与数据流</a></li>
-          <li><a href="#故障排查">故障排查</a></li>
-          <li><a href="#路线图">路线图</a></li>
-          <li><a href="#常见问题">常见问题</a></li>
-          <li><a href="#贡献与支持">贡献与支持</a></li>
-          <li><a href="#star-趋势">Star 趋势</a></li>
-          <li><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">GitHub &#8599;</a></li>
-        </ul>
-        {% else %}
-        <span class="caption">What's New</span>
-        <ul>
-          <li><a href="#whats-new">What's New</a></li>
-        </ul>
+      <span class="manual__cap">高级功能</span>
+      <ul>
+        <li><a href="#agent-模式beta">Agent 模式（Beta）</a>
+          <ul>
+            <li><a href="#文库与-pdf-读取工具">读取工具</a></li>
+            <li><a href="#文库写入工具">写入工具</a></li>
+            <li><a href="#文件系统与脚本工具">文件与脚本</a></li>
+            <li><a href="#内置动作">内置动作</a></li>
+            <li><a href="#mcp-服务器">MCP 服务器</a></li>
+            <li><a href="#agent-演示">演示</a></li>
+            <li><a href="#安全与审批">安全与审批</a></li>
+          </ul>
+        </li>
+        <li><a href="#skills-技能系统">Skills 技能系统</a></li>
+        <li><a href="#webchat-配置chatgpt-网页同步">WebChat 配置</a></li>
+        <li><a href="#codex-配置chatgpt-plus-订阅用户">Codex 配置</a></li>
+        <li><a href="#claude-code-配置实验性">Claude Code 配置</a></li>
+        <li><a href="#mineru-pdf-解析">MinerU PDF 解析</a>
+          <ul>
+            <li><a href="#使用本地-mineru-服务">本地 MinerU 服务</a></li>
+          </ul>
+        </li>
+      </ul>
 
-        <span class="caption">Getting Started</span>
-        <ul>
-          <li><a href="#overview">Overview</a></li>
-          <li><a href="#quick-start">Quick Start</a></li>
-          <li><a href="#requirements">Requirements</a></li>
-          <li><a href="#choose-your-setup">Choose Your Setup</a></li>
-          <li><a href="#installation">Installation</a></li>
-          <li><a href="#configuration">Configuration</a>
-            <ul>
-              <li><a href="#supported-providers--protocols">Providers &amp; Protocols</a></li>
-              <li><a href="#supported-models-examples">Supported Models</a></li>
-              <li><a href="#advanced-reasoning-levels--hyperparameters">Reasoning &amp; Hyperparameters</a></li>
-            </ul>
-          </li>
-        </ul>
+      <span class="manual__cap">帮助</span>
+      <ul>
+        <li><a href="#隐私与数据流">隐私与数据流</a></li>
+        <li><a href="#故障排查">故障排查</a></li>
+        <li><a href="#路线图">路线图</a></li>
+        <li><a href="#常见问题">常见问题</a></li>
+        <li><a href="#贡献与支持">贡献与支持</a></li>
+        <li><a href="#star-趋势">Star 趋势</a></li>
+        <li><a href="https://github.com/yilewang/llm-for-zotero" target="_blank" rel="noopener">GitHub &#8599;</a></li>
+      </ul>
+      {% else %}
+      <span class="manual__cap">What's New</span>
+      <ul>
+        <li><a href="#whats-new">What's New</a></li>
+      </ul>
 
-        <span class="caption">User Guide</span>
-        <ul>
-          <li><a href="#usage-guide">Basic Usage</a>
-            <ul>
-              <li><a href="#conversation-modes">Conversation Modes</a></li>
-              <li><a href="#webchat-mode-requirements">WebChat Requirements</a></li>
-              <li><a href="#interface-controls">Interface Controls</a></li>
-            </ul>
-          </li>
-        </ul>
+      <span class="manual__cap">Getting Started</span>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#quick-start">Quick Start</a></li>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#choose-your-setup">Choose Your Setup</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#configuration">Configuration</a>
+          <ul>
+            <li><a href="#supported-providers--protocols">Providers &amp; Protocols</a></li>
+            <li><a href="#supported-models-examples">Supported Models</a></li>
+            <li><a href="#advanced-reasoning-levels--hyperparameters">Reasoning &amp; Hyperparameters</a></li>
+          </ul>
+        </li>
+      </ul>
 
-        <span class="caption">Features</span>
-        <ul>
-          <li><a href="#grounded-answers-with-citation-navigation">Citation Navigation</a></li>
-          <li><a href="#paper-summarization">Paper Summarization</a></li>
-          <li><a href="#selected-text-explanation">Text Explanation</a></li>
-          <li><a href="#figure-interpretation">Figure Interpretation</a></li>
-          <li><a href="#cross-paper-comparison">Cross-Paper Comparison</a></li>
-          <li><a href="#external-document-upload">Document Upload</a></li>
-          <li><a href="#save-to-notes">Save to Notes</a></li>
-          <li><a href="#conversation-history--export">History &amp; Export</a></li>
-          <li><a href="#custom-quick-action-presets">Quick-Action Presets</a></li>
-          <li><a href="#standalone-window-mode">Standalone Window Mode</a></li>
-          <li><a href="#file-based-notes">File-Based Notes</a></li>
-        </ul>
+      <span class="manual__cap">User Guide</span>
+      <ul>
+        <li><a href="#usage-guide">Basic Usage</a>
+          <ul>
+            <li><a href="#conversation-modes">Conversation Modes</a></li>
+            <li><a href="#webchat-mode-requirements">WebChat Requirements</a></li>
+            <li><a href="#interface-controls">Interface Controls</a></li>
+          </ul>
+        </li>
+      </ul>
 
-        <span class="caption">Advanced</span>
-        <ul>
-          <li><a href="#agent-mode-beta">Agent Mode (Beta)</a>
-            <ul>
-              <li><a href="#library--pdf-reading-tools">Reading Tools</a></li>
-              <li><a href="#library-write-tools">Write Tools</a></li>
-              <li><a href="#filesystem--scripting-tools">Files &amp; Scripting</a></li>
-              <li><a href="#built-in-actions">Built-in Actions</a></li>
-              <li><a href="#mcp-server">MCP Server</a></li>
-              <li><a href="#agent-demos">Demos</a></li>
-              <li><a href="#safety--confirmation">Safety &amp; Confirmation</a></li>
-            </ul>
-          </li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#webchat-setup-chatgpt-web-sync">WebChat Setup</a></li>
-          <li><a href="#codex-setup-chatgpt-plus-subscribers">Codex Setup</a></li>
-          <li><a href="#claude-code-setup-experimental">Claude Code Setup</a></li>
-          <li><a href="#mineru-pdf-parsing">MinerU PDF Parsing</a>
-            <ul>
-              <li><a href="#using-a-local-mineru-server">Local MinerU Server</a></li>
-            </ul>
-          </li>
-        </ul>
+      <span class="manual__cap">Features</span>
+      <ul>
+        <li><a href="#grounded-answers-with-citation-navigation">Citation Navigation</a></li>
+        <li><a href="#paper-summarization">Paper Summarization</a></li>
+        <li><a href="#selected-text-explanation">Text Explanation</a></li>
+        <li><a href="#figure-interpretation">Figure Interpretation</a></li>
+        <li><a href="#cross-paper-comparison">Cross-Paper Comparison</a></li>
+        <li><a href="#external-document-upload">Document Upload</a></li>
+        <li><a href="#save-to-notes">Save to Notes</a></li>
+        <li><a href="#conversation-history--export">History &amp; Export</a></li>
+        <li><a href="#custom-quick-action-presets">Quick-Action Presets</a></li>
+        <li><a href="#standalone-window-mode">Standalone Window Mode</a></li>
+        <li><a href="#file-based-notes">File-Based Notes</a></li>
+      </ul>
 
-        <span class="caption">Help</span>
-        <ul>
-          <li><a href="#privacy-and-data-flow">Privacy &amp; Data Flow</a></li>
-          <li><a href="#troubleshooting">Troubleshooting</a></li>
-          <li><a href="#roadmap">Roadmap</a></li>
-          <li><a href="#frequently-asked-questions">FAQ</a></li>
-          <li><a href="#contributing--support">Contributing</a></li>
-          <li><a href="#star-history">Star History</a></li>
-          <li><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">GitHub &#8599;</a></li>
-        </ul>
-        {% endif %}
-      </div>
+      <span class="manual__cap">Advanced</span>
+      <ul>
+        <li><a href="#agent-mode-beta">Agent Mode (Beta)</a>
+          <ul>
+            <li><a href="#library--pdf-reading-tools">Reading Tools</a></li>
+            <li><a href="#library-write-tools">Write Tools</a></li>
+            <li><a href="#filesystem--scripting-tools">Files &amp; Scripting</a></li>
+            <li><a href="#built-in-actions">Built-in Actions</a></li>
+            <li><a href="#mcp-server">MCP Server</a></li>
+            <li><a href="#agent-demos">Demos</a></li>
+            <li><a href="#safety--confirmation">Safety &amp; Confirmation</a></li>
+          </ul>
+        </li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#webchat-setup-chatgpt-web-sync">WebChat Setup</a></li>
+        <li><a href="#codex-setup-chatgpt-plus-subscribers">Codex Setup</a></li>
+        <li><a href="#claude-code-setup-experimental">Claude Code Setup</a></li>
+        <li><a href="#mineru-pdf-parsing">MinerU PDF Parsing</a>
+          <ul>
+            <li><a href="#using-a-local-mineru-server">Local MinerU Server</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <span class="manual__cap">Help</span>
+      <ul>
+        <li><a href="#privacy-and-data-flow">Privacy &amp; Data Flow</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+        <li><a href="#frequently-asked-questions">FAQ</a></li>
+        <li><a href="#contributing--support">Contributing</a></li>
+        <li><a href="#star-history">Star History</a></li>
+        <li><a href="https://github.com/yilewang/llm-for-zotero" target="_blank" rel="noopener">GitHub &#8599;</a></li>
+      </ul>
+      {% endif %}
     </nav>
 
     <!-- ─── Content ─── -->
-    <div class="wy-nav-content-wrap">
-      <div class="rst-content">
-        <ul class="wy-breadcrumbs">
-          <li><a href="/">{% if page.lang == 'zh' %}首页{% else %}Home{% endif %}</a></li>
-          <span class="sep">/</span>
-          <li>{% if page.lang == 'zh' %}llm-for-zotero 文档{% else %}llm-for-zotero Documentation{% endif %}</li>
-          <li style="flex:1"></li>
-          <li class="wy-breadcrumbs-aside"><a href="https://github.com/yilewang/llm-for-zotero" target="_blank">{% if page.lang == 'zh' %}在 GitHub 上查看{% else %}Edit on GitHub{% endif %}</a></li>
-        </ul>
+    <article class="manual__content page__content">
+      <ul class="manual__crumbs">
+        <li><a href="/">{% if page.lang == 'zh' %}首页{% else %}Home{% endif %}</a></li>
+        <li class="sep">/</li>
+        <li>{% if page.lang == 'zh' %}llm-for-zotero 文档{% else %}llm-for-zotero Documentation{% endif %}</li>
+        <li class="right"><a href="https://github.com/yilewang/llm-for-zotero" target="_blank" rel="noopener">{% if page.lang == 'zh' %}在 GitHub 上查看 &#8599;{% else %}Edit on GitHub &#8599;{% endif %}</a></li>
+      </ul>
 
-        {{ content }}
-      </div>
+      {{ content }}
 
-      <div class="rst-footer">
+      <div class="manual__pagefoot">
         {% if page.lang == 'zh' %}
         &copy; 2026 <a href="https://github.com/yilewang">Yile Wang</a>。基于 Jekyll 构建。使用 <a href="https://www.gnu.org/licenses/agpl-3.0">AGPL v3</a> 协议开源。
         {% else %}
         &copy; 2026 <a href="https://github.com/yilewang">Yile Wang</a>. Built with Jekyll. Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0">AGPL v3</a>.
         {% endif %}
       </div>
-    </div>
+    </article>
 
-    <!-- Scroll-spy for active sidebar link -->
-    <script>
-    (function() {
-      function slugifyHeading(text) {
-        return text
-          .toLowerCase()
-          .trim()
-          .replace(/\s+/g, '-')
-          .replace(/&/g, '')
-          .replace(/[’'"“”‘`:：,，.。!?！？()（）\[\]{}<>\/\\]/g, '');
-      }
+  </div>
+</div>
 
-      document.querySelectorAll('.rst-content h1, .rst-content h2, .rst-content h3, .rst-content h4').forEach(function(heading) {
-        var slug = slugifyHeading(heading.textContent || '');
-        if (!slug || document.getElementById(slug)) return;
-        var alias = document.createElement('span');
-        alias.id = slug;
-        alias.setAttribute('aria-hidden', 'true');
-        alias.style.position = 'relative';
-        alias.style.top = '-12px';
-        heading.parentNode.insertBefore(alias, heading);
+<script>
+(function() {
+  function slugify(text) {
+    return text.toLowerCase().trim()
+      .replace(/\s+/g, '-')
+      .replace(/&/g, '')
+      .replace(/[’'"“”‘`:：,，.。!?！？()（）\[\]{}<>\/\\]/g, '');
+  }
+
+  var content = document.querySelector('.manual__content');
+  if (content) {
+    content.querySelectorAll('h1, h2, h3, h4').forEach(function(h) {
+      var slug = slugify(h.textContent || '');
+      if (!slug || document.getElementById(slug)) return;
+      var alias = document.createElement('span');
+      alias.id = slug;
+      alias.setAttribute('aria-hidden', 'true');
+      alias.style.position = 'relative';
+      alias.style.top = '-80px';
+      h.parentNode.insertBefore(alias, h);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.manual__toc a[href^="#"]'));
+  var sections = [];
+  links.forEach(function(link) {
+    var el = document.getElementById(link.getAttribute('href').slice(1));
+    if (el) sections.push({ el: el, link: link });
+  });
+
+  function onScroll() {
+    var y = window.scrollY + 100;
+    var hit = null;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= y) hit = sections[i];
+    }
+    links.forEach(function(l) { l.classList.remove('is-current'); });
+    if (hit) hit.link.classList.add('is-current');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  var search = document.getElementById('manualSearch');
+  if (search) {
+    search.addEventListener('input', function() {
+      var q = this.value.toLowerCase();
+      document.querySelectorAll('.manual__toc li').forEach(function(li) {
+        var a = li.querySelector(':scope > a');
+        if (!a) return;
+        li.style.display = (!q || a.textContent.toLowerCase().indexOf(q) !== -1) ? '' : 'none';
       });
+    });
+  }
 
-      var links = document.querySelectorAll('.wy-menu a[href^="#"]');
-      var sections = [];
-      links.forEach(function(link) {
-        var id = link.getAttribute('href').slice(1);
-        var el = document.getElementById(id);
-        if (el) sections.push({ el: el, link: link });
-      });
-
-      function update() {
-        var y = window.scrollY + 100;
-        var hit = null;
-        for (var i = 0; i < sections.length; i++) {
-          if (sections[i].el.offsetTop <= y) hit = sections[i];
+  var toggle = document.querySelector('.manual__toc-toggle');
+  var toc = document.getElementById('manualToc');
+  if (toggle && toc) {
+    toggle.addEventListener('click', function() {
+      var open = toc.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    links.forEach(function(link) {
+      link.addEventListener('click', function() {
+        if (window.innerWidth <= 925) {
+          toc.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
         }
-        links.forEach(function(l) { l.classList.remove('current'); });
-        if (hit) hit.link.classList.add('current');
-      }
-
-      window.addEventListener('scroll', update);
-      update();
-
-      /* simple client-side search filter */
-      var input = document.getElementById('rtd-search-input');
-      if (input) {
-        input.addEventListener('input', function() {
-          var q = this.value.toLowerCase();
-          document.querySelectorAll('.wy-menu li').forEach(function(li) {
-            var a = li.querySelector(':scope > a');
-            if (!a) return;
-            li.style.display = (!q || a.textContent.toLowerCase().indexOf(q) !== -1) ? '' : 'none';
-          });
-        });
-      }
-
-      /* mobile: close sidebar when clicking a nav link */
-      links.forEach(function(link) {
-        link.addEventListener('click', function() {
-          if (window.innerWidth <= 768) {
-            document.querySelector('.wy-nav-side').classList.remove('wy-nav-side--open');
-            document.querySelector('.wy-nav-overlay').classList.remove('active');
-          }
-        });
       });
-    })();
-    </script>
-  </body>
-</html>
+    });
+  }
+})();
+</script>
