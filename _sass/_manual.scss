@@ -199,6 +199,29 @@ html[data-theme="dark"] {
   border-radius: 8px;
 }
 
+/* Code: the theme default (~11px block / ~12px inline) is too small to read
+   comfortably in the manual, so bump it up to a readable size. The ancestor
+   selectors are needed to outrank the theme's `div.highlighter-rouge .highlight`
+   rule from _syntax.scss. */
+.manual__content .highlighter-rouge .highlight,
+.manual__content figure.highlight .highlight {
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.manual__content p > code,
+.manual__content a > code,
+.manual__content li > code,
+.manual__content td > code,
+.manual__content figcaption > code {
+  font-size: 0.85em;
+}
+
+/* Tables: the theme default (0.75em from _tables.scss) is too small; bring it
+   up to match the body text size. */
+.manual__content table {
+  font-size: 0.9em;
+}
+
 .manual__pagefoot {
   margin-top: 2.5rem;
   padding-top: 1.2rem;
