@@ -55,6 +55,10 @@ lang_alt: /llm-for-zotero/zh/
     <strong>MinerU PDF Parsing</strong>
     <p>Use cloud MinerU or a local mineru-api server for high-fidelity parsing that preserves tables, equations, figures, and complex layouts.</p>
   </a>
+  <a class="rtd-feature-card" href="#precise-figure-extraction">
+    <strong>Precise Figure Extraction</strong>
+    <p>Ask about a figure and the agent crops it straight from the source PDF — sharp, accurate, and ready to embed in your notes.</p>
+  </a>
   <a class="rtd-feature-card" href="#standalone-window-mode">
     <strong>Standalone Window</strong>
     <p>Open the LLM Assistant in its own dedicated window with a full-sized chat interface and conversation history sidebar.</p>
@@ -117,6 +121,7 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 - **Cache-aware Agent Mode** preserves stable paper context, prior read evidence, and coverage state across longer research turns, then compacts old transcript history automatically when the context window gets crowded.
 - **Citation navigation** keeps citation labels conservative until page locations are verified, while quote-based citations can jump back to the matching Zotero passage.
 - **MinerU PDF parsing**: High-fidelity extraction preserves tables, equations, and figures more accurately, with support for cloud MinerU, local `mineru-api` servers, bulk parsing, cache repair, sync packages, tags, and parsing filters.
+- **Precise Figure Extraction**: Figure questions and figure notes now use crops cut directly from the source PDF — with MinerU as the index — instead of MinerU's own figure images, for sharper, more accurate figures. See [Precise Figure Extraction](#precise-figure-extraction).
 
 Thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) and [@boltma](https://github.com/boltma) for major contributions to the Codex App Server, Claude Code, and file upload workflows.
 
@@ -349,7 +354,7 @@ Ask the agent to write a note using the nickname you configured, for example *"S
 1. **Gather content** from the paper, including metadata, summary, key points, and figures when available.
 2. **Compose a Markdown note** following the `write-note` skill.
 3. **Add YAML frontmatter** matching the `write-note` template: `title`, `created`, `tags`, `citekey`, `doi`, and `journal`; author information stays in the note body.
-4. **Copy figures** from MinerU-parsed PDFs into the attachments folder when requested.
+4. **Embed extracted figure crops** — precise crops cut from the source PDF — and copy them into the attachments folder when requested. See [Precise Figure Extraction](#precise-figure-extraction).
 5. **Write the note** to `{notes_directory}/{default_folder}/{title}.md`.
 
 If you want to keep notes inside Zotero, the agent can also write to internal item notes with the `write-note` skill. Ask it to "save a note for this paper" without mentioning an external directory.
@@ -510,7 +515,7 @@ The plugin ships with **8 built-in skills** covering common research workflows. 
 |---|---|---|
 | `simple-paper-qa` | General questions about a paper, such as summaries, findings, authors, or TLDR requests | Read the paper once and answer immediately, avoiding unnecessary retrieval calls |
 | `evidence-based-qa` | Questions about specific methods, results, data, or claims | Read first, then use targeted `search_paper` retrieval for specific evidence |
-| `analyze-figures` | References to figures, tables, or diagrams by number | Use MinerU-cached images when available and send images directly to the model |
+| `analyze-figures` | References to figures, tables, or diagrams by number | Extract a precise figure crop from the source PDF (using MinerU as the index) and read it directly; read tables as structured text |
 | `compare-papers` | Requests to compare or contrast multiple papers | Batch paper reads and then retrieve focused evidence for comparison points |
 | `library-analysis` | Requests to summarize, analyze, or audit your library | Use efficient scripting to iterate library items instead of paginating through context |
 | `literature-review` | Requests for a literature review or research synthesis | Discover papers, deep-read the most relevant few, and synthesize thematically |
@@ -800,6 +805,8 @@ Parsed results are cached locally and reused in later conversations. When **Auto
 
 The MinerU cache is designed for AI, not as a second human PDF reader. Zotero stays the place where you read, annotate, and manage the original PDF. MinerU creates structured sidecar material that models can use: clean Markdown, section ranges, page hints, tables, equations, and extracted figure assets. This keeps the original Zotero UI mostly untouched while giving the assistant much better paper context than raw PDF text extraction.
 
+For figure questions, MinerU acts as the index that locates each figure, while the image the model actually sees is a precise crop taken from the source PDF; see [Precise Figure Extraction](#precise-figure-extraction).
+
 ### How to Enable MinerU
 
 1. Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero**.
@@ -869,6 +876,34 @@ Advanced parsing filters can skip files before automatic or bulk parsing:
 - **Exclude PDFs by Filename** accepts comma-separated substrings, or regex patterns wrapped in `/slashes/`, for translated copies, supplements, or other files you do not want parsed automatically.
 
 If **Sync MinerU cache with Zotero file sync** is enabled, the plugin can create companion ZIP attachments containing `full.md`, `manifest.json`, `content_list.json`, and extracted assets. Sync is optional and default-off. Existing local caches sync only when you request it from the MinerU tab, and synced packages can restore a missing local cache when needed. The repair path validates package metadata and content hashes, prunes duplicate packages for the same source PDF, removes orphaned local caches, and restores usable local cache folders from synced ZIP packages.
+
+### Precise Figure Extraction
+
+<img src="/images/llm-for-zotero/figure_extraction.png" alt="Figures detected and cropped directly from source PDF pages, each outlined in red">
+
+When Agent Mode answers a question about a figure — or saves a note that discusses one — it pulls a **precise, high-resolution crop straight from the source PDF**, using the MinerU cache only as an index.
+Ask something like *"What does Figure 3 show?"* and the agent locates the figure from the MinerU parse, cuts a clean crop from the original PDF page, and reads that exact image, caption and panels included.
+
+This is different from [Figure Interpretation](#figure-interpretation), where you take the screenshot yourself.
+Here the agent finds and crops the figure for you, and those same crops are what get embedded when you save a figure to your notes.
+
+| Step | What happens |
+|---|---|
+| **Index with MinerU** | The MinerU parse supplies figure labels, captions, and page hints. |
+| **Crop from the PDF** | The figure image is cut directly from the original PDF page, not from MinerU's own images, so labels and panels stay sharp. |
+| **Cache and reuse** | Each crop is fingerprinted against the PDF and reused by later questions and notes; the cache repairs itself when the source changes. |
+| **Embed in notes** | Saving a figure note embeds the crop as `![Figure N](…)` and auto-imports it as a Zotero attachment. |
+
+**Good to know:**
+
+- **No setup.** Crops are produced by a small extraction runtime that the plugin downloads and manages per platform, so you never install Python or any other tool yourself.
+- **Figures, not tables.** Tables are read as structured Markdown text from the MinerU parse, so figure extraction skips them by design.
+- **Requires a MinerU cache.** Figure extraction needs the paper to be parsed by MinerU first. Without a cache, the agent falls back to captions and surrounding text and tells you it could not extract the figure image.
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Tip</div>
+  Figure handling is governed by the <code>analyze-figures</code> skill, which requires <a href="#agent-mode-beta">Agent Mode</a>. Open the <a href="#skills">Skills</a> portal to tune how figures are located, interpreted, and embedded.
+</div>
 
 ---
 
