@@ -5,14 +5,12 @@ permalink: /publications/
 author_profile: true
 ---
 
-(Updated: Dec 2025.)
-
-## Preprints
-- Zitong Lu, Yile Wang, JD Golomb (2025). Achieving more human brain-like vision via human eeg representational alignment. ArXiv: 2401.17231 v2.
-
+(Updated: Jul 2026.)
 
 ## Peer-reviewed publications
 
+- Zitong Lu, **Yile Wang**, Julie D. Golomb. (2026). Achieving More Human Brain-Like Vision via Human EEG Representational
+Alignment. Communications Biology, 9, 463.
 - Zitong Lu, **Yile Wang**. (2025). Teaching CORnet Human fMRI Representations for Enhanced Model-Brain Alignment. Cognitive
 Neurodynamics. 19 (1), 61.
 - Li, Z., Huang, G., Li, Z., Li, S., **Wang, Y.**, Zhao, J., ... & Zou, L. (2020). Chemosensory Anhedonia in Patients with Schizophrenia and
