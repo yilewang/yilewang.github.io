@@ -5,7 +5,7 @@ author: Wayne
 date: 2021-06-20
 permalink: /posts/06_20_2021_criticality
 description: Literature sharing for criticality
-published: true
+published: false
 tags:
   - literature review
   - chinese
