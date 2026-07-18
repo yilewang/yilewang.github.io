@@ -137,7 +137,7 @@ html[data-theme="dark"] .theme-toggle__sun { display: inline-block; }
    Reading column (single posts / pages)
    -------------------------------------------------------------------------- */
 .page__content {
-  max-width: 720px;
+  max-width: $reading-width;
   font-size: 17px;
   line-height: 1.7;
 }

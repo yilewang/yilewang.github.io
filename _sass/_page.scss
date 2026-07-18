@@ -12,7 +12,7 @@
   animation-delay: 0.35s;
 
   @include breakpoint($x-large) {
-    max-width: $x-large;
+    max-width: $content-container;
   }
 }
 
@@ -20,7 +20,7 @@
   @include breakpoint($large) {
     @include span(10 of 12 last);
     @include prefix(0.5 of 12);
-    @include suffix(2 of 12);
+    @include suffix(0.5 of 12);
   }
 
   .page__inner-wrap {
@@ -49,7 +49,7 @@
 }
 
 .page__content {
-  max-width: 800px;
+  max-width: $reading-width;
   margin: 0 auto;
   padding: 1.5em 2em;
 
