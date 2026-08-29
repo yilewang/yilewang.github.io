@@ -51,6 +51,10 @@ lang_alt: /llm-for-zotero/zh/
     <strong>Agent Mode (Beta)</strong>
     <p>An autonomous agent that manages your library, runs terminal commands, and accesses local files — with approval before changes are applied.</p>
   </a>
+  <a class="rtd-feature-card" href="#general-web-search">
+    <strong>General Web Search</strong>
+    <p>Research current public information, read source pages, and connect web evidence with papers in your Zotero library.</p>
+  </a>
   <a class="rtd-feature-card" href="#mineru-pdf-parsing">
     <strong>MinerU PDF Parsing</strong>
     <p>Use cloud MinerU or a local mineru-api server for high-fidelity parsing that preserves tables, equations, figures, and complex layouts.</p>
@@ -95,6 +99,7 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 - A model backend: provider API key, local OpenAI-compatible model, WebChat, Codex App Server, or Claude Code.
 - A Chromium-based browser for WebChat mode.
 - Node.js 18+ for npm-based Codex CLI installation and the Claude Code bridge. The macOS Codex cask does not require a separate Node.js install.
+- A Tavily API key is required only if you enable general web search in Agent Mode.
 - A personal MinerU API key or a local `mineru-api` server is recommended if you enable MinerU parsing.
 
 ## Choose Your Setup
@@ -106,12 +111,16 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 | Use ChatGPT or DeepSeek in the browser | [WebChat](#webchat-setup-chatgpt-web-sync) with the Sync for Zotero extension | No |
 | Use Codex models with ChatGPT Plus | [Codex App Server](#codex-setup-chatgpt-plus-subscribers) | No separate API key |
 | Use Claude Code inside Zotero | [Claude Code bridge](#claude-code-setup-experimental) | Claude Code auth |
+| Research current public web information | [General web search](#general-web-search) in Agent Mode with Tavily | Tavily key |
 | Improve PDF extraction for tables, equations, and figures | [MinerU PDF parsing](#mineru-pdf-parsing) | Personal MinerU key recommended |
 
 ---
 
 ## What's New
 
+- **Built-in web and literature research** lets the Agent search the public web, read source pages, and combine current online information with evidence from your Zotero library.
+  Answers can include paragraph-level source cards, while the activity trace keeps general web results and scholarly literature results visually distinct.
+  See [General Web Search](#general-web-search).
 - **Codex App Server** is the recommended Codex path for ChatGPT Plus users. It runs through the local `codex app-server` runtime and is configured from the **Agent** tab.
 - **Claude Code Mode (experimental)**: Run Claude Code as a separate conversation system inside Zotero through the companion local bridge. This mode is still under development and does not yet support native Zotero API operations; native Zotero tool support is planned. See [Claude Code Setup](#claude-code-setup-experimental).
 - **WebChat Mode** supports ChatGPT and DeepSeek web sync through the Sync for Zotero browser extension.
@@ -374,6 +383,84 @@ Notes use [Pandoc citation syntax](https://pandoc.org/MANUAL.html#citations) (`[
 
 ---
 
+## General Web Search
+
+Starting with v3.9.4, Agent Mode can research the public web without leaving Zotero.
+The Agent can search for current information, open selected source pages for focused reading, and combine those findings with papers, notes, and metadata from your Zotero library.
+This is useful when a question depends on information that may be newer than a paper or a model's training data, such as current documentation, organization pages, policies, product information, or recent public reporting.
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Agent Mode required</div>
+  General web search is a tool used by <a href="#agent-mode-beta">Agent Mode</a>.
+  It is separate from <a href="#webchat-setup-chatgpt-web-sync">WebChat</a>, which connects Zotero to a browser-based chat service.
+</div>
+
+### Set Up Tavily
+
+Web search is powered by [Tavily](https://tavily.com/) and uses its own API key, separate from your model-provider key.
+
+1. [Create a Tavily account](https://app.tavily.com/) and obtain an API key.
+2. Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent**.
+3. Find **Tavily Web Search**, paste the key, and click **Test connection**.
+4. Enable [Agent Mode](#agent-mode-beta), then ask a question that needs current or public web evidence.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/web-search/tavily-setup.png" alt="Tavily Web Search settings with an API key field, connection test, credit information, and privacy notice" width="1162" height="626" loading="lazy">
+  <figcaption>Configure and test the Tavily key from the Agent preferences. The key remains in your local Zotero preferences.</figcaption>
+</figure>
+
+### What the Agent Can Do
+
+| Need | How the Agent handles it |
+|---|---|
+| Find current public information | Uses general web search and selects a search depth appropriate for the request |
+| Inspect a specific source | Opens a public page for focused extraction instead of relying only on a search snippet |
+| Discover academic papers | Uses scholarly literature search for paper metadata, recommendations, references, and citation relationships |
+| Combine evidence types | Can use web search and literature search in the same turn, while keeping their results separate in the activity trace |
+| Explain where a claim came from | Adds interactive source cards after supported paragraphs, with the page title, organization, favicon, and a safe link |
+
+General web search and scholarly literature search are complementary rather than interchangeable.
+Use web search for current documentation, institutional pages, public explanations, standards, policies, and other open-web material.
+Use literature search when you need academic discovery through sources such as Crossref and Semantic Scholar.
+For a broad research question, the Agent can use both and synthesize the results with evidence already in Zotero.
+
+<div class="rtd-doc-figure-grid">
+  <figure class="rtd-doc-figure">
+    <img src="/images/llm-for-zotero/web-search/web-and-literature-trace.png" alt="Agent activity trace showing a live literature search followed by a separate general web search" width="960" height="2160" loading="lazy">
+    <figcaption>The activity trace separates scholarly literature results from general web results, so you can see which route produced each source.</figcaption>
+  </figure>
+  <figure class="rtd-doc-figure">
+    <img src="/images/llm-for-zotero/web-search/paragraph-source-cards.png" alt="An Agent answer with source cards attached to a paragraph, showing site favicons, organizations, titles, and links" width="902" height="992" loading="lazy">
+    <figcaption>Paragraph-level source cards make supporting pages easy to identify and open without interrupting the answer.</figcaption>
+  </figure>
+</div>
+
+### Example Requests
+
+- *"Use current web sources to check whether the recommendations in this paper have changed, and show me what changed."*
+- *"Compare this paper with the latest public guidance from the WHO, and keep paper evidence separate from web evidence."*
+- *"Research the current state of representational drift, using both recent academic literature and reliable public research pages."*
+- *"Read this URL, compare its claims with the papers in my current Zotero collection, and cite each source near the claim it supports."*
+
+You do not need to specify a search depth in ordinary requests.
+The Agent can choose between basic and advanced search based on the question, or you can ask explicitly for a broader or deeper search when coverage matters more than credit use.
+
+### Credits, Privacy, and Verification
+
+Tavily usage consumes Tavily credits.
+The v3.9.4 preferences panel shows the release-time credit model: basic search uses 1 credit, advanced search uses 2 credits, and extraction is charged per five successfully read pages.
+At the time of writing, Tavily's free plan provides 1,000 credits each month without requiring a credit card.
+Allowances and pricing can change, so consult [Tavily's credit and pricing documentation](https://docs.tavily.com/documentation/api-credits) and your account for the current terms.
+
+Search queries and requested URLs are sent to Tavily under Tavily's privacy, retention, and search-index policies.
+When results are displayed, Zotero may load favicons from public URLs supplied by Tavily.
+Do not include credentials, unpublished material, personal data, or other sensitive private text in a web query.
+
+Web sources can change or disagree.
+Use the source cards to open important pages and verify high-stakes claims against the original source before relying on them.
+
+---
+
 ## Agent Mode (Beta)
 
 <div class="rtd-warning">
@@ -397,6 +484,8 @@ These tools let the agent explore your library, PDFs, attachments, and scholarly
 | `search_paper` | Find evidence in papers via a question and return ranked relevant passages, with up to 10 papers per call |
 | `view_pdf_pages` | Render PDF pages as images for visual analysis, by question, by page number, or by capturing the currently visible page |
 | `read_attachment` | Read any Zotero attachment by ID, including HTML snapshots, text files, and images, or send the whole file to the model |
+| `web_search` | Search the current public web through Tavily, using basic or advanced depth as appropriate for the request |
+| `web_read` | Open and extract content from selected public web pages for focused source reading |
 | `search_literature_online` | Search live scholarly sources such as CrossRef and Semantic Scholar for metadata, recommendations, references, and citations |
 
 ### Library Write Tools

@@ -298,6 +298,46 @@ html[data-theme="dark"] {
 }
 
 /* --------------------------------------------------------------------------
+   Documentation figures and paired walkthroughs
+   -------------------------------------------------------------------------- */
+.rtd-doc-figure {
+  width: 100%;
+  margin: 1.4em 0;
+  padding: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.rtd-doc-figure--wide {
+  max-width: 760px;
+}
+.manual__content .rtd-doc-figure img {
+  width: auto;
+  height: auto;
+  max-height: 860px;
+  margin: 0 auto;
+  border: 0;
+  border-radius: 6px;
+  object-fit: contain;
+}
+.rtd-doc-figure figcaption {
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.rtd-doc-figure-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1rem;
+  margin: 1.4em 0;
+}
+.rtd-doc-figure-grid .rtd-doc-figure {
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
    Admonitions (tip / warning / note)
    -------------------------------------------------------------------------- */
 .rtd-tip,
@@ -359,6 +399,10 @@ html[data-theme="dark"] {
   }
   .manual__toc.is-open { display: block; }
   .manual__content { max-width: none; }
+}
+
+@include breakpoint(max-width $small) {
+  .rtd-doc-figure-grid { grid-template-columns: 1fr; }
 }
 
 /* --------------------------------------------------------------------------

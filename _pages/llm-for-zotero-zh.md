@@ -51,6 +51,10 @@ lang_alt: /llm-for-zotero/
     <strong>Agent 模式</strong>
     <p>自主管理文库、执行终端命令、访问本地文件的智能代理——所有变更均需您审批。</p>
   </a>
+  <a class="rtd-feature-card" href="#通用网页搜索">
+    <strong>通用网页搜索</strong>
+    <p>检索最新公开信息、读取来源页面，并将网页证据与 Zotero 文库中的论文结合起来。</p>
+  </a>
   <a class="rtd-feature-card" href="#mineru-pdf-解析">
     <strong>MinerU PDF 解析</strong>
     <p>可使用云端 MinerU 或本地 mineru-api 服务，进行高保真 PDF 解析，保留表格、公式、图表和复杂版式。</p>
@@ -95,6 +99,7 @@ lang_alt: /llm-for-zotero/
 - 一种模型后端：服务商 API 密钥、本地 OpenAI 兼容模型、WebChat、Codex App Server 或 Claude Code。
 - WebChat 模式需要 Chromium 内核浏览器。
 - 通过 npm 安装 Codex CLI 和运行 Claude Code 桥接服务需要 Node.js 18+。macOS Codex cask 不需要单独安装 Node.js。
+- 只有在 Agent 模式中启用通用网页搜索时，才需要 Tavily API 密钥。
 - 如果启用 MinerU 解析，建议使用个人 MinerU API 密钥或本地 `mineru-api` 服务。
 
 ## 选择配置方式
@@ -106,12 +111,16 @@ lang_alt: /llm-for-zotero/
 | 在浏览器中使用 ChatGPT 或 DeepSeek | 通过 Sync for Zotero 扩展使用 [WebChat](#webchat-配置chatgpt-网页同步) | 不需要 |
 | ChatGPT Plus 用户使用 Codex 模型 | [Codex App Server](#codex-配置chatgpt-plus-订阅用户) | 不需要单独 API 密钥 |
 | 在 Zotero 内使用 Claude Code | [Claude Code 桥接服务](#claude-code-配置实验性) | 需要 Claude Code 认证 |
+| 检索最新公开网页信息 | 在 Agent 模式中使用 [通用网页搜索](#通用网页搜索) 与 Tavily | Tavily 密钥 |
 | 提升表格、公式和图表的 PDF 提取质量 | [MinerU PDF 解析](#mineru-pdf-解析) | 建议使用个人 MinerU 密钥 |
 
 ---
 
 ## 最新更新
 
+- **内置网页与学术文献研究**：Agent 可以搜索公开网页、读取来源页面，并将最新在线信息与 Zotero 文库中的证据结合起来。
+  回答可附带段落级来源卡片，同时活动轨迹会清楚区分通用网页结果与学术文献结果。
+  详见[通用网页搜索](#通用网页搜索)。
 - **Codex App Server** 是 ChatGPT Plus 用户推荐的 Codex 使用路径。它通过本地 `codex app-server` 运行时工作，并在 **Agent** 标签页中配置。
 - **Claude Code 模式（实验性）**：通过配套本地桥接服务，将 Claude Code 作为 Zotero 内部独立的对话系统运行。该模式仍在开发中，目前尚不支持原生 Zotero API 操作；后续计划加入原生 Zotero 工具支持。详见 [Claude Code 配置](#claude-code-配置实验性)。
 - **WebChat 模式** 通过 Sync for Zotero 浏览器扩展支持 ChatGPT 和 DeepSeek 网页同步。
@@ -399,6 +408,84 @@ lang_alt: /llm-for-zotero/
 
 ---
 
+## 通用网页搜索
+
+从 v3.9.4 开始，Agent 模式可以在不离开 Zotero 的情况下检索公开网页。
+Agent 可以搜索最新信息、打开选定来源页面进行针对性读取，并将这些发现与 Zotero 文库中的论文、笔记和元数据结合起来。
+当问题依赖可能比论文或模型训练数据更新的信息时，这项功能特别有用，例如最新文档、机构页面、政策、产品信息或近期公开报道。
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">需要 Agent 模式</div>
+  通用网页搜索是 <a href="#agent-模式beta">Agent 模式</a>使用的工具。
+  它不同于 <a href="#webchat-配置chatgpt-网页同步">WebChat</a>；WebChat 的作用是将 Zotero 连接到浏览器中的聊天服务。
+</div>
+
+### 配置 Tavily
+
+网页搜索由 [Tavily](https://tavily.com/) 提供，需要单独的 API 密钥，与模型服务商密钥相互独立。
+
+1. [创建 Tavily 账户](https://app.tavily.com/)并获取 API 密钥。
+2. 打开 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** &rarr; **Agent**。
+3. 找到 **Tavily Web Search**，粘贴密钥，然后点击**测试连接**。
+4. 启用 [Agent 模式](#agent-模式beta)，然后提出需要最新或公开网页证据的问题。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/web-search/tavily-setup.png" alt="Tavily 网页搜索设置，其中包含 API 密钥输入框、连接测试、额度说明和隐私提示" width="1162" height="626" loading="lazy">
+  <figcaption>在 Agent 首选项中配置并测试 Tavily 密钥。密钥保存在本地 Zotero 首选项中。</figcaption>
+</figure>
+
+### Agent 可以完成什么
+
+| 需求 | Agent 的处理方式 |
+|---|---|
+| 查找最新公开信息 | 使用通用网页搜索，并根据请求选择合适的搜索深度 |
+| 检查特定来源 | 打开公开页面进行针对性提取，而不是只依赖搜索摘要 |
+| 发现学术论文 | 使用学术文献搜索获取论文元数据、推荐、参考文献和引用关系 |
+| 组合不同证据 | 可在同一回合同时使用网页搜索和文献搜索，并在活动轨迹中分别呈现结果 |
+| 说明陈述的来源 | 在相应段落后添加交互式来源卡片，显示页面标题、机构、网站图标和安全链接 |
+
+通用网页搜索与学术文献搜索相互补充，但不能互相替代。
+当您需要最新文档、机构页面、公开解释、标准、政策或其他开放网页材料时，可使用网页搜索。
+当您需要通过 Crossref、Semantic Scholar 等来源发现学术论文时，可使用文献搜索。
+对于范围较广的研究问题，Agent 可以同时使用两者，并与 Zotero 中已有的证据综合分析。
+
+<div class="rtd-doc-figure-grid">
+  <figure class="rtd-doc-figure">
+    <img src="/images/llm-for-zotero/web-search/web-and-literature-trace.png" alt="Agent 活动轨迹先显示在线学术文献搜索，再单独显示通用网页搜索" width="960" height="2160" loading="lazy">
+    <figcaption>活动轨迹将学术文献结果与通用网页结果分开呈现，便于判断每个来源来自哪一种检索路径。</figcaption>
+  </figure>
+  <figure class="rtd-doc-figure">
+    <img src="/images/llm-for-zotero/web-search/paragraph-source-cards.png" alt="Agent 回答的段落附有来源卡片，显示网站图标、机构名称、页面标题和链接" width="902" height="992" loading="lazy">
+    <figcaption>段落级来源卡片让您能够快速识别并打开支持该段内容的页面，同时保持回答正文连贯。</figcaption>
+  </figure>
+</div>
+
+### 示例问题
+
+- *“使用最新网页来源检查这篇论文中的建议是否已经改变，并说明发生了哪些变化。”*
+- *“将这篇论文与世界卫生组织最新公开指南进行对比，并把论文证据与网页证据分开呈现。”*
+- *“调研表征漂移的最新进展，同时使用近期学术文献和可靠的公开研究页面。”*
+- *“读取这个网址，将其中的观点与当前 Zotero 文集中的论文比较，并在每项陈述附近标注来源。”*
+
+一般情况下，您不需要指定搜索深度。
+Agent 可以根据问题在基本搜索与高级搜索之间做出选择；如果覆盖范围比额度消耗更重要，也可以明确要求进行更广泛或更深入的搜索。
+
+### 额度、隐私与核验
+
+使用 Tavily 会消耗 Tavily 额度。
+v3.9.4 首选项面板显示了发布时的额度规则：基本搜索消耗 1 个额度，高级搜索消耗 2 个额度，页面提取则按每 5 个成功读取的页面计费。
+撰写本文时，Tavily 免费方案每月提供 1,000 个额度，且无需信用卡。
+免费额度和价格可能调整，请查阅 [Tavily 额度与价格文档](https://docs.tavily.com/documentation/api-credits)，并以账户中显示的最新条款为准。
+
+搜索词和请求读取的网址会发送至 Tavily，并受 Tavily 的隐私、数据保留和搜索索引政策约束。
+显示结果时，Zotero 可能会从 Tavily 提供的公开网址加载网站图标。
+请勿在网页搜索词中包含凭据、未公开材料、个人数据或其他敏感私密文本。
+
+网页内容可能变化，不同来源也可能相互矛盾。
+对于重要页面，请通过来源卡片打开原始来源；在依赖高风险结论前，应先核验原文。
+
+---
+
 ## Agent 模式（Beta）
 
 <div class="rtd-warning">
@@ -422,6 +509,8 @@ lang_alt: /llm-for-zotero/
 | `search_paper` | 通过问题在论文中查找证据，返回排序后的相关段落；单次最多 10 篇论文 |
 | `view_pdf_pages` | 将 PDF 页面渲染为图像，支持按问题、页码或当前阅读器视图捕获，用于视觉分析 |
 | `read_attachment` | 按 Zotero 附件 ID 读取 HTML 快照、文本文件、图片等附件，或将整个文件发送给模型 |
+| `web_search` | 通过 Tavily 搜索最新公开网页，并根据请求选择基本或高级深度 |
+| `web_read` | 打开并提取选定公开网页的内容，用于针对性来源阅读 |
 | `search_literature_online` | 从 CrossRef、Semantic Scholar 等在线学术源搜索元数据、推荐、参考文献和引用 |
 
 ### 文库写入工具
