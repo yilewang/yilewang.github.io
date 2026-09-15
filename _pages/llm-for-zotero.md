@@ -45,7 +45,7 @@ lang_alt: /llm-for-zotero/zh/
   </a>
   <a class="rtd-feature-card" href="#webchat-setup-chatgpt-web-sync">
     <strong>WebChat</strong>
-    <p>Use ChatGPT or DeepSeek through the browser with Sync for Zotero when you do not want a provider API key.</p>
+    <p>Use ChatGPT, DeepSeek, or Google Gemini through the browser with Sync for Zotero when you do not want a provider API key.</p>
   </a>
   <a class="rtd-feature-card" href="#agent-mode-beta">
     <strong>Agent Mode (Beta)</strong>
@@ -108,7 +108,7 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 |---|---|---|
 | Use OpenAI, Gemini, DeepSeek, Moonshot, or another provider | Configure an API provider in Zotero preferences | Yes |
 | Use a local model | Connect any OpenAI-compatible local HTTP API | Usually no |
-| Use ChatGPT or DeepSeek in the browser | [WebChat](#webchat-setup-chatgpt-web-sync) with the Sync for Zotero extension | No |
+| Use ChatGPT, DeepSeek, or Google Gemini in the browser | [WebChat](#webchat-setup-chatgpt-web-sync) with the Sync for Zotero extension | No provider API key |
 | Use Codex models with ChatGPT Plus | [Codex App Server](#codex-setup-chatgpt-plus-subscribers) | No separate API key |
 | Use Claude Code inside Zotero | [Claude Code bridge](#claude-code-setup-experimental) | Claude Code auth |
 | Research current public web information | [General web search](#general-web-search) in Agent Mode with Tavily | Tavily key |
@@ -122,8 +122,10 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
   Answers can include paragraph-level source cards, while the activity trace keeps general web results and scholarly literature results visually distinct.
   See [General Web Search](#general-web-search).
 - **Codex App Server** is the recommended Codex path for ChatGPT Plus users. It runs through the local `codex app-server` runtime and is configured from the **Agent** tab.
+- **Plan Mode for Agent workflows** lets the agent inspect the request, ask focused questions, and present a reviewable plan before it performs any changes.
+  You can approve the plan, request a revision, or cancel it; approved execution keeps durable progress and verification records.
 - **Claude Code Mode (experimental)**: Run Claude Code as a separate conversation system inside Zotero through the companion local bridge. This mode is still under development and does not yet support native Zotero API operations; native Zotero tool support is planned. See [Claude Code Setup](#claude-code-setup-experimental).
-- **WebChat Mode** supports ChatGPT and DeepSeek web sync through the Sync for Zotero browser extension.
+- **WebChat Mode** supports ChatGPT, DeepSeek, and Google Gemini web sync through the Sync for Zotero browser extension.
 - **File-Based Notes**: Notes are no longer hard-coded to Obsidian. Configure any local Markdown directory, including Obsidian, Logseq, or a plain folder. See [File-Based Notes](#file-based-notes).
 - **Skills**: Customizable guidance files shape how the agent handles different tasks. 8 built-in skills are included, plus a portal for creating your own. See [Skills](#skills).
 - **Standalone Window Mode** opens the assistant in a dedicated window with paper chat, library chat, and conversation history.
@@ -177,7 +179,7 @@ The plugin natively supports these provider protocols:
 | `anthropic_messages` | Anthropic Messages API | Streaming, tool calls, multimodal inputs |
 | `gemini_native` | Google Gemini API | Streaming, tool calls, multimodal inputs |
 | `codex_responses` | Codex App Server / Codex Auth (Legacy) | Codex conversations for ChatGPT Plus subscribers without a separate API key |
-| `web_sync` | WebChat bridge for ChatGPT / DeepSeek | Browser-extension relay without provider API keys |
+| `web_sync` | WebChat bridge for ChatGPT / DeepSeek / Google Gemini | Browser-extension relay without provider API keys |
 
 ### Supported Models (Examples)
 
@@ -468,6 +470,11 @@ Use the source cards to open important pages and verify high-stakes claims again
   Agent Mode is disabled by default. Enable it in <strong>Preferences</strong>, then toggle <strong>Agent (beta)</strong> in the context bar.
 </div>
 
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/runtime-settings.png" alt="Agent settings showing enabled Original Agent, Codex, and Claude Code runtimes" width="1164" height="592" loading="lazy">
+  <figcaption>The Agent settings page keeps the Original Agent, Codex, and Claude Code runtimes together. Enable the runtime you want here, then select it from the chat header before starting a Plan workflow.</figcaption>
+</figure>
+
 When enabled, the LLM becomes an **autonomous agent** that can read, search, and write within your Zotero library. Read tools run directly; write tools route through confirmation cards and stay undoable.
 
 Long agent runs are cache-aware. The plugin keeps stable Zotero context and previously read evidence separate from the changing chat transcript, tracks which papers and passages have already been inspected, and automatically compacts old turns when the model context fills up. Follow-up questions can reuse grounded evidence when it is still relevant, while the agent reads again when the needed source or coverage layer is missing.
@@ -573,6 +580,26 @@ The agent can chain multiple tools together to accomplish complex tasks, such as
 
 <img src="/images/llm-for-zotero/agent/write_note.png" alt="Agent writing a note">
 
+### Plan Mode
+
+Use **Plan Mode** when you want to review the agent's approach before it changes Zotero, writes files, runs commands, imports content, or changes settings.
+It is available in Agent mode for the Original Agent and supported Codex or Claude conversation systems; it is not available in WebChat mode.
+
+1. Enter **Agent mode**.
+2. Type `/plan` and choose **Plan**, or press `Shift+Tab` in the composer.
+3. Describe the complete outcome you want, including important scope, format, or destination requirements.
+4. Answer any planning questions shown in Zotero.
+5. Review the structured plan and choose **Approve plan**, **Request changes**, or **Cancel**.
+
+While the plan is being drafted, the agent may use read-only Zotero, PDF, literature, and web tools to identify the correct scope and evidence.
+Operations with effects remain blocked until you approve the plan.
+After approval, Zotero runs the frozen plan, shows step-by-step progress, and records completion evidence so interrupted work can resume without repeating completed changes.
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Codex App Server</div>
+  In a Codex App Server conversation, planning uses Codex's native Plan mode for questions and proposal drafting. llm-for-zotero still owns the Zotero scope, approval boundary, execution records, and post-change verification. If Zotero reports that native Plan mode is unavailable, update the Codex CLI and restart the connection.
+</div>
+
 ### Safety & Confirmation
 
 All write operations go through a **human-in-the-loop confirmation** workflow:
@@ -663,15 +690,17 @@ Describe the workflow, which tools to prefer, and any constraints.
 
 <a id="webchat-setup-chatgpt-web-sync"></a>
 
-## WebChat Setup (ChatGPT & DeepSeek Web Sync)
+## WebChat Setup (ChatGPT, DeepSeek & Gemini Web Sync)
 
-**WebChat mode** sends your questions to [chatgpt.com](https://chatgpt.com) and [deepseek.com](https://chat.deepseek.com) through a browser extension, then streams responses back into Zotero. It is useful when you want ChatGPT or DeepSeek web access without a provider API key.
+**WebChat mode** sends your questions to [chatgpt.com](https://chatgpt.com), [chat.deepseek.com](https://chat.deepseek.com), or [gemini.google.com](https://gemini.google.com) through a browser extension, then streams responses back into Zotero.
+It is useful when you want browser-chat access without a provider API key.
 
 <img src="/images/llm-for-zotero/webchat.gif" alt="Animation showing WebChat mode connected to chatgpt.com">
 
 ### Prerequisites
 
-- A ChatGPT account for `chatgpt.com` WebChat or a DeepSeek account for `deepseek.com` WebChat.
+- Access to the selected provider site.
+  Account requirements depend on the site and feature; Gemini may allow anonymous text conversations, while PDF upload and conversation history may require sign-in.
 - A Chromium-based browser such as Chrome, Edge, Brave, or Arc.
 
 ### Step-by-step setup
@@ -694,11 +723,19 @@ In Zotero &rarr; **Preferences** &rarr; **llm-for-zotero**:
 | Setting | Value |
 |---|---|
 | Auth Mode | `WebChat` |
-| Model | `chatgpt.com` or `chat.deepseek.com` |
+| Model | `chatgpt.com`, `chat.deepseek.com`, or `gemini.google.com` |
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/webchat-gemini-provider.png" alt="AI Providers settings showing a WebChat provider configured for DeepSeek, ChatGPT, and Google Gemini" width="1468" height="1192" loading="lazy">
+  <figcaption>WebChat now appears as a browser-extension provider alongside API and Codex providers, with DeepSeek, ChatGPT, and Google Gemini available from one provider entry.</figcaption>
+</figure>
 
 **4. Start chatting:**
 
-Open a ChatGPT or DeepSeek tab in your browser and keep it open. In Zotero, the plugin panel shows a WebChat indicator with a connection dot (green = connected, red = not detected). Type a question and send.
+Open the matching ChatGPT, DeepSeek, or Google Gemini tab in your browser and keep it open.
+For Gemini, open [gemini.google.com/app](https://gemini.google.com/app) and choose the Gemini model on the website; the Zotero bridge does not change the site's model selection.
+In Zotero, the plugin panel shows a WebChat indicator with a connection dot (green = connected, red = not detected).
+Type a question and send.
 
 ### WebChat features
 
@@ -707,9 +744,19 @@ Open a ChatGPT or DeepSeek tab in your browser and keep it open. In Zotero, the 
 - **Conversation history** &mdash; Click the clock icon to browse and load past web conversations.
 - **Exit** &mdash; Click the "Exit" button to return to regular API mode.
 
+#### Gemini notes
+
+- Use the latest paired releases of **llm-for-zotero** and **Sync for Zotero**.
+  Older browser-extension builds do not advertise Gemini support and Zotero will stop the request before sending it.
+- Gemini WebChat can send one PDF per request and can also attach screenshots.
+  Wait for the attachment preview to finish loading before sending.
+- If Gemini's composer still contains an attachment from an earlier attempt, remove it before retrying.
+  If Zotero says a send could not be verified, inspect the Gemini tab before retrying to avoid submitting the same prompt twice.
+- Gemini responses and history are read from the rendered page, so a Gemini website update may temporarily require a Sync for Zotero adapter update.
+
 <div class="rtd-warning">
   <div class="rtd-admonition-title">Important</div>
-  WebChat mode requires a browser tab to stay open with the Sync for Zotero extension active. Keep the browser and Zotero in the same desktop session, avoid minimizing or backgrounding the active WebChat tab during a request, and watch for the green connection dot. WebChat currently supports paper chat only; library chat is not supported yet.
+  WebChat mode requires the matching provider tab to stay open with the Sync for Zotero extension active. Keep the browser and Zotero in the same desktop session, avoid minimizing or backgrounding the active WebChat tab during a request, and watch for the green connection dot. WebChat currently supports paper chat only; library chat is not supported yet.
 </div>
 
 ### Technical Notes
@@ -1000,7 +1047,7 @@ Here the agent finds and crops the figure for you, and those same crops are what
 
 - In standard provider mode, paper content and user messages are sent to the model provider you configure.
 - In local-model mode, requests go to the local OpenAI-compatible endpoint you configure.
-- In WebChat mode, requests are relayed through the browser extension to `chatgpt.com` or `chat.deepseek.com`.
+- In WebChat mode, requests are relayed through the browser extension to `chatgpt.com`, `chat.deepseek.com`, or `gemini.google.com`.
 - In cloud MinerU mode, PDFs selected for automatic or manual MinerU parsing are sent to MinerU.
 - In local MinerU mode, PDFs selected for automatic or manual MinerU parsing are sent to the local or remote `mineru-api` server you configure.
 - Conversation history and cached paper context are stored locally by the plugin.
@@ -1014,7 +1061,9 @@ Here the agent finds and crops the figure for you, and those same crops are what
 |---|---|
 | **Test Connection fails** | Confirm the base URL, API key, model name, and provider protocol. |
 | **The assistant cannot see a paper** | Reopen the PDF tab, then send a new message so the plugin can rebuild context. |
-| **WebChat shows a red dot** | Keep a ChatGPT or DeepSeek tab open and confirm the Sync for Zotero extension is loaded. |
+| **WebChat shows a red dot** | Keep the selected ChatGPT, DeepSeek, or Gemini tab open and confirm the latest Sync for Zotero extension is loaded. |
+| **Gemini WebChat is rejected before sending** | Update both llm-for-zotero and Sync for Zotero, reload `gemini.google.com/app`, and confirm Gemini's composer is ready. |
+| **Plan mode is unavailable with Codex** | Update the Codex CLI, restart the Codex App Server connection, and confirm Agent mode is enabled. |
 | **Codex App Server fails** | Run `codex login`, confirm `codex` is on `PATH`, then click **Test connection** again. |
 | **Claude Code mode hangs** | Restart the bridge and check `curl -fsS http://127.0.0.1:19787/healthz`. |
 | **MinerU parsing fails** | Add a personal MinerU API key for cloud mode, or confirm your local `mineru-api` server responds at `/health`, then retry **Test Connection**. |
@@ -1028,7 +1077,8 @@ For bugs or unclear failures, please [open an issue](https://github.com/yilewang
 - [x] Agent mode (beta)
 - [x] MinerU PDF parsing
 - [x] GitHub Copilot auth
-- [x] WebChat mode (ChatGPT web sync)
+- [x] WebChat mode (ChatGPT, DeepSeek, and Google Gemini web sync)
+- [x] Agent Plan mode with review and approved execution
 - [x] Standalone window mode ([#78](https://github.com/yilewang/llm-for-zotero/issues/78))
 - [x] File-based notes (Obsidian, Logseq, any Markdown directory)
 - [x] Claude Code integration

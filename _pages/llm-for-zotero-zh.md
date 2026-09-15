@@ -45,7 +45,7 @@ lang_alt: /llm-for-zotero/
   </a>
   <a class="rtd-feature-card" href="#webchat-配置chatgpt-网页同步">
     <strong>WebChat</strong>
-    <p>不想配置 API 密钥时，可通过 Sync for Zotero 浏览器扩展使用 ChatGPT 或 DeepSeek 网页端。</p>
+    <p>不想配置 API 密钥时，可通过 Sync for Zotero 浏览器扩展使用 ChatGPT、DeepSeek 或 Google Gemini 网页端。</p>
   </a>
   <a class="rtd-feature-card" href="#agent-模式beta">
     <strong>Agent 模式</strong>
@@ -108,7 +108,7 @@ lang_alt: /llm-for-zotero/
 |---|---|---|
 | 使用 OpenAI、Gemini、DeepSeek、Moonshot 或其他服务商 | 在 Zotero 首选项中配置 API 服务商 | 是 |
 | 使用本地模型 | 连接任意 OpenAI 兼容的本地 HTTP API | 通常不需要 |
-| 在浏览器中使用 ChatGPT 或 DeepSeek | 通过 Sync for Zotero 扩展使用 [WebChat](#webchat-配置chatgpt-网页同步) | 不需要 |
+| 在浏览器中使用 ChatGPT、DeepSeek 或 Google Gemini | 通过 Sync for Zotero 扩展使用 [WebChat](#webchat-配置chatgpt-网页同步) | 不需要服务商 API 密钥 |
 | ChatGPT Plus 用户使用 Codex 模型 | [Codex App Server](#codex-配置chatgpt-plus-订阅用户) | 不需要单独 API 密钥 |
 | 在 Zotero 内使用 Claude Code | [Claude Code 桥接服务](#claude-code-配置实验性) | 需要 Claude Code 认证 |
 | 检索最新公开网页信息 | 在 Agent 模式中使用 [通用网页搜索](#通用网页搜索) 与 Tavily | Tavily 密钥 |
@@ -122,8 +122,10 @@ lang_alt: /llm-for-zotero/
   回答可附带段落级来源卡片，同时活动轨迹会清楚区分通用网页结果与学术文献结果。
   详见[通用网页搜索](#通用网页搜索)。
 - **Codex App Server** 是 ChatGPT Plus 用户推荐的 Codex 使用路径。它通过本地 `codex app-server` 运行时工作，并在 **Agent** 标签页中配置。
+- **Agent 工作流的 Plan 模式**让 Agent 先检查请求、提出必要问题并给出可审阅计划，再执行任何变更。
+  您可以批准计划、要求修改或取消；批准后的执行会保留持久进度与核验记录。
 - **Claude Code 模式（实验性）**：通过配套本地桥接服务，将 Claude Code 作为 Zotero 内部独立的对话系统运行。该模式仍在开发中，目前尚不支持原生 Zotero API 操作；后续计划加入原生 Zotero 工具支持。详见 [Claude Code 配置](#claude-code-配置实验性)。
-- **WebChat 模式** 通过 Sync for Zotero 浏览器扩展支持 ChatGPT 和 DeepSeek 网页同步。
+- **WebChat 模式**通过 Sync for Zotero 浏览器扩展支持 ChatGPT、DeepSeek 和 Google Gemini 网页同步。
 - **文件笔记**：笔记目录不再硬编码为 Obsidian。您可以配置任意本地 Markdown 目录，包括 Obsidian、Logseq 或普通文件夹。详见 [文件笔记](#文件笔记)。
 - **Skills 技能系统**：可自定义的引导文件会影响 Agent 的任务处理方式。内置 8 个技能，并支持创建自定义技能。详见 [Skills 技能系统](#skills-技能系统)。
 - **独立窗口模式**：在专用窗口中打开助手，支持论文对话、文库对话和对话历史。
@@ -177,7 +179,7 @@ lang_alt: /llm-for-zotero/
 | `anthropic_messages` | Anthropic Messages API | 流式输出、工具调用、多模态 |
 | `gemini_native` | Google Gemini API | 流式输出、工具调用、多模态 |
 | `codex_responses` | Codex App Server / Codex Auth (Legacy) | ChatGPT Plus 订阅用户可免单独 API 密钥使用 Codex 模型，推荐选择 Codex App Server |
-| `web_sync` | ChatGPT / DeepSeek 的 WebChat 桥接协议 | 通过浏览器扩展转发，无需服务商 API 密钥 |
+| `web_sync` | ChatGPT / DeepSeek / Google Gemini 的 WebChat 桥接协议 | 通过浏览器扩展转发，无需服务商 API 密钥 |
 
 ### 支持的模型
 
@@ -493,6 +495,11 @@ v3.9.4 首选项面板显示了发布时的额度规则：基本搜索消耗 1 �
   Agent 模式默认禁用。请在<strong>首选项</strong>中启用，然后在上下文栏中切换 <strong>Agent (beta)</strong>。
 </div>
 
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/runtime-settings.png" alt="Agent 设置页面显示已启用的 Original Agent、Codex 和 Claude Code 运行时" width="1164" height="592" loading="lazy">
+  <figcaption>Agent 设置页面集中管理 Original Agent、Codex 和 Claude Code 运行时。请先在此启用所需运行时，再从聊天标题栏中选择它，然后启动 Plan 工作流。</figcaption>
+</figure>
+
 启用后，LLM 将成为一个**自主 Agent**，可在 Zotero 文库中执行读取、搜索和写入操作。读取工具可直接运行；写入工具会进入确认卡片，并支持撤销。
 
 较长的 Agent 运行具有缓存感知能力。插件会将稳定的 Zotero 上下文和已读取证据，与不断变化的聊天记录分开保存，跟踪哪些论文和段落已经被检查，并在模型上下文填满时自动压缩旧回合。后续问题可以在证据仍然相关时复用这些来源；当缺少所需来源或覆盖层级时，Agent 会重新读取。
@@ -598,6 +605,26 @@ Agent 可以串联多个工具完成复杂任务——例如查找论文、读�
 
 <img src="/images/llm-for-zotero/agent/write_note.png" alt="Agent 撰写笔记">
 
+### Plan 模式
+
+如果您希望先审阅 Agent 的工作方案，再允许它修改 Zotero、写入文件、运行命令、导入内容或更改设置，请使用 **Plan 模式**。
+该模式可用于 Original Agent，以及受支持的 Codex 或 Claude 对话系统；WebChat 模式不支持 Plan 模式。
+
+1. 进入 **Agent 模式**。
+2. 输入 `/plan` 并选择 **Plan**，或在输入框中按 `Shift+Tab`。
+3. 描述您希望完成的完整结果，包括重要的范围、格式或保存位置要求。
+4. 回答 Zotero 中显示的规划问题。
+5. 审阅结构化计划，然后选择**批准计划**、**要求修改**或**取消**。
+
+起草计划时，Agent 可以使用只读的 Zotero、PDF、学术文献和网页工具来确认正确范围与证据。
+在您批准计划之前，所有会产生外部影响的操作都会被阻止。
+批准后，Zotero 会执行已冻结的计划、显示逐步进度，并记录完成证据，使中断后的任务可以继续，而不会重复已经完成的变更。
+
+<div class="rtd-tip">
+  <div class="rtd-admonition-title">Codex App Server</div>
+  在 Codex App Server 对话中，提问与计划草案由 Codex 原生 Plan 模式负责；llm-for-zotero 仍负责 Zotero 范围、审批边界、执行记录和变更后核验。如果 Zotero 提示原生 Plan 模式不可用，请更新 Codex CLI 并重新启动连接。
+</div>
+
 ### 安全与审批
 
 所有写入操作均通过**人机协作确认**流程：
@@ -688,15 +715,17 @@ match: /另一个触发模式/i
 
 <a id="webchat-配置chatgpt-网页同步"></a>
 
-## WebChat 配置（ChatGPT & DeepSeek 网页同步）
+## WebChat 配置（ChatGPT、DeepSeek & Gemini 网页同步）
 
-**WebChat 模式**通过浏览器扩展将您的问题发送到 [chatgpt.com](https://chatgpt.com) 或 [deepseek.com](https://chat.deepseek.com)，再把回复实时流式传回 Zotero。它适合不想配置服务商 API 密钥、但想使用 ChatGPT 或 DeepSeek 网页端的场景。
+**WebChat 模式**通过浏览器扩展将您的问题发送到 [chatgpt.com](https://chatgpt.com)、[chat.deepseek.com](https://chat.deepseek.com) 或 [gemini.google.com](https://gemini.google.com)，再把回复实时流式传回 Zotero。
+它适合不想配置服务商 API 密钥、但想使用网页聊天服务的场景。
 
 <img src="/images/llm-for-zotero/webchat.gif" alt="WebChat 模式连接到 chatgpt.com 的动图">
 
 ### 前置条件
 
-- `chatgpt.com` WebChat 需要 ChatGPT 账号；`deepseek.com` WebChat 需要 DeepSeek 账号。
+- 您需要能够访问所选服务商的网站。
+  账号要求取决于网站与具体功能；Gemini 可能允许匿名文字对话，但上传 PDF 和读取对话历史可能需要登录。
 - Chromium 内核浏览器，如 Chrome、Edge、Brave 或 Arc。
 
 ### 配置步骤
@@ -719,11 +748,19 @@ match: /另一个触发模式/i
 | 设置项 | 值 |
 |---|---|
 | 认证模式 | `WebChat` |
-| 模型 | `chatgpt.com` 或 `chat.deepseek.com` |
+| 模型 | `chatgpt.com`、`chat.deepseek.com` 或 `gemini.google.com` |
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/webchat-gemini-provider.png" alt="AI Providers 设置页面显示支持 DeepSeek、ChatGPT 和 Google Gemini 的 WebChat 服务商" width="1468" height="1192" loading="lazy">
+  <figcaption>WebChat 现在与 API 和 Codex 服务商一起显示为浏览器扩展服务商，并可通过同一个服务商条目选择 DeepSeek、ChatGPT 或 Google Gemini。</figcaption>
+</figure>
 
 **4. 开始对话：**
 
-在浏览器中打开 ChatGPT 或 DeepSeek 标签页并保持打开。在 Zotero 中，插件面板会显示 WebChat 指示器及连接状态点（绿色 = 已连接，红色 = 未检测到）。输入问题并发送即可。
+在浏览器中打开对应的 ChatGPT、DeepSeek 或 Google Gemini 标签页并保持打开。
+使用 Gemini 时，请打开 [gemini.google.com/app](https://gemini.google.com/app)，并在 Gemini 网页端选择模型；Zotero 桥接不会更改网页端的模型选择。
+在 Zotero 中，插件面板会显示 WebChat 指示器及连接状态点（绿色 = 已连接，红色 = 未检测到）。
+输入问题并发送即可。
 
 ### WebChat 功能
 
@@ -732,9 +769,19 @@ match: /另一个触发模式/i
 - **对话历史** &mdash; 点击时钟图标浏览和加载过往网页端对话。
 - **退出** &mdash; 点击 "Exit" 按钮返回常规 API 模式。
 
+#### Gemini 注意事项
+
+- 请配套使用最新版 **llm-for-zotero** 与 **Sync for Zotero**。
+  较旧的浏览器扩展不会声明 Gemini 支持，Zotero 会在发送请求前将其阻止。
+- Gemini WebChat 每次请求可发送一个 PDF，也可以附加截图。
+  请等待附件预览加载完成后再发送。
+- 如果 Gemini 输入框仍残留上一次尝试的附件，请先移除再重试。
+  如果 Zotero 提示无法核实是否已发送，请先检查 Gemini 标签页，以免重复提交同一提示词。
+- Gemini 的回答与历史记录从网页渲染结果中读取，因此 Gemini 网站更新后，Sync for Zotero 适配器可能需要同步更新。
+
 <div class="rtd-warning">
   <div class="rtd-admonition-title">注意</div>
-  WebChat 模式需要保持浏览器标签页打开，并确保 Sync for Zotero 扩展处于活动状态。请让浏览器与 Zotero 保持在同一个桌面会话中，请求期间尽量不要最小化或后台挂起 WebChat 标签页，并留意绿色连接点。WebChat 目前仅支持论文对话，暂不支持文库对话。
+  WebChat 模式需要保持对应的服务商标签页打开，并确保 Sync for Zotero 扩展处于活动状态。请让浏览器与 Zotero 保持在同一个桌面会话中，请求期间尽量不要最小化或后台挂起 WebChat 标签页，并留意绿色连接点。WebChat 目前仅支持论文对话，暂不支持文库对话。
 </div>
 
 ### 技术说明
@@ -1024,7 +1071,7 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 
 - 标准服务商模式下，论文内容和用户消息会发送给您配置的模型服务商。
 - 本地模型模式下，请求会发送到您配置的本地 OpenAI 兼容端点。
-- WebChat 模式下，请求会通过浏览器扩展转发到 `chatgpt.com` 或 `chat.deepseek.com`。
+- WebChat 模式下，请求会通过浏览器扩展转发到 `chatgpt.com`、`chat.deepseek.com` 或 `gemini.google.com`。
 - 云端 MinerU 模式下，被自动解析或手动解析选中的 PDF 会发送给 MinerU。
 - 本地 MinerU 模式下，被自动解析或手动解析选中的 PDF 会发送到您配置的本地或远程 `mineru-api` 服务。
 - 对话历史和缓存的论文上下文由插件存储在本地。
@@ -1038,7 +1085,9 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 |---|---|
 | **测试连接失败** | 确认基础 URL、API 密钥、模型名称和服务商协议。 |
 | **助手看不到论文** | 重新打开 PDF 标签页，然后发送新消息，让插件重建上下文。 |
-| **WebChat 显示红点** | 保持 ChatGPT 或 DeepSeek 标签页打开，并确认 Sync for Zotero 扩展已加载。 |
+| **WebChat 显示红点** | 保持所选的 ChatGPT、DeepSeek 或 Gemini 标签页打开，并确认最新版 Sync for Zotero 扩展已加载。 |
+| **Gemini WebChat 在发送前被拒绝** | 同时更新 llm-for-zotero 与 Sync for Zotero，重新加载 `gemini.google.com/app`，并确认 Gemini 输入框已就绪。 |
+| **Codex 无法使用 Plan 模式** | 更新 Codex CLI，重新启动 Codex App Server 连接，并确认已启用 Agent 模式。 |
 | **Codex App Server 失败** | 运行 `codex login`，确认 `codex` 位于 `PATH` 中，然后再次点击**测试连接**。 |
 | **Claude Code 模式卡住** | 重启桥接服务，并检查 `curl -fsS http://127.0.0.1:19787/healthz`。 |
 | **MinerU 解析失败** | 云端模式下添加个人 MinerU API 密钥；本地模式下确认 `mineru-api` 服务能在 `/health` 响应，然后重新尝试**测试连接**。 |
@@ -1052,7 +1101,8 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 - [x] Agent 模式（beta）
 - [x] MinerU PDF 解析
 - [x] GitHub Copilot 认证
-- [x] WebChat 模式（ChatGPT 网页同步）
+- [x] WebChat 模式（ChatGPT、DeepSeek 和 Google Gemini 网页同步）
+- [x] 支持审阅与批准后执行的 Agent Plan 模式
 - [x] 独立窗口模式（[#78](https://github.com/yilewang/llm-for-zotero/issues/78)）
 - [x] 文件笔记（Obsidian、Logseq、任意 Markdown 目录）
 - [x] Claude Code 集成
