@@ -114,6 +114,11 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 | Research current public web information | [General web search](#general-web-search) in Agent Mode with Tavily | Tavily key |
 | Improve PDF extraction for tables, equations, and figures | [MinerU PDF parsing](#mineru-pdf-parsing) | Personal MinerU key recommended |
 
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/webchat-gemini-provider.png" alt="AI Providers settings showing API, Codex CLI, and browser-extension access paths, including WebChat for DeepSeek, ChatGPT, and Google Gemini" width="1468" height="1192" loading="lazy">
+  <figcaption>Choose the access path that matches your account: API Key for provider APIs, Codex CLI for Codex Direct, or Browser extension for WebChat. The WebChat provider offers DeepSeek, ChatGPT, and Google Gemini without a provider API key.</figcaption>
+</figure>
+
 ---
 
 ## What's New
@@ -724,11 +729,6 @@ In Zotero &rarr; **Preferences** &rarr; **llm-for-zotero**:
 |---|---|
 | Auth Mode | `WebChat` |
 | Model | `chatgpt.com`, `chat.deepseek.com`, or `gemini.google.com` |
-
-<figure class="rtd-doc-figure rtd-doc-figure--wide">
-  <img src="/images/llm-for-zotero/webchat-gemini-provider.png" alt="AI Providers settings showing a WebChat provider configured for DeepSeek, ChatGPT, and Google Gemini" width="1468" height="1192" loading="lazy">
-  <figcaption>WebChat now appears as a browser-extension provider alongside API and Codex providers, with DeepSeek, ChatGPT, and Google Gemini available from one provider entry.</figcaption>
-</figure>
 
 **4. Start chatting:**
 

@@ -114,6 +114,11 @@ lang_alt: /llm-for-zotero/
 | 检索最新公开网页信息 | 在 Agent 模式中使用 [通用网页搜索](#通用网页搜索) 与 Tavily | Tavily 密钥 |
 | 提升表格、公式和图表的 PDF 提取质量 | [MinerU PDF 解析](#mineru-pdf-解析) | 建议使用个人 MinerU 密钥 |
 
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/webchat-gemini-provider.png" alt="AI Providers 设置页面显示 API、Codex CLI 和浏览器扩展接入路径，包括支持 DeepSeek、ChatGPT 和 Google Gemini 的 WebChat" width="1468" height="1192" loading="lazy">
+  <figcaption>请根据您的账号选择接入方式：服务商 API 使用 API Key，Codex Direct 使用 Codex CLI，WebChat 使用浏览器扩展。WebChat 服务商无需服务商 API 密钥，即可使用 DeepSeek、ChatGPT 和 Google Gemini。</figcaption>
+</figure>
+
 ---
 
 ## 最新更新
@@ -749,11 +754,6 @@ match: /另一个触发模式/i
 |---|---|
 | 认证模式 | `WebChat` |
 | 模型 | `chatgpt.com`、`chat.deepseek.com` 或 `gemini.google.com` |
-
-<figure class="rtd-doc-figure rtd-doc-figure--wide">
-  <img src="/images/llm-for-zotero/webchat-gemini-provider.png" alt="AI Providers 设置页面显示支持 DeepSeek、ChatGPT 和 Google Gemini 的 WebChat 服务商" width="1468" height="1192" loading="lazy">
-  <figcaption>WebChat 现在与 API 和 Codex 服务商一起显示为浏览器扩展服务商，并可通过同一个服务商条目选择 DeepSeek、ChatGPT 或 Google Gemini。</figcaption>
-</figure>
 
 **4. 开始对话：**
 
