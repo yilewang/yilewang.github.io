@@ -123,6 +123,8 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 
 ## What's New
 
+- **Usage Statistics** provides a local overview of Paper chat and Library chat activity, with time filters, activity and token charts, model details, CSV export, and reset controls.
+  See [Usage Statistics](#usage-statistics).
 - **Built-in web and literature research** lets the Agent search the public web, read source pages, and combine current online information with evidence from your Zotero library.
   Answers can include paragraph-level source cards, while the activity trace keeps general web results and scholarly literature results visually distinct.
   See [General Web Search](#general-web-search).
@@ -307,6 +309,33 @@ Conversations are **automatically saved** locally and associated with the paper 
 - Browse past conversations from the history panel.
 - **Export entire conversations** to Zotero notes in Markdown format.
 - Exported notes include selected text, screenshots, and properly rendered LaTeX equations.
+
+---
+
+## Usage Statistics
+
+Open **Zotero Settings/Preferences** &rarr; **llm-for-zotero** &rarr; **Usage** to review activity recorded by the plugin.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/usage/usage-statistics.png" alt="Usage Statistics panel in llm-for-zotero showing Paper chat and Library chat totals, a question activity heatmap, and a daily token chart" width="1240" height="1144" loading="lazy">
+  <figcaption>The Usage tab summarizes Paper chat and Library chat activity over time while keeping the underlying statistics in your local Zotero database.</figcaption>
+</figure>
+
+Use **Overview**, **Paper chat**, and **Library chat** to move between the combined dashboard and scope-specific details.
+The **7d**, **30d**, and **All** controls filter the summary, daily token chart, model breakdown, and detail lists; the activity heatmap continues to show the available history, up to one year.
+
+- **Overview** shows question totals, distinct papers and conversations, input/output token totals, a questions-or-papers activity heatmap, tokens per day, and a model breakdown that identifies the provider or runtime and the paper/library split.
+- **Paper chat** lists the papers you asked about most, with question and token totals.
+- **Library chat** lists the heaviest conversations, with their question and token totals.
+
+The panel reports token usage only and does not estimate monetary cost.
+For conversations from before the Usage tab existed, question and paper activity is reconstructed from stored messages, while token totals are clearly labeled as estimates derived from the stored prompt size and assistant text, including stored reasoning.
+If a provider does not report tokens, the panel marks those turns as unreported or shows an em dash with an explanation instead of treating them as zero.
+WebChat turns are excluded from both live statistics and historical reconstruction.
+
+Usage statistics remain in your own Zotero database and are not sent elsewhere by this panel.
+**Export CSV** saves the recorded rows for the selected time range, while **Reset statistics** permanently clears all usage rows without deleting conversations, notes, or papers.
+Historically reconstructed rows are not rebuilt after a reset.
 
 ---
 
