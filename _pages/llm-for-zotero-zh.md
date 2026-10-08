@@ -83,6 +83,18 @@ lang_alt: /llm-for-zotero/
 
 ---
 
+## 演示视频
+
+观看如何在文库对话中使用 llm-for-zotero Agent 进行文献综述。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video controls playsinline preload="metadata" width="1600" height="1524" aria-label="演示：在文库对话中进行文献综述" src="https://github.com/user-attachments/assets/c3c80e9c-a8cd-487f-9b1c-49ff717f514c">
+    您的浏览器不支持内嵌视频。
+    <a href="https://github.com/user-attachments/assets/c3c80e9c-a8cd-487f-9b1c-49ff717f514c">直接观看演示视频。</a>
+  </video>
+  <figcaption>如果视频无法在此播放，请<a href="https://github.com/user-attachments/assets/c3c80e9c-a8cd-487f-9b1c-49ff717f514c">直接打开演示视频</a>。</figcaption>
+</figure>
+
 ## 快速开始
 
 1. 从 [Releases 页面](https://github.com/yilewang/llm-for-zotero/releases)下载最新 `.xpi` 文件。

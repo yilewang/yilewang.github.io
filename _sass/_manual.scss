@@ -320,6 +320,12 @@ html[data-theme="dark"] {
   border-radius: 6px;
   object-fit: contain;
 }
+.manual__content .rtd-doc-figure video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
 .rtd-doc-figure figcaption {
   margin-top: 0.75rem;
   color: var(--text-muted);

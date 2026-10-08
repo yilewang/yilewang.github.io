@@ -83,6 +83,18 @@ lang_alt: /llm-for-zotero/zh/
 
 ---
 
+## Demo Video
+
+Watch how to conduct a literature review in Library chat with the llm-for-zotero agent.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video controls playsinline preload="metadata" width="1600" height="1524" aria-label="Demo: a literature review in Library chat" src="https://github.com/user-attachments/assets/c3c80e9c-a8cd-487f-9b1c-49ff717f514c">
+    Your browser does not support embedded video.
+    <a href="https://github.com/user-attachments/assets/c3c80e9c-a8cd-487f-9b1c-49ff717f514c">Watch the demo video directly.</a>
+  </video>
+  <figcaption>If the video does not play here, <a href="https://github.com/user-attachments/assets/c3c80e9c-a8cd-487f-9b1c-49ff717f514c">open the demo video directly</a>.</figcaption>
+</figure>
+
 ## Quick Start
 
 1. Download the latest `.xpi` file from the [Releases page](https://github.com/yilewang/llm-for-zotero/releases).
