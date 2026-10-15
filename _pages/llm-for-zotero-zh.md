@@ -10,9 +10,7 @@ lang_alt: /llm-for-zotero/
 <h1 id="overview">llm-for-zotero：面向 Zotero 文库的研究 Agent 系统</h1>
 
 <div class="rtd-badges">
-  <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-7-green?style=flat-square&logo=zotero&logoColor=CC2936" alt="Zotero 7"></a>
-  <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-8-green?style=flat-square&logo=zotero&logoColor=CC2936" alt="Zotero 8"></a>
-  <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-9-green?style=flat-square&logo=zotero&logoColor=CC2936" alt="Zotero 9"></a>
+  <a href="https://www.zotero.org"><img src="https://img.shields.io/badge/Zotero-Supported-green?style=flat-square&logo=zotero&logoColor=CC2936" alt="支持 Zotero"></a>
   <a href="https://github.com/windingwind/zotero-plugin-template"><img src="https://img.shields.io/badge/Using-Zotero%20Plugin%20Template-blue?style=flat-square&logo=github" alt="Using Zotero Plugin Template"></a>
   <a href="https://www.gnu.org/licenses/agpl-3.0"><img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg?style=flat-square" alt="AGPL v3"></a>
   <a href="https://github.com/yilewang/llm-for-zotero/releases"><img src="https://img.shields.io/github/v/release/yilewang/llm-for-zotero?style=flat-square" alt="最新版本"></a>
@@ -170,7 +168,7 @@ lang_alt: /llm-for-zotero/
 
 <div class="rtd-tip">
   <div class="rtd-admonition-title">提示</div>
-  本插件支持 <strong>Zotero 7</strong>、<strong>Zotero 8</strong> 和 <strong>Zotero 9</strong>，请确保您运行的是兼容版本。
+  llm-for-zotero 支持 Zotero。
 </div>
 
 ---
