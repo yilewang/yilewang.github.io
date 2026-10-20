@@ -75,7 +75,7 @@ lang_alt: /llm-for-zotero/
   </a>
   <a class="rtd-feature-card" href="#codex-配置chatgpt-plus-订阅用户">
     <strong>Codex 与 Claude Code</strong>
-    <p>通过本地 app-server 使用 Codex，或通过本地桥接服务运行实验性的 Claude Code 对话。</p>
+    <p>通过本地 app-server 使用 Codex，或运行实验性的 Claude Code 对话。插件会自动为您启动 Claude Code 桥接服务。</p>
   </a>
 </div>
 
@@ -108,7 +108,7 @@ lang_alt: /llm-for-zotero/
 - Zotero
 - 一种模型后端：服务商 API 密钥、本地 OpenAI 兼容模型、WebChat、Codex App Server 或 Claude Code。
 - WebChat 模式需要 Chromium 内核浏览器。
-- 通过 npm 安装 Codex CLI 和运行 Claude Code 桥接服务需要 Node.js 18+。macOS Codex cask 不需要单独安装 Node.js。
+- 通过 npm 安装 Codex CLI 和使用 Claude Code 模式需要 Node.js 18+。macOS Codex cask 不需要单独安装 Node.js。
 - 只有在 Agent 模式中启用通用网页搜索时，才需要 Tavily API 密钥。
 - 如果启用 MinerU 解析，建议使用个人 MinerU API 密钥或本地 `mineru-api` 服务。
 
@@ -139,9 +139,9 @@ lang_alt: /llm-for-zotero/
   回答可附带段落级来源卡片，同时活动轨迹会清楚区分通用网页结果与学术文献结果。
   详见[通用网页搜索](#通用网页搜索)。
 - **Codex App Server** 是 ChatGPT Plus 用户推荐的 Codex 使用路径。它通过本地 `codex app-server` 运行时工作，并在 **Agent** 标签页中配置。
-- **Agent 工作流的 Plan 模式**让 Agent 先检查请求、提出必要问题并给出可审阅计划，再执行任何变更。
-  您可以批准计划、要求修改或取消；批准后的执行会保留持久进度与核验记录。
-- **Claude Code 模式（实验性）**：通过配套本地桥接服务，将 Claude Code 作为 Zotero 内部独立的对话系统运行。该模式仍在开发中，目前尚不支持原生 Zotero API 操作；后续计划加入原生 Zotero 工具支持。详见 [Claude Code 配置](#claude-code-配置实验性)。
+- **Claude Code 模式（实验性）**：使用您自己的 Claude Code 登录，将 Claude Code 作为 Zotero 内部独立的对话系统运行。插件会自动启动和停止所需的小型桥接服务。目前尚不支持原生 Zotero API 操作。详见 [Claude Code 配置](#claude-code-配置实验性)。
+- **统一历史记录**：Agent、Codex 和 Claude 的对话显示在同一个历史列表中。点击输入框中的运行时标记即可切换运行时；也可以通过斜杠菜单或直接用自然语言请求，附加之前的对话。
+- **侧边面板**：独立窗口可在主对话旁打开只读的历史对话或临时侧聊。
 - **WebChat 模式**通过 Sync for Zotero 浏览器扩展支持 ChatGPT、DeepSeek 和 Google Gemini 网页同步。
 - **文件笔记**：笔记目录不再硬编码为 Obsidian。您可以配置任意本地 Markdown 目录，包括 Obsidian、Logseq 或普通文件夹。详见 [文件笔记](#文件笔记)。
 - **Skills 技能系统**：可自定义的引导文件会影响 Agent 的任务处理方式。内置 8 个技能，并支持创建自定义技能。详见 [Skills 技能系统](#skills-技能系统)。
@@ -452,6 +452,12 @@ lang_alt: /llm-for-zotero/
   笔记模板和图表嵌入规则位于 <code>write-note</code> 技能中。打开独立窗口中的 Skills 面板即可自定义。
 </div>
 
+### 用 Agent 编辑 Zotero 笔记
+
+- **引用、PDF 高亮和图片保持完整。** Agent 会把它们看作占位符，例如 {% raw %}`{{citation:3fa9c1 ("Smith", 2020, p. 42)}}`{% endraw %}；每次编辑都会放回原始内容，因此改写可以移动引用，但不会破坏引用。会删除这些内容的编辑会被拒绝，除非您明确要求删除。
+- **可点击的引用。** 请求页码引用时，Agent 会写入 {% raw %}`{{cite item=123 page=42}}`{% endraw %}，它会变成与 Zotero **插入引用**相同的引用：点击即可在对应页打开 PDF。
+- **学习笔记填空。** 引用块中的一行下划线（`> ___`）会变成分隔线；只由下划线组成的待办项（`- [ ] ____`）会保留复选框，作为填空。
+
 ---
 
 ## 通用网页搜索
@@ -536,61 +542,34 @@ v3.9.4 首选项面板显示了发布时的额度规则：基本搜索消耗 1 �
 
 <div class="rtd-warning">
   <div class="rtd-admonition-title">注意</div>
-  Agent 模式默认禁用。请在<strong>首选项</strong>中启用，然后在上下文栏中切换 <strong>Agent (beta)</strong>。
+  Agent 模式默认禁用。请在<strong>首选项</strong> &rarr; <strong>Agent</strong> 标签页中开启 <strong>Original Agent</strong>。开启后，新对话默认使用 Agent。如果同时开启了 Codex 或 Claude Code，可点击输入框中的运行时标记在它们之间切换。
 </div>
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/agent/runtime-settings.png" alt="Agent 设置页面显示已启用的 Original Agent、Codex 和 Claude Code 运行时" width="1164" height="592" loading="lazy">
-  <figcaption>Agent 设置页面集中管理 Original Agent、Codex 和 Claude Code 运行时。请先在此启用所需运行时，再从聊天标题栏中选择它，然后启动 Plan 工作流。</figcaption>
+  <figcaption>Agent 设置页面集中管理 Original Agent、Codex 和 Claude Code 运行时。请先在此启用所需运行时，然后通过聊天标题栏或输入框中的运行时标记切换。</figcaption>
 </figure>
 
 启用后，LLM 将成为一个**自主 Agent**，可在 Zotero 文库中执行读取、搜索和写入操作。读取工具可直接运行；写入工具会进入确认卡片，并支持撤销。
 
 较长的 Agent 运行具有缓存感知能力。插件会将稳定的 Zotero 上下文和已读取证据，与不断变化的聊天记录分开保存，跟踪哪些论文和段落已经被检查，并在模型上下文填满时自动压缩旧回合。后续问题可以在证据仍然相关时复用这些来源；当缺少所需来源或覆盖层级时，Agent 会重新读取。
 
-### 文库与 PDF 读取工具
+### Agent 工具
 
-这些工具让 Agent 浏览您的文库、PDF、附件和在线学术资源，不会修改任何内容。
+读取工具可直接运行；写入工具会进入确认卡片，并支持撤销。
 
-| 工具 | 说明 |
-|---|---|
-| `query_library` | 发现 Zotero 条目和文集：搜索或列举任意条目类型，可按作者、年份、文集、条目类型或标签筛选，浏览文集树，查找相关论文和重复项 |
-| `read_library` | 读取一个或多个条目的结构化状态：元数据、笔记、注释、附件和文集归属 |
-| `read_paper` | 读取 PDF 文本内容，默认读取开篇章节，也可指定章节索引；单次最多 20 篇论文 |
-| `search_paper` | 通过问题在论文中查找证据，返回排序后的相关段落；单次最多 10 篇论文 |
-| `view_pdf_pages` | 将 PDF 页面渲染为图像，支持按问题、页码或当前阅读器视图捕获，用于视觉分析 |
-| `read_attachment` | 按 Zotero 附件 ID 读取 HTML 快照、文本文件、图片等附件，或将整个文件发送给模型 |
-| `web_search` | 通过 Tavily 搜索最新公开网页，并根据请求选择基本或高级深度 |
-| `web_read` | 打开并提取选定公开网页的内容，用于针对性来源阅读 |
-| `search_literature_online` | 从 CrossRef、Semantic Scholar 等在线学术源搜索元数据、推荐、参考文献和引用 |
-
-### 文库写入工具
-
-所有写入工具均需人工确认后方可生效。
-
-| 工具 | 说明 |
-|---|---|
-| `apply_tags` | 为一篇或多篇论文添加或移除标签 |
-| `update_metadata` | 更新标题、作者、DOI、期刊、摘要等元数据字段 |
-| `move_to_collection` | 将论文加入或移出文集 |
-| `manage_collections` | 创建或删除文集 |
-| `manage_attachments` | 删除、重命名或重新链接损坏的附件文件路径 |
-| `merge_items` | 合并重复条目：保留主条目，将子项从其他条目移入，并将重复项移至回收站 |
-| `trash_items` | 将条目移至回收站 |
-| `import_identifiers` | 通过 DOI、ISBN、arXiv ID 或 URL 导入论文 |
-| `import_local_files` | 从本地导入文件到 Zotero；Zotero 会为可识别 PDF 自动抓取元数据 |
-| `edit_current_note` | 编辑当前 Zotero 笔记，或用纯文本、Markdown、HTML 创建新笔记 |
-| `undo_last_action` | 撤销本次对话中最近一次已确认的写入操作 |
-
-### 文件系统与脚本工具
-
-Agent 包含面向本地文件、脚本和 Zotero 运行时自动化的系统级工具。
-
-| 工具 | 说明 |
-|---|---|
-| `file_io` | 读写本地文件系统中的文本和图片文件，支持 offset/length 局部读取 |
-| `run_command` | 在本地机器上执行 Shell 命令（macOS 使用 zsh，Linux 使用 bash，Windows 使用 cmd.exe），适合分析脚本和命令行工具 |
-| `zotero_script` | 在 Zotero 运行时内部执行 JavaScript；读取模式用于批量取数，写入模式用于自定义变更 |
+| 工具类别 | 工具 | 功能说明 |
+|---|---|---|
+| 文库与 PDF 读取 | `library_search`、`library_read`、`library_retrieve`、`paper_read`、`read_attachment`、`context_read` | 搜索条目和文集、读取元数据、阅读论文、检索论文段落、渲染 PDF 页面、查看附件和当前对话上下文 |
+| 学术文献发现 | `literature_search`、`literature_review` | 在 OpenAlex、arXiv 和 Europe PMC 中搜索论文、推荐、参考文献和引用（通过 CrossRef 和 Semantic Scholar 查询元数据），并给出排序后的候选 |
+| 通用网页研究 | `web_search`、`web_read` | 通过 Tavily 搜索最新公开网页、读取相关页面，并在回答中附上来源链接（仅在设置 Tavily 密钥后可用） |
+| 文库写入 | `library_update`、`library_import`、`library_delete`、`annotate_pdf` | 添加标签、更新元数据、移动条目、管理文集和附件、合并重复项、移入回收站、通过标识符或本地文件导入、高亮 PDF 段落 |
+| 引用与设置 | `library_cite`、`library_settings` | 用 Zotero 引文引擎格式化引用和参考文献，并读取或修改 Agent 可以操作的 Zotero 首选项 |
+| 笔记与文档 | `note_write`、`note_write_batch`、`submit_document` | 创建、追加或编辑 Zotero 笔记，为多个条目各写一条笔记，并定稿较长文档 |
+| 文件系统与脚本 | `file_io`、`run_command`、`zotero_script` | 读写本地文件、运行分析命令，或在写入确认下执行 Zotero JavaScript |
+| 技能与提问 | `load_skill`、`request_user_input`、`past_chat_attach` | 在任务需要时加载技能说明，在选择不明确时向您提问，并把之前的对话附加到当前对话 |
+| 任务跟踪 | `task_update`、`workflow_script` | 把复合请求拆成由插件跟踪的多个部分，并在一个脚本中用循环和条件组合多次工具调用 |
+| 安全 | `undo` | 根据对话的持久变更记录撤销写入操作，可逐个撤销，也可从最新开始撤销多个 |
 
 **典型使用场景：**
 
@@ -649,26 +628,6 @@ Agent 可以串联多个工具完成复杂任务——例如查找论文、读�
 
 <img src="/images/llm-for-zotero/agent/write_note.png" alt="Agent 撰写笔记">
 
-### Plan 模式
-
-如果您希望先审阅 Agent 的工作方案，再允许它修改 Zotero、写入文件、运行命令、导入内容或更改设置，请使用 **Plan 模式**。
-该模式可用于 Original Agent，以及受支持的 Codex 或 Claude 对话系统；WebChat 模式不支持 Plan 模式。
-
-1. 进入 **Agent 模式**。
-2. 输入 `/plan` 并选择 **Plan**，或在输入框中按 `Shift+Tab`。
-3. 描述您希望完成的完整结果，包括重要的范围、格式或保存位置要求。
-4. 回答 Zotero 中显示的规划问题。
-5. 审阅结构化计划，然后选择**批准计划**、**要求修改**或**取消**。
-
-起草计划时，Agent 可以使用只读的 Zotero、PDF、学术文献和网页工具来确认正确范围与证据。
-在您批准计划之前，所有会产生外部影响的操作都会被阻止。
-批准后，Zotero 会执行已冻结的计划、显示逐步进度，并记录完成证据，使中断后的任务可以继续，而不会重复已经完成的变更。
-
-<div class="rtd-tip">
-  <div class="rtd-admonition-title">Codex App Server</div>
-  在 Codex App Server 对话中，提问与计划草案由 Codex 原生 Plan 模式负责；llm-for-zotero 仍负责 Zotero 范围、审批边界、执行记录和变更后核验。如果 Zotero 提示原生 Plan 模式不可用，请更新 Codex CLI 并重新启动连接。
-</div>
-
 ### 安全与审批
 
 所有写入操作均通过**人机协作确认**流程：
@@ -676,7 +635,7 @@ Agent 可以串联多个工具完成复杂任务——例如查找论文、读�
 - Agent 提出一批变更建议（如添加标签、编辑元数据）。
 - 您在审批表单中查看拟定变更。
 - 您可以在任何变更生效前选择**批准**、**拒绝**或**修改**。
-- 如有问题，使用 `undo_last_action` 进行撤销。
+- 如有问题，请让 Agent 撤销；`undo` 工具会从最新开始撤销已记录的写入操作。
 - 终端命令和文件操作同样需要明确审批后才会执行。
 
 ---
@@ -893,83 +852,92 @@ codex login
 
 ## Claude Code 配置（实验性）
 
-Claude Code 模式会将 Claude Code 作为 Zotero 内部独立的对话系统运行。它复用熟悉的侧栏和独立窗口界面，但拥有独立的对话历史、`paper` / `open` 范围状态、模型/推理设置、权限语义、斜杠命令和项目技能。
+Claude Code 模式会将 Claude Code 作为 Zotero 内部独立的对话系统运行。它复用侧栏和独立窗口界面，但拥有自己的 `paper` / `open` 范围状态、模型与推理设置、权限语义、斜杠命令和项目技能。Claude 对话会和其他对话显示在同一个历史列表中，并带有小的 **Claude** 标记。
+
+_特别感谢 [@jianghao-zhang](https://github.com/jianghao-zhang) 开发了 Claude Code 集成及其桥接服务（[`cc-llm4zotero-adapter`](https://github.com/jianghao-zhang/cc-llm4zotero-adapter)）。经作者同意，该桥接服务现已内置于插件中，代码位于 [`packages/claude-bridge`](https://github.com/yilewang/llm-for-zotero/tree/main/packages/claude-bridge)。_
 
 <div class="rtd-warning">
   <div class="rtd-admonition-title">仍在开发中</div>
-  Claude Code 模式目前<strong>不支持</strong>从 Claude Code 直接执行原生 Zotero API 操作。需要结构化读取条目、编辑笔记、打标签、更新元数据或导入条目等原生 Zotero 文库工具时，请使用内置 Agent 模式。Claude Code 的原生 Zotero API 支持计划在后续版本加入。
+  Claude Code 模式目前<strong>不支持</strong>原生 Zotero API 操作。需要读取条目状态、编辑笔记、打标签、更新元数据或导入条目等原生文库工具时，请使用内置 <a href="#agent-模式beta">Agent 模式</a>。
 </div>
 
 ### 前置条件
 
-- 已安装并可正常运行 Claude Code CLI。请参考官方 [Claude Code 安装](https://code.claude.com/docs/en/installation.md)、[快速开始](https://code.claude.com/docs/en/quickstart.md) 和 [认证](https://code.claude.com/docs/en/authentication.md) 文档。
-- `claude` 命令必须位于 `PATH` 中，并且已经完成登录认证。请先在终端运行 `claude`；如果 Claude Code 未安装、不在 `PATH` 中或尚未登录，Zotero 侧 Claude Code 模式无法工作。
-- 已安装 Node.js 和 npm，用于运行配套桥接适配器。
+您的电脑上只需要准备两样东西，其余由插件完成。
 
-### 1. 安装并验证 Claude Code
+- **Node.js 18 或更新版本。** 从 [nodejs.org](https://nodejs.org) 下载（LTS 版本即可），或使用 NVM、Volta、Homebrew 等版本管理工具。可在终端中用 `node --version` 检查。
+- **已安装并登录的 Claude Code。** 请参考 Anthropic 官方的[安装](https://code.claude.com/docs/en/installation.md)和[认证](https://code.claude.com/docs/en/authentication.md)指南。可以使用 Claude 订阅或 API 密钥。
 
-按照 Anthropic 官方说明安装 Claude Code，然后运行：
+### 1. 安装并登录 Claude Code
+
+在终端中运行：
 
 ```bash
 claude
 ```
 
-继续之前，请先完成 Claude Code 中的登录或认证提示。
+按提示完成登录，然后关闭。只需操作一次。
 
-### 2. 启动 Zotero Claude 桥接服务
+### 2. 在 Zotero 中开启 Claude Code
 
-Claude Code 模式依赖配套桥接仓库 [`cc-llm4zotero-adapter`](https://github.com/jianghao-zhang/cc-llm4zotero-adapter)。桥接服务不会替代 Claude Code；它只是把 Zotero 连接到您本地的 Claude Code 运行时。
-
-```bash
-git clone https://github.com/jianghao-zhang/cc-llm4zotero-adapter.git
-cd cc-llm4zotero-adapter
-npm install
-npm run build
-npm run serve:bridge
-```
-
-在另一个终端中检查桥接服务是否存活：
-
-```bash
-curl -fsS http://127.0.0.1:19787/healthz
-```
-
-如果您使用 macOS，并希望桥接服务在后台长期运行，可以在适配器仓库中安装 LaunchAgent：
-
-```bash
-./scripts/install-macos-daemon.sh
-```
-
-常用后台服务命令：
-
-```bash
-npm run daemon:status
-npm run daemon:start
-npm run daemon:stop
-npm run daemon:restart
-npm run daemon:uninstall
-```
-
-如果 Claude Code 模式无响应，请先重启桥接服务，并重新检查 `/healthz`。`/healthz` 通过只说明适配器正在运行；它不能证明底层 `claude` CLI 已安装、已认证或配置正确。
-
-### 3. 在 Zotero 中启用 Claude Code
-
-打开 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** &rarr; **Agent** 标签页。
+打开 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** &rarr; **Agent** 标签页，开启 **Claude Code**。推荐设置：
 
 | 设置项 | 推荐值 |
 |---|---|
-| 启用 Claude Code 集成 | `On` |
-| Bridge URL | `http://127.0.0.1:19787` |
-| Claude Config Source | `default — user + project + local` |
-| Permission Mode | `safe` |
-| Default Model | `sonnet` |
-| Default Reasoning | `auto` |
+| **Claude Code** | `On` |
+| **Config source** | `default - user + project + local` |
+| **Permission mode** | `safe` |
+| **Default model** | `sonnet` |
+| **Default reasoning** | `auto` |
 
-除非您已经熟悉 Claude Code 的设置层级，否则建议保持 **Claude Config Source** 为 `default`。在 `default` 下，Claude Code 会同时使用您的用户级设置、Zotero 管理的项目级设置和每个对话的本地设置。
+然后在聊天标题栏点击 **Claude Code** 按钮，或点击输入框中的运行时标记并选择 **Claude**，即可进入 Claude Code 模式。
 
-启用集成后，在聊天标题栏点击 **Claude Code** 按钮即可进入 Claude Code 模式。Claude 对话系统与上游聊天和内置 Agent 相互隔离，因此切换模式时会打开对应系统自己的对话历史，而不会混合不同运行时的 transcript。
+这样就完成了。您**不需要**自己下载或启动桥接服务。Claude Code 模式开启时，Zotero 会启动一个小型辅助程序（“桥接服务”），把 Zotero 连接到您的 Claude Code。它只在您的电脑上运行，只响应 Zotero，并在您退出 Zotero 或关闭 Claude Code 时停止。如果从未开启 Claude Code，就不会额外运行任何程序。
 
-### 4. 准备 Claude 项目技能与命令
+Claude Code 设置顶部的 **Bridge** 区域会显示桥接服务是否在运行。遇到卡住时点击 **Restart bridge**，点击 **Open log** 查看桥接服务的日志。
+
+除非您已经熟悉 Claude Code 的设置层级，否则建议保持 **Config source** 为 `default`。在 `default` 下，Claude Code 会同时使用您的用户级设置、Zotero 管理的项目级设置和每个对话的本地设置。其他选项：
+
+- `user-only`：只使用本机的全局 Claude 设置。
+- `zotero-only`：只使用 Zotero 管理的项目级和本地设置。
+
+### 3. 如果无法使用
+
+Bridge 状态行会用简单的话说明问题。常见原因：
+
+| 状态显示 | 处理方法 |
+|---|---|
+| **Node.js was not found** | 安装 Node.js 18 或更新版本。如果已安装但 Zotero 找不到，在终端运行 `which node`（macOS、Linux）或 `where node`（Windows），把结果填入 **Advanced** &rarr; **Node.js path**。 |
+| **needs Node.js 18 or newer** | 从 [nodejs.org](https://nodejs.org) 安装更新的 Node.js。 |
+| **Claude Code was not found** | 安装 Claude Code。如果已安装，运行 `which claude`（macOS、Linux）或 `where claude`（Windows），把结果填入 **Advanced** &rarr; **Claude Code path**。 |
+| 正在运行，但 Claude 回复失败 | Claude Code 可能尚未登录。在终端运行 `claude` 并登录，然后点击 **Restart bridge**。 |
+| **keeps stopping** | 点击 **Open log** 查看原因，解决后点击 **Restart bridge**。 |
+
+从 Dock 或开始菜单打开的 Zotero，看到的程序不一定与终端相同。插件会在常见位置查找（NVM、Volta、Homebrew、`~/.local/bin` 和 Claude Code 安装程序的目录）；如果仍然找不到，可以使用上面两个路径设置。
+
+**高级选项**
+
+- **Extra bridge options** 会把命令行选项传给桥接服务，例如 `--additional-directories ~/Papers` 让 Claude 读取另一个文件夹，或 `--append-system-prompt-file ~/zotero-claude.md`。修改后请点击 **Restart bridge**。
+- **Use my own bridge** 适用于自行运行桥接服务的用户，例如 Zotero 在 Windows 上运行而桥接服务在 WSL 中运行，或在另一台电脑上运行。此时 Zotero 会把 Claude 请求发送到 **Bridge URL**，不再启动自己的桥接服务。桥接服务的代码位于 [`packages/claude-bridge`](https://github.com/yilewang/llm-for-zotero/tree/main/packages/claude-bridge)，手动运行方法见其 README。
+
+### 从旧版 `cc-llm4zotero-adapter` 升级
+
+早期版本需要单独的 [`cc-llm4zotero-adapter`](https://github.com/jianghao-zhang/cc-llm4zotero-adapter) 仓库，以及 `npm run serve:bridge` 或 `npm run daemon:*`。现在已不再需要。您的 Claude Code 对话、技能和设置都会继续可用，因为新的桥接服务使用相同的 `~/Zotero/agent-runtime` 和 `~/Zotero/agent-state` 文件夹。
+
+如果您安装过旧的 macOS 后台服务，可以保留，它不会造成干扰，但已不再使用。Zotero 发现它时会提示一次。要移除它，请在旧的适配器文件夹中运行：
+
+```bash
+npm run daemon:uninstall
+```
+
+如果已经删除了该文件夹，请改为运行下面两条命令：
+
+```bash
+launchctl bootout gui/$(id -u)/com.toha.ccbridge
+rm ~/Library/LaunchAgents/com.toha.ccbridge.plist
+```
+
+### 4. Claude 项目技能与命令
 
 Zotero 会在您的用户目录下创建 Claude 运行时根目录，通常类似：
 
@@ -977,7 +945,7 @@ Zotero 会在您的用户目录下创建 Claude 运行时根目录，通常类�
 ~/Zotero/agent-runtime/profile-.../
 ```
 
-在该运行时根目录中，共享 Claude 项目资产位于：
+共享 Claude 项目资产位于：
 
 ```text
 CLAUDE.md
@@ -986,11 +954,14 @@ CLAUDE.md
 .claude/commands/
 ```
 
-每个 Claude 对话还会在运行时 `scopes/` 树下拥有自己的本地 `.claude` 文件夹，因此单个对话的本地覆盖不会泄漏到其他聊天。您可以手动把共享 Claude 技能放入 `.claude/skills/` 或 `.claude/commands/`，但通常更简单的做法是直接让 Claude Code 在 Zotero 项目级 Claude 配置中创建或安装技能。
+每个 Claude 对话还会在运行时 `scopes/` 树下拥有自己的本地 `.claude` 文件夹，因此单个对话的本地覆盖不会泄漏到其他聊天。
 
-### 非 Anthropic 原生 Claude Code 配置
+### 模型与非 Anthropic 配置
 
-Zotero UI 中显示的 `opus`、`sonnet`、`haiku` 是能力层级，不要求底层一定是 Anthropic 托管模型。如果您通过兼容的 provider 层或代理路由 Claude Code，请在 Claude Code 自身配置中完成；Zotero 只负责选择层级并把请求转发给桥接服务。
+Zotero 界面会加载 Claude Code 桥接服务提供的模型列表，并原样保留每个模型值，包括别名、明确的模型 ID、上下文窗口变体、自定义 provider 值和未来的模型系列。
+聊天模型选择器会识别当前对话，因此模型发现使用与该回合相同的 `.claude/settings.local.json` 配置层级。
+即使无法发现模型，模型首选项仍可编辑。
+由 Claude Code 负责解析或拒绝所选模型值，并应用 provider 或代理配置。
 
 ---
 
@@ -1126,9 +1097,8 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 | **助手看不到论文** | 重新打开 PDF 标签页，然后发送新消息，让插件重建上下文。 |
 | **WebChat 显示红点** | 保持所选的 ChatGPT、DeepSeek 或 Gemini 标签页打开，并确认最新版 Sync for Zotero 扩展已加载。 |
 | **Gemini WebChat 在发送前被拒绝** | 同时更新 llm-for-zotero 与 Sync for Zotero，重新加载 `gemini.google.com/app`，并确认 Gemini 输入框已就绪。 |
-| **Codex 无法使用 Plan 模式** | 更新 Codex CLI，重新启动 Codex App Server 连接，并确认已启用 Agent 模式。 |
 | **Codex App Server 失败** | 运行 `codex login`，确认 `codex` 位于 `PATH` 中，然后再次点击**测试连接**。 |
-| **Claude Code 模式卡住** | 重启桥接服务，并检查 `curl -fsS http://127.0.0.1:19787/healthz`。 |
+| **Claude Code 模式卡住** | 查看 Claude Code 设置中的 **Bridge** 状态行，点击 **Open log**，然后点击 **Restart bridge**。详见 Claude Code 配置中的“如果无法使用”。 |
 | **MinerU 解析失败** | 云端模式下添加个人 MinerU API 密钥；本地模式下确认 `mineru-api` 服务能在 `/health` 响应，然后重新尝试**测试连接**。 |
 
 如果遇到 Bug 或难以判断的问题，请在 GitHub 上 [提交 Issue](https://github.com/yilewang/llm-for-zotero/issues)。
@@ -1141,7 +1111,6 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 - [x] MinerU PDF 解析
 - [x] GitHub Copilot 认证
 - [x] WebChat 模式（ChatGPT、DeepSeek 和 Google Gemini 网页同步）
-- [x] 支持审阅与批准后执行的 Agent Plan 模式
 - [x] 独立窗口模式（[#78](https://github.com/yilewang/llm-for-zotero/issues/78)）
 - [x] 文件笔记（Obsidian、Logseq、任意 Markdown 目录）
 - [x] Claude Code 集成

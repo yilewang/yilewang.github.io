@@ -75,7 +75,7 @@ lang_alt: /llm-for-zotero/zh/
   </a>
   <a class="rtd-feature-card" href="#codex-setup-chatgpt-plus-subscribers">
     <strong>Codex & Claude Code</strong>
-    <p>Use Codex through the local app-server runtime, or run experimental Claude Code conversations through a local bridge.</p>
+    <p>Use Codex through the local app-server runtime, or run experimental Claude Code conversations. The plugin starts the Claude Code bridge for you.</p>
   </a>
 </div>
 
@@ -108,7 +108,7 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 - Zotero
 - A model backend: provider API key, local OpenAI-compatible model, WebChat, Codex App Server, or Claude Code.
 - A Chromium-based browser for WebChat mode.
-- Node.js 18+ for npm-based Codex CLI installation and the Claude Code bridge. The macOS Codex cask does not require a separate Node.js install.
+- Node.js 18+ for npm-based Codex CLI installation and for Claude Code mode. The macOS Codex cask does not require a separate Node.js install.
 - A Tavily API key is required only if you enable general web search in Agent Mode.
 - A personal MinerU API key or a local `mineru-api` server is recommended if you enable MinerU parsing.
 
@@ -139,9 +139,9 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
   Answers can include paragraph-level source cards, while the activity trace keeps general web results and scholarly literature results visually distinct.
   See [General Web Search](#general-web-search).
 - **Codex App Server** is the recommended Codex path for ChatGPT Plus users. It runs through the local `codex app-server` runtime and is configured from the **Agent** tab.
-- **Plan Mode for Agent workflows** lets the agent inspect the request, ask focused questions, and present a reviewable plan before it performs any changes.
-  You can approve the plan, request a revision, or cancel it; approved execution keeps durable progress and verification records.
-- **Claude Code Mode (experimental)**: Run Claude Code as a separate conversation system inside Zotero through the companion local bridge. This mode is still under development and does not yet support native Zotero API operations; native Zotero tool support is planned. See [Claude Code Setup](#claude-code-setup-experimental).
+- **Claude Code Mode (experimental)** runs Claude Code as a separate conversation system inside Zotero, using your own Claude Code login. The plugin starts and stops the small bridge it needs for you. It does not yet support native Zotero API operations. See [Claude Code Setup](#claude-code-setup-experimental).
+- **One history** lists Agent, Codex, and Claude chats together. Click the runtime badge in the message box to switch runtimes, and attach an earlier conversation from the slash menu or by asking for it in plain words.
+- **Side panel** in the standalone window opens read-only past chats or a temporary side chat next to the main chat.
 - **WebChat Mode** supports ChatGPT, DeepSeek, and Google Gemini web sync through the Sync for Zotero browser extension.
 - **File-Based Notes**: Notes are no longer hard-coded to Obsidian. Configure any local Markdown directory, including Obsidian, Logseq, or a plain folder. See [File-Based Notes](#file-based-notes).
 - **Skills**: Customizable guidance files shape how the agent handles different tasks. 8 built-in skills are included, plus a portal for creating your own. See [Skills](#skills).
@@ -427,6 +427,12 @@ Notes use [Pandoc citation syntax](https://pandoc.org/MANUAL.html#citations) (`[
   Note templates and figure-embedding rules live in the <code>write-note</code> skill. Open the Standalone Window, then the Skills portal, to customize them.
 </div>
 
+### Editing Zotero Notes With the Agent
+
+- **Citations, PDF highlights, and images stay intact.** The agent sees each one as a placeholder such as {% raw %}`{{citation:3fa9c1 ("Smith", 2020, p. 42)}}`{% endraw %}, and every edit puts the original item back, so a rewrite can move a citation but never break it. An edit that would drop one is refused unless you asked for it to be deleted.
+- **Clickable citations.** Ask for page citations and the agent writes {% raw %}`{{cite item=123 page=42}}`{% endraw %}, which becomes the same citation Zotero's **Insert Citation** makes: clicking it opens the PDF at that page.
+- **Study-note blanks.** A line of underscores inside a quote (`> ___`) becomes a divider, and a checklist item made only of underscores (`- [ ] ____`) keeps its checkbox as a fill-in blank.
+
 ---
 
 ## General Web Search
@@ -511,61 +517,34 @@ Use the source cards to open important pages and verify high-stakes claims again
 
 <div class="rtd-warning">
   <div class="rtd-admonition-title">Important</div>
-  Agent Mode is disabled by default. Enable it in <strong>Preferences</strong>, then toggle <strong>Agent (beta)</strong> in the context bar.
+  Agent Mode is disabled by default. Turn on <strong>Original Agent</strong> in <strong>Preferences</strong> &rarr; <strong>Agent</strong> tab. While it is on, new chats use the Agent. If you also turn on Codex or Claude Code, click the runtime badge in the message box to switch between them.
 </div>
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/agent/runtime-settings.png" alt="Agent settings showing enabled Original Agent, Codex, and Claude Code runtimes" width="1164" height="592" loading="lazy">
-  <figcaption>The Agent settings page keeps the Original Agent, Codex, and Claude Code runtimes together. Enable the runtime you want here, then select it from the chat header before starting a Plan workflow.</figcaption>
+  <figcaption>The Agent settings page keeps the Original Agent, Codex, and Claude Code runtimes together. Enable the runtimes you want here, then switch between them from the chat header or the runtime badge in the message box.</figcaption>
 </figure>
 
 When enabled, the LLM becomes an **autonomous agent** that can read, search, and write within your Zotero library. Read tools run directly; write tools route through confirmation cards and stay undoable.
 
 Long agent runs are cache-aware. The plugin keeps stable Zotero context and previously read evidence separate from the changing chat transcript, tracks which papers and passages have already been inspected, and automatically compacts old turns when the model context fills up. Follow-up questions can reuse grounded evidence when it is still relevant, while the agent reads again when the needed source or coverage layer is missing.
 
-### Library & PDF Reading Tools
+### Agent Tools
 
-These tools let the agent explore your library, PDFs, attachments, and scholarly sources without modifying anything.
+Read tools run directly. Write tools go through confirmation cards and stay undoable.
 
-| Tool | Description |
-|---|---|
-| `query_library` | Discover Zotero items and collections: search or list any item type, filter by author, year, collection, item type, or tag, browse the collection tree, find related papers, and detect duplicates |
-| `read_library` | Read structured item state for one or more items: metadata, notes, annotations, attachments, and collection membership |
-| `read_paper` | Read text content from a PDF, either opening sections by default or specific section indexes, with up to 20 papers per call |
-| `search_paper` | Find evidence in papers via a question and return ranked relevant passages, with up to 10 papers per call |
-| `view_pdf_pages` | Render PDF pages as images for visual analysis, by question, by page number, or by capturing the currently visible page |
-| `read_attachment` | Read any Zotero attachment by ID, including HTML snapshots, text files, and images, or send the whole file to the model |
-| `web_search` | Search the current public web through Tavily, using basic or advanced depth as appropriate for the request |
-| `web_read` | Open and extract content from selected public web pages for focused source reading |
-| `search_literature_online` | Search live scholarly sources such as CrossRef and Semantic Scholar for metadata, recommendations, references, and citations |
-
-### Library Write Tools
-
-All write tools require human confirmation before changes take effect.
-
-| Tool | Description |
-|---|---|
-| `apply_tags` | Add or remove tags on one or more papers |
-| `update_metadata` | Update metadata fields such as title, authors, DOI, journal, or abstract |
-| `move_to_collection` | Add or remove papers from collections |
-| `manage_collections` | Create or delete collections |
-| `manage_attachments` | Delete, rename, or re-link broken attachment file paths |
-| `merge_items` | Merge duplicates: keep the master item, move children from the others, and trash the rest |
-| `trash_items` | Move items to the trash |
-| `import_identifiers` | Import papers by DOI, ISBN, arXiv ID, or URL |
-| `import_local_files` | Import local files into Zotero; Zotero auto-fetches metadata for recognized PDFs |
-| `edit_current_note` | Edit the active Zotero note or create a new one using plain text, Markdown, or HTML |
-| `undo_last_action` | Undo the most recent approved write action in this conversation |
-
-### Filesystem & Scripting Tools
-
-The agent includes system-level tools for local files, scripts, and Zotero runtime automation.
-
-| Tool | Description |
-|---|---|
-| `file_io` | Read or write files on the local filesystem, including text and image files, with offset and length support for partial reads |
-| `run_command` | Run a shell command on your local machine (zsh on macOS, bash on Linux, cmd.exe on Windows) for analysis scripts and CLI tools |
-| `zotero_script` | Execute JavaScript inside Zotero's runtime; use read mode for bulk data and write mode for custom mutations |
+| Tool area | Tools | What they do |
+|---|---|---|
+| Library and PDF reading | `library_search`, `library_read`, `library_retrieve`, `paper_read`, `read_attachment`, `context_read` | Search items and collections, read metadata, read papers, search paper passages, render PDF pages, inspect attachments and the chat context |
+| Scholarly discovery | `literature_search`, `literature_review` | Search OpenAlex, arXiv, and Europe PMC for papers, recommendations, references, and citations (metadata lookup via CrossRef and Semantic Scholar), then present ranked candidates |
+| General web research | `web_search`, `web_read` | Search the current public web with Tavily, read relevant pages, and show source links with the answer (only when a Tavily key is set) |
+| Library writes | `library_update`, `library_import`, `library_delete`, `annotate_pdf` | Apply tags, update metadata, move items, manage collections and attachments, merge duplicates, trash items, import identifiers or local files, highlight PDF passages |
+| Citations and settings | `library_cite`, `library_settings` | Format citations and bibliographies with Zotero's citation engine, and read or change the Zotero preferences the agent may touch |
+| Notes and documents | `note_write`, `note_write_batch`, `submit_document` | Create, append to, or edit Zotero notes, write one note on each of many items, and finalize longer documents |
+| Filesystem and scripting | `file_io`, `run_command`, `zotero_script` | Read/write local files, run analysis commands, or execute Zotero JavaScript with write confirmations |
+| Skills and questions | `load_skill`, `request_user_input`, `past_chat_attach` | Load a skill's instructions when the task needs them, ask you a question when a choice is ambiguous, and add an earlier conversation to the chat |
+| Task tracking | `task_update`, `workflow_script` | Split a compound request into parts the plugin tracks, and run several tool calls in one script with loops and conditions |
+| Safety | `undo` | Undo recorded write actions from the conversation's durable change history, one at a time or several newest-first |
 
 **Example use cases:**
 
@@ -624,26 +603,6 @@ The agent can chain multiple tools together to accomplish complex tasks, such as
 
 <img src="/images/llm-for-zotero/agent/write_note.png" alt="Agent writing a note">
 
-### Plan Mode
-
-Use **Plan Mode** when you want to review the agent's approach before it changes Zotero, writes files, runs commands, imports content, or changes settings.
-It is available in Agent mode for the Original Agent and supported Codex or Claude conversation systems; it is not available in WebChat mode.
-
-1. Enter **Agent mode**.
-2. Type `/plan` and choose **Plan**, or press `Shift+Tab` in the composer.
-3. Describe the complete outcome you want, including important scope, format, or destination requirements.
-4. Answer any planning questions shown in Zotero.
-5. Review the structured plan and choose **Approve plan**, **Request changes**, or **Cancel**.
-
-While the plan is being drafted, the agent may use read-only Zotero, PDF, literature, and web tools to identify the correct scope and evidence.
-Operations with effects remain blocked until you approve the plan.
-After approval, Zotero runs the frozen plan, shows step-by-step progress, and records completion evidence so interrupted work can resume without repeating completed changes.
-
-<div class="rtd-tip">
-  <div class="rtd-admonition-title">Codex App Server</div>
-  In a Codex App Server conversation, planning uses Codex's native Plan mode for questions and proposal drafting. llm-for-zotero still owns the Zotero scope, approval boundary, execution records, and post-change verification. If Zotero reports that native Plan mode is unavailable, update the Codex CLI and restart the connection.
-</div>
-
 ### Safety & Confirmation
 
 All write operations go through a **human-in-the-loop confirmation** workflow:
@@ -651,7 +610,7 @@ All write operations go through a **human-in-the-loop confirmation** workflow:
 - The agent proposes a batch of changes (e.g. add tags, edit metadata).
 - You review the proposed changes in a rich approval form.
 - You can **approve**, **reject**, or **modify** before any changes are applied.
-- If something goes wrong, use `undo_last_action` to revert.
+- If something goes wrong, ask the agent to undo; the `undo` tool reverts recorded write actions newest-first.
 - Terminal commands and file operations also require explicit approval before execution.
 
 ---
@@ -869,83 +828,92 @@ Existing users who need the old path can open the **AI Providers** tab, choose `
 
 ## Claude Code Setup (Experimental)
 
-Claude Code mode runs Claude Code as a separate conversation system inside Zotero. It reuses the familiar sidebar and standalone-window UI, but keeps its own conversation history, `paper` / `open` scope state, model/reasoning settings, permission semantics, slash commands, and project skills.
+Claude Code mode runs Claude Code as a separate conversation system inside Zotero. It reuses the sidebar and standalone-window UI, but has its own `paper` / `open` scope state, model and reasoning settings, permission semantics, slash commands, and project skills. Claude chats appear in the same history list as your other chats, with a small **Claude** label.
+
+_Special thanks to [@jianghao-zhang](https://github.com/jianghao-zhang), who built the Claude Code integration and its bridge ([`cc-llm4zotero-adapter`](https://github.com/jianghao-zhang/cc-llm4zotero-adapter)). The bridge now ships inside the plugin, with the author's permission, under [`packages/claude-bridge`](https://github.com/yilewang/llm-for-zotero/tree/main/packages/claude-bridge)._
 
 <div class="rtd-warning">
   <div class="rtd-admonition-title">Under development</div>
-  Claude Code mode currently does <strong>not</strong> support native Zotero API operations from Claude Code. Use the built-in Agent Mode for native Zotero library tools such as structured item reads, note edits, tagging, metadata updates, and imports. Native Zotero API support for Claude Code is planned for a later release.
+  Claude Code mode currently does <strong>not</strong> support native Zotero API operations. Use the built-in <a href="#agent-mode-beta">Agent Mode</a> for native library tools such as reading item state, editing notes, tagging papers, updating metadata, or importing items.
 </div>
 
 ### Prerequisites
 
-- A working Claude Code CLI installation. Follow the official [Claude Code installation](https://code.claude.com/docs/en/installation.md), [quickstart](https://code.claude.com/docs/en/quickstart.md), and [authentication](https://code.claude.com/docs/en/authentication.md) docs.
-- The `claude` command must be on `PATH` and authenticated. Run `claude` in a terminal first; if Claude Code is not installed, not on `PATH`, or not logged in, Zotero's Claude Code mode will not work.
-- Node.js and npm for the companion bridge adapter.
+You need two things on your computer. The plugin takes care of the rest.
 
-### 1. Install and Verify Claude Code
+- **Node.js 18 or newer.** Download it from [nodejs.org](https://nodejs.org) (the LTS version is fine), or use a version manager such as NVM, Volta, or Homebrew. Check it in a terminal with `node --version`.
+- **Claude Code, installed and logged in.** Follow Anthropic's [installation](https://code.claude.com/docs/en/installation.md) and [authentication](https://code.claude.com/docs/en/authentication.md) guides. You can use your Claude subscription or an API key.
 
-Install Claude Code using Anthropic's official instructions, then run:
+### 1. Install and Log In to Claude Code
+
+In a terminal, run:
 
 ```bash
 claude
 ```
 
-Complete any login or authentication prompts in Claude Code before continuing.
+Finish the login steps it shows, then close it. You only need to do this once.
 
-### 2. Start the Zotero Claude Bridge
+### 2. Turn On Claude Code Inside Zotero
 
-Claude Code mode depends on the companion bridge repo [`cc-llm4zotero-adapter`](https://github.com/jianghao-zhang/cc-llm4zotero-adapter). The bridge does not replace Claude Code; it connects Zotero to your local Claude Code runtime.
-
-```bash
-git clone https://github.com/jianghao-zhang/cc-llm4zotero-adapter.git
-cd cc-llm4zotero-adapter
-npm install
-npm run build
-npm run serve:bridge
-```
-
-In another terminal, check that the bridge is alive:
-
-```bash
-curl -fsS http://127.0.0.1:19787/healthz
-```
-
-For macOS users who want the bridge to run in the background, install the LaunchAgent from the adapter repo:
-
-```bash
-./scripts/install-macos-daemon.sh
-```
-
-Useful bridge daemon commands:
-
-```bash
-npm run daemon:status
-npm run daemon:start
-npm run daemon:stop
-npm run daemon:restart
-npm run daemon:uninstall
-```
-
-If Claude Code mode stops responding, restart the bridge and re-check `/healthz`. A passing `/healthz` check only proves that the adapter is running; it does not prove that the underlying `claude` CLI is installed, authenticated, or correctly configured.
-
-### 3. Enable Claude Code inside Zotero
-
-Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent** tab.
+Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent** tab, and switch on **Claude Code**. Recommended settings:
 
 | Setting | Recommended value |
 |---|---|
-| Enable Claude Code integration | `On` |
-| Bridge URL | `http://127.0.0.1:19787` |
-| Claude Config Source | `default — user + project + local` |
-| Permission Mode | `safe` |
-| Default Model | `sonnet` |
-| Default Reasoning | `auto` |
+| **Claude Code** | `On` |
+| **Config source** | `default - user + project + local` |
+| **Permission mode** | `safe` |
+| **Default model** | `sonnet` |
+| **Default reasoning** | `auto` |
 
-Keep **Claude Config Source** on `default` unless you already understand Claude Code settings layers. In `default`, Claude Code can use your normal user settings plus Zotero-managed project and per-conversation local settings.
+Then click the **Claude Code** button in the chat header, or click the runtime badge in the message box and pick **Claude**, to enter Claude Code mode.
 
-After enabling the integration, click the **Claude Code** button in the chat header to enter Claude Code mode. The Claude conversation system is separate from upstream chat and the built-in agent, so switching modes opens the matching conversation history instead of mixing transcripts.
+That is all. You do **not** need to download or start a bridge yourself. While Claude Code mode is on, Zotero starts a small helper program (the "bridge") that connects Zotero to your Claude Code. It runs only on your computer, only answers Zotero, and stops when you quit Zotero or turn Claude Code off. If you never turn on Claude Code, nothing extra runs.
 
-### 4. Prepare Claude Project Skills and Commands
+The **Bridge** section at the top of the Claude Code settings shows whether the bridge is running. Use **Restart bridge** if something seems stuck, and **Open log** to see what the bridge reported.
+
+Keep **Config source** on `default` unless you already understand Claude Code settings layers. In `default`, Claude Code can use your normal user settings plus Zotero-managed project and per-conversation local settings. The other options are:
+
+- `user-only`: only your machine-wide Claude settings.
+- `zotero-only`: only Zotero-managed project and local settings.
+
+### 3. If It Does Not Work
+
+The Bridge status line says what is wrong in plain words. The usual causes:
+
+| The status says | What to do |
+|---|---|
+| **Node.js was not found** | Install Node.js 18 or newer. If it is installed but Zotero cannot find it, run `which node` (macOS, Linux) or `where node` (Windows) in a terminal and paste the result into **Advanced** &rarr; **Node.js path**. |
+| **needs Node.js 18 or newer** | Install a newer Node.js from [nodejs.org](https://nodejs.org). |
+| **Claude Code was not found** | Install Claude Code. If it is installed, run `which claude` (macOS, Linux) or `where claude` (Windows) and paste the result into **Advanced** &rarr; **Claude Code path**. |
+| Running, but Claude replies fail | Claude Code is probably not logged in. Run `claude` in a terminal and log in, then press **Restart bridge**. |
+| **keeps stopping** | Press **Open log** to see why, fix the cause, then press **Restart bridge**. |
+
+Zotero opened from the Dock or Start menu does not always see the same programs as your terminal. The plugin looks in the usual places (NVM, Volta, Homebrew, `~/.local/bin`, and the Claude Code installer's folder), but the two path settings are there if it still cannot find them.
+
+**Advanced options**
+
+- **Extra bridge options** passes command-line options to the bridge, for example `--additional-directories ~/Papers` to let Claude read another folder, or `--append-system-prompt-file ~/zotero-claude.md`. Press **Restart bridge** after changing it.
+- **Use my own bridge** is for people who run the bridge themselves, for example inside WSL while Zotero runs on Windows, or on another computer. Zotero then sends Claude requests to the **Bridge URL** and does not start its own bridge. The bridge's code lives in [`packages/claude-bridge`](https://github.com/yilewang/llm-for-zotero/tree/main/packages/claude-bridge); see its README for how to run it by hand.
+
+### Upgrading From the Old `cc-llm4zotero-adapter`
+
+Earlier versions needed the separate [`cc-llm4zotero-adapter`](https://github.com/jianghao-zhang/cc-llm4zotero-adapter) repository and `npm run serve:bridge` or `npm run daemon:*`. That is no longer needed. Your Claude Code conversations, skills, and settings keep working, because the new bridge uses the same `~/Zotero/agent-runtime` and `~/Zotero/agent-state` folders.
+
+If you installed the old macOS background service, it can stay, since it does not get in the way, but it is no longer used. Zotero tells you once if it finds it. To remove it, run this in your old adapter folder:
+
+```bash
+npm run daemon:uninstall
+```
+
+If you already deleted that folder, run these two commands instead:
+
+```bash
+launchctl bootout gui/$(id -u)/com.toha.ccbridge
+rm ~/Library/LaunchAgents/com.toha.ccbridge.plist
+```
+
+### 4. Claude Project Skills and Commands
 
 Zotero creates a Claude runtime root under your home directory, usually shaped like:
 
@@ -953,7 +921,7 @@ Zotero creates a Claude runtime root under your home directory, usually shaped l
 ~/Zotero/agent-runtime/profile-.../
 ```
 
-Inside that runtime root, shared Claude project assets live in:
+Shared Claude project assets live in:
 
 ```text
 CLAUDE.md
@@ -962,11 +930,14 @@ CLAUDE.md
 .claude/commands/
 ```
 
-Each Claude conversation also gets its own local `.claude` folder under the runtime `scopes/` tree, so per-conversation overrides do not leak into other chats. You can add shared Claude skills manually under `.claude/skills/` or `.claude/commands/`, but the easiest path is usually to ask Claude Code to create or install the skill in the Zotero project-level Claude config.
+Each Claude conversation also gets its own local `.claude` folder under the runtime `scopes/` tree, so per-conversation overrides do not leak into other chats.
 
-### Non-Anthropic Claude Code Setups
+### Models and Non-Anthropic Setups
 
-The Zotero UI exposes `opus`, `sonnet`, and `haiku` as capability tiers. They do not require Anthropic-hosted models specifically. If you route Claude Code through a compatible provider layer or proxy, configure that in Claude Code itself; Zotero only selects the tier and forwards the request to the bridge.
+The Zotero UI loads the model catalog advertised by the Claude Code bridge and preserves each model value exactly, including aliases, explicit model IDs, context-window variants, custom provider values, and future model families.
+The chat model picker identifies the active conversation, so model discovery uses the same scoped `.claude/settings.local.json` stack as the turn.
+The model preference remains editable when discovery is unavailable.
+Claude Code is responsible for resolving or rejecting the selected value and for applying provider or proxy configuration.
 
 ---
 
@@ -1102,9 +1073,8 @@ Here the agent finds and crops the figure for you, and those same crops are what
 | **The assistant cannot see a paper** | Reopen the PDF tab, then send a new message so the plugin can rebuild context. |
 | **WebChat shows a red dot** | Keep the selected ChatGPT, DeepSeek, or Gemini tab open and confirm the latest Sync for Zotero extension is loaded. |
 | **Gemini WebChat is rejected before sending** | Update both llm-for-zotero and Sync for Zotero, reload `gemini.google.com/app`, and confirm Gemini's composer is ready. |
-| **Plan mode is unavailable with Codex** | Update the Codex CLI, restart the Codex App Server connection, and confirm Agent mode is enabled. |
 | **Codex App Server fails** | Run `codex login`, confirm `codex` is on `PATH`, then click **Test connection** again. |
-| **Claude Code mode hangs** | Restart the bridge and check `curl -fsS http://127.0.0.1:19787/healthz`. |
+| **Claude Code mode hangs** | Read the **Bridge** status line in the Claude Code settings, press **Open log**, then press **Restart bridge**. See [If It Does Not Work](#3-if-it-does-not-work). |
 | **MinerU parsing fails** | Add a personal MinerU API key for cloud mode, or confirm your local `mineru-api` server responds at `/health`, then retry **Test Connection**. |
 
 For bugs or unclear failures, please [open an issue](https://github.com/yilewang/llm-for-zotero/issues).
@@ -1117,7 +1087,6 @@ For bugs or unclear failures, please [open an issue](https://github.com/yilewang
 - [x] MinerU PDF parsing
 - [x] GitHub Copilot auth
 - [x] WebChat mode (ChatGPT, DeepSeek, and Google Gemini web sync)
-- [x] Agent Plan mode with review and approved execution
 - [x] Standalone window mode ([#78](https://github.com/yilewang/llm-for-zotero/issues/78))
 - [x] File-based notes (Obsidian, Logseq, any Markdown directory)
 - [x] Claude Code integration
