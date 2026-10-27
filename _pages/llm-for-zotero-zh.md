@@ -133,15 +133,39 @@ lang_alt: /llm-for-zotero/
 
 ## 最新更新
 
+**v3.9.14**
+
+- **任务进度显示每个回答的来源。**
+  侧边面板按问题列出 Agent 使用的论文和网页，以及它读取的段落。
+  点击**在回答中显示**即可跳到引用该来源的句子。
+  详见[任务进度与来源](#任务进度与来源)。
+- **网页回答标注来源**：带编号的来源标记和回答末尾的来源标签，复制回答时也会保留。
+- **按 Agent 分组的对话**：窗口侧栏可以把对话分为 **Agent**、**Codex** 和 **Claude** 三组。
+- **悬浮输入框**：输入框悬浮在对话底部，并随输入内容增高。
+- **按需启动本地 MinerU 服务**：插件可在解析 PDF 时启动本地 MinerU 服务，并在空闲时停止。
+  详见[使用本地 MinerU 服务](#使用本地-mineru-服务)。
+- **OpenCode Go** 成为新的服务商预设。
+
+**v3.9.13**
+
+- **侧边面板**：独立窗口最多可打开八个标签页，包括侧聊、历史对话和对话生成的所有内容。
+- **Agent 保存的文件**会以预览卡片显示在回答下方，每篇论文都有自己的文件夹。
+  详见 [Agent 保存的文件](#agent-保存的文件)。
+- **文库外的论文**：Agent 可以根据 DOI、PubMed、PMC 或 arXiv ID 读取论文摘要和开放获取全文。
+- **Claude Code 无需额外配置**：插件会自动启动和停止 Claude Code 所需的桥接服务。
+- **AI 编辑笔记时保留引用、高亮和图片。**
+- **DeepSeek 搜索**成为 Tavily 和 AnySearch 之外的新网页搜索选项。
+
+**更早的更新**
+
 - **使用统计**：以本地仪表板汇总论文对话和文库对话活动，并提供时间筛选、活动与 Token 图表、模型明细、CSV 导出和重置功能。
   详见[使用统计](#使用统计)。
 - **内置网页与学术文献研究**：Agent 可以搜索公开网页、读取来源页面，并将最新在线信息与 Zotero 文库中的证据结合起来。
   回答可附带段落级来源卡片，同时活动轨迹会清楚区分通用网页结果与学术文献结果。
   详见[通用网页搜索](#通用网页搜索)。
 - **Codex App Server** 是 ChatGPT Plus 用户推荐的 Codex 使用路径。它通过本地 `codex app-server` 运行时工作，并在 **Agent** 标签页中配置。
-- **Claude Code 模式（实验性）**：使用您自己的 Claude Code 登录，将 Claude Code 作为 Zotero 内部独立的对话系统运行。插件会自动启动和停止所需的小型桥接服务。目前尚不支持原生 Zotero API 操作。详见 [Claude Code 配置](#claude-code-配置实验性)。
+- **Claude Code 模式（实验性）**：使用您自己的 Claude Code 登录，将 Claude Code 作为 Zotero 内部独立的对话系统运行。它可以使用插件的 Zotero 工具读取您的文库，并在您批准后编辑笔记、标签、元数据和导入条目。详见 [Claude Code 配置](#claude-code-配置实验性)。
 - **统一历史记录**：Agent、Codex 和 Claude 的对话显示在同一个历史列表中。点击输入框中的运行时标记即可切换运行时；也可以通过斜杠菜单或直接用自然语言请求，附加之前的对话。
-- **侧边面板**：独立窗口可在主对话旁打开只读的历史对话或临时侧聊。
 - **WebChat 模式**通过 Sync for Zotero 浏览器扩展支持 ChatGPT、DeepSeek 和 Google Gemini 网页同步。
 - **文件笔记**：笔记目录不再硬编码为 Obsidian。您可以配置任意本地 Markdown 目录，包括 Obsidian、Logseq 或普通文件夹。详见 [文件笔记](#文件笔记)。
 - **Skills 技能系统**：可自定义的引导文件会影响 Agent 的任务处理方式。内置 8 个技能，并支持创建自定义技能。详见 [Skills 技能系统](#skills-技能系统)。
@@ -400,11 +424,34 @@ lang_alt: /llm-for-zotero/
 ### 功能特点
 
 - **论文对话与文库对话** &mdash; 通过顶部标签页切换论文级对话和文库级对话。
-- **对话历史** &mdash; 在可折叠的左侧面板中按日期分组（今天、昨天、最近 7/30 天、更早）浏览历史对话。
+- **对话列表** &mdash; 在左侧栏可排序的**对话**列表中浏览历史对话。您可以把对话分为可折叠的 **Agent**、**Codex** 和 **Claude** 三组，每组有自己的排序方式和用于新建对话的 **+** 按钮。置顶的论文保留在最上方，每篇论文保留自己的侧边面板标签页。
+- **侧边面板** &mdash; 点击**论文对话 \| 文库对话**一行末尾的按钮打开。它最多容纳八个标签页：
+  - **侧聊**：不离开主对话即可快速提问。侧聊能看到主对话，可以使用不同模型，且不会被保存。
+  - **历史**：在当前对话旁阅读之前的对话，可以引用它、添加它的论文，或将它设为主对话。
+  - **其他**：这篇论文的对话生成的所有内容，例如示意图、图像、网页、代码、计划和文件。点击**前往对话**可跳到生成它的消息。
+  - **任务进度**：每个问题使用的来源。详见[任务进度与来源](#任务进度与来源)。
+
+  对话中的示意图、代码、网页、图像、计划和文件都有一个 **&rarr;\|** 按钮，可把它们移到独立的侧边面板标签页。
+  在回答中选中文本后选择 **Quote in side chat**，即可在侧聊中针对这段内容提问。
 - **功能完全一致** &mdash; 阅读器侧栏中的所有功能（截图、文件上传、Agent 模式、快捷预设、引用选择器）在独立窗口中均可正常使用。
 - **搜索** &mdash; 通过搜索浮层快速查找历史对话。
 
 独立窗口打开时，阅读器侧栏面板会显示占位提示，提供**聚焦窗口**（将独立窗口置于前台）和**关闭窗口并返回侧栏**两个选项。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/window/side-panel.png" alt="独立窗口中，侧边面板在主对话旁打开了侧聊" width="1600" height="887" loading="lazy">
+  <figcaption>侧边面板在主对话旁打开。图中显示的是侧聊。</figcaption>
+</figure>
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/window/miscellaneous.png" alt="其他标签页列出一篇论文的对话生成的示意图、图像和文件" width="1600" height="887" loading="lazy">
+  <figcaption><strong>其他</strong>标签页按时间倒序列出这篇论文的对话生成的所有内容。</figcaption>
+</figure>
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/window/move-to-side.png" alt="一张示意图从对话中移到了独立的侧边面板标签页" width="1600" height="887" loading="lazy">
+  <figcaption><strong>&rarr;|</strong> 按钮可把示意图、图像、网页或文件移到独立的侧边面板标签页。</figcaption>
+</figure>
 
 ---
 
@@ -474,31 +521,50 @@ Agent 可以搜索最新信息、打开选定来源页面进行针对性读取�
 
 ### 配置 Tavily
 
-网页搜索由 [Tavily](https://tavily.com/) 提供，需要单独的 API 密钥，与模型服务商密钥相互独立。
+网页搜索可以使用 [Tavily](https://tavily.com/)（默认）、AnySearch 或 DeepSeek。
+Tavily 需要单独的 API 密钥，与模型服务商密钥相互独立。
 
 1. [创建 Tavily 账户](https://app.tavily.com/)并获取 API 密钥。
 2. 打开 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** &rarr; **Agent**。
-3. 找到 **Tavily Web Search**，粘贴密钥，然后点击**测试连接**。
+3. 在 **Web search** 中保留 **Tavily**，粘贴密钥，然后点击**测试连接**。
 4. 启用 [Agent 模式](#agent-模式beta)，然后提出需要最新或公开网页证据的问题。
+
+网页搜索没有单独的开关。
+当所选服务商可以运行时，`web_search` 和 `web_read` 工具会自动提供给 Agent。
+WebChat、Codex 和 Claude Code 对话不使用这两个工具，而是使用各自的网页搜索。
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/web-search/tavily-setup.png" alt="Tavily 网页搜索设置，其中包含 API 密钥输入框、连接测试、额度说明和隐私提示" width="1162" height="626" loading="lazy">
   <figcaption>在 Agent 首选项中配置并测试 Tavily 密钥。密钥保存在本地 Zotero 首选项中。</figcaption>
 </figure>
 
+### 其他搜索服务商
+
+| 服务商 | 密钥 | 费用 | 限制 |
+|---|---|---|---|
+| **AnySearch** | 可选；留空即为匿名访问 | 由服务端控制配额 | 每次搜索 1&ndash;10 条结果；每次运行可读取一到五个搜索返回的网址；不支持深度、主题、日期或域名筛选；不支持 PDF 或 Office 文件提取 |
+| **DeepSeek** | 使用第一个 API 地址为官方 `https://api.deepseek.com` 的模型配置的密钥 | 每 1,000 次成功搜索或页面读取 0.75 美元，由该 DeepSeek 账户支付 | 查询最长 128 个字符，包括筛选条件 |
+
+请在**首选项** &rarr; **llm-for-zotero** &rarr; **Agent** &rarr; **Web search** 中选择服务商。
+对于 AnySearch，**Test search (sends a public query)** 会发送一条固定的公开查询，并消耗配额。
+DeepSeek 不会发送中转服务或其他主机的密钥。
+每个服务商都会收到您的搜索词和 Agent 读取的网址。
+
 ### Agent 可以完成什么
 
 | 需求 | Agent 的处理方式 |
 |---|---|
 | 查找最新公开信息 | 使用通用网页搜索，并根据请求选择合适的搜索深度 |
-| 检查特定来源 | 打开公开页面进行针对性提取，而不是只依赖搜索摘要 |
+| 检查特定来源 | 逐步读取公开页面，只在页面需要时深入读取 |
 | 发现学术论文 | 使用学术文献搜索获取论文元数据、推荐、参考文献和引用关系 |
+| 读取文库外的论文 | 根据 DOI、PubMed、PMC 或 arXiv ID 读取摘要和开放获取全文，不会导入论文 |
 | 组合不同证据 | 可在同一回合同时使用网页搜索和文献搜索，并在活动轨迹中分别呈现结果 |
-| 说明陈述的来源 | 在相应段落后添加交互式来源卡片，显示页面标题、机构、网站图标和安全链接 |
+| 说明陈述的来源 | 在每个引用句末尾添加编号标记，并在回答末尾添加来源标签；复制回答时标记和标签都会保留 |
 
 通用网页搜索与学术文献搜索相互补充，但不能互相替代。
 当您需要最新文档、机构页面、公开解释、标准、政策或其他开放网页材料时，可使用网页搜索。
-当您需要通过 Crossref、Semantic Scholar 等来源发现学术论文时，可使用文献搜索。
+当您需要通过 OpenAlex、arXiv 和 Europe PMC 发现学术论文（并通过 Crossref 和 Semantic Scholar 查询元数据）时，可使用文献搜索。
+Agent 会先查看当前论文和您的文库，只有在它们无法回答时才搜索外部来源。
 对于范围较广的研究问题，Agent 可以同时使用两者，并与 Zotero 中已有的证据综合分析。
 
 <div class="rtd-doc-figure-grid">
@@ -534,7 +600,7 @@ v3.9.4 首选项面板显示了发布时的额度规则：基本搜索消耗 1 �
 请勿在网页搜索词中包含凭据、未公开材料、个人数据或其他敏感私密文本。
 
 网页内容可能变化，不同来源也可能相互矛盾。
-对于重要页面，请通过来源卡片打开原始来源；在依赖高风险结论前，应先核验原文。
+对于重要页面，请通过来源标记打开原始来源；在依赖高风险结论前，应先核验原文。
 
 ---
 
@@ -550,24 +616,112 @@ v3.9.4 首选项面板显示了发布时的额度规则：基本搜索消耗 1 �
   <figcaption>Agent 设置页面集中管理 Original Agent、Codex 和 Claude Code 运行时。请先在此启用所需运行时，然后通过聊天标题栏或输入框中的运行时标记切换。</figcaption>
 </figure>
 
-启用后，LLM 将成为一个**自主 Agent**，可在 Zotero 文库中执行读取、搜索和写入操作。读取工具可直接运行；写入工具会进入确认卡片，并支持撤销。
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/runtime-badge.png" alt="输入框中的运行时标记菜单，包含 Agent、Codex 和 Claude 选项" width="1600" height="1600" loading="lazy">
+  <figcaption>点击输入框中的运行时标记，即可在 <strong>Agent</strong>、<strong>Codex</strong> 和 <strong>Claude</strong> 之间切换。</figcaption>
+</figure>
+
+在普通对话中，模型根据您提供的上下文回答。
+在 Agent 模式下，模型还可以使用**工具**：用于读取、搜索或修改 Zotero 文库的小型操作。
+您用自然语言提出请求，Agent 自己决定使用哪些工具以及使用顺序。
+
+规则很简单：只读取的工具直接运行；会修改内容的工具需要您批准，并且可以撤销。
+
+### Agent 的运行过程
+
+1. **您提出请求。** 例如：*“找出这个文集中使用钙成像的论文，为它们添加标签，并写一条总结笔记。”*
+2. **Agent 把请求拆成多个部分**并逐一跟踪，长请求也不会漏掉步骤。
+3. **Agent 读取资料。** 它搜索您的文库、阅读论文和笔记；只有文库无法回答时，才搜索外部来源。
+4. **Agent 提出修改。** 添加标签、编辑元数据、写笔记或运行命令都会显示为确认卡片。您批准之前，什么都不会改变。
+5. **Agent 给出回答。** 引用句末尾带有编号标记，任务进度面板会显示每个回答使用了哪些来源。
+6. **您可以撤销。** 让 Agent 撤销，它会从最新的开始撤销已记录的修改。
+
+如果某个选择不明确，例如应该使用哪个文集，Agent 会先问您再继续。
 
 较长的 Agent 运行具有缓存感知能力。插件会将稳定的 Zotero 上下文和已读取证据，与不断变化的聊天记录分开保存，跟踪哪些论文和段落已经被检查，并在模型上下文填满时自动压缩旧回合。后续问题可以在证据仍然相关时复用这些来源；当缺少所需来源或覆盖层级时，Agent 会重新读取。
 
+### 任务进度与来源
+
+任务进度在独立窗口的侧边面板标签页中打开。
+每个问题对应一个区块，列出该问题使用的论文和网页。
+
+- 对于文库中的论文，它先列出 Agent 读取的段落，再列出回答中使用这些段落的位置。
+- 对于网页，它显示带网站图标的页面。网页链接会在侧边面板中打开。
+- **在回答中显示**会找到引用该来源的句子，将其高亮并滚动到该位置。
+
+在信任一个回答之前，可以用它检查 Agent 读了什么。
+它在论文对话和文库对话中都可以使用。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/task-progress-library.png" alt="任务进度面板列出文库论文、Agent 读取的段落和在回答中显示链接" width="1600" height="1085" loading="lazy">
+  <figcaption>对于文库中的论文，任务进度会列出 Agent 读取的段落。<strong>在回答中显示</strong>会高亮使用该段落的句子。</figcaption>
+</figure>
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/task-progress-web.png" alt="网页搜索回答的任务进度面板，回答中带有编号来源标记" width="1600" height="1088" loading="lazy">
+  <figcaption>网页搜索的回答也使用同一个面板。</figcaption>
+</figure>
+
+<div class="rtd-doc-figure-grid">
+  <figure class="rtd-doc-figure">
+    <img src="/images/llm-for-zotero/agent/task-progress-evidence.png" alt="在侧边面板的 Page 标签页中，网页来源显示在回答旁边" width="1600" height="1085" loading="lazy">
+    <figcaption>打开来源，即可在回答旁查看原网页。</figcaption>
+  </figure>
+  <figure class="rtd-doc-figure">
+    <img src="/images/llm-for-zotero/agent/what-agent-read.png" alt="What the agent read 标签页显示 Agent 看到的网页来源原文" width="866" height="1800" loading="lazy">
+    <figcaption><strong>What the agent read</strong> 显示 Agent 实际看到的文本；如果它只看到了搜索摘要，也会注明。</figcaption>
+  </figure>
+</div>
+
+### 文库外的论文
+
+Agent 可以根据 DOI、PubMed ID、PMC ID 或 arXiv ID 读取不在您文库中的论文。
+它会读取完整摘要；如果论文是开放获取的，还会读取全文。
+对于只提供 PDF 的论文，它会给出链接。
+读取不会导入论文；如果想保留，请让 Agent 导入。
+
+### 之前的对话
+
+Agent 可以查找、读取并附加之前的对话，每次最多三个。
+输入 `/` 并选择 **Add past conversation**，或者直接提问，例如*“把上周我问网格细胞的那次对话加进来。”*
+这在 Agent、Codex 和 Claude 模式下都可以使用。
+
+### Agent 保存的文件
+
+当 Agent 保存文件时，例如网页、Markdown 摘要、图片或表格，回答下方会显示预览卡片。
+您可以从卡片中在全屏视图中打开文件、在文件夹中显示它，或把它移到侧边面板。
+即使之后删除了文件，卡片也会保留，并提示文件已不存在。
+
+每篇论文都有自己的保存文件夹。
+在**首选项** &rarr; **llm-for-zotero** &rarr; **Agent** &rarr; **Saved files** 中，您可以选择这些文件夹的位置。
+**Check folders** 会列出这些文件夹及其大小，优先显示已删除论文的文件夹，并允许您删除不再需要的文件夹。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/file-card.png" alt="回答下方显示 Agent 保存的网页文件预览卡片" width="1600" height="1112" loading="lazy">
+  <figcaption>Agent 保存的每个文件都会显示一张预览卡片。</figcaption>
+</figure>
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/saved-files-settings.png" alt="Saved files 设置，包含文件夹位置和 Check folders 按钮" width="1600" height="1331" loading="lazy">
+  <figcaption>选择保存文件的位置，并用 <strong>Check folders</strong> 清理旧文件夹。</figcaption>
+</figure>
+
 ### Agent 工具
 
-读取工具可直接运行；写入工具会进入确认卡片，并支持撤销。
+您不需要自己调用这些工具，Agent 会自行选择。
+这张表可以帮助您理解活动轨迹和确认卡片。
 
 | 工具类别 | 工具 | 功能说明 |
 |---|---|---|
 | 文库与 PDF 读取 | `library_search`、`library_read`、`library_retrieve`、`paper_read`、`read_attachment`、`context_read` | 搜索条目和文集、读取元数据、阅读论文、检索论文段落、渲染 PDF 页面、查看附件和当前对话上下文 |
-| 学术文献发现 | `literature_search`、`literature_review` | 在 OpenAlex、arXiv 和 Europe PMC 中搜索论文、推荐、参考文献和引用（通过 CrossRef 和 Semantic Scholar 查询元数据），并给出排序后的候选 |
-| 通用网页研究 | `web_search`、`web_read` | 通过 Tavily 搜索最新公开网页、读取相关页面，并在回答中附上来源链接（仅在设置 Tavily 密钥后可用） |
+| 学术文献发现 | `literature_search`、`literature_read`、`literature_review` | 在 OpenAlex、arXiv 和 Europe PMC 中搜索论文、推荐、参考文献和引用（通过 CrossRef 和 Semantic Scholar 查询元数据），读取文库外论文的摘要和开放获取全文，并给出排序后的候选 |
+| 通用网页研究 | `web_search`、`web_read` | 通过 Tavily、AnySearch 或 DeepSeek 搜索最新公开网页、读取相关页面，并在回答中标注来源 |
+| 历史对话 | `past_chat_search`、`past_chat_read`、`past_chat_attach` | 查找之前的对话、读取它，并把它附加到当前对话 |
 | 文库写入 | `library_update`、`library_import`、`library_delete`、`annotate_pdf` | 添加标签、更新元数据、移动条目、管理文集和附件、合并重复项、移入回收站、通过标识符或本地文件导入、高亮 PDF 段落 |
 | 引用与设置 | `library_cite`、`library_settings` | 用 Zotero 引文引擎格式化引用和参考文献，并读取或修改 Agent 可以操作的 Zotero 首选项 |
 | 笔记与文档 | `note_write`、`note_write_batch`、`submit_document` | 创建、追加或编辑 Zotero 笔记，为多个条目各写一条笔记，并定稿较长文档 |
 | 文件系统与脚本 | `file_io`、`run_command`、`zotero_script` | 读写本地文件、运行分析命令，或在写入确认下执行 Zotero JavaScript |
-| 技能与提问 | `load_skill`、`request_user_input`、`past_chat_attach` | 在任务需要时加载技能说明，在选择不明确时向您提问，并把之前的对话附加到当前对话 |
+| 技能与提问 | `load_skill`、`request_user_input` | 在任务需要时加载技能说明，并在选择不明确时向您提问 |
 | 任务跟踪 | `task_update`、`workflow_script` | 把复合请求拆成由插件跟踪的多个部分，并在一个脚本中用循环和条件组合多次工具调用 |
 | 安全 | `undo` | 根据对话的持久变更记录撤销写入操作，可逐个撤销，也可从最新开始撤销多个 |
 
@@ -618,6 +772,11 @@ Agent 可以串联多个工具完成复杂任务——例如查找论文、读�
 
 #### 查找相关论文
 
+查找相关论文有两种方式：
+
+- **`/discover_related`** 直接对当前论文运行 OpenAlex 搜索，不需要模型。它会打开 **Recommendations**、**References** 和 **Citations** 三个标签页，每个最多 20 篇论文。使用 `/discover_related 30` 可以修改数量，**Load more** 再加载 20 篇，**Import selected** 保存您选中的论文。
+- **在对话中提问**，例如*“找一些相关论文”*或*“找 15 篇相关论文”*。Agent 会为候选论文排序，并给出每篇的理由。如果没有指定数量，默认先给出五篇。使用 **Find more** 获取下一批，**Import selected** 保存您的选择。如果合适的论文较少，卡片会说明原因，而不是凑数。
+
 <img src="/images/llm-for-zotero/agent/related_papers.gif" alt="Agent 查找相关论文">
 
 #### 自动应用标签
@@ -644,7 +803,9 @@ Agent 可以串联多个工具完成复杂任务——例如查找论文、读�
 
 <img src="/images/llm-for-zotero/skills.png" alt="Skills 技能管理面板" style="max-width:512px;">
 
-Skills（技能）是可自定义的引导文件，用于调整 Agent 处理不同类型请求的方式。每个技能是一个 Markdown 文件，包含正则表达式触发模式：当您的消息匹配某个技能的模式时，该技能的指令会自动注入 Agent 的系统提示词中，引导它使用最高效的工具和工作流来完成任务。
+Skills（技能）是可自定义的引导文件，用于调整 Agent 处理不同类型请求的方式。
+技能告诉 Agent *如何*完成任务，例如使用哪些工具以及按什么顺序；它不会增加新工具。
+每个技能是一个 Markdown 文件，包含一段简短描述和一段指令正文。
 
 <div class="rtd-tip">
   <div class="rtd-admonition-title">注意</div>
@@ -655,40 +816,45 @@ Skills（技能）是可自定义的引导文件，用于调整 Agent 处理不�
 
 插件内置 **8 个技能**，覆盖常见的研究工作流。首次运行时会自动复制到您的技能文件夹。
 
-| 技能 | 触发场景 | 引导 Agent 执行的操作 |
-|---|---|---|
-| `simple-paper-qa` | 关于论文的一般性问题（摘要、发现、作者、TLDR） | 读取论文一次后直接回答，避免不必要的检索调用 |
-| `evidence-based-qa` | 关于具体方法、结果、数据或论断的问题 | 先读取论文，再通过定向 `search_paper` 检索特定证据 |
-| `analyze-figures` | 按编号引用图表、表格或示意图 | 以 MinerU 为索引，直接从原始 PDF 裁剪精准图像并解读；表格则按结构化文本读取 |
-| `compare-papers` | 比较或对比多篇论文的请求 | 批量读取论文，再针对比较要点检索证据 |
-| `library-analysis` | 总结、分析或审计整个文库的请求 | 使用高效脚本遍历文库条目，而非通过上下文分页 |
-| `literature-review` | 文献综述或研究综合的请求 | 发现论文、深度阅读最相关的几篇，并按主题综合 |
-| `write-note` | 写作阅读笔记、Zotero 笔记或笔记目录 Markdown 文件的请求 | 生成带元数据、Pandoc 引用和可选图表复制的笔记 |
-| `import-cited-reference` | 导入当前 PDF 中引用文献的请求 | 提取参考文献，并将选中的引用论文导入 Zotero |
+| 技能 | 引导 Agent 执行的操作 |
+|---|---|
+| `evidence-based-qa` | 针对所选论文或文集中具体的方法、结果或论断，检索缺失的证据 |
+| `analyze-figures` | 以 MinerU 为索引，直接从原始 PDF 裁剪精准图像并解读；表格则按结构化文本读取 |
+| `compare-papers` | 按主题、方法或发现比较所选论文或文集中的论文 |
+| `library-analysis` | 用统计方法分析整个文库或某个文集，避免上下文溢出 |
+| `literature-review` | 发现论文、深度阅读最相关的几篇，并写出带引用的结构化综述 |
+| `reorganize-library` | 把论文整理到文件夹或标签中：先展示拟定分组，复用已有文件夹和标签，再分批移动或添加标签 |
+| `write-note` | 撰写、保存或编辑 Zotero 笔记，或笔记目录中的 Markdown 笔记 |
+| `import-cited-reference` | 通过 DOI 将当前 PDF 中引用的论文导入 Zotero |
 
 ### 工作原理
 
-1. 在 Agent 模式下发送消息时，插件会将您的文本与每个技能的 `match` 模式进行匹配。
-2. 如果技能中的**任何一个**模式匹配成功（OR 语义），该技能的指令会被注入 Agent 的系统提示词中。
-3. 多个技能可以同时激活——如果您的消息匹配了多个技能的模式。
-4. Agent 将这些指令作为工具选择和工作流的引导——技能教会 Agent **如何**完成任务，而非定义它**能做什么**。
+1. 每个回合开始时，Agent 只看到每个技能的名称和描述。
+2. 如果 Agent 判断任务需要某个技能，它会调用 `load_skill` 读取完整指令。插件不会自动预先选择技能。
+3. 如果您从 `/` 菜单中选择技能，插件会直接应用它。
+4. 技能只在其文件允许的场景中生效，例如单篇论文或整个文库。
+5. 已批准的计划会保留批准时的技能版本。
+
+由于 Agent 根据描述选择技能，自定义技能中最重要的是写出清晰、准确的描述。
 
 ### 创建自定义技能
 
 1. 打开**独立窗口**（`Ctrl+Shift+L` / macOS：`Cmd+Shift+L`）。
 2. 点击顶部工具栏中的 **Skills 图标**打开技能管理面板。
 3. 点击 **"+ New skill"** 按钮创建模板文件。
-4. 模板会在默认文本编辑器中打开，编辑以下三个关键部分：
+4. 模板会在默认文本编辑器中打开，编辑头部字段和指令正文：
 
 ```
 ---
+name: my-custom-skill
 id: my-custom-skill
-match: /你的正则表达式模式/i
-match: /另一个触发模式/i
+description: 描述这个技能的作用
+version: 1
+contexts: any
+activation: auto
 ---
 
-当此技能匹配时，Agent 应遵循的指令。
-描述工作流程、优先使用哪些工具以及任何约束条件。
+准确描述 Agent 应在何时、以何种方式使用这个工作流。
 ```
 
 {:start="5"}
@@ -696,11 +862,14 @@ match: /另一个触发模式/i
 
 **技能文件格式：**
 
-| 字段 | 必需 | 说明 |
-|---|---|---|
-| `id` | 是 | 技能的唯一标识符 |
-| `match` | 是（至少一个） | 正则表达式模式，支持可选标志（`i`、`g`、`m` 等）。可重复——多个 `match` 行使用 OR 语义 |
-| 指令正文 | 是 | 结束标记 `---` 之后的 Markdown 文本。技能匹配时会注入 Agent 的系统提示词 |
+| 字段 | 说明 |
+|---|---|
+| `name`、`id` | 显示在 `/` 菜单和技能选择器中的标识符 |
+| `description` | 技能的作用。Agent 根据它决定何时加载技能，因此请写得准确 |
+| `version` | 做出重要修改时增大版本号 |
+| `contexts` | 技能适用的场景：`any`、`single-paper`、`paper-set`、`library-corpus`、`note` 或 `visual-input`；多个场景用逗号分隔 |
+| `activation` | `auto`（Agent 可自行加载）、`manual`（只能从 `/` 菜单选择）或 `both` |
+| 指令正文 | 结束标记 `---` 之后的 Markdown 文本。技能适用时由 Agent 读取 |
 
 ### 管理技能
 
@@ -892,6 +1061,11 @@ claude
 
 然后在聊天标题栏点击 **Claude Code** 按钮，或点击输入框中的运行时标记并选择 **Claude**，即可进入 Claude Code 模式。
 
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/claude-settings.png" alt="Claude Code 设置显示桥接服务状态以及 Restart 和 Open log 按钮" width="1600" height="1331" loading="lazy">
+  <figcaption>设置中会显示 Claude Code 是否正在运行，并提供 <strong>Restart</strong> 和 <strong>Open log</strong> 按钮。</figcaption>
+</figure>
+
 这样就完成了。您**不需要**自己下载或启动桥接服务。Claude Code 模式开启时，Zotero 会启动一个小型辅助程序（“桥接服务”），把 Zotero 连接到您的 Claude Code。它只在您的电脑上运行，只响应 Zotero，并在您退出 Zotero 或关闭 Claude Code 时停止。如果从未开启 Claude Code，就不会额外运行任何程序。
 
 Claude Code 设置顶部的 **Bridge** 区域会显示桥接服务是否在运行。遇到卡住时点击 **Restart bridge**，点击 **Open log** 查看桥接服务的日志。
@@ -1017,6 +1191,14 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 - `hybrid` — 较新的高准确率混合流程，支持多语言，需要本地算力。
 
 `Test Connection` 只检查服务进程是否在 `/health` 响应；它不能保证所有模型已经预热完成。
+
+**自动启动和停止服务**（由 [@AkimioJR](https://github.com/AkimioJR) 在 [#530](https://github.com/yilewang/llm-for-zotero/pull/530) 中贡献）：
+
+- 输入启动服务的命令，例如 `mineru-api`。
+- 插件在解析 PDF 时启动服务。
+- 空闲一段时间后，插件会停止服务，以释放内存和显存。默认时间为 10 分钟。
+- 首选项中会显示服务状态，并提供 **Start** 和 **Stop** 按钮。
+- 退出 Zotero 时，服务也会停止。
 
 使用默认 `127.0.0.1` 地址时，PDF 会留在本机。如果您把 Base URL 改为局域网或远程服务器，PDF 会被发送到该服务器。
 

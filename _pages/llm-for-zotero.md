@@ -133,15 +133,39 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 
 ## What's New
 
+**v3.9.14**
+
+- **Task progress shows the sources of each answer.**
+  The side panel lists, for each question, the papers and web pages the Agent used and the passages it read.
+  **Show in answer** jumps to the sentence that cites a source.
+  See [Task Progress and Sources](#task-progress-and-sources).
+- **Web answers credit their sources** with numbered marks and a source chip, which stay when you copy the answer.
+- **Conversations grouped by agent:** the window sidebar can group chats into **Agent**, **Codex**, and **Claude** sections.
+- **The composer floats** over the bottom of the chat and grows as you type.
+- **MinerU local server on demand:** the plugin can start a local MinerU server when it parses a PDF and stop it when it is idle.
+  See [Using a Local MinerU Server](#using-a-local-mineru-server).
+- **OpenCode Go** is a new provider preset.
+
+**v3.9.13**
+
+- **Side panel** in the standalone window holds up to eight tabs: a side chat, past chats, and everything a chat made.
+- **Files the Agent saves** show as preview cards under the answer, and each paper gets its own folder.
+  See [Files the Agent Saves](#files-the-agent-saves).
+- **Papers outside your library:** the Agent can read the abstract and open-access text of a paper from a DOI, PubMed, PMC, or arXiv ID.
+- **Claude Code works without setup:** the plugin starts and stops the bridge that Claude Code needs.
+- **AI note edits keep citations, highlights, and images** in place.
+- **DeepSeek search** is a new choice for web search, next to Tavily and AnySearch.
+
+**Earlier updates**
+
 - **Usage Statistics** provides a local overview of Paper chat and Library chat activity, with time filters, activity and token charts, model details, CSV export, and reset controls.
   See [Usage Statistics](#usage-statistics).
 - **Built-in web and literature research** lets the Agent search the public web, read source pages, and combine current online information with evidence from your Zotero library.
   Answers can include paragraph-level source cards, while the activity trace keeps general web results and scholarly literature results visually distinct.
   See [General Web Search](#general-web-search).
 - **Codex App Server** is the recommended Codex path for ChatGPT Plus users. It runs through the local `codex app-server` runtime and is configured from the **Agent** tab.
-- **Claude Code Mode (experimental)** runs Claude Code as a separate conversation system inside Zotero, using your own Claude Code login. The plugin starts and stops the small bridge it needs for you. It does not yet support native Zotero API operations. See [Claude Code Setup](#claude-code-setup-experimental).
+- **Claude Code Mode (experimental)** runs Claude Code as a separate conversation system inside Zotero, using your own Claude Code login. It can use the plugin's Zotero tools to read your library and, with your approval, edit notes, tags, metadata, and imports. See [Claude Code Setup](#claude-code-setup-experimental).
 - **One history** lists Agent, Codex, and Claude chats together. Click the runtime badge in the message box to switch runtimes, and attach an earlier conversation from the slash menu or by asking for it in plain words.
-- **Side panel** in the standalone window opens read-only past chats or a temporary side chat next to the main chat.
 - **WebChat Mode** supports ChatGPT, DeepSeek, and Google Gemini web sync through the Sync for Zotero browser extension.
 - **File-Based Notes**: Notes are no longer hard-coded to Obsidian. Configure any local Markdown directory, including Obsidian, Logseq, or a plain folder. See [File-Based Notes](#file-based-notes).
 - **Skills**: Customizable guidance files shape how the agent handles different tasks. 8 built-in skills are included, plus a portal for creating your own. See [Skills](#skills).
@@ -375,11 +399,34 @@ Open the LLM Assistant in its own dedicated window, separate from the Zotero rea
 ### Features
 
 - **Paper chat & Library chat** &mdash; Switch between paper-specific and library-wide conversations using the tabs at the top.
-- **Conversation history** &mdash; Browse past conversations organized by date (Today, Yesterday, Last 7/30 days, Older) in the collapsible left sidebar.
+- **Conversations** &mdash; Browse past chats in the sortable **Conversations** list in the left sidebar. You can group them into foldable **Agent**, **Codex**, and **Claude** sections, each with its own sort order and a **+** button for a new chat. Pinned papers stay at the top, and each one keeps its own side panel tabs.
+- **Side panel** &mdash; Open it with the button at the end of the **Paper chat \| Library chat** row. It holds up to eight tabs:
+  - **Side chat:** ask a quick question without leaving the main chat. It sees the main chat, can use a different model, and is not saved.
+  - **History:** read an earlier chat next to the current one, quote it, add its paper, or make it the main chat.
+  - **Miscellaneous:** everything the chats of this paper made, such as diagrams, figures, web pages, code, plans, and files. **Go to chat** jumps to the message that made it.
+  - **Task progress:** the sources for each question. See [Task Progress and Sources](#task-progress-and-sources).
+
+  Diagrams, code, web pages, figures, plans, and files in the chat have a **&rarr;\|** button that moves them into their own side panel tab.
+  Select text in an answer and pick **Quote in side chat** to ask about it in a side chat.
 - **Full feature parity** &mdash; Everything available in the reader sidebar &mdash; screenshots, file uploads, agent mode, quick-action presets, reference picker &mdash; works identically in the standalone window.
 - **Search** &mdash; Search through your conversation history using the search overlay.
 
 While the standalone window is open, the reader sidebar panels show a placeholder with options to **Focus Window** (bring the standalone window to the foreground) or **Close Window & Return Here** (close standalone and restore the sidebar).
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/window/side-panel.png" alt="Standalone window with a side chat open in the side panel next to the main chat" width="1600" height="887" loading="lazy">
+  <figcaption>The side panel opens next to the main chat. Here it holds a side chat.</figcaption>
+</figure>
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/window/miscellaneous.png" alt="Miscellaneous tab listing diagrams, figures, and files made by the chats of one paper" width="1600" height="887" loading="lazy">
+  <figcaption><strong>Miscellaneous</strong> lists everything the chats of this paper made, newest first.</figcaption>
+</figure>
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/window/move-to-side.png" alt="A diagram moved from the chat into its own side panel tab" width="1600" height="887" loading="lazy">
+  <figcaption>The <strong>&rarr;|</strong> button moves a diagram, figure, web page, or file into its own side panel tab.</figcaption>
+</figure>
 
 ---
 
@@ -449,31 +496,50 @@ This is useful when a question depends on information that may be newer than a p
 
 ### Set Up Tavily
 
-Web search is powered by [Tavily](https://tavily.com/) and uses its own API key, separate from your model-provider key.
+Web search can use [Tavily](https://tavily.com/) (the default), AnySearch, or DeepSeek.
+Tavily uses its own API key, separate from your model-provider key.
 
 1. [Create a Tavily account](https://app.tavily.com/) and obtain an API key.
 2. Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent**.
-3. Find **Tavily Web Search**, paste the key, and click **Test connection**.
+3. In **Web search**, keep **Tavily**, paste the key, and click **Test connection**.
 4. Enable [Agent Mode](#agent-mode-beta), then ask a question that needs current or public web evidence.
+
+There is no separate on/off switch.
+The `web_search` and `web_read` tools become available to the Agent when the selected provider can run.
+They are not added to WebChat, Codex, or Claude Code chats, which use their own web search.
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/web-search/tavily-setup.png" alt="Tavily Web Search settings with an API key field, connection test, credit information, and privacy notice" width="1162" height="626" loading="lazy">
   <figcaption>Configure and test the Tavily key from the Agent preferences. The key remains in your local Zotero preferences.</figcaption>
 </figure>
 
+### Other Search Providers
+
+| Provider | Key | Cost | Limits |
+|---|---|---|---|
+| **AnySearch** | Optional; leave it blank for anonymous access | Server-controlled quota | 1&ndash;10 results per search; reads one to five URLs from the same run; no depth, topic, date, or domain filters; no PDF or Office extraction |
+| **DeepSeek** | Uses the key of your first model profile with the official `https://api.deepseek.com` address | $0.75 per 1,000 successful searches or page reads, billed to that DeepSeek account | Queries up to 128 characters, filters included |
+
+Select the provider in **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent** &rarr; **Web search**.
+For AnySearch, **Test search (sends a public query)** sends one fixed public query and uses quota.
+DeepSeek never sends keys of relays or other hosts.
+Each provider receives your search queries and the URLs the Agent reads.
+
 ### What the Agent Can Do
 
 | Need | How the Agent handles it |
 |---|---|
 | Find current public information | Uses general web search and selects a search depth appropriate for the request |
-| Inspect a specific source | Opens a public page for focused extraction instead of relying only on a search snippet |
+| Inspect a specific source | Reads a public page step by step, and goes deeper only when the page needs it |
 | Discover academic papers | Uses scholarly literature search for paper metadata, recommendations, references, and citation relationships |
+| Read a paper outside your library | Reads the abstract and open-access text from a DOI, PubMed, PMC, or arXiv ID, without importing it |
 | Combine evidence types | Can use web search and literature search in the same turn, while keeping their results separate in the activity trace |
-| Explain where a claim came from | Adds interactive source cards after supported paragraphs, with the page title, organization, favicon, and a safe link |
+| Explain where a claim came from | Ends each cited sentence with a numbered mark and adds a source chip at the end of the answer; the marks and chip stay when you copy the answer |
 
 General web search and scholarly literature search are complementary rather than interchangeable.
 Use web search for current documentation, institutional pages, public explanations, standards, policies, and other open-web material.
-Use literature search when you need academic discovery through sources such as Crossref and Semantic Scholar.
+Use literature search when you need academic discovery through OpenAlex, arXiv, and Europe PMC, with Crossref and Semantic Scholar for metadata.
+The Agent checks your paper and your library first, and searches outside only when they cannot answer.
 For a broad research question, the Agent can use both and synthesize the results with evidence already in Zotero.
 
 <div class="rtd-doc-figure-grid">
@@ -509,7 +575,7 @@ When results are displayed, Zotero may load favicons from public URLs supplied b
 Do not include credentials, unpublished material, personal data, or other sensitive private text in a web query.
 
 Web sources can change or disagree.
-Use the source cards to open important pages and verify high-stakes claims against the original source before relying on them.
+Use the source marks to open important pages and verify high-stakes claims against the original source before relying on them.
 
 ---
 
@@ -525,24 +591,112 @@ Use the source cards to open important pages and verify high-stakes claims again
   <figcaption>The Agent settings page keeps the Original Agent, Codex, and Claude Code runtimes together. Enable the runtimes you want here, then switch between them from the chat header or the runtime badge in the message box.</figcaption>
 </figure>
 
-When enabled, the LLM becomes an **autonomous agent** that can read, search, and write within your Zotero library. Read tools run directly; write tools route through confirmation cards and stay undoable.
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/runtime-badge.png" alt="Runtime badge menu in the message box with Agent, Codex, and Claude choices" width="1600" height="1600" loading="lazy">
+  <figcaption>Click the runtime badge in the message box to switch between <strong>Agent</strong>, <strong>Codex</strong>, and <strong>Claude</strong>.</figcaption>
+</figure>
+
+In a normal chat, the model answers from the context you give it.
+In Agent Mode, the model can also use **tools**: small actions that read, search, or change your Zotero library.
+You ask in plain words, and the Agent decides which tools to use and in which order.
+
+The rule is simple: tools that only read run directly; tools that change something wait for your approval and can be undone.
+
+### How an Agent Run Works
+
+1. **You ask.** For example: *"Find the papers in this collection that use calcium imaging, tag them, and write a summary note."*
+2. **The Agent splits the request into parts** and tracks each part, so a long request does not lose a step.
+3. **The Agent reads.** It searches your library, reads papers and notes, and searches outside sources only when your library cannot answer.
+4. **The Agent proposes changes.** A tag, a metadata edit, a note, or a command shows as a confirmation card. Nothing changes until you approve it.
+5. **The Agent answers.** Cited sentences end with a numbered mark, and the task progress panel shows what each answer used.
+6. **You can undo.** Ask the Agent to undo, and it reverts recorded changes, newest first.
+
+If a choice is unclear, such as which collection to use, the Agent asks you before it continues.
 
 Long agent runs are cache-aware. The plugin keeps stable Zotero context and previously read evidence separate from the changing chat transcript, tracks which papers and passages have already been inspected, and automatically compacts old turns when the model context fills up. Follow-up questions can reuse grounded evidence when it is still relevant, while the agent reads again when the needed source or coverage layer is missing.
 
+### Task Progress and Sources
+
+Task progress opens in a side panel tab of the standalone window.
+It has one block for each question, with the papers and web pages that question used.
+
+- For a library paper, it lists the passages the Agent read, then where the answer uses them.
+- For a web page, it shows the page with the site's icon. Web links open in the side panel.
+- **Show in answer** finds the sentence that cites a source, highlights it, and scrolls to it.
+
+Use it to check what the Agent read before you trust an answer.
+It works in paper chat and in library chat.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/task-progress-library.png" alt="Task progress panel listing library papers, the passages the agent read, and Show in answer links" width="1600" height="1085" loading="lazy">
+  <figcaption>For a library paper, task progress lists the passages the Agent read. <strong>Show in answer</strong> highlights the sentence that uses each passage.</figcaption>
+</figure>
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/task-progress-web.png" alt="Task progress panel for a web search answer, with numbered source marks in the answer" width="1600" height="1088" loading="lazy">
+  <figcaption>The same panel works for web search answers.</figcaption>
+</figure>
+
+<div class="rtd-doc-figure-grid">
+  <figure class="rtd-doc-figure">
+    <img src="/images/llm-for-zotero/agent/task-progress-evidence.png" alt="A web source opened in the Page tab of the side panel next to the answer" width="1600" height="1085" loading="lazy">
+    <figcaption>Open a source to see the page next to the answer.</figcaption>
+  </figure>
+  <figure class="rtd-doc-figure">
+    <img src="/images/llm-for-zotero/agent/what-agent-read.png" alt="What the agent read tab showing the exact text the agent saw for a web source" width="866" height="1800" loading="lazy">
+    <figcaption><strong>What the agent read</strong> shows the exact text the Agent saw, and says when it saw only a search snippet.</figcaption>
+  </figure>
+</div>
+
+### Papers Outside Your Library
+
+The Agent can read a paper that is not in your library, from a DOI, PubMed ID, PMC ID, or arXiv ID.
+It reads the full abstract, and the full text when the paper is open access.
+For a paper that is only available as a PDF, it gives you the link.
+Reading never imports the paper; ask the Agent to import it if you want to keep it.
+
+### Earlier Conversations
+
+The Agent can find, read, and attach an earlier chat, up to three at a time.
+Type `/` and pick **Add past conversation**, or just ask, for example *"add the chat where I asked about grid cells last week."*
+This works in Agent, Codex, and Claude modes.
+
+### Files the Agent Saves
+
+When the Agent saves a file, such as a web page, a Markdown summary, a picture, or a table, a preview card shows under the answer.
+From the card you can open the file in the full view, show it in its folder, or move it to the side panel.
+The card stays if you delete the file later, and says that the file is gone.
+
+Each paper gets its own folder for saved files.
+In **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent** &rarr; **Saved files**, you can choose where these folders go.
+**Check folders** lists them with their size, shows folders of deleted papers first, and lets you delete the ones you no longer need.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/file-card.png" alt="A preview card for a web page file the agent saved, under the answer" width="1600" height="1112" loading="lazy">
+  <figcaption>A preview card shows each file the Agent saves.</figcaption>
+</figure>
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/saved-files-settings.png" alt="Saved files settings with the folder location and the Check folders button" width="1600" height="1331" loading="lazy">
+  <figcaption>Choose where saved files go, and clean up old folders with <strong>Check folders</strong>.</figcaption>
+</figure>
+
 ### Agent Tools
 
-Read tools run directly. Write tools go through confirmation cards and stay undoable.
+You do not need to call these tools yourself; the Agent picks them.
+The table helps you understand the activity trace and the confirmation cards.
 
 | Tool area | Tools | What they do |
 |---|---|---|
 | Library and PDF reading | `library_search`, `library_read`, `library_retrieve`, `paper_read`, `read_attachment`, `context_read` | Search items and collections, read metadata, read papers, search paper passages, render PDF pages, inspect attachments and the chat context |
-| Scholarly discovery | `literature_search`, `literature_review` | Search OpenAlex, arXiv, and Europe PMC for papers, recommendations, references, and citations (metadata lookup via CrossRef and Semantic Scholar), then present ranked candidates |
-| General web research | `web_search`, `web_read` | Search the current public web with Tavily, read relevant pages, and show source links with the answer (only when a Tavily key is set) |
+| Scholarly discovery | `literature_search`, `literature_read`, `literature_review` | Search OpenAlex, arXiv, and Europe PMC for papers, recommendations, references, and citations (metadata lookup via CrossRef and Semantic Scholar), read the abstract and open-access text of an outside paper, then present ranked candidates |
+| General web research | `web_search`, `web_read` | Search the current public web with Tavily, AnySearch, or DeepSeek, read relevant pages, and credit the sources in the answer |
+| Past conversations | `past_chat_search`, `past_chat_read`, `past_chat_attach` | Find an earlier chat, read it, and attach it to the current chat |
 | Library writes | `library_update`, `library_import`, `library_delete`, `annotate_pdf` | Apply tags, update metadata, move items, manage collections and attachments, merge duplicates, trash items, import identifiers or local files, highlight PDF passages |
 | Citations and settings | `library_cite`, `library_settings` | Format citations and bibliographies with Zotero's citation engine, and read or change the Zotero preferences the agent may touch |
 | Notes and documents | `note_write`, `note_write_batch`, `submit_document` | Create, append to, or edit Zotero notes, write one note on each of many items, and finalize longer documents |
 | Filesystem and scripting | `file_io`, `run_command`, `zotero_script` | Read/write local files, run analysis commands, or execute Zotero JavaScript with write confirmations |
-| Skills and questions | `load_skill`, `request_user_input`, `past_chat_attach` | Load a skill's instructions when the task needs them, ask you a question when a choice is ambiguous, and add an earlier conversation to the chat |
+| Skills and questions | `load_skill`, `request_user_input` | Load a skill's instructions when the task needs them, and ask you a question when a choice is ambiguous |
 | Task tracking | `task_update`, `workflow_script` | Split a compound request into parts the plugin tracks, and run several tool calls in one script with loops and conditions |
 | Safety | `undo` | Undo recorded write actions from the conversation's durable change history, one at a time or several newest-first |
 
@@ -593,6 +747,11 @@ The agent can chain multiple tools together to accomplish complex tasks, such as
 
 #### Find related papers
 
+There are two ways to find related papers:
+
+- **`/discover_related`** runs a direct OpenAlex search for the paper you are viewing. It does not need a model. It opens **Recommendations**, **References**, and **Citations** tabs with up to 20 papers each. Use `/discover_related 30` to change the number, **Load more** for 20 more, and **Import selected** to save the papers you choose.
+- **Ask in chat**, for example *"find relevant papers"* or *"find 15 relevant papers."* The Agent ranks the candidates and gives a reason for each. It starts with five unless you give a number. Use **Find more** for another batch and **Import selected** to save your choice. If fewer good matches exist, the card says so instead of padding the list.
+
 <img src="/images/llm-for-zotero/agent/related_papers.gif" alt="Agent finding related papers">
 
 #### Apply tags automatically
@@ -619,7 +778,9 @@ All write operations go through a **human-in-the-loop confirmation** workflow:
 
 <img src="/images/llm-for-zotero/skills.png" alt="Skills management portal" style="max-width:512px;">
 
-Skills are customizable guidance files that shape how the agent approaches different types of requests. Each skill is a Markdown file with regex trigger patterns: when your message matches a skill's patterns, its instructions are automatically injected into the agent's system prompt, guiding it to use the most efficient tools and workflows for the task at hand.
+Skills are customizable guidance files that shape how the agent approaches different types of requests.
+A skill teaches the Agent *how* to do a task, such as which tools to use and in which order; it does not add new tools.
+Each skill is a Markdown file with a short description and a body of instructions.
 
 <div class="rtd-tip">
   <div class="rtd-admonition-title">Note</div>
@@ -630,40 +791,45 @@ Skills are customizable guidance files that shape how the agent approaches diffe
 
 The plugin ships with **8 built-in skills** covering common research workflows. They are automatically copied to your skills folder on first run.
 
-| Skill | Triggers on | What it guides the agent to do |
-|---|---|---|
-| `simple-paper-qa` | General questions about a paper, such as summaries, findings, authors, or TLDR requests | Read the paper once and answer immediately, avoiding unnecessary retrieval calls |
-| `evidence-based-qa` | Questions about specific methods, results, data, or claims | Read first, then use targeted `search_paper` retrieval for specific evidence |
-| `analyze-figures` | References to figures, tables, or diagrams by number | Extract a precise figure crop from the source PDF (using MinerU as the index) and read it directly; read tables as structured text |
-| `compare-papers` | Requests to compare or contrast multiple papers | Batch paper reads and then retrieve focused evidence for comparison points |
-| `library-analysis` | Requests to summarize, analyze, or audit your library | Use efficient scripting to iterate library items instead of paginating through context |
-| `literature-review` | Requests for a literature review or research synthesis | Discover papers, deep-read the most relevant few, and synthesize thematically |
-| `write-note` | Requests to write reading notes as Zotero notes or Markdown files in your notes directory | Compose notes with metadata, Pandoc citations, and optional figure copying |
-| `import-cited-reference` | Requests to import papers cited in the current PDF | Extract references and import the selected cited papers into Zotero |
+| Skill | What it guides the agent to do |
+|---|---|
+| `evidence-based-qa` | Retrieve missing evidence for specific methods, results, or claims in selected papers or collections |
+| `analyze-figures` | Extract a precise figure crop from the source PDF (using MinerU as the index) and read it directly; read tables as structured text |
+| `compare-papers` | Compare selected papers or collection papers by theme, method, or findings |
+| `library-analysis` | Analyze your whole library or a collection with statistics, without overflowing the context |
+| `literature-review` | Discover papers, deep-read the most relevant few, and write a structured review with citations |
+| `reorganize-library` | Sort papers into folders or tags: show the proposed grouping first, reuse existing folders and tags, then move or tag in batches |
+| `write-note` | Write, save, or edit a Zotero note or a Markdown note in your notes directory |
+| `import-cited-reference` | Import papers cited in the current PDF into Zotero by DOI |
 
 ### How Skills Work
 
-1. When you send a message in Agent Mode, the plugin tests your text against every skill's `match` patterns.
-2. If **any** pattern in a skill matches (OR semantics), that skill's instruction is injected into the agent's system prompt for that request.
-3. Multiple skills can activate simultaneously if your message matches more than one.
-4. The agent uses these instructions as guidance for tool selection and workflow &mdash; they teach the agent *how* to approach a task, not *what* tasks it can do.
+1. At the start of each turn, the Agent sees only the name and description of each skill.
+2. If the Agent decides that the task needs a skill, it calls `load_skill` to read the full instructions. There is no automatic pre-selection.
+3. If you pick a skill from the `/` menu, the plugin applies it directly.
+4. A skill applies only in the contexts its file allows, such as one paper or a whole library.
+5. An approved plan keeps the exact skill versions it was approved with.
+
+Because the Agent chooses skills from their descriptions, a clear and precise description matters more than anything else in a custom skill.
 
 ### Creating Custom Skills
 
 1. Open the **Standalone Window** (`Ctrl+Shift+L` / macOS: `Cmd+Shift+L`).
 2. Click the **Skills icon** in the top toolbar to open the Skills portal.
 3. Click the **"+ New skill"** button to create a template file.
-4. The template opens in your default text editor. Edit the three key parts:
+4. The template opens in your default text editor. Edit the frontmatter and the instructions:
 
 ```
 ---
+name: my-custom-skill
 id: my-custom-skill
-match: /your regex pattern here/i
-match: /another trigger pattern/i
+description: Describe what this skill does
+version: 1
+contexts: any
+activation: auto
 ---
 
-Instructions for the agent when this skill matches.
-Describe the workflow, which tools to prefer, and any constraints.
+Describe precisely when and how the agent should apply this workflow.
 ```
 
 {:start="5"}
@@ -671,11 +837,14 @@ Describe the workflow, which tools to prefer, and any constraints.
 
 **Skill file format:**
 
-| Field | Required | Description |
-|---|---|---|
-| `id` | Yes | Unique identifier for the skill |
-| `match` | Yes (at least one) | Regex pattern with optional flags (`i`, `g`, `m`, etc.). Repeatable &mdash; multiple `match` lines use OR semantics |
-| Instruction body | Yes | Markdown text after the closing `---`. Injected into the agent's system prompt when the skill matches |
+| Field | Description |
+|---|---|
+| `name`, `id` | Identifier shown in the `/` menu and in skill pickers |
+| `description` | What the skill does. The Agent reads it to decide when to load the skill, so make it precise |
+| `version` | Increase it when you make significant changes |
+| `contexts` | Where the skill applies: `any`, `single-paper`, `paper-set`, `library-corpus`, `note`, or `visual-input`; separate several with commas |
+| `activation` | `auto` (the Agent may load it), `manual` (only from the `/` menu), or `both` |
+| Instruction body | Markdown text after the closing `---`. The Agent reads it when the skill applies |
 
 ### Managing Skills
 
@@ -868,6 +1037,11 @@ Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent** ta
 
 Then click the **Claude Code** button in the chat header, or click the runtime badge in the message box and pick **Claude**, to enter Claude Code mode.
 
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/claude-settings.png" alt="Claude Code settings showing the bridge status with Restart and Open log buttons" width="1600" height="1331" loading="lazy">
+  <figcaption>The settings show whether Claude Code is running, with <strong>Restart</strong> and <strong>Open log</strong> buttons.</figcaption>
+</figure>
+
 That is all. You do **not** need to download or start a bridge yourself. While Claude Code mode is on, Zotero starts a small helper program (the "bridge") that connects Zotero to your Claude Code. It runs only on your computer, only answers Zotero, and stops when you quit Zotero or turn Claude Code off. If you never turn on Claude Code, nothing extra runs.
 
 The **Bridge** section at the top of the Claude Code settings shows whether the bridge is running. Use **Restart bridge** if something seems stuck, and **Open log** to see what the bridge reported.
@@ -993,6 +1167,14 @@ You can pick a `Backend` in the local section:
 - `hybrid` — newer high-accuracy hybrid pipeline, multi-language, requires local compute.
 
 `Test Connection` checks that the server process responds at `/health`; it does not guarantee that all models are warmed up.
+
+**Start and stop the server automatically** (contributed by [@AkimioJR](https://github.com/AkimioJR) in [#530](https://github.com/yilewang/llm-for-zotero/pull/530)):
+
+- Enter the command that starts the server, for example `mineru-api`.
+- The plugin starts the server when it parses a PDF.
+- It stops the server after a set idle time, to free memory and GPU memory. The default is 10 minutes.
+- Preferences show the server status, with **Start** and **Stop** buttons.
+- The server also stops when you quit Zotero.
 
 With the default `127.0.0.1` address, PDFs stay on your machine. If you change the base URL to a LAN or remote server, PDFs are sent to that server.
 
