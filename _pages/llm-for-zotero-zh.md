@@ -28,9 +28,13 @@ lang_alt: /llm-for-zotero/
 
 **llm-for-zotero** 将大型语言模型带入 Zotero 阅读器，让您无需离开文库即可提问、总结论文、解读图表、比较文献并保存笔记。它支持常规 API 服务商、本地 OpenAI 兼容模型、WebChat、Codex App Server 和 Claude Code。
 
-<img src="/images/llm-for-zotero/demo.png" alt="llm-for-zotero 侧栏在 Zotero PDF 阅读器中的截图">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/demo.png" alt="llm-for-zotero 侧栏在 Zotero PDF 阅读器中的截图" width="1600" height="1200" loading="lazy" decoding="async">
+</figure>
 
-<img src="/images/llm-for-zotero/demo2.png" alt="llm-for-zotero 助手在 Zotero 中的第二张截图">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/overview.jpg" alt="llm-for-zotero 助手在 Zotero 中的第二张截图" width="1600" height="1144" loading="lazy" decoding="async">
+</figure>
 
 <div class="rtd-feature-grid">
   <a class="rtd-feature-card" href="#带引用跳转的有据答案">
@@ -47,7 +51,11 @@ lang_alt: /llm-for-zotero/
   </a>
   <a class="rtd-feature-card" href="#agent-模式beta">
     <strong>Agent 模式</strong>
-    <p>自主管理文库、执行终端命令、访问本地文件的智能代理——所有变更均需您审批。</p>
+    <p>读取、搜索并整理您的文库；修改任何内容之前都会先请您批准。</p>
+  </a>
+  <a class="rtd-feature-card" href="#任务进度与来源">
+    <strong>任务进度与来源</strong>
+    <p>查看每个回答使用了哪些论文、段落和网页，并跳到引用它们的句子。</p>
   </a>
   <a class="rtd-feature-card" href="#通用网页搜索">
     <strong>通用网页搜索</strong>
@@ -63,7 +71,7 @@ lang_alt: /llm-for-zotero/
   </a>
   <a class="rtd-feature-card" href="#独立窗口模式">
     <strong>独立窗口模式</strong>
-    <p>在独立窗口中打开 LLM 助手，提供全尺寸聊天界面和对话历史侧栏。</p>
+    <p>全尺寸聊天窗口，提供分组的对话列表，以及用于侧聊、历史对话和任务进度的侧边面板。</p>
   </a>
   <a class="rtd-feature-card" href="#文件笔记">
     <strong>文件笔记</strong>
@@ -109,7 +117,7 @@ lang_alt: /llm-for-zotero/
 - 一种模型后端：服务商 API 密钥、本地 OpenAI 兼容模型、WebChat、Codex App Server 或 Claude Code。
 - WebChat 模式需要 Chromium 内核浏览器。
 - 通过 npm 安装 Codex CLI 和使用 Claude Code 模式需要 Node.js 18+。macOS Codex cask 不需要单独安装 Node.js。
-- 只有在 Agent 模式中启用通用网页搜索时，才需要 Tavily API 密钥。
+- 在 Agent 模式中使用通用网页搜索时：需要 Tavily 密钥、官方 DeepSeek 模型配置，或使用无需密钥的 AnySearch。
 - 如果启用 MinerU 解析，建议使用个人 MinerU API 密钥或本地 `mineru-api` 服务。
 
 ## 选择配置方式
@@ -121,7 +129,7 @@ lang_alt: /llm-for-zotero/
 | 在浏览器中使用 ChatGPT、DeepSeek 或 Google Gemini | 通过 Sync for Zotero 扩展使用 [WebChat](#webchat-配置chatgpt-网页同步) | 不需要服务商 API 密钥 |
 | ChatGPT Plus 用户使用 Codex 模型 | [Codex App Server](#codex-配置chatgpt-plus-订阅用户) | 不需要单独 API 密钥 |
 | 在 Zotero 内使用 Claude Code | [Claude Code 桥接服务](#claude-code-配置实验性) | 需要 Claude Code 认证 |
-| 检索最新公开网页信息 | 在 Agent 模式中使用 [通用网页搜索](#通用网页搜索) 与 Tavily | Tavily 密钥 |
+| 检索最新公开网页信息 | 在 Agent 模式中使用 [通用网页搜索](#通用网页搜索)，搭配 Tavily、AnySearch 或 DeepSeek | Tavily 密钥、DeepSeek 密钥；AnySearch 无需密钥 |
 | 提升表格、公式和图表的 PDF 提取质量 | [MinerU PDF 解析](#mineru-pdf-解析) | 建议使用个人 MinerU 密钥 |
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
@@ -205,7 +213,9 @@ lang_alt: /llm-for-zotero/
 2. 填写 **API 基础 URL**、**API 密钥** 和**模型名称**。
 3. 点击 **测试连接** 以验证配置。
 
-<img src="/images/llm-for-zotero/model_setting.gif" alt="服务商与模型配置动图">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/model_setting.mp4" poster="/images/llm-for-zotero/model_setting.jpg" width="1280" height="904" muted loop playsinline preload="none" aria-label="服务商与模型配置动图"></video>
+</figure>
 
 ### 支持的服务商与协议
 
@@ -275,7 +285,7 @@ lang_alt: /llm-for-zotero/
 | 模式 | 说明 |
 |---|---|
 | **论文对话** | 针对当前打开的 PDF 进行对话，上下文来自该论文。 |
-| **全局对话** | 覆盖整个文库的对话，不限定于某篇论文。 |
+| **文库对话** | 覆盖整个文库的对话，不限定于某篇论文。 |
 | **笔记对话** | 编辑 Zotero 笔记时进行对话，以笔记内容为上下文。 |
 
 ### 界面控件
@@ -290,56 +300,68 @@ lang_alt: /llm-for-zotero/
 
 ## 带引用跳转的有据答案
 
-<img src="/images/llm-for-zotero/citation_jump.gif" alt="一键从 AI 引用跳转到论文原文">
-
 提问时，模型会生成**基于论文内容**的答案。引用标签会在页码位置经过验证前保持保守；点击已验证的引用或基于原文片段的引用，即可跳回 Zotero 中匹配的段落，方便核实答案并快速定位相关内容。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/citation_jump.mp4" poster="/images/llm-for-zotero/citation_jump.jpg" width="1080" height="662" muted loop playsinline preload="none" aria-label="一键从 AI 引用跳转到论文原文"></video>
+</figure>
 
 ---
 
 ## 论文摘要生成
 
-<img src="/images/llm-for-zotero/summarize.gif" alt="侧栏中即时生成论文摘要">
-
 数秒内为任意论文生成简洁摘要。摘要基于完整 PDF 全文生成，您可以自定义提示词，聚焦于研究方法、结果、启示或其他任何方面。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/summarize.mp4" poster="/images/llm-for-zotero/summarize.jpg" width="960" height="754" muted loop playsinline preload="none" aria-label="侧栏中即时生成论文摘要"></video>
+</figure>
 
 ---
 
 ## 选中文本解释
 
-<img src="/images/llm-for-zotero/text.gif" alt="模型对选中文本进行解释">
-
 选中 PDF 中任意复杂段落或专业术语，请模型为其解释。您最多可添加 **5 条上下文**（来自论文或之前的回答）以进一步细化解释。
 
 可选弹窗会自动建议将选中文本添加到对话，不喜欢可在设置中关闭。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/text.mp4" poster="/images/llm-for-zotero/text.jpg" width="960" height="754" muted loop playsinline preload="none" aria-label="模型对选中文本进行解释"></video>
+</figure>
 
 ---
 
 ## 图表解读
 
-<img src="/images/llm-for-zotero/screenshot.gif" alt="基于截图的图表解读">
-
 截取任意图形、图表或示意图，请模型进行解读。每次最多支持 **10 张截图**，适合分析复杂的多面板图表或跨章节对比视觉内容。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/screenshot.mp4" poster="/images/llm-for-zotero/screenshot.jpg" width="960" height="698" muted loop playsinline preload="none" aria-label="基于截图的图表解读"></video>
+</figure>
 
 <div class="rtd-tip">
   <div class="rtd-admonition-title">提示</div>
-  解读图表时，建议使用支持图像输入的多模态模型（如 GPT-4o、Gemini Pro、Claude）以获得最佳效果。
+  解读图表时，建议使用支持图像输入的多模态模型（如当前的 GPT、Gemini 或 Claude 模型）以获得最佳效果。
 </div>
 
 ---
 
 ## 跨论文对比
 
-<img src="/images/llm-for-zotero/multi.gif" alt="使用斜杠命令进行跨论文对比">
-
 在不同标签页中打开多篇论文，并排对比。在输入框中输入 **`/`** 可引用其他已打开的论文作为额外上下文，单次对话最多可引用 **10 篇论文**，实现深度跨文献分析。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/multi.mp4" poster="/images/llm-for-zotero/multi.jpg" width="960" height="698" muted loop playsinline preload="none" aria-label="使用斜杠命令进行跨论文对比"></video>
+</figure>
 
 ---
 
 ## 外部文档上传
 
-<img src="/images/llm-for-zotero/upload_files.gif" alt="上传外部文件作为额外上下文">
-
 从本地磁盘上传文档作为额外上下文，支持格式：
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/upload_files.mp4" poster="/images/llm-for-zotero/upload_files.jpg" width="960" height="698" muted loop playsinline preload="none" aria-label="上传外部文件作为额外上下文"></video>
+</figure>
 
 - **PDF**（每个文件最大 50 MB）
 - **DOCX**（Word 文档）
@@ -351,17 +373,21 @@ lang_alt: /llm-for-zotero/
 
 ## 保存至笔记
 
-<img src="/images/llm-for-zotero/save_notes.gif" alt="将模型回答保存到 Zotero 笔记">
-
 一键将任意回答或选中文本直接保存到 **Zotero 笔记**，与您现有的笔记工作流无缝集成，无需手动复制粘贴。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/save_notes.mp4" poster="/images/llm-for-zotero/save_notes.jpg" width="960" height="754" muted loop playsinline preload="none" aria-label="将模型回答保存到 Zotero 笔记"></video>
+</figure>
 
 ---
 
 ## 对话历史与导出
 
-<img src="/images/llm-for-zotero/save_chat.gif" alt="将对话导出到 Zotero 笔记">
-
 对话会**自动保存**到本地并与对应论文关联。您可以：
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/save_chat.mp4" poster="/images/llm-for-zotero/save_chat.jpg" width="960" height="754" muted loop playsinline preload="none" aria-label="将对话导出到 Zotero 笔记"></video>
+</figure>
 
 - 在历史记录面板中浏览过往对话。
 - 将**完整对话**以 Markdown 格式导出到 Zotero 笔记。
@@ -398,9 +424,11 @@ lang_alt: /llm-for-zotero/
 
 ## 自定义快捷预设
 
-<img src="/images/llm-for-zotero/shortcuts.gif" alt="自定义快捷预设配置">
-
 创建**最多 10 个自定义预设**，将常用提示词一键触发。内置预设包括：
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/shortcuts.mp4" poster="/images/llm-for-zotero/shortcuts.jpg" width="1280" height="794" muted loop playsinline preload="none" aria-label="自定义快捷预设配置"></video>
+</figure>
 
 - **总结** — 生成简洁摘要
 - **关键要点** — 提取主要发现
@@ -463,7 +491,9 @@ lang_alt: /llm-for-zotero/
 
 打开 **首选项** &rarr; **llm-for-zotero**，滚动到 **Notes Directory** 部分。
 
-<img src="/images/llm-for-zotero/outside_notes.png" alt="笔记目录设置" style="max-width:512px;">
+<figure class="rtd-doc-figure rtd-doc-figure--narrow">
+  <img src="/images/llm-for-zotero/outside_notes.png" alt="笔记目录设置" width="1160" height="1014" loading="lazy" decoding="async">
+</figure>
 
 | 设置项 | 说明 | 示例 |
 |---|---|---|
@@ -488,9 +518,13 @@ lang_alt: /llm-for-zotero/
 
 ### Zotero 笔记与文件笔记
 
-<img src="/images/llm-for-zotero/note2.jpeg" alt="Zotero 内部笔记" style="max-width:512px;">
+<figure class="rtd-doc-figure rtd-doc-figure--narrow">
+  <img src="/images/llm-for-zotero/note2.jpeg" alt="Zotero 内部笔记" width="980" height="801" loading="lazy" decoding="async">
+</figure>
 
-<img src="/images/llm-for-zotero/obsidian_example.png" alt="Obsidian 中渲染的 Zotero 论文笔记" style="max-width:512px;">
+<figure class="rtd-doc-figure rtd-doc-figure--narrow">
+  <img src="/images/llm-for-zotero/obsidian_example.png" alt="Obsidian 中渲染的 Zotero 论文笔记" width="1424" height="1284" loading="lazy" decoding="async">
+</figure>
 
 笔记使用 [Pandoc 引用语法](https://pandoc.org/MANUAL.html#citations)（`[@citekey]`），兼容 Obsidian 的 Zotero Integration 和 Pandoc 插件，也适用于大多数 Markdown 阅读器。
 
@@ -573,8 +607,8 @@ Agent 会先查看当前论文和您的文库，只有在它们无法回答时�
     <figcaption>活动轨迹将学术文献结果与通用网页结果分开呈现，便于判断每个来源来自哪一种检索路径。</figcaption>
   </figure>
   <figure class="rtd-doc-figure">
-    <img src="/images/llm-for-zotero/web-search/paragraph-source-cards.png" alt="Agent 回答的段落附有来源卡片，显示网站图标、机构名称、页面标题和链接" width="902" height="992" loading="lazy">
-    <figcaption>段落级来源卡片让您能够快速识别并打开支持该段内容的页面，同时保持回答正文连贯。</figcaption>
+    <img src="/images/llm-for-zotero/web-search/web-source-marks.png" alt="Agent 回答中每个引用句末尾带有显示网站图标的来源标记，其中一句被高亮" width="900" height="893" loading="lazy">
+    <figcaption>每个引用句末尾都有一个显示网站图标的来源标记。<strong>在回答中显示</strong>会高亮使用该来源的句子。</figcaption>
   </figure>
 </div>
 
@@ -768,7 +802,9 @@ Agent 为常见文库管理工作流提供高级动作，自动串联多个工�
 
 Agent 可以串联多个工具完成复杂任务——例如查找论文、读取元数据、搜索相关文献并撰写摘要笔记。
 
-<img src="/images/llm-for-zotero/agent/multi_steps.gif" alt="多步骤 Agent 工作流" style="max-width:512px;">
+<figure class="rtd-doc-figure rtd-doc-figure--narrow">
+  <video class="rtd-demo" src="/images/llm-for-zotero/agent/multi_steps.mp4" poster="/images/llm-for-zotero/agent/multi_steps.jpg" width="1080" height="1686" muted loop playsinline preload="none" aria-label="多步骤 Agent 工作流"></video>
+</figure>
 
 #### 查找相关论文
 
@@ -777,15 +813,21 @@ Agent 可以串联多个工具完成复杂任务——例如查找论文、读�
 - **`/discover_related`** 直接对当前论文运行 OpenAlex 搜索，不需要模型。它会打开 **Recommendations**、**References** 和 **Citations** 三个标签页，每个最多 20 篇论文。使用 `/discover_related 30` 可以修改数量，**Load more** 再加载 20 篇，**Import selected** 保存您选中的论文。
 - **在对话中提问**，例如*“找一些相关论文”*或*“找 15 篇相关论文”*。Agent 会为候选论文排序，并给出每篇的理由。如果没有指定数量，默认先给出五篇。使用 **Find more** 获取下一批，**Import selected** 保存您的选择。如果合适的论文较少，卡片会说明原因，而不是凑数。
 
-<img src="/images/llm-for-zotero/agent/related_papers.gif" alt="Agent 查找相关论文">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/agent/related_papers.mp4" poster="/images/llm-for-zotero/agent/related_papers.jpg" width="1080" height="642" muted loop playsinline preload="none" aria-label="Agent 查找相关论文"></video>
+</figure>
 
 #### 自动应用标签
 
-<img src="/images/llm-for-zotero/agent/apply_tags.gif" alt="Agent 为论文应用标签">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/agent/apply_tags.mp4" poster="/images/llm-for-zotero/agent/apply_tags.jpg" width="1080" height="642" muted loop playsinline preload="none" aria-label="Agent 为论文应用标签"></video>
+</figure>
 
 #### 撰写笔记
 
-<img src="/images/llm-for-zotero/agent/write_note.png" alt="Agent 撰写笔记">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/write_note.png" alt="Agent 撰写笔记" width="2304" height="1816" loading="lazy" decoding="async">
+</figure>
 
 ### 安全与审批
 
@@ -801,7 +843,9 @@ Agent 可以串联多个工具完成复杂任务——例如查找论文、读�
 
 ## Skills 技能系统
 
-<img src="/images/llm-for-zotero/skills.png" alt="Skills 技能管理面板" style="max-width:512px;">
+<figure class="rtd-doc-figure rtd-doc-figure--narrow">
+  <img src="/images/llm-for-zotero/skills.png" alt="Skills 技能管理面板" width="1590" height="1442" loading="lazy" decoding="async">
+</figure>
 
 Skills（技能）是可自定义的引导文件，用于调整 Agent 处理不同类型请求的方式。
 技能告诉 Agent *如何*完成任务，例如使用哪些工具以及按什么顺序；它不会增加新工具。
@@ -892,7 +936,9 @@ activation: auto
 **WebChat 模式**通过浏览器扩展将您的问题发送到 [chatgpt.com](https://chatgpt.com)、[chat.deepseek.com](https://chat.deepseek.com) 或 [gemini.google.com](https://gemini.google.com)，再把回复实时流式传回 Zotero。
 它适合不想配置服务商 API 密钥、但想使用网页聊天服务的场景。
 
-<img src="/images/llm-for-zotero/webchat.gif" alt="WebChat 模式连接到 chatgpt.com 的动图">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/webchat.mp4" poster="/images/llm-for-zotero/webchat.jpg" width="1080" height="894" muted loop playsinline preload="none" aria-label="WebChat 模式连接到 chatgpt.com 的动图"></video>
+</figure>
 
 ### 前置条件
 
@@ -1008,7 +1054,9 @@ codex login
 
 仍需旧方式的现有用户可以打开 **AI Providers** 标签页，选择 `Codex Auth (Legacy)`，API 地址保持 `https://chatgpt.com/backend-api/codex/responses`，模型名称保持不变，例如 `gpt-5.5`。
 
-<img src="/images/llm-for-zotero/codex_claude.png" alt="推荐的 Codex App Server 配置截图">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/codex_claude.png" alt="推荐的 Codex App Server 配置截图" width="1196" height="1050" loading="lazy" decoding="async">
+</figure>
 
 ### Codex Auth (Legacy) 技术说明
 
@@ -1143,7 +1191,9 @@ Zotero 界面会加载 Claude Code 桥接服务提供的模型列表，并原样
 
 **MinerU** 是一款先进的 PDF 解析引擎，可从 PDF 中提取高保真 Markdown，同时保留表格、公式、图表和复杂版式——这些内容在标准文本提取中往往会被破坏。
 
-<img src="/images/llm-for-zotero/minerU.png" alt="MinerU PDF 解析结果截图">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/minerU.png" alt="MinerU PDF 解析结果截图" width="716" height="483" loading="lazy" decoding="async">
+</figure>
 
 解析结果会缓存在本地，并在后续对话中复用。启用 **Auto-parse newly added items** 后，新添加的 PDF 附件会在进入 Zotero 文库时发送给 MinerU 解析。如果不启用自动解析，也可以在 **Manage Files** 面板中手动解析选中或过滤后的 PDF。
 
@@ -1231,7 +1281,9 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 
 ### 精准图像提取
 
-<img src="/images/llm-for-zotero/figure_extraction.png" alt="直接从 PDF 原始页面检测并裁剪的图像，每张以红框标出">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/figure_extraction.png" alt="直接从 PDF 原始页面检测并裁剪的图像，每张以红框标出" width="1144" height="1968" loading="lazy" decoding="async">
+</figure>
 
 当 Agent 模式回答关于某张图的问题，或保存讨论该图的笔记时，它会**直接从原始 PDF 中裁剪出精准的高分辨率图像**，仅将 MinerU 缓存用作索引。
 只需提问 *"图 3 展示了什么？"*，Agent 便会从 MinerU 解析中定位该图，从原始 PDF 页面裁出干净的图像，并连同图注和各子图一起进行解读。
@@ -1266,7 +1318,10 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 - WebChat 模式下，请求会通过浏览器扩展转发到 `chatgpt.com`、`chat.deepseek.com` 或 `gemini.google.com`。
 - 云端 MinerU 模式下，被自动解析或手动解析选中的 PDF 会发送给 MinerU。
 - 本地 MinerU 模式下，被自动解析或手动解析选中的 PDF 会发送到您配置的本地或远程 `mineru-api` 服务。
-- 对话历史和缓存的论文上下文由插件存储在本地。
+- 在 Codex App Server 和 Claude Code 模式下，请求会通过您本地安装的 `codex` 或 Claude Code 发送到 OpenAI 或 Anthropic。
+- 使用通用网页搜索时，搜索词和 Agent 读取的网址会发送到您选择的服务商：Tavily、AnySearch 或 DeepSeek。
+- 学术文献搜索会将搜索词和论文标识符发送到 OpenAlex、arXiv、Europe PMC、Crossref 和 Semantic Scholar。
+- 对话历史、缓存的论文上下文、使用统计和 Agent 保存的文件由插件存储在本地。
 - Agent 模式的写入操作会尽可能通过可审阅动作和会话内撤销机制处理。
 
 ---
@@ -1281,6 +1336,7 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 | **Gemini WebChat 在发送前被拒绝** | 同时更新 llm-for-zotero 与 Sync for Zotero，重新加载 `gemini.google.com/app`，并确认 Gemini 输入框已就绪。 |
 | **Codex App Server 失败** | 运行 `codex login`，确认 `codex` 位于 `PATH` 中，然后再次点击**测试连接**。 |
 | **Claude Code 模式卡住** | 查看 Claude Code 设置中的 **Bridge** 状态行，点击 **Open log**，然后点击 **Restart bridge**。详见 Claude Code 配置中的“如果无法使用”。 |
+| **网页搜索不可用** | 在**首选项** &rarr; **Agent** &rarr; **Web search** 中测试所选服务商。网页搜索只在 Agent 对话中可用，WebChat、Codex 和 Claude Code 中不可用。 |
 | **MinerU 解析失败** | 云端模式下添加个人 MinerU API 密钥；本地模式下确认 `mineru-api` 服务能在 `/health` 响应，然后重新尝试**测试连接**。 |
 
 如果遇到 Bug 或难以判断的问题，请在 GitHub 上 [提交 Issue](https://github.com/yilewang/llm-for-zotero/issues)。
@@ -1341,7 +1397,10 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 - [请我喝杯咖啡](https://buymeacoffee.com/yat.lok)
 - 通过支付宝扫码捐赠：
 
-<img src="/images/llm-for-zotero/alipay.png" alt="支付宝捐赠二维码" style="max-width:200px;">
+
+<figure class="rtd-doc-figure rtd-doc-figure--qr">
+  <img src="/images/llm-for-zotero/alipay.png" alt="支付宝捐赠二维码" width="200" height="221" loading="lazy" decoding="async">
+</figure>
 
 ---
 

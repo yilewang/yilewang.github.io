@@ -308,8 +308,26 @@ html[data-theme="dark"] {
   border: 1px solid var(--border);
   border-radius: 10px;
 }
-.rtd-doc-figure--wide {
+/* Scoped to .manual__content to outrank its generic `figure { max-width: 100% }` */
+.manual__content .rtd-doc-figure--wide {
   max-width: 760px;
+}
+.manual__content .rtd-doc-figure--narrow {
+  max-width: 540px;
+}
+.manual__content .rtd-doc-figure--qr {
+  width: fit-content;
+  max-width: 100%;
+}
+.manual__content .rtd-doc-figure.rtd-doc-figure--qr img {
+  width: 200px;
+}
+.manual__content .task-list {
+  padding-left: 0.4em;
+  list-style: none;
+}
+.manual__content .task-list-item-checkbox {
+  margin-right: 0.5em;
 }
 .manual__content .rtd-doc-figure img {
   width: auto;

@@ -297,6 +297,27 @@ layout: default
       .catch(function(){});
   }
 
+  // Demo videos stand in for GIFs: play only while on screen, never with reduced motion
+  var demos = document.querySelectorAll('video.rtd-demo');
+  if (demos.length) {
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      demos.forEach(function(v) { v.controls = true; });
+    } else {
+      var demoObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var playing = entry.target.play();
+            if (playing && playing.catch) playing.catch(function() { entry.target.controls = true; });
+          } else {
+            entry.target.pause();
+          }
+        });
+      }, { rootMargin: '200px 0px' });
+      demos.forEach(function(v) { demoObserver.observe(v); });
+    }
+  }
+
   var topBtn = document.querySelector('.manual__top');
   if (topBtn) {
     var toggleTopBtn = function() { topBtn.classList.toggle('is-visible', window.scrollY > 400); };

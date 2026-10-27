@@ -28,9 +28,13 @@ lang_alt: /llm-for-zotero/zh/
 
 **llm-for-zotero** brings Large Language Models into the Zotero reader, so you can ask questions, summarize papers, inspect figures, compare sources, and save notes without leaving your library. It works with standard API providers, local OpenAI-compatible models, WebChat, Codex App Server, and Claude Code.
 
-<img src="/images/llm-for-zotero/demo.png" alt="Screenshot of the llm-for-zotero sidebar inside the Zotero PDF reader">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/demo.png" alt="Screenshot of the llm-for-zotero sidebar inside the Zotero PDF reader" width="1600" height="1200" loading="lazy" decoding="async">
+</figure>
 
-<img src="/images/llm-for-zotero/demo2.png" alt="Second screenshot of the llm-for-zotero assistant inside Zotero">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/overview.jpg" alt="Second screenshot of the llm-for-zotero assistant inside Zotero" width="1600" height="1144" loading="lazy" decoding="async">
+</figure>
 
 <div class="rtd-feature-grid">
   <a class="rtd-feature-card" href="#grounded-answers-with-citation-navigation">
@@ -47,7 +51,11 @@ lang_alt: /llm-for-zotero/zh/
   </a>
   <a class="rtd-feature-card" href="#agent-mode-beta">
     <strong>Agent Mode (Beta)</strong>
-    <p>An autonomous agent that manages your library, runs terminal commands, and accesses local files — with approval before changes are applied.</p>
+    <p>An agent that reads, searches, and organizes your library, and asks for your approval before it changes anything.</p>
+  </a>
+  <a class="rtd-feature-card" href="#task-progress-and-sources">
+    <strong>Task Progress &amp; Sources</strong>
+    <p>See which papers, passages, and web pages each answer used, and jump to the sentence that cites them.</p>
   </a>
   <a class="rtd-feature-card" href="#general-web-search">
     <strong>General Web Search</strong>
@@ -63,7 +71,7 @@ lang_alt: /llm-for-zotero/zh/
   </a>
   <a class="rtd-feature-card" href="#standalone-window-mode">
     <strong>Standalone Window</strong>
-    <p>Open the LLM Assistant in its own dedicated window with a full-sized chat interface and conversation history sidebar.</p>
+    <p>A full-sized chat window with grouped conversations and a side panel for side chats, past chats, and task progress.</p>
   </a>
   <a class="rtd-feature-card" href="#file-based-notes">
     <strong>File-Based Notes</strong>
@@ -109,7 +117,7 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 - A model backend: provider API key, local OpenAI-compatible model, WebChat, Codex App Server, or Claude Code.
 - A Chromium-based browser for WebChat mode.
 - Node.js 18+ for npm-based Codex CLI installation and for Claude Code mode. The macOS Codex cask does not require a separate Node.js install.
-- A Tavily API key is required only if you enable general web search in Agent Mode.
+- For general web search in Agent Mode: a Tavily key, an official DeepSeek model profile, or AnySearch (no key needed).
 - A personal MinerU API key or a local `mineru-api` server is recommended if you enable MinerU parsing.
 
 ## Choose Your Setup
@@ -121,7 +129,7 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 | Use ChatGPT, DeepSeek, or Google Gemini in the browser | [WebChat](#webchat-setup-chatgpt-web-sync) with the Sync for Zotero extension | No provider API key |
 | Use Codex models with ChatGPT Plus | [Codex App Server](#codex-setup-chatgpt-plus-subscribers) | No separate API key |
 | Use Claude Code inside Zotero | [Claude Code bridge](#claude-code-setup-experimental) | Claude Code auth |
-| Research current public web information | [General web search](#general-web-search) in Agent Mode with Tavily | Tavily key |
+| Research current public web information | [General web search](#general-web-search) in Agent Mode with Tavily, AnySearch, or DeepSeek | Tavily key, DeepSeek key, or none for AnySearch |
 | Improve PDF extraction for tables, equations, and figures | [MinerU PDF parsing](#mineru-pdf-parsing) | Personal MinerU key recommended |
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
@@ -205,7 +213,9 @@ Open **Preferences** &rarr; navigate to the **llm-for-zotero** tab.
 2. Paste your **API Base URL**, **secret key**, and **model name**.
 3. Click **Test Connection** to verify.
 
-<img src="/images/llm-for-zotero/model_setting.gif" alt="Provider and model configuration">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/model_setting.mp4" poster="/images/llm-for-zotero/model_setting.jpg" width="1280" height="904" muted loop playsinline preload="none" aria-label="Provider and model configuration"></video>
+</figure>
 
 ### Supported Providers & Protocols
 
@@ -257,9 +267,9 @@ The plugin supports multiple conversation contexts:
 
 | Mode | Description |
 |---|---|
-| **Paper conversation** | Chat about a specific open PDF. Context is drawn from that paper. |
-| **Global conversation** | Library-wide chat, not tied to any specific paper. |
-| **Note conversation** | Chat while editing a Zotero note, with note content as context. |
+| **Paper chat** | Chat about a specific open PDF. Context is drawn from that paper. |
+| **Library chat** | Library-wide chat, not tied to any specific paper. |
+| **Note chat** | Chat while editing a Zotero note, with note content as context. |
 
 ### Interface Controls
 
@@ -273,72 +283,88 @@ The plugin supports multiple conversation contexts:
 
 ## Grounded Answers with Citation Navigation
 
-<img src="/images/llm-for-zotero/citation_jump.gif" alt="One-click jump from an AI citation to the paper source">
-
 When you ask a question, the model generates answers grounded in the paper's content. Citation labels stay conservative until page locations are verified; click a verified citation or quote-based citation to jump back to the matching Zotero passage.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/citation_jump.mp4" poster="/images/llm-for-zotero/citation_jump.jpg" width="1080" height="662" muted loop playsinline preload="none" aria-label="One-click jump from an AI citation to the paper source"></video>
+</figure>
 
 ---
 
 ## Paper Summarization
 
-<img src="/images/llm-for-zotero/summarize.gif" alt="Instant paper summary in the sidebar">
-
 Get a concise summary of any paper in seconds. The summary is generated from the full text of the open PDF, and you can customize the prompt to focus on methodology, results, implications, or anything else.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/summarize.mp4" poster="/images/llm-for-zotero/summarize.jpg" width="960" height="754" muted loop playsinline preload="none" aria-label="Instant paper summary in the sidebar"></video>
+</figure>
 
 ---
 
 ## Selected Text Explanation
 
-<img src="/images/llm-for-zotero/text.gif" alt="Selected text being explained by the model">
-
 Select any complex paragraph or technical term in the PDF and ask the model to explain it. You can add up to **5 pieces of context** from the paper or previous answers to refine the explanation.
 
 An optional pop-up automatically suggests adding selected text to the chat. This can be disabled in settings if you prefer manual control.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/text.mp4" poster="/images/llm-for-zotero/text.jpg" width="960" height="754" muted loop playsinline preload="none" aria-label="Selected text being explained by the model"></video>
+</figure>
 
 ---
 
 ## Figure Interpretation
 
-<img src="/images/llm-for-zotero/screenshot.gif" alt="Screenshot-based figure interpretation">
-
 Take a screenshot of any figure, chart, or diagram and ask the model to interpret it. The plugin supports up to **10 screenshots** at a time.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/screenshot.mp4" poster="/images/llm-for-zotero/screenshot.jpg" width="960" height="698" muted loop playsinline preload="none" aria-label="Screenshot-based figure interpretation"></video>
+</figure>
 
 <div class="rtd-tip">
   <div class="rtd-admonition-title">Tip</div>
-  For best results with figures, use a multimodal model (e.g. GPT-4o, Gemini Pro, Claude) that supports image inputs.
+  For best results with figures, use a multimodal model that supports image inputs, such as a current GPT, Gemini, or Claude model.
 </div>
 
 ---
 
 ## Cross-Paper Comparison
 
-<img src="/images/llm-for-zotero/multi.gif" alt="Cross-paper comparison using the slash command">
-
 Open multiple papers in different tabs and compare them side by side. Type **`/`** in the chat input to cite another open paper as additional context. You can reference **up to 10 papers** in a single conversation, enabling rich cross-paper analysis.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/multi.mp4" poster="/images/llm-for-zotero/multi.jpg" width="960" height="698" muted loop playsinline preload="none" aria-label="Cross-paper comparison using the slash command"></video>
+</figure>
 
 ---
 
 ## External Document Upload
 
-<img src="/images/llm-for-zotero/upload_files.gif" alt="External file upload for additional context">
-
 Upload documents from your local drive as additional context. Supported formats include **PDF**, **DOCX**, **PPTX**, **TXT**, and **Markdown**.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/upload_files.mp4" poster="/images/llm-for-zotero/upload_files.jpg" width="960" height="698" muted loop playsinline preload="none" aria-label="External file upload for additional context"></video>
+</figure>
 
 ---
 
 ## Save to Notes
 
-<img src="/images/llm-for-zotero/save_notes.gif" alt="Model answers saved to Zotero notes">
-
 Save any answer or selected text directly to your **Zotero notes** with one click. This integrates seamlessly with your existing note-taking workflow — no copy-pasting required.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/save_notes.mp4" poster="/images/llm-for-zotero/save_notes.jpg" width="960" height="754" muted loop playsinline preload="none" aria-label="Model answers saved to Zotero notes"></video>
+</figure>
 
 ---
 
 ## Conversation History & Export
 
-<img src="/images/llm-for-zotero/save_chat.gif" alt="Conversation export to Zotero notes">
-
 Conversations are **automatically saved** locally and associated with the paper you're reading. You can:
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/save_chat.mp4" poster="/images/llm-for-zotero/save_chat.jpg" width="960" height="754" muted loop playsinline preload="none" aria-label="Conversation export to Zotero notes"></video>
+</figure>
 
 - Browse past conversations from the history panel.
 - **Export entire conversations** to Zotero notes in Markdown format.
@@ -375,9 +401,11 @@ Historically reconstructed rows are not rebuilt after a reset.
 
 ## Custom Quick-Action Presets
 
-<img src="/images/llm-for-zotero/shortcuts.gif" alt="Custom quick-action preset configuration">
-
 Customize quick-action presets to match your research workflow. Built-in presets include:
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/shortcuts.mp4" poster="/images/llm-for-zotero/shortcuts.jpg" width="1280" height="794" muted loop playsinline preload="none" aria-label="Custom quick-action preset configuration"></video>
+</figure>
 
 - **Summarize** — generate a concise summary
 - **Key Points** — extract main findings
@@ -438,7 +466,9 @@ Beyond Zotero's built-in notes, the agent can save research notes as Markdown fi
 
 Open **Preferences** &rarr; **llm-for-zotero** and scroll to the **Notes Directory** section.
 
-<img src="/images/llm-for-zotero/outside_notes.png" alt="Notes Directory settings" style="max-width:512px;">
+<figure class="rtd-doc-figure rtd-doc-figure--narrow">
+  <img src="/images/llm-for-zotero/outside_notes.png" alt="Notes Directory settings" width="1160" height="1014" loading="lazy" decoding="async">
+</figure>
 
 | Setting | Description | Example |
 |---|---|---|
@@ -463,9 +493,13 @@ If you want to keep notes inside Zotero, the agent can also write to internal it
 
 ### Zotero Notes vs. File-Based Notes
 
-<img src="/images/llm-for-zotero/note2.jpeg" alt="Zotero internal note" style="max-width:512px;">
+<figure class="rtd-doc-figure rtd-doc-figure--narrow">
+  <img src="/images/llm-for-zotero/note2.jpeg" alt="Zotero internal note" width="980" height="801" loading="lazy" decoding="async">
+</figure>
 
-<img src="/images/llm-for-zotero/obsidian_example.png" alt="A Zotero paper note rendered in Obsidian" style="max-width:512px;">
+<figure class="rtd-doc-figure rtd-doc-figure--narrow">
+  <img src="/images/llm-for-zotero/obsidian_example.png" alt="A Zotero paper note rendered in Obsidian" width="1424" height="1284" loading="lazy" decoding="async">
+</figure>
 
 Notes use [Pandoc citation syntax](https://pandoc.org/MANUAL.html#citations) (`[@citekey]`), compatible with Obsidian's Zotero Integration and Pandoc plugins, as well as most Markdown readers.
 
@@ -548,8 +582,8 @@ For a broad research question, the Agent can use both and synthesize the results
     <figcaption>The activity trace separates scholarly literature results from general web results, so you can see which route produced each source.</figcaption>
   </figure>
   <figure class="rtd-doc-figure">
-    <img src="/images/llm-for-zotero/web-search/paragraph-source-cards.png" alt="An Agent answer with source cards attached to a paragraph, showing site favicons, organizations, titles, and links" width="902" height="992" loading="lazy">
-    <figcaption>Paragraph-level source cards make supporting pages easy to identify and open without interrupting the answer.</figcaption>
+    <img src="/images/llm-for-zotero/web-search/web-source-marks.png" alt="An Agent answer with a source mark showing the site icon after each cited sentence, and one cited sentence highlighted" width="900" height="893" loading="lazy">
+    <figcaption>Each cited sentence ends with a source mark that shows the site's icon. <strong>Show in answer</strong> highlights the sentence that uses a source.</figcaption>
   </figure>
 </div>
 
@@ -743,7 +777,9 @@ This means you can connect any MCP-compatible AI agent (e.g. Claude Desktop, Cur
 
 The agent can chain multiple tools together to accomplish complex tasks, such as finding a paper, reading its metadata, searching for related work, and writing a summary note.
 
-<img src="/images/llm-for-zotero/agent/multi_steps.gif" alt="Multi-step agent workflow" style="max-width:512px;">
+<figure class="rtd-doc-figure rtd-doc-figure--narrow">
+  <video class="rtd-demo" src="/images/llm-for-zotero/agent/multi_steps.mp4" poster="/images/llm-for-zotero/agent/multi_steps.jpg" width="1080" height="1686" muted loop playsinline preload="none" aria-label="Multi-step agent workflow"></video>
+</figure>
 
 #### Find related papers
 
@@ -752,15 +788,21 @@ There are two ways to find related papers:
 - **`/discover_related`** runs a direct OpenAlex search for the paper you are viewing. It does not need a model. It opens **Recommendations**, **References**, and **Citations** tabs with up to 20 papers each. Use `/discover_related 30` to change the number, **Load more** for 20 more, and **Import selected** to save the papers you choose.
 - **Ask in chat**, for example *"find relevant papers"* or *"find 15 relevant papers."* The Agent ranks the candidates and gives a reason for each. It starts with five unless you give a number. Use **Find more** for another batch and **Import selected** to save your choice. If fewer good matches exist, the card says so instead of padding the list.
 
-<img src="/images/llm-for-zotero/agent/related_papers.gif" alt="Agent finding related papers">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/agent/related_papers.mp4" poster="/images/llm-for-zotero/agent/related_papers.jpg" width="1080" height="642" muted loop playsinline preload="none" aria-label="Agent finding related papers"></video>
+</figure>
 
 #### Apply tags automatically
 
-<img src="/images/llm-for-zotero/agent/apply_tags.gif" alt="Agent applying tags to a paper">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/agent/apply_tags.mp4" poster="/images/llm-for-zotero/agent/apply_tags.jpg" width="1080" height="642" muted loop playsinline preload="none" aria-label="Agent applying tags to a paper"></video>
+</figure>
 
 #### Write a note
 
-<img src="/images/llm-for-zotero/agent/write_note.png" alt="Agent writing a note">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/agent/write_note.png" alt="Agent writing a note" width="2304" height="1816" loading="lazy" decoding="async">
+</figure>
 
 ### Safety & Confirmation
 
@@ -776,7 +818,9 @@ All write operations go through a **human-in-the-loop confirmation** workflow:
 
 ## Skills
 
-<img src="/images/llm-for-zotero/skills.png" alt="Skills management portal" style="max-width:512px;">
+<figure class="rtd-doc-figure rtd-doc-figure--narrow">
+  <img src="/images/llm-for-zotero/skills.png" alt="Skills management portal" width="1590" height="1442" loading="lazy" decoding="async">
+</figure>
 
 Skills are customizable guidance files that shape how the agent approaches different types of requests.
 A skill teaches the Agent *how* to do a task, such as which tools to use and in which order; it does not add new tools.
@@ -867,7 +911,9 @@ Describe precisely when and how the agent should apply this workflow.
 **WebChat mode** sends your questions to [chatgpt.com](https://chatgpt.com), [chat.deepseek.com](https://chat.deepseek.com), or [gemini.google.com](https://gemini.google.com) through a browser extension, then streams responses back into Zotero.
 It is useful when you want browser-chat access without a provider API key.
 
-<img src="/images/llm-for-zotero/webchat.gif" alt="Animation showing WebChat mode connected to chatgpt.com">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/images/llm-for-zotero/webchat.mp4" poster="/images/llm-for-zotero/webchat.jpg" width="1080" height="894" muted loop playsinline preload="none" aria-label="Animation showing WebChat mode connected to chatgpt.com"></video>
+</figure>
 
 ### Prerequisites
 
@@ -983,7 +1029,9 @@ Click **Test connection** to verify that Zotero can launch `codex app-server`, t
 
 Existing users who need the old path can open the **AI Providers** tab, choose `Codex Auth (Legacy)`, keep API URL `https://chatgpt.com/backend-api/codex/responses`, and use the same Codex model name, for example `gpt-5.5`.
 
-<img src="/images/llm-for-zotero/codex_claude.png" alt="Recommended Codex App Server configuration">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/codex_claude.png" alt="Recommended Codex App Server configuration" width="1196" height="1050" loading="lazy" decoding="async">
+</figure>
 
 ### Codex Auth (Legacy) Technical Notes
 
@@ -1119,7 +1167,9 @@ Claude Code is responsible for resolving or rejecting the selected value and for
 
 **MinerU** is an advanced PDF parsing engine that extracts high-fidelity Markdown from PDFs while preserving tables, equations, figures, and complex layouts that standard text extraction often mangles.
 
-<img src="/images/llm-for-zotero/minerU.png" alt="Screenshot showing MinerU PDF parsing results in the plugin">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/minerU.png" alt="Screenshot showing MinerU PDF parsing results in the plugin" width="716" height="483" loading="lazy" decoding="async">
+</figure>
 
 Parsed results are cached locally and reused in later conversations. When **Auto-parse newly added items** is enabled, newly added PDF attachments are sent to MinerU as they enter the Zotero library. If auto-parse is off, you can still parse selected or filtered PDFs from the **Manage Files** panel.
 
@@ -1207,7 +1257,9 @@ If **Sync MinerU cache with Zotero file sync** is enabled, the plugin can create
 
 ### Precise Figure Extraction
 
-<img src="/images/llm-for-zotero/figure_extraction.png" alt="Figures detected and cropped directly from source PDF pages, each outlined in red">
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <img src="/images/llm-for-zotero/figure_extraction.png" alt="Figures detected and cropped directly from source PDF pages, each outlined in red" width="1144" height="1968" loading="lazy" decoding="async">
+</figure>
 
 When Agent Mode answers a question about a figure — or saves a note that discusses one — it pulls a **precise, high-resolution crop straight from the source PDF**, using the MinerU cache only as an index.
 Ask something like *"What does Figure 3 show?"* and the agent locates the figure from the MinerU parse, cuts a clean crop from the original PDF page, and reads that exact image, caption and panels included.
@@ -1242,7 +1294,10 @@ Here the agent finds and crops the figure for you, and those same crops are what
 - In WebChat mode, requests are relayed through the browser extension to `chatgpt.com`, `chat.deepseek.com`, or `gemini.google.com`.
 - In cloud MinerU mode, PDFs selected for automatic or manual MinerU parsing are sent to MinerU.
 - In local MinerU mode, PDFs selected for automatic or manual MinerU parsing are sent to the local or remote `mineru-api` server you configure.
-- Conversation history and cached paper context are stored locally by the plugin.
+- In Codex App Server and Claude Code modes, requests go through your local `codex` or Claude Code installation to OpenAI or Anthropic.
+- With general web search, search queries and the URLs the Agent reads are sent to the provider you select: Tavily, AnySearch, or DeepSeek.
+- Scholarly search sends search terms and paper identifiers to OpenAlex, arXiv, Europe PMC, Crossref, and Semantic Scholar.
+- Conversation history, cached paper context, usage statistics, and files the Agent saves are stored locally by the plugin.
 - Agent Mode write operations are routed through reviewable actions and session undo where supported.
 
 ---
@@ -1257,6 +1312,7 @@ Here the agent finds and crops the figure for you, and those same crops are what
 | **Gemini WebChat is rejected before sending** | Update both llm-for-zotero and Sync for Zotero, reload `gemini.google.com/app`, and confirm Gemini's composer is ready. |
 | **Codex App Server fails** | Run `codex login`, confirm `codex` is on `PATH`, then click **Test connection** again. |
 | **Claude Code mode hangs** | Read the **Bridge** status line in the Claude Code settings, press **Open log**, then press **Restart bridge**. See [If It Does Not Work](#3-if-it-does-not-work). |
+| **Web search is unavailable** | In **Preferences** &rarr; **Agent** &rarr; **Web search**, test the selected provider. Web search works only in Agent chats, not in WebChat, Codex, or Claude Code. |
 | **MinerU parsing fails** | Add a personal MinerU API key for cloud mode, or confirm your local `mineru-api` server responds at `/health`, then retry **Test Connection**. |
 
 For bugs or unclear failures, please [open an issue](https://github.com/yilewang/llm-for-zotero/issues).
@@ -1308,7 +1364,10 @@ If you find this plugin helpful, consider:
 - Leaving a star on [GitHub](https://github.com/yilewang/llm-for-zotero)
 - [Buying me a coffee](https://buymeacoffee.com/yat.lok)
 - Donating via Alipay QR code below:
-<img src="/images/llm-for-zotero/alipay.png" alt="Alipay donation QR code" style="max-width:200px;">
+
+<figure class="rtd-doc-figure rtd-doc-figure--qr">
+  <img src="/images/llm-for-zotero/alipay.png" alt="Alipay donation QR code" width="200" height="221" loading="lazy" decoding="async">
+</figure>
 
 ---
 
