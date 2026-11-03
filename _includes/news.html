@@ -1,0 +1,12 @@
+<section class="news" aria-labelledby="news-heading">
+  <h2 id="news-heading">News</h2>
+  <ol class="news__list" role="list">
+    {% assign updates = site.data.news | sort: "date" | reverse %}
+    {% for update in updates %}
+    <li class="news__item">
+      <time class="news__date" datetime="{{ update.date }}">{{ update.date | date: "%b %-d, %Y" }}</time>
+      <div class="news__content">{{ update.content | markdownify }}</div>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
