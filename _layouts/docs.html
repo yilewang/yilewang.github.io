@@ -297,7 +297,7 @@ layout: default
       .catch(function(){});
   }
 
-  // Demo videos stand in for GIFs: play only while on screen, never with reduced motion
+  /* Use block comments here: production HTML compression removes JavaScript line breaks. */
   var demos = document.querySelectorAll('video.rtd-demo');
   if (demos.length) {
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
