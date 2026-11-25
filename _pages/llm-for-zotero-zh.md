@@ -28,7 +28,7 @@ lang_alt: /llm-for-zotero/manual/
   <img src="/images/llm-for-zotero/label.png" alt="LLM for Zotero logo: a brain icon merged with the Zotero shield" style="max-width:512px; display:block; margin:0 auto;">
 </p>
 
-**llm-for-zotero** 将大型语言模型带入 Zotero 阅读器，让您无需离开文库即可提问、总结论文、解读图表、比较文献并保存笔记。它支持常规 API 服务商、本地 OpenAI 兼容模型、WebChat、Codex App Server 和 Claude Code。
+**llm-for-zotero** 将大型语言模型带入 Zotero 阅读器，让您无需离开文库即可提问、总结论文、解读图表、比较文献并保存笔记。它支持常规 API 服务商、本地 OpenAI 兼容模型、WebChat、Codex App Server、Claude Code 和 Antigravity。
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/demo.png" alt="llm-for-zotero 侧栏在 Zotero PDF 阅读器中的截图" width="1600" height="1200" loading="lazy" decoding="async">
@@ -106,19 +106,20 @@ lang_alt: /llm-for-zotero/manual/
 ## 快速开始
 
 1. 从 [Releases 页面](https://github.com/yilewang/llm-for-zotero/releases)下载最新 `.xpi` 文件。
-2. 在 Zotero 中打开 `工具` &rarr; `附加组件` &rarr; 齿轮图标 &rarr; **从文件安装附加组件**，选择该 `.xpi` 文件。
+2. 在 Zotero 中打开 `工具` &rarr; `插件` &rarr; 齿轮图标 &rarr; **从文件安装插件**，选择该 `.xpi` 文件。
 3. 重启 Zotero。
 4. 打开 `首选项` &rarr; `llm-for-zotero`，选择服务商，填写基础 URL、密钥和模型，然后点击**测试连接**。
 5. 在 Zotero 中打开一篇 PDF，点击右侧工具栏的 LLM Assistant 图标。
 
-如果您不想使用服务商 API 密钥，可以从 [WebChat](#webchat-配置chatgpt-网页同步) 或 [Codex App Server](#codex-配置chatgpt-plus-订阅用户) 开始。
+如果您不想使用服务商 API 密钥，可以从 [WebChat](#webchat-配置chatgpt-网页同步) 开始，或通过 [Codex App Server](#codex-配置chatgpt-plus-订阅用户)、[Claude Code](#claude-code-配置实验性) 或 [Antigravity](#antigravity-配置google-订阅用户) 使用您已有的订阅。
 
 ## 环境要求
 
 - Zotero
-- 一种模型后端：服务商 API 密钥、本地 OpenAI 兼容模型、WebChat、Codex App Server 或 Claude Code。
+- 一种模型后端：服务商 API 密钥、本地 OpenAI 兼容模型、WebChat、Codex App Server、Claude Code 或 Antigravity。
 - WebChat 模式需要 Chromium 内核浏览器。
 - 通过 npm 安装 Codex CLI 和使用 Claude Code 模式需要 Node.js 18+。macOS Codex cask 不需要单独安装 Node.js。
+- 使用 Antigravity 模式需要已安装并登录的 Antigravity CLI（`agy`）。
 - 在 Agent 模式中使用通用网页搜索时：需要 Tavily 密钥、官方 DeepSeek 模型配置，或使用无需密钥的 AnySearch。
 - 如果启用 MinerU 解析，建议使用个人 MinerU API 密钥或本地 `mineru-api` 服务。
 
@@ -131,6 +132,7 @@ lang_alt: /llm-for-zotero/manual/
 | 在浏览器中使用 ChatGPT、DeepSeek 或 Google Gemini | 通过 Sync for Zotero 扩展使用 [WebChat](#webchat-配置chatgpt-网页同步) | 不需要服务商 API 密钥 |
 | ChatGPT Plus 用户使用 Codex 模型 | [Codex App Server](#codex-配置chatgpt-plus-订阅用户) | 不需要单独 API 密钥 |
 | 在 Zotero 内使用 Claude Code | [Claude Code 桥接服务](#claude-code-配置实验性) | 需要 Claude Code 认证 |
+| 使用 Google 账号或 Google 学生计划 | [Antigravity](#antigravity-配置google-订阅用户) | 需要 `agy` 登录 |
 | 检索最新公开网页信息 | 在 Agent 模式中使用 [通用网页搜索](#通用网页搜索)，搭配 Tavily、AnySearch 或 DeepSeek | Tavily 密钥、DeepSeek 密钥；AnySearch 无需密钥 |
 | 提升表格、公式和图表的 PDF 提取质量 | [MinerU PDF 解析](#mineru-pdf-解析) | 建议使用个人 MinerU 密钥 |
 
@@ -142,6 +144,67 @@ lang_alt: /llm-for-zotero/manual/
 ---
 
 ## 最新更新
+
+**v3.9.20**
+
+- **Antigravity 运行时。**
+  Antigravity 与 Codex、Claude Code 一样，成为新的 Agent 运行时。
+  它以 Google 的 `agy` CLI 作为 Agent，并通过插件的工具访问您的 Zotero 文库。
+  详见 [Antigravity 配置](#antigravity-配置google-订阅用户)。
+- **在输入框中选择运行时。**
+  聊天标题栏中的运行时按钮已移除。
+  输入框中的 **Agent** / **Chat** 标签现在会打开运行时菜单：Agent、Codex、Claude Code 和 Antigravity。
+- **在设置中添加运行时。**
+  **设置** &rarr; **Agent** 一开始只列出内置 Agent。
+  使用 **+ 添加运行时** 添加 Codex、Claude Code 或 Antigravity，使用 **Remove** 将其从列表中移除。
+  被移除运行时的对话仍保留在历史记录中。
+- 通过 npm 安装的 Codex 在 macOS 和 Linux 上可以重新启动。
+- 在普通对话中可用的自定义服务商，现在在 Agent 模式中同样可用；连接失败时会说明原因。
+
+**v3.9.19**
+
+- **插件可以在 Zotero 7 上重新启动。**
+- **可搜索的模型字段。**
+  输入关键字即可筛选模型列表；如需使用列表中没有的模型，请选择 **Use "…"** 一行。
+  自定义服务商同样提供模型列表，所有服务商都可以使用 **Refresh**。
+- **OpenAlex API 密钥。**
+  设置中新增可选的 OpenAlex 密钥栏，并提供 **测试连接**。
+  详见 [OpenAlex API 密钥](#openalex-api-密钥)。
+- **编辑已发送的提问**：使用新的 **Edit** 按钮。
+  回答下方默认显示 **Copy** 和 **Note**，其他操作位于 **More** 中。
+- **更大的输入框。**
+  输入框最多可增长到窗口高度的 40%，拖动其角落出现的弧形即可调整大小。
+- 现在可以移除嵌入模型。
+
+**v3.9.17**
+
+- **PDF 阅读器中的划词提问。**
+  选中文本后，点击 **添加文本** 旁边的 **划词提问**，即可在页面上的小卡片中提问。
+  可以把回答保存为注释，或在侧边栏中继续。
+  详见 [划词提问](#划词提问)。
+- **长文档**（如书籍和学位论文）会生成章节地图，Agent 可以找到所需章节。
+- **保存的笔记以提问作为标题。**
+
+**v3.9.16**
+
+- **可按名称请求论文的某个部分**，例如方法或讨论，支持任意语言。
+  任务进度会显示 Agent 读取了哪些部分；**Full** 表示读取了全部字符。
+- **论文摘要最多读取 250,000 个字符**，引文只取自正文句子。
+- **更多文库操作：** 添加文件或网址附件、运行**查找可用 PDF**、更改条目类型、编辑注释的评论和颜色、添加下划线和便笺、在指定页面或注释处打开 PDF、将独立笔记放入文集、一次向多条笔记追加内容、统计标签、查看文库统计，以及设置“相关”链接。
+- **大批量编辑可续跑。**
+  超过 50 个条目的编辑会边做边保存进度，中断后可从停止处继续。
+  合并操作只需一张审批卡片。
+- **Claude Code 和 Codex 的步骤显示在任务进度中**，Codex 在写入前会先征求您的同意。
+
+**v3.9.15**
+
+- **在独立小窗口中打开对话。**
+  在独立窗口中，将对话从列表中拖出，或拖动对话标题；也可以右键点击对话并选择 **在新窗口中打开**。
+  详见 [在独立小窗口中打开对话](#在独立小窗口中打开对话)。
+- **侧边面板保持打开**：在论文对话和文库对话之间切换时不会关闭。
+- **更易阅读**：回答文字比界面文字大一号。
+- **Codex 主目录**：Codex 可以使用 `~/.codex` 以外的主目录。
+  详见 [Codex 配置](#codex-配置chatgpt-plus-订阅用户)。
 
 **v3.9.14**
 
@@ -175,7 +238,7 @@ lang_alt: /llm-for-zotero/manual/
   详见[通用网页搜索](#通用网页搜索)。
 - **Codex App Server** 是 ChatGPT Plus 用户推荐的 Codex 使用路径。它通过本地 `codex app-server` 运行时工作，并在 **Agent** 标签页中配置。
 - **Claude Code 模式（实验性）**：使用您自己的 Claude Code 登录，将 Claude Code 作为 Zotero 内部独立的对话系统运行。它可以使用插件的 Zotero 工具读取您的文库，并在您批准后编辑笔记、标签、元数据和导入条目。详见 [Claude Code 配置](#claude-code-配置实验性)。
-- **统一历史记录**：Agent、Codex 和 Claude 的对话显示在同一个历史列表中。点击输入框中的运行时标记即可切换运行时；也可以通过斜杠菜单或直接用自然语言请求，附加之前的对话。
+- **统一历史记录**：Agent、Codex 和 Claude 的对话显示在同一个历史列表中。可以通过斜杠菜单或直接用自然语言请求，附加之前的对话。
 - **WebChat 模式**通过 Sync for Zotero 浏览器扩展支持 ChatGPT、DeepSeek 和 Google Gemini 网页同步。
 - **文件笔记**：笔记目录不再硬编码为 Obsidian。您可以配置任意本地 Markdown 目录，包括 Obsidian、Logseq 或普通文件夹。详见 [文件笔记](#文件笔记)。
 - **Skills 技能系统**：可自定义的引导文件会影响 Agent 的任务处理方式。内置 8 个技能，并支持创建自定义技能。详见 [Skills 技能系统](#skills-技能系统)。
@@ -195,7 +258,7 @@ lang_alt: /llm-for-zotero/manual/
    前往 [Releases 页面](https://github.com/yilewang/llm-for-zotero/releases) 下载最新的 `.xpi` 文件。
 
 2. **在 Zotero 中安装插件**
-   打开 Zotero &rarr; `工具` &rarr; `附加组件` &rarr; 点击齿轮图标 &rarr; **从文件安装附加组件** &rarr; 选择 `.xpi` 文件。
+   打开 Zotero &rarr; `工具` &rarr; `插件` &rarr; 点击齿轮图标 &rarr; **从文件安装插件** &rarr; 选择 `.xpi` 文件。
 
 3. **重启 Zotero**
    重启 Zotero 完成安装。插件会在每次启动时自动检查更新。
@@ -218,6 +281,24 @@ lang_alt: /llm-for-zotero/manual/
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <video class="rtd-demo" src="/images/llm-for-zotero/model_setting.mp4" poster="/images/llm-for-zotero/model_setting.jpg" width="1280" height="904" muted loop playsinline preload="none" aria-label="服务商与模型配置动图"></video>
 </figure>
+
+### 选择模型
+
+模型字段是一个搜索框。
+输入名称的一部分即可筛选服务商的模型列表，再用方向键和回车键选择，或直接点击。
+如需使用列表中没有的模型，请选择 **Use "…"** 一行。
+使用自己基础 URL 的**自定义**服务商同样提供模型列表。
+点击 **Refresh** 可加载服务商的最新模型。
+如果列表加载失败，模型行会说明原因，例如密钥错误、速率限制或超时。
+
+### OpenAlex API 密钥
+
+Agent 通过 OpenAlex 搜索和阅读学术文献。
+OpenAlex 会限制不带密钥的请求，因此如果您经常搜索，免费密钥会有帮助。
+打开 **首选项** &rarr; **llm-for-zotero** &rarr; **OpenAlex**（位于 **Web search** 之后），粘贴您的密钥，然后点击 **测试连接**。
+该密钥是可选的。
+插件只在请求头中发送密钥，从不放在网址中。
+当 OpenAlex 限制您的请求且您没有设置密钥时，Agent 会提示您密钥可以提高限额。
 
 ### 支持的服务商与协议
 
@@ -292,11 +373,15 @@ lang_alt: /llm-for-zotero/manual/
 
 ### 界面控件
 
+- **运行时菜单** — 输入框中的 **Agent** / **Chat** 标签用于选择普通对话、内置 Agent，或已添加的 Codex、Claude Code、Antigravity 等运行时。详见 [Agent 模式](#agent-模式beta)。
 - **模型选择器** — 在对话中随时切换已配置的模型。
 - **推理等级选择器** — 为当前请求选择推理深度。
 - **字体缩放** — 将侧栏字体大小从 80% 调整至 180%。
 - **自动滚动** — 自动滚动至最新消息。
 - **Token 用量** — 实时显示输入、输出及推理 Token 消耗。
+- **编辑已发送的提问** — 点击提问下方 **Copy** 旁边的 **Edit**。直接点击提问本身可以选择并复制文字。
+- **回答底栏** — 始终显示 **Copy** 和 **Note**；**Fork**、**Delete** 和 **Expand** 位于 **More** 中。
+- **调整输入框大小** — 输入框随文字增长，最多占窗口高度的 40%。在侧栏中，拖动输入框外角出现的弧形即可调整对话区域大小。
 
 ---
 
@@ -329,6 +414,43 @@ lang_alt: /llm-for-zotero/manual/
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <video class="rtd-demo" src="/images/llm-for-zotero/text.mp4" poster="/images/llm-for-zotero/text.jpg" width="960" height="754" muted loop playsinline preload="none" aria-label="模型对选中文本进行解释"></video>
 </figure>
+
+---
+
+## 划词提问
+
+划词提问让您无需打开侧栏，就能直接在 PDF 页面上针对选中内容提问。
+在 PDF 中选中文本，然后点击 **添加文本** 旁边的 **划词提问**。
+选中内容旁边会打开一张卡片，取代 Zotero 原本的选择弹窗。
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/assets/llm-for-zotero/inline.mp4" poster="/images/llm-for-zotero/inline_ask.jpg" width="1280" height="720" muted loop playsinline preload="none" aria-label="划词提问解释选中内容，并将回答保存为注释"></video>
+  <figcaption>在页面上的卡片中针对选中内容提问，再把回答保存为注释。</figcaption>
+</figure>
+
+### 提问
+
+- 输入您自己的问题，或点击快捷提示：**Explain**、**术语释义** 或 **Translate**。
+- 右键点击快捷提示，可以编辑、删除或新增提示。
+- 回答会实时显示在卡片中，您可以继续追问。
+- 选中回答中的文字即可复制，或点击 **Quote** 针对这一部分追问。
+- 卡片有自己的模型和推理强度选择，与侧栏相互独立。
+
+### 移动与调整卡片
+
+- 拖动卡片的空白边缘可以移动它，拖动任意角可以调整大小。
+- 在 **More** 菜单中设置文字大小，或使用 `Cmd/Ctrl` + `=`、`-` 和 `0`。
+- 在阅读器中任意位置按 `Escape` 即可关闭卡片。
+
+### 保留回答
+
+- **保存为注释** 会用您选择的颜色高亮选中内容。
+  回答会成为注释的评论，保存前可以编辑。
+- **在侧边栏中继续** 会打开一个新的论文对话，其中包含卡片中的问答。
+  该对话会像其他对话一样显示在历史记录中。
+
+划词提问使用您模型列表中的 API 模型。
+当对话使用 Claude Code 或 Antigravity 时，卡片仍使用 API 模型。
 
 ---
 
@@ -465,6 +587,23 @@ lang_alt: /llm-for-zotero/manual/
   在回答中选中文本后选择 **Quote in side chat**，即可在侧聊中针对这段内容提问。
 - **功能完全一致** &mdash; 阅读器侧栏中的所有功能（截图、文件上传、Agent 模式、快捷预设、引用选择器）在独立窗口中均可正常使用。
 - **搜索** &mdash; 通过搜索浮层快速查找历史对话。
+
+### 在独立小窗口中打开对话
+
+您可以在独立的小窗口中打开任意对话，并把它放在论文旁边。
+在独立窗口中，将对话从对话列表中拖出，或拖动对话标题。
+也可以右键点击对话并选择 **在新窗口中打开**。
+
+- 新窗口不会跟随 PDF 阅读器标签页切换，因此对话始终保留自己的论文作为上下文。标题旁的断开链接图标表示这一点。
+- **History** 可以在同一窗口中打开另一个对话。
+- 侧边面板以只读方式列出您过去的对话。
+- **在主窗口中打开** 会把对话移回独立窗口。
+- 在论文对话中，点击论文行可以在文库中显示该论文。
+
+每个对话最多在一个窗口中打开；再次打开时，会把它的窗口带到前台。
+这些窗口会随 Zotero 关闭，也会在对话被删除或论文被移入回收站时关闭。
+
+在论文对话和文库对话之间切换时，侧边面板保持打开。
 
 独立窗口打开时，阅读器侧栏面板会显示占位提示，提供**聚焦窗口**（将独立窗口置于前台）和**关闭窗口并返回侧栏**两个选项。
 
@@ -644,17 +783,39 @@ v3.9.4 首选项面板显示了发布时的额度规则：基本搜索消耗 1 �
 
 <div class="rtd-warning">
   <div class="rtd-admonition-title">注意</div>
-  Agent 模式默认禁用。请在<strong>首选项</strong> &rarr; <strong>Agent</strong> 标签页中开启 <strong>Original Agent</strong>。开启后，新对话默认使用 Agent。如果同时开启了 Codex 或 Claude Code，可点击输入框中的运行时标记在它们之间切换。
+  Agent 模式默认禁用。请在<strong>首选项</strong> &rarr; <strong>Agent</strong> 标签页中开启 <strong>Original Agent</strong>。开启后，新对话默认使用 Agent。
 </div>
+
+### 运行时
+
+运行时是运行 Agent 的程序。
+内置 **Agent** 使用您在服务商设置中配置的 API 模型。
+您也可以添加运行时，使用您已有的订阅：
+
+| 运行时 | 运行的程序 | 配置 |
+|---|---|---|
+| **Agent** | 插件自带的 Agent，使用您的 API 模型 | 内置 |
+| **Codex** | OpenAI 的 `codex app-server`，使用您的 ChatGPT 登录 | [Codex 配置](#codex-配置chatgpt-plus-订阅用户) |
+| **Claude Code** | Anthropic 的 Claude Code，使用您的 Claude 登录或密钥 | [Claude Code 配置](#claude-code-配置实验性) |
+| **Antigravity** | Google 的 `agy` CLI，使用您的 Google 登录 | [Antigravity 配置](#antigravity-配置google-订阅用户) |
+
+**设置** &rarr; **Agent** 一开始只列出内置 Agent。
+点击 **+ 添加运行时** 添加 Codex、Claude Code 或 Antigravity，点击 **Remove** 将其从列表中移除。
+被移除运行时的对话仍保留在历史记录中。
+
+要切换运行时，请点击输入框中的 **Agent** / **Chat** 标签。
+它会打开运行时菜单，每个运行时都带有图标。
+菜单末尾是 **+ 添加运行时…**；所有运行时都已添加后，则显示 **配置运行时…**；两者都会打开设置。
+一个对话中只有所选运行时处于活动状态。
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/agent/runtime-settings.png" alt="Agent 设置页面显示已启用的 Original Agent、Codex 和 Claude Code 运行时" width="1164" height="592" loading="lazy">
-  <figcaption>Agent 设置页面集中管理 Original Agent、Codex 和 Claude Code 运行时。请先在此启用所需运行时，然后通过聊天标题栏或输入框中的运行时标记切换。</figcaption>
+  <figcaption>Agent 设置页面集中管理您的运行时。请先在此添加并启用所需运行时，然后通过输入框中的标签切换。</figcaption>
 </figure>
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/agent/runtime-badge.png" alt="输入框中的运行时标记菜单，包含 Agent、Codex 和 Claude 选项" width="1600" height="1600" loading="lazy">
-  <figcaption>点击输入框中的运行时标记，即可在 <strong>Agent</strong>、<strong>Codex</strong> 和 <strong>Claude</strong> 之间切换。</figcaption>
+  <figcaption>点击输入框中的标签即可切换运行时。</figcaption>
 </figure>
 
 在普通对话中，模型根据您提供的上下文回答。
@@ -673,6 +834,14 @@ v3.9.4 首选项面板显示了发布时的额度规则：基本搜索消耗 1 �
 6. **您可以撤销。** 让 Agent 撤销，它会从最新的开始撤销已记录的修改。
 
 如果某个选择不明确，例如应该使用哪个文集，Agent 会先问您再继续。
+
+### 读取论文的指定部分
+
+您可以按名称请求论文的某个部分，例如方法、结果或讨论，支持任意语言。
+Agent 会只读取该部分，而不是整篇论文。
+任务进度会显示它读取了哪些部分；**Full** 表示读取了全部字符。
+书籍和学位论文会生成章节地图，包含页码范围和大小，因此 Agent 只读取所需章节，也不会读取被截断的文本。
+论文摘要最多读取 250,000 个字符，引文只取自正文句子。
 
 较长的 Agent 运行具有缓存感知能力。插件会将稳定的 Zotero 上下文和已读取证据，与不断变化的聊天记录分开保存，跟踪哪些论文和段落已经被检查，并在模型上下文填满时自动压缩旧回合。后续问题可以在证据仍然相关时复用这些来源；当缺少所需来源或覆盖层级时，Agent 会重新读取。
 
@@ -753,13 +922,14 @@ Agent 可以查找、读取并附加之前的对话，每次最多三个。
 | 学术文献发现 | `literature_search`、`literature_read`、`literature_review` | 在 OpenAlex、arXiv 和 Europe PMC 中搜索论文、推荐、参考文献和引用（通过 CrossRef 和 Semantic Scholar 查询元数据），读取文库外论文的摘要和开放获取全文，并给出排序后的候选 |
 | 通用网页研究 | `web_search`、`web_read` | 通过 Tavily、AnySearch 或 DeepSeek 搜索最新公开网页、读取相关页面，并在回答中标注来源 |
 | 历史对话 | `past_chat_search`、`past_chat_read`、`past_chat_attach` | 查找之前的对话、读取它，并把它附加到当前对话 |
-| 文库写入 | `library_update`、`library_import`、`library_delete`、`annotate_pdf` | 添加标签、更新元数据、移动条目、管理文集和附件、合并重复项、移入回收站、通过标识符或本地文件导入、高亮 PDF 段落 |
+| 文库写入 | `library_update`、`library_import`、`library_delete`、`annotate_pdf` | 添加标签、更新元数据和条目类型、移动条目、管理文集、添加文件或网址附件、运行**查找可用 PDF**、设置“相关”链接、编辑注释的评论和颜色、合并重复项、移入回收站、通过标识符或本地文件导入，以及为 PDF 段落添加高亮、下划线或便笺 |
+| 阅读器 | `reader_open` | 在 Zotero 阅读器中打开 PDF 的指定页面或注释 |
 | 引用与设置 | `library_cite`、`library_settings` | 用 Zotero 引文引擎格式化引用和参考文献，并读取或修改 Agent 可以操作的 Zotero 首选项 |
 | 笔记与文档 | `note_write`、`note_write_batch`、`submit_document` | 创建、追加或编辑 Zotero 笔记，为多个条目各写一条笔记，并定稿较长文档 |
 | 文件系统与脚本 | `file_io`、`run_command`、`zotero_script` | 读写本地文件、运行分析命令，或在写入确认下执行 Zotero JavaScript |
 | 技能与提问 | `load_skill`、`request_user_input` | 在任务需要时加载技能说明，并在选择不明确时向您提问 |
 | 任务跟踪 | `task_update`、`workflow_script` | 把复合请求拆成由插件跟踪的多个部分，并在一个脚本中用循环和条件组合多次工具调用 |
-| 安全 | `undo` | 根据对话的持久变更记录撤销写入操作，可逐个撤销，也可从最新开始撤销多个 |
+| 安全 | `undo`、`resume_library_batch` | 根据对话的持久变更记录撤销写入操作，可逐个撤销，也可从最新开始撤销多个；并续跑中途停止的大批量编辑 |
 
 **典型使用场景：**
 
@@ -840,6 +1010,8 @@ Agent 可以串联多个工具完成复杂任务——例如查找论文、读�
 - 您可以在任何变更生效前选择**批准**、**拒绝**或**修改**。
 - 如有问题，请让 Agent 撤销；`undo` 工具会从最新开始撤销已记录的写入操作。
 - 终端命令和文件操作同样需要明确审批后才会执行。
+- 超过 50 个条目的编辑会边做边保存进度。如果中途停止，Agent 会继续执行，不会重复已完成的条目。
+- 整个合并操作只需一张审批卡片。
 
 ---
 
@@ -1013,7 +1185,7 @@ activation: auto
 
 新用户应在 **Agent** 标签页中选择 **Codex App Server**。旧的 **Codex Auth (Legacy)** 路径仍可供现有用户使用，但计划在 app-server 验证稳定后逐步弃用。
 
-- **Codex App Server（推荐）**：启动本地 `codex app-server` CLI，并通过 stdio 与其通信。这是第三方应用使用 Codex 的官方方式，也是新用户首选配置。该模式在 **Agent** 标签页中配置，并会在聊天标题栏显示独立的 **Codex** 按钮。
+- **Codex App Server（推荐）**：启动本地 `codex app-server` CLI，并通过 stdio 与其通信。这是第三方应用使用 Codex 的官方方式，也是新用户首选配置。该模式在 **Agent** 标签页中添加，并显示在输入框的运行时菜单中，名称为 **Codex**。
 - **Codex Auth (Legacy)**：直接调用 ChatGPT/Codex Responses 后端。现有用户暂时可以保留该配置，但新用户应选择 `Codex App Server`。
 
 _特别感谢 [@jianghao-zhang](https://github.com/jianghao-zhang) 贡献最初的 Codex Auth 集成，以及 [@boltma](https://github.com/boltma) 设计 Codex App Server 集成。_
@@ -1044,15 +1216,25 @@ codex login
 
 打开 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** &rarr; **Agent** 标签页：
 
+点击 **+ 添加运行时**，选择 **Codex**，然后设置：
+
 | 设置项 | 推荐值 |
 |---|---|
-| 启用 Codex App Server 集成 | `On` |
+| Codex | `On` |
 | 模型 | 例如 `gpt-5.4` |
 | 推理等级 | `auto`、`low`、`medium`、`high` 或 `xhigh` |
 
-点击**测试连接**，验证 Zotero 能否启动 `codex app-server`，然后在聊天标题栏点击 **Codex** 按钮进入 Codex 对话系统。
+点击**测试连接**，验证 Zotero 能否启动 `codex app-server`。
+然后点击输入框中的 **Agent** / **Chat** 标签并选择 **Codex**。
 
-`Codex App Server` 与 `Claude Code` 是 Agent 标签页中的互斥运行时模式。启用其中一个之前，需要先关闭另一个。
+Codex 在写入文库前会先征求您的同意，它的步骤会显示在任务进度中。
+
+**Codex 主目录。**
+Codex 默认把会话和设置保存在 `~/.codex`，与 Codex 桌面应用共用。
+如需让 Zotero 的 Codex 会话保持独立，请将 **Agent** &rarr; **Codex** &rarr; **Advanced** &rarr; **Codex 主目录** 设为另一个文件夹。
+路径可以带引号粘贴，也可以用 `~` 表示您的主目录。
+单独的文件夹需要单独执行 `codex login`，并单独配置 MCP。
+留空则使用默认值。
 
 仍需旧方式的现有用户可以打开 **AI Providers** 标签页，选择 `Codex Auth (Legacy)`，API 地址保持 `https://chatgpt.com/backend-api/codex/responses`，模型名称保持不变，例如 `gpt-5.5`。
 
@@ -1075,10 +1257,9 @@ Claude Code 模式会将 Claude Code 作为 Zotero 内部独立的对话系统�
 
 _特别感谢 [@jianghao-zhang](https://github.com/jianghao-zhang) 开发了 Claude Code 集成及其桥接服务（[`cc-llm4zotero-adapter`](https://github.com/jianghao-zhang/cc-llm4zotero-adapter)）。经作者同意，该桥接服务现已内置于插件中，代码位于 [`packages/claude-bridge`](https://github.com/yilewang/llm-for-zotero/tree/main/packages/claude-bridge)。_
 
-<div class="rtd-warning">
-  <div class="rtd-admonition-title">仍在开发中</div>
-  Claude Code 模式目前<strong>不支持</strong>原生 Zotero API 操作。需要读取条目状态、编辑笔记、打标签、更新元数据或导入条目等原生文库工具时，请使用内置 <a href="#agent-模式beta">Agent 模式</a>。
-</div>
+Claude Code 使用插件的 Zotero 工具读取您的文库，并在您批准后编辑笔记、标签、元数据和导入条目。
+它的步骤会显示在任务进度中。
+内置 [Agent 模式](#agent-模式beta) 仍然拥有最完整的文库操作。
 
 ### 前置条件
 
@@ -1099,7 +1280,7 @@ claude
 
 ### 2. 在 Zotero 中开启 Claude Code
 
-打开 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** &rarr; **Agent** 标签页，开启 **Claude Code**。推荐设置：
+打开 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** &rarr; **Agent** 标签页，点击 **+ 添加运行时**，选择 **Claude Code** 并开启。推荐设置：
 
 | 设置项 | 推荐值 |
 |---|---|
@@ -1109,7 +1290,7 @@ claude
 | **Default model** | `sonnet` |
 | **Default reasoning** | `auto` |
 
-然后在聊天标题栏点击 **Claude Code** 按钮，或点击输入框中的运行时标记并选择 **Claude**，即可进入 Claude Code 模式。
+然后点击输入框中的 **Agent** / **Chat** 标签并选择 **Claude Code**。
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/agent/claude-settings.png" alt="Claude Code 设置显示桥接服务状态以及 Restart 和 Open log 按钮" width="1600" height="1331" loading="lazy">
@@ -1186,6 +1367,103 @@ Zotero 界面会加载 Claude Code 桥接服务提供的模型列表，并原样
 聊天模型选择器会识别当前对话，因此模型发现使用与该回合相同的 `.claude/settings.local.json` 配置层级。
 即使无法发现模型，模型首选项仍可编辑。
 由 Claude Code 负责解析或拒绝所选模型值，并应用 provider 或代理配置。
+
+---
+
+## Antigravity 配置（Google 订阅用户）
+
+Antigravity 模式在 Zotero 内以 Google 的 Antigravity CLI（`agy`）作为 Agent 运行。
+它使用您自己的 Google 登录，因此您已有的 Google 计划（包括 Google 学生计划）就足够使用。
+Antigravity 对话与其他对话显示在同一个历史列表中。
+
+<div class="rtd-warning">
+  <div class="rtd-admonition-title">免责声明</div>
+  Antigravity 支持并非 Google 官方集成。
+  如果您的账号因通过本插件使用而受到限制或封禁，插件作者不承担责任。
+  作者认为风险较低，但请您自行斟酌使用。
+</div>
+
+### 它能做什么
+
+- 阅读论文，搜索和阅读您的文库，搜索和阅读学术文献。
+- 读取附件、撰写笔记、引用条目，并撤销自己的修改。
+- 接受截图、图片和附加文件作为输入。
+- 它自己的斜杠命令会显示在 `/` 菜单中。
+- 对话可以从上次停下的地方继续。
+
+### 1. 安装并登录 Antigravity CLI
+
+从 Google 安装 Antigravity CLI（参见 [antigravity.google](https://antigravity.google)）。
+然后打开终端，运行：
+
+```bash
+agy
+```
+
+并按提示完成登录。
+只需要操作一次。
+
+### 2. 在 Zotero 中添加 Antigravity
+
+1. 打开 Zotero &rarr; **首选项** &rarr; **llm-for-zotero** &rarr; **Agent** 标签页。
+2. 点击 **+ 添加运行时**，选择 **Antigravity** 并开启。
+3. 在 **Connection** 下点击 **测试连接**。一切正常时，状态会显示 **Connected and signed in.**
+4. 在输入框中点击 **Agent** / **Chat** 标签并选择 **Antigravity**。
+
+设置项如下：
+
+| 设置项 | 作用 |
+|---|---|
+| **Model** | Antigravity 使用的模型。列表读取自您安装的 `agy`；点击 **Refresh** 可重新加载。**Default** 表示使用 Antigravity 自己的选择。 |
+| **Thinking** | 模型回答前的思考程度。可选项取决于模型。 |
+| **Permission level** | Antigravity 在行动前何时征求同意。它与对话中的权限标签是同一个设置。 |
+| **Advanced** &rarr; **Antigravity CLI path** | 可选。如果 Zotero 找不到 `agy`，在此填写它的完整路径。 |
+
+与其他运行时一样，您也可以在输入框中选择模型和思考程度。
+
+### 权限级别
+
+| 级别 | Antigravity 的行为 |
+|---|---|
+| **Default** | 编辑、命令和 Zotero 写入前都会询问。Zotero 读取无需询问。 |
+| **Accept edits** | 编辑文件无需询问，执行命令和删除前会询问。 |
+| **Auto** | 大多数工具无需询问，只在删除前询问。 |
+| **Plan** | 先做计划，修改任何内容前都会询问。 |
+| **Full access** | 所有工具都无需询问，包括命令和文件修改，权限等同于您的电脑账户。开启前 Zotero 会请您确认。 |
+
+Zotero 笔记写入遵循权限标签：在 **Auto** 或 **Accept edits** 下无需审阅卡片直接执行；在其他级别下需要您逐一批准。
+
+### 插件如何适配 Antigravity
+
+Antigravity 在几个方面与其他运行时不同。
+为了让它稳定可靠，插件对它做了专门处理。
+下面用通俗的话逐条说明。
+
+- **更少的 Zotero 工具。**
+  Antigravity CLI 只允许模型使用一定大小预算内的工具（每个会话约 42 KB 的工具描述），超出的工具无法调用。
+  插件的完整工具集大约是这个大小的三倍，如果全部提供，被挤掉的恰恰会是论文阅读、文库搜索等最重要的工具。
+  因此插件为 Antigravity 精选了一组核心工具：`paper_read`、`library_retrieve`、`library_search`、`library_read`、`read_attachment`、`literature_search`、`literature_read`、`note_write`、`library_cite` 和 `undo`。
+  它们涵盖阅读、在文库内外查找论文、撰写笔记和撤销。
+  打标签、编辑元数据、导入等其他文库操作，请使用拥有完整工具集的内置 [Agent](#agent-模式beta)。
+- **读取时更少的权限提示。**
+  读取 Zotero 数据文件夹中的文件，以及您附加到对话中的文件，不会征求同意。
+  这些文件是您已经交给 Zotero 或对话的，逐个询问只会拖慢您。
+- **完全访问在独立进程中运行。**
+  Antigravity CLI 只有在以该方式启动时才能跳过所有权限提示。
+  因此当您选择 **Full access** 时，插件会以该设置启动一个单独的 `agy` 进程，其他级别继续使用常规进程。
+- **划词提问使用 API 模型。**
+  [划词提问](#划词提问) 卡片需要快速、直接的模型调用，因此与 Claude Code 一样，它使用您模型列表中的 API 模型。
+- **每个对话独立的 Zotero 工具。**
+  每个 Antigravity 回合都会获得一个仅限该对话的插件 Zotero 工具连接。
+  您无需编辑任何 Antigravity 配置文件。
+
+### 如果无法使用
+
+| 问题 | 解决方法 |
+|---|---|
+| **The Antigravity CLI (agy) was not found** | 安装 `agy`，并确认在终端中可以运行 `agy`。插件会在 `~/.local/bin`、`/opt/homebrew/bin`、`/usr/local/bin` 和 `/usr/bin`（Windows 上为 `%LOCALAPPDATA%\Programs\agy`）中查找。如果它在其他位置，请把完整路径填入 **Advanced** &rarr; **Antigravity CLI path**。 |
+| `agy` 可以启动，但回复失败 | Antigravity 可能尚未登录。在终端中运行 `agy` 并登录，然后再次点击 **测试连接**。 |
+| Antigravity 不使用 Zotero 工具 | 确认 Agent 设置中的 **Enable Zotero MCP tools for native Codex, Claude Code, and Antigravity turns** 已开启。 |
 
 ---
 
@@ -1321,6 +1599,7 @@ MinerU 可通过内置 API 在没有密钥的情况下启动，但强烈建议�
 - 云端 MinerU 模式下，被自动解析或手动解析选中的 PDF 会发送给 MinerU。
 - 本地 MinerU 模式下，被自动解析或手动解析选中的 PDF 会发送到您配置的本地或远程 `mineru-api` 服务。
 - 在 Codex App Server 和 Claude Code 模式下，请求会通过您本地安装的 `codex` 或 Claude Code 发送到 OpenAI 或 Anthropic。
+- 在 Antigravity 模式下，请求会通过您本地安装的 `agy` 发送到 Google。
 - 使用通用网页搜索时，搜索词和 Agent 读取的网址会发送到您选择的服务商：Tavily、AnySearch 或 DeepSeek。
 - 学术文献搜索会将搜索词和论文标识符发送到 OpenAlex、arXiv、Europe PMC、Crossref 和 Semantic Scholar。
 - 对话历史、缓存的论文上下文、使用统计和 Agent 保存的文件由插件存储在本地。
