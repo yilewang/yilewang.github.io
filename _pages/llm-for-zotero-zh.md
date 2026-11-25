@@ -1,10 +1,12 @@
 ---
 layout: docs
 title: "llm-for-zotero：面向 Zotero 文库的研究 Agent 系统"
-permalink: /llm-for-zotero/zh/
+permalink: /llm-for-zotero/manual/zh/
+redirect_from:
+  - /llm-for-zotero/zh/
 author_profile: false
 lang: zh
-lang_alt: /llm-for-zotero/
+lang_alt: /llm-for-zotero/manual/
 ---
 
 <h1 id="overview">llm-for-zotero：面向 Zotero 文库的研究 Agent 系统</h1>
@@ -20,7 +22,7 @@ lang_alt: /llm-for-zotero/
   <a href="https://yilewang.github.io"><img src="https://img.shields.io/badge/网站-yilewang.github.io-informational?style=flat-square&logo=github" alt="个人网站"></a>
 </div>
 
-<p style="margin: 4px 0 20px; font-size: 0.9em;">📖 <a href="/llm-for-zotero/"><strong>English Documentation</strong></a></p>
+<p style="margin: 4px 0 20px; font-size: 0.9em;">📖 <a href="/llm-for-zotero/manual/"><strong>English Documentation</strong></a></p>
 
 <p style="text-align:center;">
   <img src="/images/llm-for-zotero/label.png" alt="LLM for Zotero logo: a brain icon merged with the Zotero shield" style="max-width:512px; display:block; margin:0 auto;">

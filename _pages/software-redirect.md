@@ -12,4 +12,4 @@ sitemap: false
   window.location.replace("{{ '/llm-for-zotero/' | relative_url }}");
 </script>
 
-<p>Redirecting to <a href="{{ '/llm-for-zotero/' | relative_url }}">the LLM-for-Zotero documentation</a>.</p>
+<p>Redirecting to <a href="{{ '/llm-for-zotero/' | relative_url }}">LLM for Zotero</a>.</p>
