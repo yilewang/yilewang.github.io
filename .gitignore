@@ -3,3 +3,5 @@ _site
 node_modules
 .DS_STORE
 .claude/
+# Fetched at build time by .github/fetch-llm-for-zotero-releases.cjs
+_data/llm_for_zotero_releases.json

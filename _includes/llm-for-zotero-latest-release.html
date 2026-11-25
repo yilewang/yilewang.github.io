@@ -1,0 +1,20 @@
+{%- comment -%}
+  The newest llm-for-zotero release as a card: version, date, summary, and its sections.
+  Data comes from _data/llm_for_zotero_releases.json (see .github/fetch-llm-for-zotero-releases.cjs).
+  Parameter: lang ("en" or "zh").
+{%- endcomment -%}
+{%- assign rn_latest = site.data.llm_for_zotero_releases | first -%}
+{%- if rn_latest -%}
+<div class="rn-latest">
+<div class="rn-latest__head"><a class="rn-latest__ver" href="{{ rn_latest.url }}">{{ rn_latest.tag }}</a><span class="rn-latest__date">{% if include.lang == 'zh' %}{{ rn_latest.date | date: "%Y 年 %-m 月 %-d 日" }}发布{% else %}Released {{ rn_latest.date | date: "%B %-d, %Y" }}{% endif %}</span></div>
+{%- if rn_latest.lead != "" %}
+<div class="rn-latest__lead">{{ rn_latest.lead | markdownify }}</div>
+{%- endif %}
+{%- if rn_latest.sections.size > 0 %}
+<ul class="rn-latest__sections">{% for s in rn_latest.sections %}<li>{{ s }}</li>{% endfor %}</ul>
+{%- endif %}
+<p class="rn-latest__links"><a href="{{ rn_latest.url }}">{% if include.lang == 'zh' %}阅读完整说明{% else %}Read the full notes{% endif %} &#8599;</a> <a href="https://github.com/yilewang/llm-for-zotero/releases">{% if include.lang == 'zh' %}所有版本{% else %}All releases{% endif %} &#8599;</a></p>
+</div>
+{%- else -%}
+<p><a href="https://github.com/yilewang/llm-for-zotero/releases">{% if include.lang == 'zh' %}在 GitHub 上查看发布说明{% else %}See the release notes on GitHub{% endif %} &#8599;</a></p>
+{%- endif -%}

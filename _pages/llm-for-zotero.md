@@ -89,6 +89,17 @@ lang_alt: /llm-for-zotero/manual/zh/
 
 ---
 
+## What's New
+
+The latest release is below, taken from its GitHub release notes.
+For every earlier version, see the [releases on GitHub](https://github.com/yilewang/llm-for-zotero/releases).
+
+{% include llm-for-zotero-latest-release.html lang="en" %}
+
+Thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) and [@boltma](https://github.com/boltma) for major contributions to the Codex App Server, Claude Code, and file upload workflows.
+
+---
+
 ## Demo Video
 
 Watch how to conduct a literature review in Library chat with the llm-for-zotero agent.
@@ -138,115 +149,6 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
   <img src="/images/llm-for-zotero/webchat-gemini-provider.png" alt="AI Providers settings showing API, Codex CLI, and browser-extension access paths, including WebChat for DeepSeek, ChatGPT, and Google Gemini" width="1468" height="1192" loading="lazy">
   <figcaption>Choose the access path that matches your account: API Key for provider APIs, Codex CLI for Codex Direct, or Browser extension for WebChat. The WebChat provider offers DeepSeek, ChatGPT, and Google Gemini without a provider API key.</figcaption>
 </figure>
-
----
-
-## What's New
-
-**v3.9.20**
-
-- **Antigravity runtime.**
-  Antigravity joins Codex and Claude Code as an agent runtime.
-  It runs Google's `agy` CLI as the agent, with your Zotero library available through the plugin's tools.
-  See [Antigravity Setup](#antigravity-setup-google-subscribers).
-- **Pick a runtime from the composer.**
-  The runtime buttons in the chat header are gone.
-  The **Agent** / **Chat** chip in the composer now opens a menu of your runtimes: Agent, Codex, Claude Code, and Antigravity.
-- **Add runtimes in Settings.**
-  **Settings** &rarr; **Agent** lists only the built-in Agent at first.
-  Use **+ Add runtime** to add Codex, Claude Code, or Antigravity, and **Remove** to take one off the list.
-  A removed runtime's chats stay in History.
-- Codex installed with npm starts again on macOS and Linux.
-- Custom providers that work in plain chat now work in Agent mode too, and connection failures say what went wrong.
-
-**v3.9.19**
-
-- **Zotero 7 starts the plugin again.**
-- **Searchable model field.**
-  Type to filter the model list, or pick **Use "…"** to enter a model that is not listed.
-  Customized providers get the model list too, and **Refresh** works for every provider.
-- **OpenAlex API key.**
-  A new Settings section takes an optional OpenAlex key, with **Test connection**.
-  See [OpenAlex API Key](#openalex-api-key).
-- **Edit a sent prompt** with the new **Edit** button.
-  Under each answer the footer shows **Copy** and **Note**, and the other actions are under **More**.
-- **Bigger composer.**
-  The message box grows up to 40% of the window, and you can drag the arc at its corner to resize it.
-- You can remove the embedding model.
-
-**v3.9.17**
-
-- **Inline Ask in the PDF reader.**
-  Select text, then click **Inline Ask** next to **Add Text** to ask about it in a small card on the page.
-  Save the answer as an annotation, or continue in the sidebar.
-  See [Inline Ask](#inline-ask).
-- **Long documents** such as books and theses get a map of their parts, so the Agent can find the right chapter.
-- **A saved note takes the question as its title.**
-
-**v3.9.16**
-
-- **Ask for named parts of a paper**, such as the methods or the discussion, in any language.
-  Task progress shows which parts the Agent read; **Full** means it read every character.
-- **Digests read up to 250,000 characters**, and quotes come only from body sentences.
-- **More library actions:** attach a file or URL, run **Find Available PDF**, change an item's type, edit an annotation's comment and color, add underlines and sticky notes, open a PDF at a page or annotation, put a standalone note in collections, add to many notes at once, count tags, read library statistics, and set Related links.
-- **Large edits resume.**
-  Edits over 50 items save their progress as they go, so an interrupted run continues where it stopped.
-  One approval card covers a merge.
-- **Claude Code and Codex steps show in Task progress**, and Codex asks before it writes.
-
-**v3.9.15**
-
-- **Open a chat in its own window.**
-  In the standalone window, drag a chat out of the chat list or drag the chat title, or right-click a chat and choose **Open in New Window**.
-  See [Open a Chat in Its Own Window](#open-a-chat-in-its-own-window).
-- **The side panel stays open** when you switch between Paper chat and Library chat.
-- **Easier reading:** answer text is one step larger.
-- **Codex home folder:** Codex can use a home folder other than `~/.codex`.
-  See [Codex Setup](#codex-setup-chatgpt-plus-subscribers).
-
-**v3.9.14**
-
-- **Task progress shows the sources of each answer.**
-  The side panel lists, for each question, the papers and web pages the Agent used and the passages it read.
-  **Show in answer** jumps to the sentence that cites a source.
-  See [Task Progress and Sources](#task-progress-and-sources).
-- **Web answers credit their sources** with numbered marks and a source chip, which stay when you copy the answer.
-- **Conversations grouped by agent:** the window sidebar can group chats into **Agent**, **Codex**, and **Claude** sections.
-- **The composer floats** over the bottom of the chat and grows as you type.
-- **MinerU local server on demand:** the plugin can start a local MinerU server when it parses a PDF and stop it when it is idle.
-  See [Using a Local MinerU Server](#using-a-local-mineru-server).
-- **OpenCode Go** is a new provider preset.
-
-**v3.9.13**
-
-- **Side panel** in the standalone window holds up to eight tabs: a side chat, past chats, and everything a chat made.
-- **Files the Agent saves** show as preview cards under the answer, and each paper gets its own folder.
-  See [Files the Agent Saves](#files-the-agent-saves).
-- **Papers outside your library:** the Agent can read the abstract and open-access text of a paper from a DOI, PubMed, PMC, or arXiv ID.
-- **Claude Code works without setup:** the plugin starts and stops the bridge that Claude Code needs.
-- **AI note edits keep citations, highlights, and images** in place.
-- **DeepSeek search** is a new choice for web search, next to Tavily and AnySearch.
-
-**Earlier updates**
-
-- **Usage Statistics** provides a local overview of Paper chat and Library chat activity, with time filters, activity and token charts, model details, CSV export, and reset controls.
-  See [Usage Statistics](#usage-statistics).
-- **Built-in web and literature research** lets the Agent search the public web, read source pages, and combine current online information with evidence from your Zotero library.
-  Answers can include paragraph-level source cards, while the activity trace keeps general web results and scholarly literature results visually distinct.
-  See [General Web Search](#general-web-search).
-- **Codex App Server** is the recommended Codex path for ChatGPT Plus users. It runs through the local `codex app-server` runtime and is configured from the **Agent** tab.
-- **Claude Code Mode (experimental)** runs Claude Code as a separate conversation system inside Zotero, using your own Claude Code login. It can use the plugin's Zotero tools to read your library and, with your approval, edit notes, tags, metadata, and imports. See [Claude Code Setup](#claude-code-setup-experimental).
-- **One history** lists Agent, Codex, and Claude chats together. Attach an earlier conversation from the slash menu or by asking for it in plain words.
-- **WebChat Mode** supports ChatGPT, DeepSeek, and Google Gemini web sync through the Sync for Zotero browser extension.
-- **File-Based Notes**: Notes are no longer hard-coded to Obsidian. Configure any local Markdown directory, including Obsidian, Logseq, or a plain folder. See [File-Based Notes](#file-based-notes).
-- **Skills**: Customizable guidance files shape how the agent handles different tasks. 8 built-in skills are included, plus a portal for creating your own. See [Skills](#skills).
-- **Standalone Window Mode** opens the assistant in a dedicated window with paper chat, library chat, and conversation history.
-- **Cache-aware Agent Mode** preserves stable paper context, prior read evidence, and coverage state across longer research turns, then compacts old transcript history automatically when the context window gets crowded.
-- **Citation navigation** keeps citation labels conservative until page locations are verified, while quote-based citations can jump back to the matching Zotero passage.
-- **MinerU PDF parsing**: High-fidelity extraction preserves tables, equations, and figures more accurately, with support for cloud MinerU, local `mineru-api` servers, bulk parsing, cache repair, sync packages, tags, and parsing filters.
-- **Precise Figure Extraction**: Figure questions and figure notes now use crops cut directly from the source PDF — with MinerU as the index — instead of MinerU's own figure images, for sharper, more accurate figures. See [Precise Figure Extraction](#precise-figure-extraction).
-
-Thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) and [@boltma](https://github.com/boltma) for major contributions to the Codex App Server, Claude Code, and file upload workflows.
 
 ---
 

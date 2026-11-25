@@ -4,6 +4,10 @@ on:
   push:
     # Trigger on your main branches; add or change branch names if needed
     branches: [ "main", "master", "model/representational_drift" ]
+  # Rebuild daily so the llm-for-zotero release notes follow new plugin releases.
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -23,6 +27,11 @@ jobs:
           gem install bundler
           bundle config set path vendor/bundle
           bundle install --jobs 4 --retry 3
+
+      - name: Fetch llm-for-zotero release notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node .github/fetch-llm-for-zotero-releases.cjs
 
       - name: Build site with Jekyll
         env:
