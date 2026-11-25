@@ -26,7 +26,7 @@ lang_alt: /llm-for-zotero/manual/zh/
   <img src="/images/llm-for-zotero/label.png" alt="LLM for Zotero logo: a brain icon merged with the Zotero shield" style="max-width:512px; display:block; margin:0 auto;">
 </p>
 
-**llm-for-zotero** brings Large Language Models into the Zotero reader, so you can ask questions, summarize papers, inspect figures, compare sources, and save notes without leaving your library. It works with standard API providers, local OpenAI-compatible models, WebChat, Codex App Server, and Claude Code.
+**llm-for-zotero** brings Large Language Models into the Zotero reader, so you can ask questions, summarize papers, inspect figures, compare sources, and save notes without leaving your library. It works with standard API providers, local OpenAI-compatible models, WebChat, Codex App Server, Claude Code, and Antigravity.
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/demo.png" alt="Screenshot of the llm-for-zotero sidebar inside the Zotero PDF reader" width="1600" height="1200" loading="lazy" decoding="async">
@@ -104,19 +104,20 @@ Watch how to conduct a literature review in Library chat with the llm-for-zotero
 ## Quick Start
 
 1. Download the latest `.xpi` file from the [Releases page](https://github.com/yilewang/llm-for-zotero/releases).
-2. In Zotero, open `Tools` &rarr; `Add-ons` &rarr; gear icon &rarr; **Install Add-on From File**, then select the `.xpi`.
+2. In Zotero, open `Tools` &rarr; `Plugins` &rarr; gear icon &rarr; **Install Plugin From File**, then select the `.xpi`.
 3. Restart Zotero.
 4. Open `Preferences` &rarr; `llm-for-zotero`, choose a provider, enter the base URL, key, and model, then click **Test Connection**.
 5. Open a PDF in Zotero and click the LLM Assistant icon in the right-hand toolbar.
 
-If you do not want to use a provider API key, start with [WebChat](#webchat-setup-chatgpt-web-sync) or [Codex App Server](#codex-setup-chatgpt-plus-subscribers).
+If you do not want to use a provider API key, start with [WebChat](#webchat-setup-chatgpt-web-sync), or use a subscription you already have through [Codex App Server](#codex-setup-chatgpt-plus-subscribers), [Claude Code](#claude-code-setup-experimental), or [Antigravity](#antigravity-setup-google-subscribers).
 
 ## Requirements
 
 - Zotero
-- A model backend: provider API key, local OpenAI-compatible model, WebChat, Codex App Server, or Claude Code.
+- A model backend: provider API key, local OpenAI-compatible model, WebChat, Codex App Server, Claude Code, or Antigravity.
 - A Chromium-based browser for WebChat mode.
 - Node.js 18+ for npm-based Codex CLI installation and for Claude Code mode. The macOS Codex cask does not require a separate Node.js install.
+- The Antigravity CLI (`agy`), installed and signed in, for Antigravity mode.
 - For general web search in Agent Mode: a Tavily key, an official DeepSeek model profile, or AnySearch (no key needed).
 - A personal MinerU API key or a local `mineru-api` server is recommended if you enable MinerU parsing.
 
@@ -129,6 +130,7 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 | Use ChatGPT, DeepSeek, or Google Gemini in the browser | [WebChat](#webchat-setup-chatgpt-web-sync) with the Sync for Zotero extension | No provider API key |
 | Use Codex models with ChatGPT Plus | [Codex App Server](#codex-setup-chatgpt-plus-subscribers) | No separate API key |
 | Use Claude Code inside Zotero | [Claude Code bridge](#claude-code-setup-experimental) | Claude Code auth |
+| Use a Google account or Google student plan | [Antigravity](#antigravity-setup-google-subscribers) | `agy` sign-in |
 | Research current public web information | [General web search](#general-web-search) in Agent Mode with Tavily, AnySearch, or DeepSeek | Tavily key, DeepSeek key, or none for AnySearch |
 | Improve PDF extraction for tables, equations, and figures | [MinerU PDF parsing](#mineru-pdf-parsing) | Personal MinerU key recommended |
 
@@ -140,6 +142,67 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
 ---
 
 ## What's New
+
+**v3.9.20**
+
+- **Antigravity runtime.**
+  Antigravity joins Codex and Claude Code as an agent runtime.
+  It runs Google's `agy` CLI as the agent, with your Zotero library available through the plugin's tools.
+  See [Antigravity Setup](#antigravity-setup-google-subscribers).
+- **Pick a runtime from the composer.**
+  The runtime buttons in the chat header are gone.
+  The **Agent** / **Chat** chip in the composer now opens a menu of your runtimes: Agent, Codex, Claude Code, and Antigravity.
+- **Add runtimes in Settings.**
+  **Settings** &rarr; **Agent** lists only the built-in Agent at first.
+  Use **+ Add runtime** to add Codex, Claude Code, or Antigravity, and **Remove** to take one off the list.
+  A removed runtime's chats stay in History.
+- Codex installed with npm starts again on macOS and Linux.
+- Custom providers that work in plain chat now work in Agent mode too, and connection failures say what went wrong.
+
+**v3.9.19**
+
+- **Zotero 7 starts the plugin again.**
+- **Searchable model field.**
+  Type to filter the model list, or pick **Use "…"** to enter a model that is not listed.
+  Customized providers get the model list too, and **Refresh** works for every provider.
+- **OpenAlex API key.**
+  A new Settings section takes an optional OpenAlex key, with **Test connection**.
+  See [OpenAlex API Key](#openalex-api-key).
+- **Edit a sent prompt** with the new **Edit** button.
+  Under each answer the footer shows **Copy** and **Note**, and the other actions are under **More**.
+- **Bigger composer.**
+  The message box grows up to 40% of the window, and you can drag the arc at its corner to resize it.
+- You can remove the embedding model.
+
+**v3.9.17**
+
+- **Inline Ask in the PDF reader.**
+  Select text, then click **Inline Ask** next to **Add Text** to ask about it in a small card on the page.
+  Save the answer as an annotation, or continue in the sidebar.
+  See [Inline Ask](#inline-ask).
+- **Long documents** such as books and theses get a map of their parts, so the Agent can find the right chapter.
+- **A saved note takes the question as its title.**
+
+**v3.9.16**
+
+- **Ask for named parts of a paper**, such as the methods or the discussion, in any language.
+  Task progress shows which parts the Agent read; **Full** means it read every character.
+- **Digests read up to 250,000 characters**, and quotes come only from body sentences.
+- **More library actions:** attach a file or URL, run **Find Available PDF**, change an item's type, edit an annotation's comment and color, add underlines and sticky notes, open a PDF at a page or annotation, put a standalone note in collections, add to many notes at once, count tags, read library statistics, and set Related links.
+- **Large edits resume.**
+  Edits over 50 items save their progress as they go, so an interrupted run continues where it stopped.
+  One approval card covers a merge.
+- **Claude Code and Codex steps show in Task progress**, and Codex asks before it writes.
+
+**v3.9.15**
+
+- **Open a chat in its own window.**
+  In the standalone window, drag a chat out of the chat list or drag the chat title, or right-click a chat and choose **Open in New Window**.
+  See [Open a Chat in Its Own Window](#open-a-chat-in-its-own-window).
+- **The side panel stays open** when you switch between Paper chat and Library chat.
+- **Easier reading:** answer text is one step larger.
+- **Codex home folder:** Codex can use a home folder other than `~/.codex`.
+  See [Codex Setup](#codex-setup-chatgpt-plus-subscribers).
 
 **v3.9.14**
 
@@ -173,7 +236,7 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
   See [General Web Search](#general-web-search).
 - **Codex App Server** is the recommended Codex path for ChatGPT Plus users. It runs through the local `codex app-server` runtime and is configured from the **Agent** tab.
 - **Claude Code Mode (experimental)** runs Claude Code as a separate conversation system inside Zotero, using your own Claude Code login. It can use the plugin's Zotero tools to read your library and, with your approval, edit notes, tags, metadata, and imports. See [Claude Code Setup](#claude-code-setup-experimental).
-- **One history** lists Agent, Codex, and Claude chats together. Click the runtime badge in the message box to switch runtimes, and attach an earlier conversation from the slash menu or by asking for it in plain words.
+- **One history** lists Agent, Codex, and Claude chats together. Attach an earlier conversation from the slash menu or by asking for it in plain words.
 - **WebChat Mode** supports ChatGPT, DeepSeek, and Google Gemini web sync through the Sync for Zotero browser extension.
 - **File-Based Notes**: Notes are no longer hard-coded to Obsidian. Configure any local Markdown directory, including Obsidian, Logseq, or a plain folder. See [File-Based Notes](#file-based-notes).
 - **Skills**: Customizable guidance files shape how the agent handles different tasks. 8 built-in skills are included, plus a portal for creating your own. See [Skills](#skills).
@@ -193,7 +256,7 @@ Thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) and [@boltma](htt
    Go to the [Releases Page](https://github.com/yilewang/llm-for-zotero/releases) and download the latest `.xpi` file.
 
 2. **Install the add-on in Zotero**
-   Open Zotero &rarr; `Tools` &rarr; `Add-ons` &rarr; click the gear icon &rarr; **Install Add-on From File** &rarr; select the `.xpi` file.
+   Open Zotero &rarr; `Tools` &rarr; `Plugins` &rarr; click the gear icon &rarr; **Install Plugin From File** &rarr; select the `.xpi` file.
 
 3. **Restart Zotero**
    Restart Zotero to complete the installation. The plugin automatically checks for future updates on startup.
@@ -216,6 +279,24 @@ Open **Preferences** &rarr; navigate to the **llm-for-zotero** tab.
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <video class="rtd-demo" src="/images/llm-for-zotero/model_setting.mp4" poster="/images/llm-for-zotero/model_setting.jpg" width="1280" height="904" muted loop playsinline preload="none" aria-label="Provider and model configuration"></video>
 </figure>
+
+### Choosing a Model
+
+The model field is a search box.
+Type part of a name to filter the provider's model list, then pick a model with the arrow keys and Enter, or click it.
+To use a model that is not in the list, pick the **Use "…"** row.
+A **Customized** provider, with your own base URL, gets the model list too.
+Click **Refresh** to load the provider's latest models.
+If the list fails to load, the model row says why, for example a wrong key, a rate limit, or a timeout.
+
+### OpenAlex API Key
+
+The Agent searches and reads scholarly literature through OpenAlex.
+OpenAlex limits requests that come without a key, so a free key helps if you search often.
+Open **Preferences** &rarr; **llm-for-zotero** &rarr; **OpenAlex** (after **Web search**), paste your key, and click **Test connection**.
+The key is optional.
+The plugin sends it only in a request header, never in the URL.
+When OpenAlex rate-limits you and you have no key, the Agent tells you that a key raises the limit.
 
 ### Supported Providers & Protocols
 
@@ -273,11 +354,15 @@ The plugin supports multiple conversation contexts:
 
 ### Interface Controls
 
+- **Runtime menu** — the **Agent** / **Chat** chip in the message box picks plain chat, the built-in Agent, or an added runtime such as Codex, Claude Code, or Antigravity. See [Agent Mode](#agent-mode-beta).
 - **Model selector** — switch between configured models mid-conversation.
 - **Reasoning selector** — choose the reasoning level for the current request.
 - **Font scaling** — adjust sidebar font size from 80% to 180%.
 - **Auto-scroll** — automatically scrolls to the latest message.
 - **Token usage** — real-time display of input, output, and reasoning tokens consumed.
+- **Edit a sent prompt** — click **Edit**, next to **Copy** under your prompt. Clicking the prompt itself lets you select and copy its text.
+- **Answer footer** — **Copy** and **Note** are always shown; **Fork**, **Delete**, and **Expand** are under **More**.
+- **Resize the message box** — it grows with your text, up to 40% of the window. In the sidebar, drag the arc that appears at the message box's outer corner to resize the chat area.
 
 ---
 
@@ -310,6 +395,43 @@ An optional pop-up automatically suggests adding selected text to the chat. This
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <video class="rtd-demo" src="/images/llm-for-zotero/text.mp4" poster="/images/llm-for-zotero/text.jpg" width="960" height="754" muted loop playsinline preload="none" aria-label="Selected text being explained by the model"></video>
 </figure>
+
+---
+
+## Inline Ask
+
+Inline Ask lets you ask about a selection right on the PDF page, without opening the sidebar.
+Select text in a PDF, then click **Inline Ask** next to **Add Text**.
+A card opens next to the selection, in place of Zotero's selection popup.
+
+<figure class="rtd-doc-figure rtd-doc-figure--wide">
+  <video class="rtd-demo" src="/assets/llm-for-zotero/inline.mp4" poster="/images/llm-for-zotero/inline_ask.jpg" width="1280" height="720" muted loop playsinline preload="none" aria-label="Inline Ask explaining a selection, then saving the answer as an annotation"></video>
+  <figcaption>Ask about a selection in a card on the page, then save the answer as an annotation.</figcaption>
+</figure>
+
+### Asking
+
+- Type your own question, or click a quick prompt: **Explain**, **Define terms**, or **Translate**.
+- Right-click a quick prompt to edit, delete, or add prompts.
+- The answer streams into the card, and you can ask follow-up questions.
+- Select text in an answer to copy it, or click **Quote** to ask a follow-up about that part.
+- The card has its own model and effort choice, separate from the sidebar.
+
+### Moving and Sizing the Card
+
+- Drag the card by its blank margins to move it, and drag any corner to resize it.
+- Set the text size from the **More** menu, or with `Cmd/Ctrl` + `=`, `-`, and `0`.
+- Press `Escape` anywhere in the reader to close the card.
+
+### Keeping an Answer
+
+- **Save as annotation** highlights the selection in the color you pick.
+  The answer becomes the annotation's comment, and you can edit it before you save.
+- **Continue in sidebar** opens a new paper chat that holds the card's questions and answers.
+  The chat shows in History like any other chat.
+
+Inline Ask runs on an API model from your model list.
+When the chat uses Claude Code or Antigravity, the card still uses an API model.
 
 ---
 
@@ -438,6 +560,23 @@ Open the LLM Assistant in its own dedicated window, separate from the Zotero rea
   Select text in an answer and pick **Quote in side chat** to ask about it in a side chat.
 - **Full feature parity** &mdash; Everything available in the reader sidebar &mdash; screenshots, file uploads, agent mode, quick-action presets, reference picker &mdash; works identically in the standalone window.
 - **Search** &mdash; Search through your conversation history using the search overlay.
+
+### Open a Chat in Its Own Window
+
+You can open any chat in its own small window and keep it beside your paper.
+In the standalone window, drag a chat out of the chat list, or drag the chat title.
+You can also right-click a chat and choose **Open in New Window**.
+
+- The new window does not follow the PDF reader tab, so the chat keeps its own paper as context. The unlinked icon next to the title shows this.
+- **History** opens another chat in the same window.
+- The side panel lists your past chats, read only.
+- **Open in main window** moves the chat back to the standalone window.
+- In a paper chat, click the paper line to show that paper in your library.
+
+Each chat opens in one window at most; opening it again brings its window to the front.
+These windows close with Zotero, and when their chat is deleted or their paper goes to the trash.
+
+The side panel stays open when you switch between Paper chat and Library chat.
 
 While the standalone window is open, the reader sidebar panels show a placeholder with options to **Focus Window** (bring the standalone window to the foreground) or **Close Window & Return Here** (close standalone and restore the sidebar).
 
@@ -617,17 +756,39 @@ Use the source marks to open important pages and verify high-stakes claims again
 
 <div class="rtd-warning">
   <div class="rtd-admonition-title">Important</div>
-  Agent Mode is disabled by default. Turn on <strong>Original Agent</strong> in <strong>Preferences</strong> &rarr; <strong>Agent</strong> tab. While it is on, new chats use the Agent. If you also turn on Codex or Claude Code, click the runtime badge in the message box to switch between them.
+  Agent Mode is disabled by default. Turn on <strong>Original Agent</strong> in <strong>Preferences</strong> &rarr; <strong>Agent</strong> tab. While it is on, new chats use the Agent.
 </div>
+
+### Runtimes
+
+A runtime is the program that runs the agent.
+The built-in **Agent** uses the API models from your provider settings.
+You can also add runtimes that use a subscription you already have:
+
+| Runtime | What it runs | Setup |
+|---|---|---|
+| **Agent** | The plugin's own agent, with your API models | Built in |
+| **Codex** | OpenAI's `codex app-server`, with your ChatGPT sign-in | [Codex Setup](#codex-setup-chatgpt-plus-subscribers) |
+| **Claude Code** | Anthropic's Claude Code, with your Claude sign-in or key | [Claude Code Setup](#claude-code-setup-experimental) |
+| **Antigravity** | Google's `agy` CLI, with your Google sign-in | [Antigravity Setup](#antigravity-setup-google-subscribers) |
+
+**Settings** &rarr; **Agent** lists only the built-in Agent at first.
+Click **+ Add runtime** to add Codex, Claude Code, or Antigravity, and **Remove** to take one off the list.
+A removed runtime's chats stay in History.
+
+To switch runtimes, click the **Agent** / **Chat** chip in the message box.
+It opens a menu of your runtimes, each with its icon.
+The menu ends with **+ Add runtime…**, or **Configure runtimes…** once every runtime is added; both open Settings.
+Only the selected runtime is active in a chat.
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/agent/runtime-settings.png" alt="Agent settings showing enabled Original Agent, Codex, and Claude Code runtimes" width="1164" height="592" loading="lazy">
-  <figcaption>The Agent settings page keeps the Original Agent, Codex, and Claude Code runtimes together. Enable the runtimes you want here, then switch between them from the chat header or the runtime badge in the message box.</figcaption>
+  <figcaption>The Agent settings page keeps your runtimes together. Add and enable the runtimes you want here, then switch between them from the chip in the message box.</figcaption>
 </figure>
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/agent/runtime-badge.png" alt="Runtime badge menu in the message box with Agent, Codex, and Claude choices" width="1600" height="1600" loading="lazy">
-  <figcaption>Click the runtime badge in the message box to switch between <strong>Agent</strong>, <strong>Codex</strong>, and <strong>Claude</strong>.</figcaption>
+  <figcaption>Click the chip in the message box to switch runtimes.</figcaption>
 </figure>
 
 In a normal chat, the model answers from the context you give it.
@@ -646,6 +807,14 @@ The rule is simple: tools that only read run directly; tools that change somethi
 6. **You can undo.** Ask the Agent to undo, and it reverts recorded changes, newest first.
 
 If a choice is unclear, such as which collection to use, the Agent asks you before it continues.
+
+### Reading Parts of a Paper
+
+You can ask for a named part of a paper, such as the methods, the results, or the discussion, in any language.
+The Agent reads that part instead of the whole paper.
+Task progress shows which parts it read; **Full** means it read every character.
+Books and theses get a map of their parts, with page ranges and sizes, so the Agent reads the chapters it needs and never reads text that was cut short.
+Paper digests read up to 250,000 characters, and quotes come only from body sentences.
 
 Long agent runs are cache-aware. The plugin keeps stable Zotero context and previously read evidence separate from the changing chat transcript, tracks which papers and passages have already been inspected, and automatically compacts old turns when the model context fills up. Follow-up questions can reuse grounded evidence when it is still relevant, while the agent reads again when the needed source or coverage layer is missing.
 
@@ -726,13 +895,14 @@ The table helps you understand the activity trace and the confirmation cards.
 | Scholarly discovery | `literature_search`, `literature_read`, `literature_review` | Search OpenAlex, arXiv, and Europe PMC for papers, recommendations, references, and citations (metadata lookup via CrossRef and Semantic Scholar), read the abstract and open-access text of an outside paper, then present ranked candidates |
 | General web research | `web_search`, `web_read` | Search the current public web with Tavily, AnySearch, or DeepSeek, read relevant pages, and credit the sources in the answer |
 | Past conversations | `past_chat_search`, `past_chat_read`, `past_chat_attach` | Find an earlier chat, read it, and attach it to the current chat |
-| Library writes | `library_update`, `library_import`, `library_delete`, `annotate_pdf` | Apply tags, update metadata, move items, manage collections and attachments, merge duplicates, trash items, import identifiers or local files, highlight PDF passages |
+| Library writes | `library_update`, `library_import`, `library_delete`, `annotate_pdf` | Apply tags, update metadata and item types, move items, manage collections, attach files or URLs, run **Find Available PDF**, set Related links, edit an annotation's comment and color, merge duplicates, trash items, import identifiers or local files, and highlight, underline, or add sticky notes to PDF passages |
+| Reader | `reader_open` | Open a PDF in Zotero's reader at a page or annotation |
 | Citations and settings | `library_cite`, `library_settings` | Format citations and bibliographies with Zotero's citation engine, and read or change the Zotero preferences the agent may touch |
 | Notes and documents | `note_write`, `note_write_batch`, `submit_document` | Create, append to, or edit Zotero notes, write one note on each of many items, and finalize longer documents |
 | Filesystem and scripting | `file_io`, `run_command`, `zotero_script` | Read/write local files, run analysis commands, or execute Zotero JavaScript with write confirmations |
 | Skills and questions | `load_skill`, `request_user_input` | Load a skill's instructions when the task needs them, and ask you a question when a choice is ambiguous |
 | Task tracking | `task_update`, `workflow_script` | Split a compound request into parts the plugin tracks, and run several tool calls in one script with loops and conditions |
-| Safety | `undo` | Undo recorded write actions from the conversation's durable change history, one at a time or several newest-first |
+| Safety | `undo`, `resume_library_batch` | Undo recorded write actions from the conversation's durable change history, one at a time or several newest-first, and resume a large edit that stopped part-way |
 
 **Example use cases:**
 
@@ -813,6 +983,8 @@ All write operations go through a **human-in-the-loop confirmation** workflow:
 - You can **approve**, **reject**, or **modify** before any changes are applied.
 - If something goes wrong, ask the agent to undo; the `undo` tool reverts recorded write actions newest-first.
 - Terminal commands and file operations also require explicit approval before execution.
+- Edits over 50 items save their progress as they go. If a run stops part-way, the Agent resumes it without repeating the finished items.
+- One approval card covers a whole merge.
 
 ---
 
@@ -986,7 +1158,7 @@ If you have a **ChatGPT Plus** subscription, you can use Codex models in the plu
 
 New users should choose **Codex App Server** from the **Agent** tab. The older **Codex Auth (Legacy)** path remains available for existing users, but is planned for future deprecation after app-server validation.
 
-- **Codex App Server (Recommended)**: Spawns the local `codex app-server` CLI and talks to it over stdio. This is the official way to use Codex in third-party apps and the preferred setup for new users. It is configured from the **Agent** tab and appears as a dedicated **Codex** button in the chat header.
+- **Codex App Server (Recommended)**: Spawns the local `codex app-server` CLI and talks to it over stdio. This is the official way to use Codex in third-party apps and the preferred setup for new users. It is added from the **Agent** tab and appears as **Codex** in the runtime menu of the message box.
 - **Codex Auth (Legacy)**: Uses the ChatGPT/Codex Responses backend directly. Existing users can keep this configuration for now, but new users should choose `Codex App Server`.
 
 _Special thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) for contributing the original Codex Auth integration, and to [@boltma](https://github.com/boltma) for designing the Codex App Server integration._
@@ -1017,15 +1189,25 @@ A browser window opens — sign in with your ChatGPT Plus account. Credentials a
 
 Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent** tab:
 
+Click **+ Add runtime**, choose **Codex**, then set:
+
 | Setting | Recommended value |
 |---|---|
-| Enable Codex App Server integration | `On` |
+| Codex | `On` |
 | Model | e.g. `gpt-5.4` |
 | Reasoning | `auto`, `low`, `medium`, `high`, or `xhigh` |
 
-Click **Test connection** to verify that Zotero can launch `codex app-server`, then click the **Codex** button in the chat header to enter the Codex conversation system.
+Click **Test connection** to verify that Zotero can launch `codex app-server`.
+Then click the **Agent** / **Chat** chip in the message box and pick **Codex**.
 
-`Codex App Server` and `Claude Code` are mutually exclusive runtime modes in the Agent tab. Disable one before enabling the other.
+Codex asks before it writes to your library, and its steps show in Task progress.
+
+**Codex home folder.**
+By default Codex keeps its sessions and settings in `~/.codex`, shared with the Codex desktop app.
+To keep Zotero's Codex sessions apart, set **Agent** &rarr; **Codex** &rarr; **Advanced** &rarr; **Codex home folder** to another folder.
+You can paste a path in quotes, or start it with `~` for your home folder.
+A separate folder needs its own `codex login` and its own MCP setup.
+Leave it blank to keep the default.
 
 Existing users who need the old path can open the **AI Providers** tab, choose `Codex Auth (Legacy)`, keep API URL `https://chatgpt.com/backend-api/codex/responses`, and use the same Codex model name, for example `gpt-5.5`.
 
@@ -1049,10 +1231,9 @@ Claude Code mode runs Claude Code as a separate conversation system inside Zoter
 
 _Special thanks to [@jianghao-zhang](https://github.com/jianghao-zhang), who built the Claude Code integration and its bridge ([`cc-llm4zotero-adapter`](https://github.com/jianghao-zhang/cc-llm4zotero-adapter)). The bridge now ships inside the plugin, with the author's permission, under [`packages/claude-bridge`](https://github.com/yilewang/llm-for-zotero/tree/main/packages/claude-bridge)._
 
-<div class="rtd-warning">
-  <div class="rtd-admonition-title">Under development</div>
-  Claude Code mode currently does <strong>not</strong> support native Zotero API operations. Use the built-in <a href="#agent-mode-beta">Agent Mode</a> for native library tools such as reading item state, editing notes, tagging papers, updating metadata, or importing items.
-</div>
+Claude Code uses the plugin's Zotero tools to read your library and, with your approval, edit notes, tags, metadata, and imports.
+Its steps show in Task progress.
+The built-in [Agent Mode](#agent-mode-beta) still has the widest set of library actions.
 
 ### Prerequisites
 
@@ -1073,7 +1254,7 @@ Finish the login steps it shows, then close it. You only need to do this once.
 
 ### 2. Turn On Claude Code Inside Zotero
 
-Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent** tab, and switch on **Claude Code**. Recommended settings:
+Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent** tab, click **+ Add runtime**, choose **Claude Code**, and switch it on. Recommended settings:
 
 | Setting | Recommended value |
 |---|---|
@@ -1083,7 +1264,7 @@ Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent** ta
 | **Default model** | `sonnet` |
 | **Default reasoning** | `auto` |
 
-Then click the **Claude Code** button in the chat header, or click the runtime badge in the message box and pick **Claude**, to enter Claude Code mode.
+Then click the **Agent** / **Chat** chip in the message box and pick **Claude Code**.
 
 <figure class="rtd-doc-figure rtd-doc-figure--wide">
   <img src="/images/llm-for-zotero/agent/claude-settings.png" alt="Claude Code settings showing the bridge status with Restart and Open log buttons" width="1600" height="1331" loading="lazy">
@@ -1160,6 +1341,103 @@ The Zotero UI loads the model catalog advertised by the Claude Code bridge and p
 The chat model picker identifies the active conversation, so model discovery uses the same scoped `.claude/settings.local.json` stack as the turn.
 The model preference remains editable when discovery is unavailable.
 Claude Code is responsible for resolving or rejecting the selected value and for applying provider or proxy configuration.
+
+---
+
+## Antigravity Setup (Google Subscribers)
+
+Antigravity mode runs Google's Antigravity CLI (`agy`) as the agent inside Zotero.
+It uses your own Google sign-in, so a Google plan you already have, including Google's student plan, is enough.
+Antigravity chats appear in the same history list as your other chats.
+
+<div class="rtd-warning">
+  <div class="rtd-admonition-title">Disclaimer</div>
+  Antigravity support is not an official integration from Google.
+  The plugin author takes no responsibility if your account is restricted or banned because you use it through this plugin.
+  The risk is believed to be low, but use it at your own discretion.
+</div>
+
+### What It Can Do
+
+- Read papers, search and read your library, and search and read scholarly literature.
+- Read attachments, write notes, cite items, and undo its own changes.
+- Take screenshots, images, and attached files as input.
+- Its own slash commands appear in the `/` menu.
+- Chats resume where they left off.
+
+### 1. Install and Sign In to the Antigravity CLI
+
+Install the Antigravity CLI from Google (see [antigravity.google](https://antigravity.google)).
+Then open a terminal, run:
+
+```bash
+agy
+```
+
+and finish the sign-in steps it shows.
+You only need to do this once.
+
+### 2. Add Antigravity in Zotero
+
+1. Open Zotero &rarr; **Preferences** &rarr; **llm-for-zotero** &rarr; **Agent** tab.
+2. Click **+ Add runtime** and choose **Antigravity**, then switch it on.
+3. Click **Test connection** under **Connection**. When everything works, the status says **Connected and signed in.**
+4. In the message box, click the **Agent** / **Chat** chip and pick **Antigravity**.
+
+The settings have these options:
+
+| Setting | What it does |
+|---|---|
+| **Model** | The model Antigravity uses. The list is read from your installed `agy`; click **Refresh** to load it again. **Default** uses Antigravity's own choice. |
+| **Thinking** | How much the model thinks before it answers. The choices depend on the model. |
+| **Permission level** | When Antigravity asks before it acts. This is the same setting as the permission chip in the chat. |
+| **Advanced** &rarr; **Antigravity CLI path** | Optional. The full path to `agy`, if Zotero cannot find it. |
+
+You can also pick the model and thinking level in the message box, as with the other runtimes.
+
+### Permission Levels
+
+| Level | What Antigravity does |
+|---|---|
+| **Default** | Asks before edits, commands, and Zotero writes. Zotero reads run without asking. |
+| **Accept edits** | Edits files without asking, and asks before commands and deletions. |
+| **Auto** | Runs most tools without asking, and asks only before deleting. |
+| **Plan** | Plans, and asks before it changes anything. |
+| **Full access** | Runs every tool without asking, including commands and file changes, with the access your computer account has. Zotero asks you to confirm before you turn it on. |
+
+Zotero note writes follow the permission chip: in **Auto** or **Accept edits** they run without a review card; in the other levels you approve each one.
+
+### How the Plugin Adapts to Antigravity
+
+Antigravity works differently from the other runtimes in a few ways.
+To keep it reliable, the plugin handles it specially.
+Here is each difference in plain words.
+
+- **A smaller set of Zotero tools.**
+  The Antigravity CLI lets the model use only as many tools as fit in a fixed size budget (about 42 KB of tool descriptions per session), and it gives no way to reach the rest.
+  The plugin's full tool set is about three times that size, so if all tools were offered, the most important ones, such as paper reading and library search, would be the ones left out.
+  The plugin therefore offers Antigravity a chosen core set: `paper_read`, `library_retrieve`, `library_search`, `library_read`, `read_attachment`, `literature_search`, `literature_read`, `note_write`, `library_cite`, and `undo`.
+  This covers reading, finding papers inside and outside your library, writing notes, and undoing.
+  For tagging, metadata edits, imports, and other library actions, use the built-in [Agent](#agent-mode-beta), which has the full set.
+- **Fewer permission prompts for reading.**
+  Reading files in your Zotero data folder, and the files you attach to the chat, does not ask for permission.
+  These are files you already gave to Zotero or to the chat, so a prompt for each one would only slow you down.
+- **Full access runs in its own process.**
+  The Antigravity CLI can only skip all permission prompts when it is started that way.
+  So when you choose **Full access**, the plugin starts a separate `agy` process with that setting, and the other levels keep using the normal one.
+- **Inline Ask uses an API model.**
+  The [Inline Ask](#inline-ask) card needs a fast, direct model call, so it runs on an API model from your model list, as it does for Claude Code.
+- **Zotero tools for each chat.**
+  Each Antigravity turn gets its own connection to the plugin's Zotero tools, limited to that chat.
+  You do not need to edit any Antigravity configuration file.
+
+### If It Does Not Work
+
+| Problem | What to do |
+|---|---|
+| **The Antigravity CLI (agy) was not found** | Install `agy`, and check that `agy` runs in a terminal. The plugin looks in `~/.local/bin`, `/opt/homebrew/bin`, `/usr/local/bin`, and `/usr/bin` (on Windows, `%LOCALAPPDATA%\Programs\agy`). If it is somewhere else, paste the full path into **Advanced** &rarr; **Antigravity CLI path**. |
+| `agy` starts, but replies fail | Antigravity is probably not signed in. Run `agy` in a terminal and sign in, then click **Test connection** again. |
+| Antigravity does not use Zotero tools | Check that **Enable Zotero MCP tools for native Codex, Claude Code, and Antigravity turns** is on in the Agent settings. |
 
 ---
 
@@ -1295,6 +1573,7 @@ Here the agent finds and crops the figure for you, and those same crops are what
 - In cloud MinerU mode, PDFs selected for automatic or manual MinerU parsing are sent to MinerU.
 - In local MinerU mode, PDFs selected for automatic or manual MinerU parsing are sent to the local or remote `mineru-api` server you configure.
 - In Codex App Server and Claude Code modes, requests go through your local `codex` or Claude Code installation to OpenAI or Anthropic.
+- In Antigravity mode, requests go through your local `agy` installation to Google.
 - With general web search, search queries and the URLs the Agent reads are sent to the provider you select: Tavily, AnySearch, or DeepSeek.
 - Scholarly search sends search terms and paper identifiers to OpenAlex, arXiv, Europe PMC, Crossref, and Semantic Scholar.
 - Conversation history, cached paper context, usage statistics, and files the Agent saves are stored locally by the plugin.
