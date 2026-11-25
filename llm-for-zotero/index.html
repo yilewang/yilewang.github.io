@@ -71,6 +71,20 @@ video { display: block; width: 100%; height: auto; max-width: 100%; aspect-ratio
 .film { max-width: 1060px; margin: 52px auto 0; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 80px rgba(60,30,140,.22), 0 0 0 1px var(--line); }
 .meta { display: flex; gap: 10px 24px; justify-content: center; flex-wrap: wrap; margin-top: 22px; color: var(--muted); font: 500 13px var(--f-mono); letter-spacing: .02em; }
 
+.news-pill { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 22px; padding: 6px 8px 6px 6px; border-radius: 999px; background: var(--card); box-shadow: 0 0 0 1px var(--line); font-size: 14px; color: var(--muted); text-decoration: none; max-width: 100%; }
+.news-pill b { padding: 3px 10px; border-radius: 999px; background: var(--chip); color: var(--violet); font: 500 12.5px var(--f-mono); letter-spacing: .02em; white-space: nowrap; }
+.news-pill span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.news-pill:hover { color: var(--ink); }
+
+.latest { padding-block: 76px; border-top: 1px solid var(--line); }
+.latest .inner { max-width: 760px; }
+.latest h2 { font: 700 clamp(28px, 3.6vw, 44px)/1.07 var(--f-sans); letter-spacing: -.03em; margin: 0 0 8px; }
+.latest .date { color: var(--muted); font: 500 13px var(--f-mono); letter-spacing: .02em; margin: 0 0 18px; }
+.latest .lead p { color: var(--muted); margin: 0 0 20px; }
+.latest ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 26px; padding: 0; list-style: none; }
+.latest li { padding: 5px 12px; border-radius: 999px; background: var(--chip); font-size: 14px; }
+.latest .cta { justify-content: flex-start; }
+
 .feature { padding-block: 76px; border-top: 1px solid var(--line); }
 .feature .inner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 52px; align-items: center; }
 .feature:nth-child(even) .inner { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
@@ -108,6 +122,7 @@ footer a { text-decoration: none; }
     <a class="brand" href="/llm-for-zotero/"><img src="/assets/llm-for-zotero/icon-color.svg" alt=""><span class="brand-name">LLM for Zotero</span></a>
     <nav aria-label="Site">
       <a href="/llm-for-zotero/manual/">Manual</a>
+      <a href="https://github.com/yilewang/llm-for-zotero/releases">Releases</a>
       <a href="https://github.com/yilewang/llm-for-zotero">GitHub</a>
       <a href="/">Yile Wang</a>
     </nav>
@@ -117,6 +132,7 @@ footer a { text-decoration: none; }
 <main>
   <section class="hero wrap" id="download">
     <div class="logo"><img src="/assets/llm-for-zotero/icon-color.svg" alt="LLM for Zotero logo"></div>
+    <a class="news-pill" href="#latest"><b>New in v3.9.20</b><span>Antigravity runtime &rarr;</span></a>
     <h1>LLM for Zotero</h1>
     <p class="slogan">An open-source, <span class="grad">agentic system</span> for Zotero.</p>
     <p class="lede">It reads your papers, cites every claim, and acts on your library when you ask. Use the model or subscription you already have.</p>
@@ -211,6 +227,20 @@ footer a { text-decoration: none; }
     </section>
     
   </div>
+  <section class="latest wrap" id="latest">
+    <div class="inner">
+      <div class="kicker">Latest release</div>
+      <h2>What's new in v3.9.20</h2>
+      <p class="date">Released November 19, 2026</p>
+      <div class="lead"><p>Antigravity joins Codex and Claude Code as an agent runtime. You now pick a runtime from a menu in the composer, and Settings lists only the runtimes you add. Codex installed with npm starts again on macOS and Linux. Custom providers that worked in plain chat now work in Agent mode too, and connection failures say what went wrong.</p>
+</div>
+      <ul><li>Antigravity runtime</li><li>Pick a runtime from the composer</li><li>Fixes</li><li>Chat</li><li>Codex, Claude Code and external MCP clients</li></ul>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/yilewang/llm-for-zotero/releases/tag/v3.9.20">Read the release notes</a>
+        <a class="btn btn-ghost" href="https://github.com/yilewang/llm-for-zotero/releases">All releases</a>
+      </div>
+    </div>
+  </section>
 
   <section class="end wrap">
     <div class="logo"><img src="/assets/llm-for-zotero/icon-color.svg" alt=""></div>
