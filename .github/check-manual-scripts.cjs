@@ -3,7 +3,7 @@ const { join } = require("node:path");
 const { Script } = require("node:vm");
 
 const site = process.argv[2] || "_site";
-for (const page of ["llm-for-zotero/index.html", "llm-for-zotero/zh/index.html"]) {
+for (const page of ["llm-for-zotero/manual/index.html", "llm-for-zotero/manual/zh/index.html"]) {
   const html = readFileSync(join(site, page), "utf8");
   const scripts = Array.from(html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi))
     .map(match => match[1])
