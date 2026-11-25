@@ -71,6 +71,7 @@ html[data-theme="dark"] {
   border-radius: 5px;
   padding: 1px 6px;
 }
+.manual__toc-ver:hover { color: var(--accent); border-color: var(--accent); }
 
 .manual__lang {
   display: flex;
@@ -463,3 +464,29 @@ html[data-theme="dark"] .manual__top { box-shadow: none; }
 @include breakpoint(max-width $small) {
   .manual__top { right: 1rem; bottom: 1rem; width: 38px; height: 38px; }
 }
+
+/* --------------------------------------------------------------------------
+   What's New: the latest-release card (built from _data/llm_for_zotero_releases.json)
+   -------------------------------------------------------------------------- */
+.rn-latest {
+  margin: 1.2em 0 1.6em;
+  padding: 1em 1.2em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.rn-latest__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.3em 0.8em; margin-bottom: 0.5em; }
+.rn-latest__ver { font-size: 1.15rem; font-weight: 700; color: var(--text); text-decoration: none; }
+.rn-latest__ver:hover { color: var(--accent); }
+.rn-latest__date { font-size: 0.85rem; color: var(--text-muted); }
+.rn-latest__lead p { margin: 0 0 0.7em; }
+.rn-latest__sections { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0 0 0.8em; padding: 0; list-style: none; }
+.rn-latest__sections li {
+  margin: 0;
+  padding: 0.15em 0.65em;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.rn-latest__links { display: flex; flex-wrap: wrap; gap: 0.4em 1.4em; margin: 0; font-size: 0.9rem; }

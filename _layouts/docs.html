@@ -18,7 +18,8 @@ layout: default
 
       <div class="manual__toc-head">
         <a class="manual__toc-name" href="https://github.com/yilewang/llm-for-zotero">llm-for-zotero</a>
-        <span class="manual__toc-ver" id="manualVer" data-repo="yilewang/llm-for-zotero">v3.8.20</span>
+        {%- assign manual_latest = site.data.llm_for_zotero_releases | first -%}
+        {%- if manual_latest %}<a class="manual__toc-ver" href="{{ manual_latest.url }}">{{ manual_latest.tag }}</a>{% endif %}
       </div>
 
       <div class="manual__lang">
@@ -44,6 +45,8 @@ layout: default
         <li><a href="#安装">安装</a></li>
         <li><a href="#配置">配置</a>
           <ul>
+            <li><a href="#选择模型">选择模型</a></li>
+            <li><a href="#openalex-api-密钥">OpenAlex API 密钥</a></li>
             <li><a href="#支持的服务商与协议">服务商与协议</a></li>
             <li><a href="#支持的模型">支持的模型</a></li>
             <li><a href="#多服务商配置">多服务商配置</a></li>
@@ -67,6 +70,7 @@ layout: default
         <li><a href="#带引用跳转的有据答案">引用跳转</a></li>
         <li><a href="#论文摘要生成">摘要生成</a></li>
         <li><a href="#选中文本解释">文本解释</a></li>
+        <li><a href="#划词提问">划词提问</a></li>
         <li><a href="#图表解读">图表解读</a></li>
         <li><a href="#跨论文对比">跨论文对比</a></li>
         <li><a href="#外部文档上传">文档上传</a></li>
@@ -83,6 +87,7 @@ layout: default
       <ul>
         <li><a href="#agent-模式beta">Agent 模式（Beta）</a>
           <ul>
+            <li><a href="#运行时">运行时</a></li>
             <li><a href="#agent-的运行过程">运行过程</a></li>
             <li><a href="#任务进度与来源">任务进度与来源</a></li>
             <li><a href="#文库外的论文">文库外的论文</a></li>
@@ -99,6 +104,7 @@ layout: default
         <li><a href="#webchat-配置chatgpt-网页同步">WebChat 配置</a></li>
         <li><a href="#codex-配置chatgpt-plus-订阅用户">Codex 配置</a></li>
         <li><a href="#claude-code-配置实验性">Claude Code 配置</a></li>
+        <li><a href="#antigravity-配置google-订阅用户">Antigravity 配置</a></li>
         <li><a href="#mineru-pdf-解析">MinerU PDF 解析</a>
           <ul>
             <li><a href="#使用本地-mineru-服务">本地 MinerU 服务</a></li>
@@ -133,6 +139,8 @@ layout: default
         <li><a href="#installation">Installation</a></li>
         <li><a href="#configuration">Configuration</a>
           <ul>
+            <li><a href="#choosing-a-model">Choosing a Model</a></li>
+            <li><a href="#openalex-api-key">OpenAlex API Key</a></li>
             <li><a href="#supported-providers--protocols">Providers &amp; Protocols</a></li>
             <li><a href="#supported-models-examples">Supported Models</a></li>
             <li><a href="#advanced-reasoning-levels--hyperparameters">Reasoning &amp; Hyperparameters</a></li>
@@ -155,6 +163,7 @@ layout: default
         <li><a href="#grounded-answers-with-citation-navigation">Citation Navigation</a></li>
         <li><a href="#paper-summarization">Paper Summarization</a></li>
         <li><a href="#selected-text-explanation">Text Explanation</a></li>
+        <li><a href="#inline-ask">Inline Ask</a></li>
         <li><a href="#figure-interpretation">Figure Interpretation</a></li>
         <li><a href="#cross-paper-comparison">Cross-Paper Comparison</a></li>
         <li><a href="#external-document-upload">Document Upload</a></li>
@@ -171,6 +180,7 @@ layout: default
       <ul>
         <li><a href="#agent-mode-beta">Agent Mode (Beta)</a>
           <ul>
+            <li><a href="#runtimes">Runtimes</a></li>
             <li><a href="#how-an-agent-run-works">How a Run Works</a></li>
             <li><a href="#task-progress-and-sources">Task Progress &amp; Sources</a></li>
             <li><a href="#papers-outside-your-library">Outside Papers</a></li>
@@ -187,6 +197,7 @@ layout: default
         <li><a href="#webchat-setup-chatgpt-web-sync">WebChat Setup</a></li>
         <li><a href="#codex-setup-chatgpt-plus-subscribers">Codex Setup</a></li>
         <li><a href="#claude-code-setup-experimental">Claude Code Setup</a></li>
+        <li><a href="#antigravity-setup-google-subscribers">Antigravity Setup</a></li>
         <li><a href="#mineru-pdf-parsing">MinerU PDF Parsing</a>
           <ul>
             <li><a href="#using-a-local-mineru-server">Local MinerU Server</a></li>
@@ -287,14 +298,6 @@ layout: default
         li.style.display = (!q || a.textContent.toLowerCase().indexOf(q) !== -1) ? '' : 'none';
       });
     });
-  }
-
-  var ver = document.getElementById('manualVer');
-  if (ver && ver.getAttribute('data-repo')) {
-    fetch('https://api.github.com/repos/' + ver.getAttribute('data-repo') + '/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
-      .then(function(r){ return r.ok ? r.json() : null; })
-      .then(function(d){ if (d && d.tag_name) { ver.textContent = /^v/i.test(d.tag_name) ? d.tag_name : 'v' + d.tag_name; } })
-      .catch(function(){});
   }
 
   /* Use block comments here: production HTML compression removes JavaScript line breaks. */
