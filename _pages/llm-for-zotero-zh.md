@@ -91,6 +91,17 @@ lang_alt: /llm-for-zotero/manual/
 
 ---
 
+## 最新更新
+
+下面是最新版本的更新内容，取自 GitHub 发布说明（仅提供英文）。
+所有早期版本请参阅 [GitHub 发布页](https://github.com/yilewang/llm-for-zotero/releases)。
+
+{% include llm-for-zotero-latest-release.html lang="zh" %}
+
+感谢 [@jianghao-zhang](https://github.com/jianghao-zhang) 和 [@boltma](https://github.com/boltma) 对 Codex App Server、Claude Code 和文件上传工作流的重要贡献。
+
+---
+
 ## 演示视频
 
 观看如何在文库对话中使用 llm-for-zotero Agent 进行文献综述。
@@ -140,17 +151,6 @@ lang_alt: /llm-for-zotero/manual/
   <img src="/images/llm-for-zotero/webchat-gemini-provider.png" alt="AI Providers 设置页面显示 API、Codex CLI 和浏览器扩展接入路径，包括支持 DeepSeek、ChatGPT 和 Google Gemini 的 WebChat" width="1468" height="1192" loading="lazy">
   <figcaption>请根据您的账号选择接入方式：服务商 API 使用 API Key，Codex Direct 使用 Codex CLI，WebChat 使用浏览器扩展。WebChat 服务商无需服务商 API 密钥，即可使用 DeepSeek、ChatGPT 和 Google Gemini。</figcaption>
 </figure>
-
----
-
-## 最新更新
-
-下面是最新版本的更新内容，取自 GitHub 发布说明（仅提供英文）。
-所有早期版本请参阅 [GitHub 发布页](https://github.com/yilewang/llm-for-zotero/releases)。
-
-{% include llm-for-zotero-latest-release.html lang="zh" %}
-
-感谢 [@jianghao-zhang](https://github.com/jianghao-zhang) 和 [@boltma](https://github.com/boltma) 对 Codex App Server、Claude Code 和文件上传工作流的重要贡献。
 
 ---
 

@@ -278,9 +278,13 @@ layout: default
 
   function onScroll() {
     var y = window.scrollY + 100;
+    /* At the bottom of the page the last sections can never reach the reading line, so the last one counts. */
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) y = Infinity;
     var hit = null;
+    /* Pick the section that starts last above the reading line, whatever its place in the contents list. */
     for (var i = 0; i < sections.length; i++) {
-      if (sections[i].el.offsetTop <= y) hit = sections[i];
+      var top = sections[i].el.offsetTop;
+      if (top <= y && (!hit || top >= hit.el.offsetTop)) hit = sections[i];
     }
     links.forEach(function(l) { l.classList.remove('is-current'); });
     if (hit) hit.link.classList.add('is-current');

@@ -89,6 +89,17 @@ lang_alt: /llm-for-zotero/manual/zh/
 
 ---
 
+## What's New
+
+The latest release is below, taken from its GitHub release notes.
+For every earlier version, see the [releases on GitHub](https://github.com/yilewang/llm-for-zotero/releases).
+
+{% include llm-for-zotero-latest-release.html lang="en" %}
+
+Thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) and [@boltma](https://github.com/boltma) for major contributions to the Codex App Server, Claude Code, and file upload workflows.
+
+---
+
 ## Demo Video
 
 Watch how to conduct a literature review in Library chat with the llm-for-zotero agent.
@@ -138,17 +149,6 @@ If you do not want to use a provider API key, start with [WebChat](#webchat-setu
   <img src="/images/llm-for-zotero/webchat-gemini-provider.png" alt="AI Providers settings showing API, Codex CLI, and browser-extension access paths, including WebChat for DeepSeek, ChatGPT, and Google Gemini" width="1468" height="1192" loading="lazy">
   <figcaption>Choose the access path that matches your account: API Key for provider APIs, Codex CLI for Codex Direct, or Browser extension for WebChat. The WebChat provider offers DeepSeek, ChatGPT, and Google Gemini without a provider API key.</figcaption>
 </figure>
-
----
-
-## What's New
-
-The latest release is below, taken from its GitHub release notes.
-For every earlier version, see the [releases on GitHub](https://github.com/yilewang/llm-for-zotero/releases).
-
-{% include llm-for-zotero-latest-release.html lang="en" %}
-
-Thanks to [@jianghao-zhang](https://github.com/jianghao-zhang) and [@boltma](https://github.com/boltma) for major contributions to the Codex App Server, Claude Code, and file upload workflows.
 
 ---
 
