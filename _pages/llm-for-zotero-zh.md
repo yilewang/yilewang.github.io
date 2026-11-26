@@ -2,8 +2,6 @@
 layout: docs
 title: "llm-for-zotero：面向 Zotero 文库的研究 Agent 系统"
 permalink: /llm-for-zotero/manual/zh/
-redirect_from:
-  - /llm-for-zotero/zh/
 author_profile: false
 lang: zh
 lang_alt: /llm-for-zotero/manual/

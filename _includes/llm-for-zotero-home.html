@@ -1,0 +1,304 @@
+{%- comment -%}
+  The LLM for Zotero home page, in English or Chinese.
+  Parameter: lang ("en" or "zh"). All words come from _data/llm_for_zotero_home.yml.
+{%- endcomment -%}
+{%- assign lang = include.lang | default: "en" -%}
+{%- assign t = site.data.llm_for_zotero_home.ui[lang] -%}
+{%- if lang == "zh" -%}
+  {%- assign home = '/llm-for-zotero/zh/' -%}{%- assign manual = '/llm-for-zotero/manual/zh/' -%}{%- assign other_manual = '/llm-for-zotero/manual/' -%}
+{%- else -%}
+  {%- assign home = '/llm-for-zotero/' -%}{%- assign manual = '/llm-for-zotero/manual/' -%}{%- assign other_manual = '/llm-for-zotero/manual/zh/' -%}
+{%- endif -%}
+<!doctype html>
+<html lang="{{ t.html_lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ t.title }}</title>
+<meta name="description" content="{{ t.description }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ t.title }}">
+<meta property="og:description" content="{{ t.og_description }}">
+<meta property="og:url" content="{{ home | absolute_url }}">
+<meta property="og:image" content="{{ '/assets/llm-for-zotero/poster.jpg' | absolute_url }}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="{{ home | absolute_url }}">
+<link rel="alternate" hreflang="en" href="{{ '/llm-for-zotero/' | absolute_url }}">
+<link rel="alternate" hreflang="zh-CN" href="{{ '/llm-for-zotero/zh/' | absolute_url }}">
+<link rel="alternate" hreflang="x-default" href="{{ '/llm-for-zotero/' | absolute_url }}">
+<link rel="icon" type="image/svg+xml" href="{{ '/assets/llm-for-zotero/icon-color.svg' | relative_url }}">
+{%- if lang == "en" %}
+<script>
+  // Old manual links (/llm-for-zotero/#section) now live under /llm-for-zotero/manual/.
+  (function () {
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (id && ["download", "features", "latest"{% for feat in site.data.llm_for_zotero_home.features %}, "{{ feat.id }}"{% endfor %}].indexOf(id) < 0) {
+      location.replace("{{ '/llm-for-zotero/manual/' | relative_url }}" + location.hash);
+    }
+  })();
+</script>
+{%- endif %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500&display=swap">
+<style>
+/* One brand moment at the top, then each capability as a large looping recording. */
+:root {
+  --paper: #f7f5fc; --ink: #16141e; --muted: #625e74; --line: #e4e0f0;
+  --violet: #6d4ef6; --pink: #c03bd6; --card: #ffffff; --chip: #eee9fd; --halo: rgba(109,78,246,.28); --bar: rgba(247,245,252,.82);
+  --f-sans: "Geist", "Inter", system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --f-mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --paper: #111018; --ink: #f2f0fa; --muted: #a29eb6; --line: #2a2637; --violet: #9b85ff; --pink: #e27cf2; --card: #1c1927; --chip: #251f35; --halo: rgba(155,133,255,.30); --bar: rgba(17,16,24,.8); color-scheme: dark; } }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 var(--f-sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; border-radius: 8px; }
+img { max-width: 100%; }
+video { display: block; width: 100%; height: auto; max-width: 100%; aspect-ratio: 16 / 9; background: var(--line); }
+.wrap { padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.inner { max-width: 1120px; margin: 0 auto; }
+.grad { background: linear-gradient(95deg, var(--violet), var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.bar { position: sticky; top: 0; z-index: 10; background: var(--bar); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid var(--line); }
+.bar .inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; text-decoration: none; white-space: nowrap; }
+.brand img { width: 26px; height: 26px; }
+.bar nav { display: flex; gap: 20px; font-size: 15px; color: var(--muted); white-space: nowrap; }
+.bar nav a { text-decoration: none; }
+.bar nav a:hover { color: var(--ink); }
+
+.hero { padding-block: 72px 32px; text-align: center; background: radial-gradient(55% 50% at 50% 8%, color-mix(in oklab, var(--violet) 18%, transparent), transparent 72%); }
+.logo { width: 152px; height: 152px; border-radius: 36px; background: var(--card); display: grid; place-items: center; margin: 0 auto 30px;
+  box-shadow: 0 0 0 1px var(--line), 0 22px 60px var(--halo), 0 0 0 14px color-mix(in oklab, var(--violet) 7%, transparent); }
+.logo img { width: 116px; height: 116px; }
+.hero h1 { font: 800 clamp(48px, 9vw, 108px)/0.98 var(--f-sans); letter-spacing: -.045em; margin: 0 0 16px; }
+.slogan { font: 600 clamp(22px, 3.2vw, 34px)/1.2 var(--f-sans); letter-spacing: -.02em; margin: 0 auto 14px; max-width: 26ch; text-wrap: balance; }
+.lede { color: var(--muted); font-size: clamp(16px, 2vw, 19px); max-width: 46ch; margin: 0 auto 30px; text-wrap: balance; }
+.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 9px; padding: 13px 22px; border-radius: 999px; font: 600 16px var(--f-sans); text-decoration: none; }
+.btn svg { width: 18px; height: 18px; }
+.btn-primary { background: var(--violet); color: #fff; box-shadow: 0 10px 26px var(--halo); }
+.btn-ghost { background: var(--chip); color: var(--ink); }
+.film { max-width: 1060px; margin: 52px auto 0; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 80px rgba(60,30,140,.22), 0 0 0 1px var(--line); }
+.meta { display: flex; gap: 10px 24px; justify-content: center; flex-wrap: wrap; margin-top: 22px; color: var(--muted); font: 500 13px var(--f-mono); letter-spacing: .02em; }
+
+.news-pill { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 22px; padding: 6px 8px 6px 6px; border-radius: 999px; background: var(--card); box-shadow: 0 0 0 1px var(--line); font-size: 14px; color: var(--muted); text-decoration: none; max-width: 100%; }
+.news-pill b { padding: 3px 10px; border-radius: 999px; background: var(--chip); color: var(--violet); font: 500 12.5px var(--f-mono); letter-spacing: .02em; white-space: nowrap; }
+.news-pill span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.news-pill:hover { color: var(--ink); }
+
+.latest { padding-block: 76px; border-top: 1px solid var(--line); }
+.latest .inner { max-width: 760px; }
+.latest h2 { font: 700 clamp(28px, 3.6vw, 44px)/1.07 var(--f-sans); letter-spacing: -.03em; margin: 0 0 8px; }
+.latest .date { color: var(--muted); font: 500 13px var(--f-mono); letter-spacing: .02em; margin: 0 0 18px; }
+.latest .lead p { color: var(--muted); margin: 0 0 20px; }
+.latest ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 26px; padding: 0; list-style: none; }
+.latest li { padding: 5px 12px; border-radius: 999px; background: var(--chip); font-size: 14px; }
+.latest .cta { justify-content: flex-start; }
+
+.feature { padding-block: 72px; border-top: 1px solid var(--line); }
+/* Each example gets the full page width, so the recording plays near its real size (1280 px) and its text stays readable. */
+.feature .inner { max-width: 1240px; }
+.copy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 48px; align-items: end; margin-bottom: 28px; }
+.kicker { font: 500 12.5px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--violet); margin-bottom: 12px; }
+.copy .kicker { grid-column: 1 / -1; margin: 0; }
+.copy h2 { font: 700 clamp(28px, 3.6vw, 44px)/1.07 var(--f-sans); letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+.copy p { color: var(--muted); margin: 0; max-width: 46ch; font-size: 18px; }
+.clip { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 64px rgba(60,30,140,.18), 0 0 0 1px var(--line); }
+.clip .zoom { position: absolute; right: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px; border-radius: 999px; background: rgba(22,20,30,.72); color: #fff; font: 600 13.5px var(--f-sans); opacity: .0; transition: opacity .2s; pointer-events: none; }
+.clip .zoom svg { width: 15px; height: 15px; }
+.clip:hover .zoom, .clip:focus-visible .zoom { opacity: 1; }
+@media (hover: none) { .clip .zoom { opacity: 1; } }
+
+/* Enlarged view: the clip fills the screen with its own controls. */
+.viewer { width: 100vw; height: 100vh; max-width: none; max-height: none; margin: 0; padding: max(20px, 4vh) max(16px, 3vw); border: 0; background: rgba(10,8,16,.9); }
+.viewer[open] { display: grid; place-items: center; }
+.viewer::backdrop { background: transparent; }
+.viewer video { width: auto; max-width: 100%; max-height: calc(100vh - 2 * max(20px, 4vh)); border-radius: 12px; background: #000; }
+.viewer .close { position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 999px; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 26px; line-height: 1; cursor: pointer; }
+.viewer .close:hover { background: rgba(255,255,255,.24); }
+
+/* EN / 中文 switch */
+.lang { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--chip); font: 600 13px var(--f-sans); }
+.lang a { padding: 4px 11px; border-radius: 999px; color: var(--muted); text-decoration: none; }
+.lang a:hover { color: var(--ink); }
+.lang a[aria-current] { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(22,20,30,.12); }
+.bar .right { display: flex; align-items: center; gap: 20px; }
+
+/* "What to look for": numbered steps that follow the clip in order. */
+.look { margin: 0 0 22px; }
+.look h3 { margin: 0 0 12px; font: 500 12.5px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.look ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; counter-reset: step; }
+.look li { counter-increment: step; position: relative; padding: 14px 16px 14px 52px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--line); font-size: 15.5px; line-height: 1.5; }
+.look li::before { content: counter(step); position: absolute; left: 14px; top: 13px; width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; background: var(--chip); color: var(--violet); font: 700 13.5px var(--f-sans); }
+
+/* Chinese text reads better without the tight Latin letter-spacing. */
+:lang(zh) .hero h1, :lang(zh) .slogan, :lang(zh) .copy h2, :lang(zh) .latest h2, :lang(zh) .end h2 { letter-spacing: 0; }
+:lang(zh) .kicker, :lang(zh) .look h3 { letter-spacing: .04em; }
+:lang(zh) .copy p, :lang(zh) .look li { line-height: 1.7; }
+
+.end { text-align: center; padding-block: 96px 56px; border-top: 1px solid var(--line); }
+.end .logo { width: 96px; height: 96px; border-radius: 24px; margin-bottom: 22px; }
+.end .logo img { width: 72px; height: 72px; }
+.end h2 { font: 800 clamp(34px, 5vw, 60px)/1.02 var(--f-sans); letter-spacing: -.04em; margin: 0 0 12px; }
+.end p { color: var(--muted); margin: 0 auto 28px; max-width: 44ch; }
+footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer .inner { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 22px; }
+footer a { text-decoration: none; }
+
+@media (max-width: 820px) {
+  .feature { padding-block: 56px; }
+  .copy { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 22px; }
+  .copy p { font-size: 17px; }
+  .look ol { gap: 8px; }
+  .look li { padding: 10px 14px 10px 46px; font-size: 15px; border-radius: 12px; }
+  .look li::before { left: 12px; top: 10px; width: 24px; height: 24px; font-size: 13px; }
+  .logo { width: 120px; height: 120px; border-radius: 28px; }
+  .logo img { width: 92px; height: 92px; }
+  .bar nav { gap: 14px; font-size: 14px; }
+  .bar .right { gap: 14px; }
+}
+@media (max-width: 600px) {
+  .bar nav a.opt { display: none; }
+}
+@media (max-width: 480px) {
+  .brand-name { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header class="bar wrap">
+  <div class="inner">
+    <a class="brand" href="{{ home | relative_url }}"><img src="{{ '/assets/llm-for-zotero/icon-color.svg' | relative_url }}" alt=""><span class="brand-name">LLM for Zotero</span></a>
+    <div class="right">
+      <nav aria-label="Site">
+        <a href="{{ manual | relative_url }}">{{ t.nav_manual }}</a>
+        <a class="opt" href="https://github.com/yilewang/llm-for-zotero/releases">{{ t.nav_releases }}</a>
+        <a href="https://github.com/yilewang/llm-for-zotero">GitHub</a>
+        <a class="opt" href="{{ '/' | relative_url }}">{{ t.nav_home }}</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language / 语言">
+        <a href="{{ '/llm-for-zotero/' | relative_url }}" hreflang="en" lang="en"{% if lang == "en" %} aria-current="page"{% endif %}>EN</a>
+        <a href="{{ '/llm-for-zotero/zh/' | relative_url }}" hreflang="zh-CN" lang="zh-CN"{% if lang == "zh" %} aria-current="page"{% endif %}>中文</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap" id="download">
+    <div class="logo"><img src="{{ '/assets/llm-for-zotero/icon-color.svg' | relative_url }}" alt="{{ t.logo_alt }}"></div>
+    {%- assign latest = site.data.llm_for_zotero_releases | first %}
+    {%- if latest %}
+    <a class="news-pill" href="#latest"><b>{% if lang == "zh" %}{{ latest.tag }} {{ t.news_new }}{% else %}{{ t.news_new }} {{ latest.tag }}{% endif %}</b><span>{% if latest.sections.size > 0 %}{{ latest.sections | first }}{% else %}{{ t.news_fallback }}{% endif %} &rarr;</span></a>
+    {%- endif %}
+    <h1>LLM for Zotero</h1>
+    <p class="slogan">{{ t.slogan }}</p>
+    <p class="lede">{{ t.lede }}</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/yilewang/llm-for-zotero/releases/latest/download/llm-for-zotero.xpi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>{{ t.download }}</a>
+      <a class="btn btn-ghost" href="{{ manual | relative_url }}">{{ t.manual }}</a>
+      <a class="btn btn-ghost" href="https://github.com/yilewang/llm-for-zotero">GitHub</a>
+    </div>
+    <div class="film"><video src="{{ '/assets/llm-for-zotero/overview.mp4' | relative_url }}" poster="{{ '/assets/llm-for-zotero/poster.jpg' | relative_url }}" controls playsinline preload="none" aria-label="{{ t.video_label }}"></video></div>
+    <div class="meta">{% for m in t.meta %}<span>{{ m }}</span>{% endfor %}</div>
+  </section>
+
+  <div id="features">
+    {%- for feat in site.data.llm_for_zotero_home.features %}{% assign f = feat[lang] %}
+    <section class="feature wrap" id="{{ feat.id }}">
+      <div class="inner">
+        <div class="copy"><div class="kicker">{{ f.kicker }}</div><h2>{{ f.title }}</h2><p>{{ f.text }}</p></div>
+        {%- if f.steps %}
+        <div class="look">
+          <h3>{{ t.look_for }}</h3>
+          <ol>{% for s in f.steps %}<li>{{ s }}</li>{% endfor %}</ol>
+        </div>
+        {%- endif %}
+        <button class="clip" type="button" aria-label="{{ t.enlarge_label }} {{ f.title }}"><video data-src="{{ '/assets/llm-for-zotero/' | relative_url }}{{ feat.id }}.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>{{ t.enlarge }}</span></button>
+      </div>
+    </section>
+    {%- endfor %}
+  </div>
+
+  {%- if latest %}
+  <section class="latest wrap" id="latest">
+    <div class="inner">
+      <div class="kicker">{{ t.latest_kicker }}</div>
+      <h2>{{ t.latest_title_before }}{{ latest.tag }}{{ t.latest_title_after }}</h2>
+      <p class="date">{{ t.released_before }}{{ latest.date | date: t.date_format }}{{ t.released_after }}</p>
+      {%- if latest.lead != "" %}
+      <div class="lead">{{ latest.lead | markdownify }}</div>
+      {%- endif %}
+      {%- if latest.sections.size > 0 %}
+      <ul>{% for sec in latest.sections %}<li>{{ sec }}</li>{% endfor %}</ul>
+      {%- endif %}
+      <div class="cta">
+        <a class="btn btn-primary" href="{{ latest.url }}">{{ t.release_notes }}</a>
+        <a class="btn btn-ghost" href="https://github.com/yilewang/llm-for-zotero/releases">{{ t.all_releases }}</a>
+      </div>
+    </div>
+  </section>
+  {%- endif %}
+
+  <section class="end wrap">
+    <div class="logo"><img src="{{ '/assets/llm-for-zotero/icon-color.svg' | relative_url }}" alt=""></div>
+    <h2>LLM for Zotero</h2>
+    <p>{{ t.end_text }}</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/yilewang/llm-for-zotero/releases/latest/download/llm-for-zotero.xpi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>{{ t.download }}</a>
+      <a class="btn btn-ghost" href="{{ manual | relative_url }}">{{ t.manual }}</a>
+      <a class="btn btn-ghost" href="https://github.com/yilewang/llm-for-zotero">GitHub</a>
+    </div>
+  </section>
+</main>
+
+<dialog class="viewer" aria-label="{{ t.viewer_label }}">
+  <button class="close" type="button" aria-label="{{ t.close }}">&times;</button>
+  <video controls loop playsinline muted></video>
+</dialog>
+
+<footer class="wrap">
+  <div class="inner">
+    <span>© {{ site.time | date: "%Y" }} Yile Wang · AGPL-3.0</span>
+    <span><a href="{{ manual | relative_url }}">{{ t.nav_manual }}</a> · <a href="{{ other_manual | relative_url }}">{{ t.other_manual_label }}</a> · <a href="https://github.com/yilewang/llm-for-zotero/releases">{{ t.nav_releases }}</a></span>
+  </div>
+</footer>
+
+<script>
+  // Load and play each loop only while it is on screen.
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      var v = e.target;
+      if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; var p = v.play(); if (p) p.catch(function () {}); }
+      else v.pause();
+    });
+  }, { rootMargin: "200px 0px" });
+  document.querySelectorAll("video[data-src]").forEach(function (v) { io.observe(v); });
+
+  // Click an example to watch it full screen.
+  var viewer = document.querySelector(".viewer"), big = viewer.querySelector("video");
+  document.querySelectorAll(".clip").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var v = btn.querySelector("video");
+      big.src = v.dataset.src;
+      viewer.showModal();
+      big.currentTime = v.currentTime || 0;
+      var p = big.play(); if (p) p.catch(function () {});
+    });
+  });
+  function closeViewer() { viewer.close(); }
+  viewer.querySelector(".close").addEventListener("click", closeViewer);
+  viewer.addEventListener("click", function (e) { if (e.target === viewer) closeViewer(); });
+  viewer.addEventListener("close", function () { big.pause(); big.removeAttribute("src"); big.load(); });
+</script>
+</body>
+</html>
