@@ -85,14 +85,27 @@ video { display: block; width: 100%; height: auto; max-width: 100%; aspect-ratio
 .latest li { padding: 5px 12px; border-radius: 999px; background: var(--chip); font-size: 14px; }
 .latest .cta { justify-content: flex-start; }
 
-.feature { padding-block: 76px; border-top: 1px solid var(--line); }
-.feature .inner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 52px; align-items: center; }
-.feature:nth-child(even) .inner { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
-.feature:nth-child(even) .copy { order: 2; }
+.feature { padding-block: 72px; border-top: 1px solid var(--line); }
+/* Each example gets the full page width, so the recording plays near its real size (1280 px) and its text stays readable. */
+.feature .inner { max-width: 1240px; }
+.copy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 48px; align-items: end; margin-bottom: 28px; }
 .kicker { font: 500 12.5px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--violet); margin-bottom: 12px; }
-.copy h2 { font: 700 clamp(28px, 3.6vw, 44px)/1.07 var(--f-sans); letter-spacing: -.03em; margin: 0 0 14px; text-wrap: balance; }
-.copy p { color: var(--muted); margin: 0; max-width: 42ch; }
-.clip { border-radius: 14px; overflow: hidden; box-shadow: 0 18px 50px rgba(60,30,140,.16), 0 0 0 1px var(--line); }
+.copy .kicker { grid-column: 1 / -1; margin: 0; }
+.copy h2 { font: 700 clamp(28px, 3.6vw, 44px)/1.07 var(--f-sans); letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+.copy p { color: var(--muted); margin: 0; max-width: 46ch; font-size: 18px; }
+.clip { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 64px rgba(60,30,140,.18), 0 0 0 1px var(--line); }
+.clip .zoom { position: absolute; right: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px; border-radius: 999px; background: rgba(22,20,30,.72); color: #fff; font: 600 13.5px var(--f-sans); opacity: .0; transition: opacity .2s; pointer-events: none; }
+.clip .zoom svg { width: 15px; height: 15px; }
+.clip:hover .zoom, .clip:focus-visible .zoom { opacity: 1; }
+@media (hover: none) { .clip .zoom { opacity: 1; } }
+
+/* Enlarged view: the clip fills the screen with its own controls. */
+.viewer { width: 100vw; height: 100vh; max-width: none; max-height: none; margin: 0; padding: max(20px, 4vh) max(16px, 3vw); border: 0; background: rgba(10,8,16,.9); }
+.viewer[open] { display: grid; place-items: center; }
+.viewer::backdrop { background: transparent; }
+.viewer video { width: auto; max-width: 100%; max-height: calc(100vh - 2 * max(20px, 4vh)); border-radius: 12px; background: #000; }
+.viewer .close { position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 999px; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 26px; line-height: 1; cursor: pointer; }
+.viewer .close:hover { background: rgba(255,255,255,.24); }
 
 .end { text-align: center; padding-block: 96px 56px; border-top: 1px solid var(--line); }
 .end .logo { width: 96px; height: 96px; border-radius: 24px; margin-bottom: 22px; }
@@ -104,8 +117,9 @@ footer .inner { display: flex; justify-content: space-between; gap: 12px; flex-w
 footer a { text-decoration: none; }
 
 @media (max-width: 820px) {
-  .feature .inner, .feature:nth-child(even) .inner { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-  .feature:nth-child(even) .copy { order: 0; }
+  .feature { padding-block: 56px; }
+  .copy { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 22px; }
+  .copy p { font-size: 17px; }
   .logo { width: 120px; height: 120px; border-radius: 28px; }
   .logo img { width: 92px; height: 92px; }
   .bar nav { gap: 14px; font-size: 14px; }
@@ -132,7 +146,7 @@ footer a { text-decoration: none; }
 <main>
   <section class="hero wrap" id="download">
     <div class="logo"><img src="/assets/llm-for-zotero/icon-color.svg" alt="LLM for Zotero logo"></div>
-    <a class="news-pill" href="#latest"><b>New in v3.9.20</b><span>Antigravity runtime &rarr;</span></a>
+    <a class="news-pill" href="#latest"><b>New in v3.9.21</b><span>Writing in notes &rarr;</span></a>
     <h1>LLM for Zotero</h1>
     <p class="slogan">An open-source, <span class="grad">agentic system</span> for Zotero.</p>
     <p class="lede">It reads your papers, cites every claim, and acts on your library when you ask. Use the model or subscription you already have.</p>
@@ -152,77 +166,77 @@ footer a { text-decoration: none; }
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Cited answers</div><h2>Every answer shows its source</h2><p>Answers quote the paper. Click a citation and the PDF jumps to the exact passage, highlighted.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/cite.mp4" muted loop playsinline preload="none" aria-label="Every answer shows its source"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: Every answer shows its source"><video data-src="/assets/llm-for-zotero/cite.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Fast details</div><h2>Pull out the details in seconds</h2><p>Ask for the subjects, task, recording method or session timeline and get them laid out, each with a citation.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/details.mp4" muted loop playsinline preload="none" aria-label="Pull out the details in seconds"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: Pull out the details in seconds"><video data-src="/assets/llm-for-zotero/details.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Compare</div><h2>Compare papers side by side</h2><p>Type @ to bring in any paper from your library, then ask for a comparison table with citations.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/compare.mp4" muted loop playsinline preload="none" aria-label="Compare papers side by side"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: Compare papers side by side"><video data-src="/assets/llm-for-zotero/compare.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Library chat</div><h2>Ask your whole library</h2><p>The agent searches and reads across all your papers, then answers with the ones that matter, cited.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/library.mp4" muted loop playsinline preload="none" aria-label="Ask your whole library"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: Ask your whole library"><video data-src="/assets/llm-for-zotero/library.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Task progress</div><h2>See how the agent got there</h2><p>Task progress keeps the whole run: the plan, every paper it read, why each one matters, and the passage it quoted. Show in answer takes you back to the claim.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/progress.mp4" muted loop playsinline preload="none" aria-label="See how the agent got there"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: See how the agent got there"><video data-src="/assets/llm-for-zotero/progress.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Notes</div><h2>Edit notes in place</h2><p>Select text in a Zotero note to rewrite, expand or proofread it. Review the diff, then replace.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/notes.mp4" muted loop playsinline preload="none" aria-label="Edit notes in place"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: Edit notes in place"><video data-src="/assets/llm-for-zotero/notes.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Inline ask</div><h2>Ask about any sentence</h2><p>Select text in the PDF to explain, define or translate it, then save the answer as an annotation.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/inline.mp4" muted loop playsinline preload="none" aria-label="Ask about any sentence"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: Ask about any sentence"><video data-src="/assets/llm-for-zotero/inline.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Skills</div><h2>Bring your own skills</h2><p>Write a workflow once as a skill and run it with /. A journal-club brief, a methods checklist, anything you repeat.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/skills.mp4" muted loop playsinline preload="none" aria-label="Bring your own skills"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: Bring your own skills"><video data-src="/assets/llm-for-zotero/skills.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Import</div><h2>Find and import related papers</h2><p>Browse recommendations, references and citing papers, tick the ones you want, and import them in one step.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/import.mp4" muted loop playsinline preload="none" aria-label="Find and import related papers"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: Find and import related papers"><video data-src="/assets/llm-for-zotero/import.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Organize</div><h2>Organize in plain words</h2><p>Ask the agent to tag papers by topic. Every change is checked against Zotero and listed in a receipt.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/tags.mp4" muted loop playsinline preload="none" aria-label="Organize in plain words"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: Organize in plain words"><video data-src="/assets/llm-for-zotero/tags.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
     <section class="feature wrap">
       <div class="inner">
         <div class="copy"><div class="kicker">Models</div><h2>Use the model you already have</h2><p>Add an API key, or connect a subscription you already pay for: Codex, Claude Code, Antigravity or GitHub Copilot.</p></div>
-        <div class="clip"><video data-src="/assets/llm-for-zotero/setup.mp4" muted loop playsinline preload="none" aria-label="Use the model you already have"></video></div>
+        <button class="clip" type="button" aria-label="Enlarge: Use the model you already have"><video data-src="/assets/llm-for-zotero/setup.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
     
@@ -230,13 +244,13 @@ footer a { text-decoration: none; }
   <section class="latest wrap" id="latest">
     <div class="inner">
       <div class="kicker">Latest release</div>
-      <h2>What's new in v3.9.20</h2>
-      <p class="date">Released November 19, 2026</p>
-      <div class="lead"><p>Antigravity joins Codex and Claude Code as an agent runtime. You now pick a runtime from a menu in the composer, and Settings lists only the runtimes you add. Codex installed with npm starts again on macOS and Linux. Custom providers that worked in plain chat now work in Agent mode too, and connection failures say what went wrong.</p>
+      <h2>What's new in v3.9.21</h2>
+      <p class="date">Released November 25, 2026</p>
+      <div class="lead"><p>Notes become a place to write with AI. Opening a paper’s note no longer replaces the paper’s chat, and selecting text in a note opens a small writing popup. Plain Chat now delivers the paper to providers that used to miss it, and Antigravity gets the full set of Zotero tools. Pictures the agent saves now show inside its answer, and the chat’s scrollbar is no longer hidden behind the composer.</p>
 </div>
-      <ul><li>Antigravity runtime</li><li>Pick a runtime from the composer</li><li>Fixes</li><li>Chat</li><li>Codex, Claude Code and external MCP clients</li></ul>
+      <ul><li>Writing in notes</li><li>Saving answers as notes</li><li>Chat</li><li>Agent</li><li>Antigravity</li></ul>
       <div class="cta">
-        <a class="btn btn-primary" href="https://github.com/yilewang/llm-for-zotero/releases/tag/v3.9.20">Read the release notes</a>
+        <a class="btn btn-primary" href="https://github.com/yilewang/llm-for-zotero/releases/tag/v3.9.21">Read the release notes</a>
         <a class="btn btn-ghost" href="https://github.com/yilewang/llm-for-zotero/releases">All releases</a>
       </div>
     </div>
@@ -255,6 +269,11 @@ footer a { text-decoration: none; }
   </section>
 </main>
 
+<dialog class="viewer" aria-label="Enlarged example">
+  <button class="close" type="button" aria-label="Close">&times;</button>
+  <video controls loop playsinline muted></video>
+</dialog>
+
 <footer class="wrap">
   <div class="inner">
     <span>© 2026 Yile Wang · AGPL-3.0</span>
@@ -272,6 +291,22 @@ footer a { text-decoration: none; }
     });
   }, { rootMargin: "200px 0px" });
   document.querySelectorAll("video[data-src]").forEach(function (v) { io.observe(v); });
+
+  // Click an example to watch it full screen.
+  var viewer = document.querySelector(".viewer"), big = viewer.querySelector("video");
+  document.querySelectorAll(".clip").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var v = btn.querySelector("video");
+      big.src = v.dataset.src;
+      viewer.showModal();
+      big.currentTime = v.currentTime || 0;
+      var p = big.play(); if (p) p.catch(function () {});
+    });
+  });
+  function closeViewer() { viewer.close(); }
+  viewer.querySelector(".close").addEventListener("click", closeViewer);
+  viewer.addEventListener("click", function (e) { if (e.target === viewer) closeViewer(); });
+  viewer.addEventListener("close", function () { big.pause(); big.removeAttribute("src"); big.load(); });
 </script>
 </body>
 </html>
