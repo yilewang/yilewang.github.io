@@ -38,6 +38,8 @@ ui:
     all_releases: All releases
     end_text: 'An open-source, <span class="grad">agentic system</span> for Zotero. Download the .xpi, then in Zotero choose Tools → Plugins → Install from file.'
     other_manual_label: 中文手册
+    theme_to_dark: Switch to night mode
+    theme_to_light: Switch to day mode
   zh:
     html_lang: zh-CN
     title: LLM for Zotero
@@ -70,6 +72,8 @@ ui:
     all_releases: 所有版本
     end_text: '开源的 Zotero <span class="grad">Agent 系统</span>。下载 .xpi 文件，然后在 Zotero 中打开 工具 → 插件 → 齿轮图标 → 从文件安装插件。'
     other_manual_label: English manual
+    theme_to_dark: 切换到夜间模式
+    theme_to_light: 切换到日间模式
 
 features:
   - id: cite
