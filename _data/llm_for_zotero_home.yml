@@ -1,0 +1,285 @@
+# Text for the LLM for Zotero home page, in English (en) and Chinese (zh).
+# Used by _includes/llm-for-zotero-home.html.
+#
+# Each feature has a short clip in assets/llm-for-zotero/<id>.mp4.
+# "steps" are the "What to look for" notes shown above each clip:
+# they follow the clip in order, so readers know where to look.
+
+ui:
+  en:
+    html_lang: en
+    title: LLM for Zotero
+    description: LLM for Zotero is an open-source, agentic system for Zotero. It reads your papers, cites every claim, and acts on your library when you ask.
+    og_description: An open-source, agentic system for Zotero.
+    nav_manual: Manual
+    nav_releases: Releases
+    nav_home: Yile Wang
+    logo_alt: LLM for Zotero logo
+    news_new: "New in"
+    news_fallback: See what changed
+    slogan: 'An open-source, <span class="grad">agentic system</span> for Zotero.'
+    lede: It reads your papers, cites every claim, and acts on your library when you ask. Use the model or subscription you already have.
+    download: Download
+    manual: Manual
+    video_label: LLM for Zotero overview video
+    meta: [Free and open source, AGPL-3.0, API keys · Codex · Claude Code · Antigravity · Copilot]
+    look_for: What to look for
+    enlarge: Enlarge
+    enlarge_label: "Enlarge:"
+    viewer_label: Enlarged example
+    close: Close
+    latest_kicker: Latest release
+    latest_title_before: "What's new in "
+    latest_title_after: ""
+    released_before: "Released "
+    released_after: ""
+    date_format: "%B %-d, %Y"
+    release_notes: Read the release notes
+    all_releases: All releases
+    end_text: 'An open-source, <span class="grad">agentic system</span> for Zotero. Download the .xpi, then in Zotero choose Tools → Plugins → Install from file.'
+    other_manual_label: 中文手册
+  zh:
+    html_lang: zh-CN
+    title: LLM for Zotero
+    description: LLM for Zotero 是一个开源的 Zotero Agent 系统。它会阅读你的论文，为每个论断标明出处，并在你需要时直接操作你的文库。
+    og_description: 一个开源的 Zotero Agent 系统。
+    nav_manual: 使用手册
+    nav_releases: 版本发布
+    nav_home: Yile Wang
+    logo_alt: LLM for Zotero 标志
+    news_new: "新版本"
+    news_fallback: 查看更新内容
+    slogan: '开源的 Zotero <span class="grad">Agent 系统</span>'
+    lede: 它会阅读你的论文，为每个论断标明出处，并在你需要时直接操作你的文库。使用你已有的模型或订阅即可。
+    download: 下载
+    manual: 使用手册
+    video_label: LLM for Zotero 概览视频
+    meta: [免费开源, AGPL-3.0, API 密钥 · Codex · Claude Code · Antigravity · Copilot]
+    look_for: 观看要点
+    enlarge: 放大
+    enlarge_label: "放大："
+    viewer_label: 放大的示例
+    close: 关闭
+    latest_kicker: 最新版本
+    latest_title_before: ""
+    latest_title_after: " 有哪些新内容"
+    released_before: ""
+    released_after: " 发布"
+    date_format: "%Y 年 %-m 月 %-d 日"
+    release_notes: 阅读发布说明
+    all_releases: 所有版本
+    end_text: '开源的 Zotero <span class="grad">Agent 系统</span>。下载 .xpi 文件，然后在 Zotero 中打开 工具 → 插件 → 齿轮图标 → 从文件安装插件。'
+    other_manual_label: English manual
+
+features:
+  - id: cite
+    en:
+      kicker: Cited answers
+      title: Every answer shows its source
+      text: Answers quote the paper. Click a citation and the PDF jumps to the exact passage, highlighted.
+      steps:
+        - The question asks for the main finding and the key evidence.
+        - Look for the small numbers after each sentence. Each one points to a passage in the paper.
+        - Clicking a number shows the exact words quoted, with the page number.
+        - The PDF then scrolls to that passage and highlights it, so you can check it yourself.
+    zh:
+      kicker: 引用回答
+      title: 每个回答都标明出处
+      text: 回答会直接引用论文原文。点击引用，PDF 会跳到对应段落并高亮显示。
+      steps:
+        - 提问：这篇论文的主要发现是什么？请引用关键证据。
+        - 注意每句话后面的小编号，每个编号都对应论文中的一段原文。
+        - 点击编号，会显示被引用的原话和页码。
+        - PDF 随即跳到这段原文并高亮，方便你亲自核对。
+
+  - id: details
+    en:
+      kicker: Fast details
+      title: Pull out the details in seconds
+      text: Ask for the subjects, task, recording method or session timeline and get them laid out, each with a citation.
+      steps:
+        - "One request asks for four things at once: the animals, the task, the recording method and the session timeline."
+        - The answer lays the timeline out as a table, showing what the mouse did at each point and which recording was made.
+        - Every point carries a citation number, so each detail can be traced back to the paper.
+    zh:
+      kicker: 快速提取细节
+      title: 几秒钟提取关键细节
+      text: 询问实验对象、任务、记录方法或实验时间线，答案会分条列出，每条都附带引用。
+      steps:
+        - 一次提问同时要四样信息：实验动物、任务、记录方法和实验时间线。
+        - 回答把时间线整理成表格：每个时段小鼠在做什么、对应哪一次记录。
+        - 每一条都带有引用编号，任何细节都能追溯到原文。
+
+  - id: compare
+    en:
+      kicker: Compare
+      title: Compare papers side by side
+      text: Type @ to bring in any paper from your library, then ask for a comparison table with citations.
+      steps:
+        - Typing @ opens a list of papers from your library.
+        - Pick the papers you want. Each one appears as a small tag in the message box.
+        - The answer is a table that lines the papers up side by side, by method and by main finding.
+        - Below the table, a short summary explains how the papers fit together, with citations.
+    zh:
+      kicker: 对比
+      title: 并排对比多篇论文
+      text: 输入 @ 从文库中加入任意论文，然后让它生成带引用的对比表格。
+      steps:
+        - 输入 @，会弹出你文库中的论文列表。
+        - 选中需要的论文，每篇都会以小标签的形式出现在输入框里。
+        - 回答是一张表格，按研究方法和主要结论把论文逐篇并排对比。
+        - 表格下方有一段简短总结，说明这些论文之间的关系，并附引用。
+
+  - id: library
+    en:
+      kicker: Library chat
+      title: Ask your whole library
+      text: The agent searches and reads across all your papers, then answers with the ones that matter, cited.
+      steps:
+        - Switch to Library chat to ask about all your papers at once, not just the one that is open.
+        - "The question: which papers in my library argue that representational drift is useful, not just noise?"
+        - "The Task progress line at the top counts as it works: papers read in depth, papers found, papers cited."
+        - The answer groups the papers by kind of evidence (models, theory, animal studies), each with citations.
+    zh:
+      kicker: 文库对话
+      title: 向整个文库提问
+      text: Agent 会在你所有的论文中检索和阅读，然后给出真正相关的论文，并附引用。
+      steps:
+        - 切换到「文库对话」(Library chat)，就可以针对整个文库提问，而不只是当前打开的论文。
+        - 提问：我的文库里有哪些论文认为表征漂移是有用的，而不只是噪声？
+        - 顶部的「任务进度」(Task progress) 会实时计数：精读了多少篇、找到多少篇、引用了多少篇。
+        - 回答按证据类型（模型研究、理论观点、动物实验）把论文分组，每篇都附引用。
+
+  - id: progress
+    en:
+      kicker: Task progress
+      title: See how the agent got there
+      text: Task progress keeps the whole run, including the plan, every paper it read, why each one matters, and the passage it quoted. Show in answer takes you back to the claim.
+      steps:
+        - Task progress opens beside the answer and shows the whole run.
+        - Steps lists what the agent set out to check, with a tick next to each finished step.
+        - In your library lists every paper it used. Click one to see why it matters and the passage it quoted.
+        - Show in answer jumps back to the answer and highlights the sentence that paper supports.
+    zh:
+      kicker: 任务进度
+      title: 看清 Agent 是怎么得出结论的
+      text: 任务进度完整保留每一次运行：计划、读过的每一篇论文、每篇为什么重要，以及引用的原文。点击「在回答中显示」即可回到对应的论断。
+      steps:
+        - 「任务进度」在回答旁边打开，完整展示整个过程。
+        - 「步骤」(Steps) 列出 Agent 要核查的内容，完成的步骤会打勾。
+        - 「In your library」列出用到的每一篇论文。点击任意一篇，可以看到它为什么重要，以及引用的原文。
+        - 点击「在回答中显示」(Show in answer)，会跳回回答，并高亮这篇论文所支持的那句话。
+
+  - id: notes
+    en:
+      kicker: Notes
+      title: Edit notes in place
+      text: Select text in a Zotero note to rewrite, expand or proofread it. Review the diff, then replace.
+      steps:
+        - Select a paragraph in a Zotero note. A small menu offers Rewrite, Expand, Proofread or Ask in sidebar.
+        - "Choose Rewrite. The change shows as a comparison: removed words in red, new words in green."
+        - "Nothing changes until you decide: Replace, Insert below, or Discard."
+    zh:
+      kicker: 笔记
+      title: 直接修改笔记
+      text: 在 Zotero 笔记中选中文字，即可改写、扩写或校对。先查看修改对比，再决定是否替换。
+      steps:
+        - 在 Zotero 笔记中选中一段文字，会弹出小菜单：改写、扩写、校对，或在侧边栏提问。
+        - 选择「改写」，修改会以对比形式显示：红色是删去的文字，绿色是新写的文字。
+        - 在你确认之前，笔记不会改变：可以选择替换、插入到下方或放弃。
+
+  - id: inline
+    en:
+      kicker: Inline ask
+      title: Ask about any sentence
+      text: Select text in the PDF to explain, define or translate it, then save the answer as an annotation.
+      steps:
+        - Select a sentence in the PDF and choose Inline Ask from the pop-up menu.
+        - Pick Explain, Define terms or Translate, or type your own question.
+        - The answer opens right next to the text, in plain language, so you never leave the page.
+        - Save as annotation keeps the answer together with the highlighted passage in Zotero.
+    zh:
+      kicker: 划词提问
+      title: 对任意一句话提问
+      text: 在 PDF 中选中文字，即可解释、释义或翻译，并把回答保存为批注。
+      steps:
+        - 在 PDF 中选中一句话，在弹出菜单中选择「Inline Ask」(划词提问)。
+        - 选择解释、释义或翻译，也可以自己输入问题。
+        - 回答直接出现在原文旁边，用通俗的语言说明，不用离开当前页面。
+        - 点击「保存为批注」，回答会和高亮的原文一起保存在 Zotero 中。
+
+  - id: skills
+    en:
+      kicker: Skills
+      title: Bring your own skills
+      text: Write a workflow once as a skill and run it with /. A journal-club brief, a methods checklist, anything you repeat.
+      steps:
+        - The Skills panel holds saved workflows, such as journal-club-brief, compare-papers and analyze-figures.
+        - Type / in the message box to list every action and skill, then pick one.
+        - Here, journal-club-brief turns one short request, “Prep me for Friday’s journal club”, into a one-page brief.
+        - "The brief has the same layout every time: research question, design, three figures to lead with, and limitations, all cited."
+    zh:
+      kicker: 技能
+      title: 使用你自己的技能
+      text: 把常用流程写成一个技能，用 / 即可运行。比如期刊俱乐部简报、方法核查清单，任何你经常重复的工作。
+      steps:
+        - 「技能」(Skills) 面板里保存着常用流程，例如 journal-club-brief、compare-papers 和 analyze-figures。
+        - 在输入框中输入 /，会列出所有操作和技能，选一个即可。
+        - 这里用 journal-club-brief，把一句简单的请求“帮我准备周五的期刊俱乐部”变成一页简报。
+        - 简报每次都按同样的结构：研究问题、实验设计、重点讲解的三张图、局限性，并且全部附引用。
+
+  - id: import
+    en:
+      kicker: Import
+      title: Find and import related papers
+      text: Browse recommendations, references and citing papers, tick the ones you want, and import them in one step.
+      steps:
+        - Type / and choose discover_related.
+        - A panel lists related papers. Switch between Recommendations, References and Citations, and sort by relevance, date or citation count.
+        - Tick the papers you want and click Import selected.
+        - The papers arrive in your Zotero library. Here, 5 are imported in one step.
+    zh:
+      kicker: 导入
+      title: 查找并导入相关论文
+      text: 浏览推荐论文、参考文献和施引文献，勾选需要的论文，一步导入。
+      steps:
+        - 输入 /，选择 discover_related。
+        - 面板中列出相关论文，可以在推荐、参考文献、施引文献之间切换，并按相关度、日期或引用数排序。
+        - 勾选需要的论文，点击「Import selected」(导入所选)。
+        - 论文直接进入你的 Zotero 文库，这里一步导入了 5 篇。
+
+  - id: tags
+    en:
+      kicker: Organize
+      title: Organize in plain words
+      text: Ask the agent to tag papers by topic. Every change is checked against Zotero and listed in a receipt.
+      steps:
+        - "In Library chat, ask in plain words: tag every paper about representational drift in olfactory or piriform cortex with “olfactory-drift”."
+        - The agent searches the whole library to find the papers that match.
+        - At the end, pick the new tag in Zotero’s tag list (bottom left). Only the matching papers are shown.
+    zh:
+      kicker: 整理
+      title: 用日常语言整理文库
+      text: 让 Agent 按主题给论文打标签。每一处修改都会与 Zotero 核对，并在回执中列出。
+      steps:
+        - 在「文库对话」中用日常语言提出要求：给所有关于嗅觉皮层或梨状皮层表征漂移的论文加上 “olfactory-drift” 标签。
+        - Agent 会检索整个文库，找出符合条件的论文。
+        - 最后在 Zotero 左下角的标签列表中选中这个新标签，只会显示符合条件的论文。
+
+  - id: setup
+    en:
+      kicker: Models
+      title: Use the model you already have
+      text: "Add an API key, or connect a subscription you already pay for: Codex, Claude Code, Antigravity or GitHub Copilot."
+      steps:
+        - Everything is in Zotero Settings → llm-for-zotero.
+        - "AI Providers: add an API key for OpenAI, DeepSeek, Gemini, Kimi and others. Each one gets its own card."
+        - "Agent: turn on a tool you already pay for, such as Codex, Claude Code or Antigravity. Each has its own on/off switch."
+    zh:
+      kicker: 模型
+      title: 使用你已有的模型
+      text: 添加 API 密钥，或连接你已经订阅的服务：Codex、Claude Code、Antigravity 或 GitHub Copilot。
+      steps:
+        - 所有设置都在 Zotero 设置 → llm-for-zotero 中。
+        - 「AI Providers」页：添加 OpenAI、DeepSeek、Gemini、Kimi 等服务的 API 密钥，每个服务一张卡片。
+        - 「Agent」页：开启你已订阅的工具，如 Codex、Claude Code 或 Antigravity，每个都有独立开关。
