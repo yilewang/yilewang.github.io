@@ -1,11 +1,370 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <meta charset="utf-8">
-  <title>Redirecting&hellip;</title>
-  <link rel="canonical" href="https://yilewang.github.io/llm-for-zotero/manual/zh/">
-  <script>location="https://yilewang.github.io/llm-for-zotero/manual/zh/"</script>
-  <meta http-equiv="refresh" content="0; url=https://yilewang.github.io/llm-for-zotero/manual/zh/">
-  <meta name="robots" content="noindex">
-  <h1>Redirecting&hellip;</h1>
-  <a href="https://yilewang.github.io/llm-for-zotero/manual/zh/">Click here if you are not redirected.</a>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LLM for Zotero</title>
+<meta name="description" content="LLM for Zotero 是一个开源的 Zotero Agent 系统。它会阅读你的论文，为每个论断标明出处，并在你需要时直接操作你的文库。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LLM for Zotero">
+<meta property="og:description" content="一个开源的 Zotero Agent 系统。">
+<meta property="og:url" content="https://yilewang.github.io/llm-for-zotero/zh/">
+<meta property="og:image" content="https://yilewang.github.io/assets/llm-for-zotero/poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://yilewang.github.io/llm-for-zotero/zh/">
+<link rel="alternate" hreflang="en" href="https://yilewang.github.io/llm-for-zotero/">
+<link rel="alternate" hreflang="zh-CN" href="https://yilewang.github.io/llm-for-zotero/zh/">
+<link rel="alternate" hreflang="x-default" href="https://yilewang.github.io/llm-for-zotero/">
+<link rel="icon" type="image/svg+xml" href="/assets/llm-for-zotero/icon-color.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500&display=swap">
+<style>
+/* One brand moment at the top, then each capability as a large looping recording. */
+:root {
+  --paper: #f7f5fc; --ink: #16141e; --muted: #625e74; --line: #e4e0f0;
+  --violet: #6d4ef6; --pink: #c03bd6; --card: #ffffff; --chip: #eee9fd; --halo: rgba(109,78,246,.28); --bar: rgba(247,245,252,.82);
+  --f-sans: "Geist", "Inter", system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --f-mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --paper: #111018; --ink: #f2f0fa; --muted: #a29eb6; --line: #2a2637; --violet: #9b85ff; --pink: #e27cf2; --card: #1c1927; --chip: #251f35; --halo: rgba(155,133,255,.30); --bar: rgba(17,16,24,.8); color-scheme: dark; } }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 var(--f-sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; border-radius: 8px; }
+img { max-width: 100%; }
+video { display: block; width: 100%; height: auto; max-width: 100%; aspect-ratio: 16 / 9; background: var(--line); }
+.wrap { padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.inner { max-width: 1120px; margin: 0 auto; }
+.grad { background: linear-gradient(95deg, var(--violet), var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.bar { position: sticky; top: 0; z-index: 10; background: var(--bar); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid var(--line); }
+.bar .inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; text-decoration: none; white-space: nowrap; }
+.brand img { width: 26px; height: 26px; }
+.bar nav { display: flex; gap: 20px; font-size: 15px; color: var(--muted); white-space: nowrap; }
+.bar nav a { text-decoration: none; }
+.bar nav a:hover { color: var(--ink); }
+
+.hero { padding-block: 72px 32px; text-align: center; background: radial-gradient(55% 50% at 50% 8%, color-mix(in oklab, var(--violet) 18%, transparent), transparent 72%); }
+.logo { width: 152px; height: 152px; border-radius: 36px; background: var(--card); display: grid; place-items: center; margin: 0 auto 30px;
+  box-shadow: 0 0 0 1px var(--line), 0 22px 60px var(--halo), 0 0 0 14px color-mix(in oklab, var(--violet) 7%, transparent); }
+.logo img { width: 116px; height: 116px; }
+.hero h1 { font: 800 clamp(48px, 9vw, 108px)/0.98 var(--f-sans); letter-spacing: -.045em; margin: 0 0 16px; }
+.slogan { font: 600 clamp(22px, 3.2vw, 34px)/1.2 var(--f-sans); letter-spacing: -.02em; margin: 0 auto 14px; max-width: 26ch; text-wrap: balance; }
+.lede { color: var(--muted); font-size: clamp(16px, 2vw, 19px); max-width: 46ch; margin: 0 auto 30px; text-wrap: balance; }
+.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 9px; padding: 13px 22px; border-radius: 999px; font: 600 16px var(--f-sans); text-decoration: none; }
+.btn svg { width: 18px; height: 18px; }
+.btn-primary { background: var(--violet); color: #fff; box-shadow: 0 10px 26px var(--halo); }
+.btn-ghost { background: var(--chip); color: var(--ink); }
+.film { max-width: 1060px; margin: 52px auto 0; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 80px rgba(60,30,140,.22), 0 0 0 1px var(--line); }
+.meta { display: flex; gap: 10px 24px; justify-content: center; flex-wrap: wrap; margin-top: 22px; color: var(--muted); font: 500 13px var(--f-mono); letter-spacing: .02em; }
+
+.news-pill { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 22px; padding: 6px 8px 6px 6px; border-radius: 999px; background: var(--card); box-shadow: 0 0 0 1px var(--line); font-size: 14px; color: var(--muted); text-decoration: none; max-width: 100%; }
+.news-pill b { padding: 3px 10px; border-radius: 999px; background: var(--chip); color: var(--violet); font: 500 12.5px var(--f-mono); letter-spacing: .02em; white-space: nowrap; }
+.news-pill span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.news-pill:hover { color: var(--ink); }
+
+.latest { padding-block: 76px; border-top: 1px solid var(--line); }
+.latest .inner { max-width: 760px; }
+.latest h2 { font: 700 clamp(28px, 3.6vw, 44px)/1.07 var(--f-sans); letter-spacing: -.03em; margin: 0 0 8px; }
+.latest .date { color: var(--muted); font: 500 13px var(--f-mono); letter-spacing: .02em; margin: 0 0 18px; }
+.latest .lead p { color: var(--muted); margin: 0 0 20px; }
+.latest ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 26px; padding: 0; list-style: none; }
+.latest li { padding: 5px 12px; border-radius: 999px; background: var(--chip); font-size: 14px; }
+.latest .cta { justify-content: flex-start; }
+
+.feature { padding-block: 72px; border-top: 1px solid var(--line); }
+/* Each example gets the full page width, so the recording plays near its real size (1280 px) and its text stays readable. */
+.feature .inner { max-width: 1240px; }
+.copy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 48px; align-items: end; margin-bottom: 28px; }
+.kicker { font: 500 12.5px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--violet); margin-bottom: 12px; }
+.copy .kicker { grid-column: 1 / -1; margin: 0; }
+.copy h2 { font: 700 clamp(28px, 3.6vw, 44px)/1.07 var(--f-sans); letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+.copy p { color: var(--muted); margin: 0; max-width: 46ch; font-size: 18px; }
+.clip { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 64px rgba(60,30,140,.18), 0 0 0 1px var(--line); }
+.clip .zoom { position: absolute; right: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px; border-radius: 999px; background: rgba(22,20,30,.72); color: #fff; font: 600 13.5px var(--f-sans); opacity: .0; transition: opacity .2s; pointer-events: none; }
+.clip .zoom svg { width: 15px; height: 15px; }
+.clip:hover .zoom, .clip:focus-visible .zoom { opacity: 1; }
+@media (hover: none) { .clip .zoom { opacity: 1; } }
+
+/* Enlarged view: the clip fills the screen with its own controls. */
+.viewer { width: 100vw; height: 100vh; max-width: none; max-height: none; margin: 0; padding: max(20px, 4vh) max(16px, 3vw); border: 0; background: rgba(10,8,16,.9); }
+.viewer[open] { display: grid; place-items: center; }
+.viewer::backdrop { background: transparent; }
+.viewer video { width: auto; max-width: 100%; max-height: calc(100vh - 2 * max(20px, 4vh)); border-radius: 12px; background: #000; }
+.viewer .close { position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 999px; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 26px; line-height: 1; cursor: pointer; }
+.viewer .close:hover { background: rgba(255,255,255,.24); }
+
+/* EN / 中文 switch */
+.lang { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--chip); font: 600 13px var(--f-sans); }
+.lang a { padding: 4px 11px; border-radius: 999px; color: var(--muted); text-decoration: none; }
+.lang a:hover { color: var(--ink); }
+.lang a[aria-current] { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(22,20,30,.12); }
+.bar .right { display: flex; align-items: center; gap: 20px; }
+
+/* "What to look for": numbered steps that follow the clip in order. */
+.look { margin: 0 0 22px; }
+.look h3 { margin: 0 0 12px; font: 500 12.5px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.look ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; counter-reset: step; }
+.look li { counter-increment: step; position: relative; padding: 14px 16px 14px 52px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--line); font-size: 15.5px; line-height: 1.5; }
+.look li::before { content: counter(step); position: absolute; left: 14px; top: 13px; width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; background: var(--chip); color: var(--violet); font: 700 13.5px var(--f-sans); }
+
+/* Chinese text reads better without the tight Latin letter-spacing. */
+:lang(zh) .hero h1, :lang(zh) .slogan, :lang(zh) .copy h2, :lang(zh) .latest h2, :lang(zh) .end h2 { letter-spacing: 0; }
+:lang(zh) .kicker, :lang(zh) .look h3 { letter-spacing: .04em; }
+:lang(zh) .copy p, :lang(zh) .look li { line-height: 1.7; }
+
+.end { text-align: center; padding-block: 96px 56px; border-top: 1px solid var(--line); }
+.end .logo { width: 96px; height: 96px; border-radius: 24px; margin-bottom: 22px; }
+.end .logo img { width: 72px; height: 72px; }
+.end h2 { font: 800 clamp(34px, 5vw, 60px)/1.02 var(--f-sans); letter-spacing: -.04em; margin: 0 0 12px; }
+.end p { color: var(--muted); margin: 0 auto 28px; max-width: 44ch; }
+footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer .inner { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 22px; }
+footer a { text-decoration: none; }
+
+@media (max-width: 820px) {
+  .feature { padding-block: 56px; }
+  .copy { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 22px; }
+  .copy p { font-size: 17px; }
+  .look ol { gap: 8px; }
+  .look li { padding: 10px 14px 10px 46px; font-size: 15px; border-radius: 12px; }
+  .look li::before { left: 12px; top: 10px; width: 24px; height: 24px; font-size: 13px; }
+  .logo { width: 120px; height: 120px; border-radius: 28px; }
+  .logo img { width: 92px; height: 92px; }
+  .bar nav { gap: 14px; font-size: 14px; }
+  .bar .right { gap: 14px; }
+}
+@media (max-width: 600px) {
+  .bar nav a.opt { display: none; }
+}
+@media (max-width: 480px) {
+  .brand-name { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header class="bar wrap">
+  <div class="inner">
+    <a class="brand" href="/llm-for-zotero/zh/"><img src="/assets/llm-for-zotero/icon-color.svg" alt=""><span class="brand-name">LLM for Zotero</span></a>
+    <div class="right">
+      <nav aria-label="Site">
+        <a href="/llm-for-zotero/manual/zh/">使用手册</a>
+        <a class="opt" href="https://github.com/yilewang/llm-for-zotero/releases">版本发布</a>
+        <a href="https://github.com/yilewang/llm-for-zotero">GitHub</a>
+        <a class="opt" href="/">Yile Wang</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language / 语言">
+        <a href="/llm-for-zotero/" hreflang="en" lang="en">EN</a>
+        <a href="/llm-for-zotero/zh/" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap" id="download">
+    <div class="logo"><img src="/assets/llm-for-zotero/icon-color.svg" alt="LLM for Zotero 标志"></div>
+    <a class="news-pill" href="#latest"><b>v3.9.21 新版本</b><span>Writing in notes &rarr;</span></a>
+    <h1>LLM for Zotero</h1>
+    <p class="slogan">开源的 Zotero <span class="grad">Agent 系统</span></p>
+    <p class="lede">它会阅读你的论文，为每个论断标明出处，并在你需要时直接操作你的文库。使用你已有的模型或订阅即可。</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/yilewang/llm-for-zotero/releases/latest/download/llm-for-zotero.xpi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>下载</a>
+      <a class="btn btn-ghost" href="/llm-for-zotero/manual/zh/">使用手册</a>
+      <a class="btn btn-ghost" href="https://github.com/yilewang/llm-for-zotero">GitHub</a>
+    </div>
+    <div class="film"><video src="/assets/llm-for-zotero/overview.mp4" poster="/assets/llm-for-zotero/poster.jpg" controls playsinline preload="none" aria-label="LLM for Zotero 概览视频"></video></div>
+    <div class="meta"><span>免费开源</span><span>AGPL-3.0</span><span>API 密钥 · Codex · Claude Code · Antigravity · Copilot</span></div>
+  </section>
+
+  <div id="features">
+    <section class="feature wrap" id="cite">
+      <div class="inner">
+        <div class="copy"><div class="kicker">引用回答</div><h2>每个回答都标明出处</h2><p>回答会直接引用论文原文。点击引用，PDF 会跳到对应段落并高亮显示。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>提问：这篇论文的主要发现是什么？请引用关键证据。</li><li>注意每句话后面的小编号，每个编号都对应论文中的一段原文。</li><li>点击编号，会显示被引用的原话和页码。</li><li>PDF 随即跳到这段原文并高亮，方便你亲自核对。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 每个回答都标明出处"><video data-src="/assets/llm-for-zotero/cite.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+    <section class="feature wrap" id="details">
+      <div class="inner">
+        <div class="copy"><div class="kicker">快速提取细节</div><h2>几秒钟提取关键细节</h2><p>询问实验对象、任务、记录方法或实验时间线，答案会分条列出，每条都附带引用。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>一次提问同时要四样信息：实验动物、任务、记录方法和实验时间线。</li><li>回答把时间线整理成表格：每个时段小鼠在做什么、对应哪一次记录。</li><li>每一条都带有引用编号，任何细节都能追溯到原文。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 几秒钟提取关键细节"><video data-src="/assets/llm-for-zotero/details.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+    <section class="feature wrap" id="compare">
+      <div class="inner">
+        <div class="copy"><div class="kicker">对比</div><h2>并排对比多篇论文</h2><p>输入 @ 从文库中加入任意论文，然后让它生成带引用的对比表格。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>输入 @，会弹出你文库中的论文列表。</li><li>选中需要的论文，每篇都会以小标签的形式出现在输入框里。</li><li>回答是一张表格，按研究方法和主要结论把论文逐篇并排对比。</li><li>表格下方有一段简短总结，说明这些论文之间的关系，并附引用。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 并排对比多篇论文"><video data-src="/assets/llm-for-zotero/compare.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+    <section class="feature wrap" id="library">
+      <div class="inner">
+        <div class="copy"><div class="kicker">文库对话</div><h2>向整个文库提问</h2><p>Agent 会在你所有的论文中检索和阅读，然后给出真正相关的论文，并附引用。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>切换到「文库对话」(Library chat)，就可以针对整个文库提问，而不只是当前打开的论文。</li><li>提问：我的文库里有哪些论文认为表征漂移是有用的，而不只是噪声？</li><li>顶部的「任务进度」(Task progress) 会实时计数：精读了多少篇、找到多少篇、引用了多少篇。</li><li>回答按证据类型（模型研究、理论观点、动物实验）把论文分组，每篇都附引用。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 向整个文库提问"><video data-src="/assets/llm-for-zotero/library.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+    <section class="feature wrap" id="progress">
+      <div class="inner">
+        <div class="copy"><div class="kicker">任务进度</div><h2>看清 Agent 是怎么得出结论的</h2><p>任务进度完整保留每一次运行：计划、读过的每一篇论文、每篇为什么重要，以及引用的原文。点击「在回答中显示」即可回到对应的论断。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>「任务进度」在回答旁边打开，完整展示整个过程。</li><li>「步骤」(Steps) 列出 Agent 要核查的内容，完成的步骤会打勾。</li><li>「In your library」列出用到的每一篇论文。点击任意一篇，可以看到它为什么重要，以及引用的原文。</li><li>点击「在回答中显示」(Show in answer)，会跳回回答，并高亮这篇论文所支持的那句话。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 看清 Agent 是怎么得出结论的"><video data-src="/assets/llm-for-zotero/progress.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+    <section class="feature wrap" id="notes">
+      <div class="inner">
+        <div class="copy"><div class="kicker">笔记</div><h2>直接修改笔记</h2><p>在 Zotero 笔记中选中文字，即可改写、扩写或校对。先查看修改对比，再决定是否替换。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>在 Zotero 笔记中选中一段文字，会弹出小菜单：改写、扩写、校对，或在侧边栏提问。</li><li>选择「改写」，修改会以对比形式显示：红色是删去的文字，绿色是新写的文字。</li><li>在你确认之前，笔记不会改变：可以选择替换、插入到下方或放弃。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 直接修改笔记"><video data-src="/assets/llm-for-zotero/notes.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+    <section class="feature wrap" id="inline">
+      <div class="inner">
+        <div class="copy"><div class="kicker">划词提问</div><h2>对任意一句话提问</h2><p>在 PDF 中选中文字，即可解释、释义或翻译，并把回答保存为批注。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>在 PDF 中选中一句话，在弹出菜单中选择「Inline Ask」(划词提问)。</li><li>选择解释、释义或翻译，也可以自己输入问题。</li><li>回答直接出现在原文旁边，用通俗的语言说明，不用离开当前页面。</li><li>点击「保存为批注」，回答会和高亮的原文一起保存在 Zotero 中。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 对任意一句话提问"><video data-src="/assets/llm-for-zotero/inline.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+    <section class="feature wrap" id="skills">
+      <div class="inner">
+        <div class="copy"><div class="kicker">技能</div><h2>使用你自己的技能</h2><p>把常用流程写成一个技能，用 / 即可运行。比如期刊俱乐部简报、方法核查清单，任何你经常重复的工作。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>「技能」(Skills) 面板里保存着常用流程，例如 journal-club-brief、compare-papers 和 analyze-figures。</li><li>在输入框中输入 /，会列出所有操作和技能，选一个即可。</li><li>这里用 journal-club-brief，把一句简单的请求“帮我准备周五的期刊俱乐部”变成一页简报。</li><li>简报每次都按同样的结构：研究问题、实验设计、重点讲解的三张图、局限性，并且全部附引用。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 使用你自己的技能"><video data-src="/assets/llm-for-zotero/skills.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+    <section class="feature wrap" id="import">
+      <div class="inner">
+        <div class="copy"><div class="kicker">导入</div><h2>查找并导入相关论文</h2><p>浏览推荐论文、参考文献和施引文献，勾选需要的论文，一步导入。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>输入 /，选择 discover_related。</li><li>面板中列出相关论文，可以在推荐、参考文献、施引文献之间切换，并按相关度、日期或引用数排序。</li><li>勾选需要的论文，点击「Import selected」(导入所选)。</li><li>论文直接进入你的 Zotero 文库，这里一步导入了 5 篇。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 查找并导入相关论文"><video data-src="/assets/llm-for-zotero/import.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+    <section class="feature wrap" id="tags">
+      <div class="inner">
+        <div class="copy"><div class="kicker">整理</div><h2>用日常语言整理文库</h2><p>让 Agent 按主题给论文打标签。每一处修改都会与 Zotero 核对，并在回执中列出。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>在「文库对话」中用日常语言提出要求：给所有关于嗅觉皮层或梨状皮层表征漂移的论文加上 “olfactory-drift” 标签。</li><li>Agent 会检索整个文库，找出符合条件的论文。</li><li>最后在 Zotero 左下角的标签列表中选中这个新标签，只会显示符合条件的论文。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 用日常语言整理文库"><video data-src="/assets/llm-for-zotero/tags.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+    <section class="feature wrap" id="setup">
+      <div class="inner">
+        <div class="copy"><div class="kicker">模型</div><h2>使用你已有的模型</h2><p>添加 API 密钥，或连接你已经订阅的服务：Codex、Claude Code、Antigravity 或 GitHub Copilot。</p></div>
+        <div class="look">
+          <h3>观看要点</h3>
+          <ol><li>所有设置都在 Zotero 设置 → llm-for-zotero 中。</li><li>「AI Providers」页：添加 OpenAI、DeepSeek、Gemini、Kimi 等服务的 API 密钥，每个服务一张卡片。</li><li>「Agent」页：开启你已订阅的工具，如 Codex、Claude Code 或 Antigravity，每个都有独立开关。</li></ol>
+        </div>
+        <button class="clip" type="button" aria-label="放大： 使用你已有的模型"><video data-src="/assets/llm-for-zotero/setup.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>放大</span></button>
+      </div>
+    </section>
+  </div>
+  <section class="latest wrap" id="latest">
+    <div class="inner">
+      <div class="kicker">最新版本</div>
+      <h2>v3.9.21 有哪些新内容</h2>
+      <p class="date">2026 年 11 月 25 日 发布</p>
+      <div class="lead"><p>Notes become a place to write with AI. Opening a paper’s note no longer replaces the paper’s chat, and selecting text in a note opens a small writing popup. Plain Chat now delivers the paper to providers that used to miss it, and Antigravity gets the full set of Zotero tools. Pictures the agent saves now show inside its answer, and the chat’s scrollbar is no longer hidden behind the composer.</p>
+</div>
+      <ul><li>Writing in notes</li><li>Saving answers as notes</li><li>Chat</li><li>Agent</li><li>Antigravity</li></ul>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/yilewang/llm-for-zotero/releases/tag/v3.9.21">阅读发布说明</a>
+        <a class="btn btn-ghost" href="https://github.com/yilewang/llm-for-zotero/releases">所有版本</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="end wrap">
+    <div class="logo"><img src="/assets/llm-for-zotero/icon-color.svg" alt=""></div>
+    <h2>LLM for Zotero</h2>
+    <p>开源的 Zotero <span class="grad">Agent 系统</span>。下载 .xpi 文件，然后在 Zotero 中打开 工具 → 插件 → 齿轮图标 → 从文件安装插件。</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/yilewang/llm-for-zotero/releases/latest/download/llm-for-zotero.xpi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>下载</a>
+      <a class="btn btn-ghost" href="/llm-for-zotero/manual/zh/">使用手册</a>
+      <a class="btn btn-ghost" href="https://github.com/yilewang/llm-for-zotero">GitHub</a>
+    </div>
+  </section>
+</main>
+
+<dialog class="viewer" aria-label="放大的示例">
+  <button class="close" type="button" aria-label="关闭">&times;</button>
+  <video controls loop playsinline muted></video>
+</dialog>
+
+<footer class="wrap">
+  <div class="inner">
+    <span>© 2026 Yile Wang · AGPL-3.0</span>
+    <span><a href="/llm-for-zotero/manual/zh/">使用手册</a> · <a href="/llm-for-zotero/manual/">English manual</a> · <a href="https://github.com/yilewang/llm-for-zotero/releases">版本发布</a></span>
+  </div>
+</footer>
+
+<script>
+  // Load and play each loop only while it is on screen.
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      var v = e.target;
+      if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; var p = v.play(); if (p) p.catch(function () {}); }
+      else v.pause();
+    });
+  }, { rootMargin: "200px 0px" });
+  document.querySelectorAll("video[data-src]").forEach(function (v) { io.observe(v); });
+
+  // Click an example to watch it full screen.
+  var viewer = document.querySelector(".viewer"), big = viewer.querySelector("video");
+  document.querySelectorAll(".clip").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var v = btn.querySelector("video");
+      big.src = v.dataset.src;
+      viewer.showModal();
+      big.currentTime = v.currentTime || 0;
+      var p = big.play(); if (p) p.catch(function () {});
+    });
+  });
+  function closeViewer() { viewer.close(); }
+  viewer.querySelector(".close").addEventListener("click", closeViewer);
+  viewer.addEventListener("click", function (e) { if (e.target === viewer) closeViewer(); });
+  viewer.addEventListener("close", function () { big.pause(); big.removeAttribute("src"); big.load(); });
+</script>
+</body>
 </html>
+

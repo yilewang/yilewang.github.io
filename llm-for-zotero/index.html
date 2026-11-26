@@ -12,12 +12,15 @@
 <meta property="og:image" content="https://yilewang.github.io/assets/llm-for-zotero/poster.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://yilewang.github.io/llm-for-zotero/">
+<link rel="alternate" hreflang="en" href="https://yilewang.github.io/llm-for-zotero/">
+<link rel="alternate" hreflang="zh-CN" href="https://yilewang.github.io/llm-for-zotero/zh/">
+<link rel="alternate" hreflang="x-default" href="https://yilewang.github.io/llm-for-zotero/">
 <link rel="icon" type="image/svg+xml" href="/assets/llm-for-zotero/icon-color.svg">
 <script>
   // Old manual links (/llm-for-zotero/#section) now live under /llm-for-zotero/manual/.
   (function () {
     var id = decodeURIComponent(location.hash.slice(1));
-    if (id && !document.getElementById(id) && ["download", "features"].indexOf(id) < 0) {
+    if (id && ["download", "features", "latest", "cite", "details", "compare", "library", "progress", "notes", "inline", "skills", "import", "tags", "setup"].indexOf(id) < 0) {
       location.replace("/llm-for-zotero/manual/" + location.hash);
     }
   })();
@@ -30,7 +33,7 @@
 :root {
   --paper: #f7f5fc; --ink: #16141e; --muted: #625e74; --line: #e4e0f0;
   --violet: #6d4ef6; --pink: #c03bd6; --card: #ffffff; --chip: #eee9fd; --halo: rgba(109,78,246,.28); --bar: rgba(247,245,252,.82);
-  --f-sans: "Geist", "Inter", system-ui, -apple-system, sans-serif;
+  --f-sans: "Geist", "Inter", system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
   --f-mono: "Geist Mono", ui-monospace, Menlo, monospace;
   color-scheme: light;
 }
@@ -107,6 +110,25 @@ video { display: block; width: 100%; height: auto; max-width: 100%; aspect-ratio
 .viewer .close { position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 999px; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 26px; line-height: 1; cursor: pointer; }
 .viewer .close:hover { background: rgba(255,255,255,.24); }
 
+/* EN / 中文 switch */
+.lang { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--chip); font: 600 13px var(--f-sans); }
+.lang a { padding: 4px 11px; border-radius: 999px; color: var(--muted); text-decoration: none; }
+.lang a:hover { color: var(--ink); }
+.lang a[aria-current] { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(22,20,30,.12); }
+.bar .right { display: flex; align-items: center; gap: 20px; }
+
+/* "What to look for": numbered steps that follow the clip in order. */
+.look { margin: 0 0 22px; }
+.look h3 { margin: 0 0 12px; font: 500 12.5px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.look ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; counter-reset: step; }
+.look li { counter-increment: step; position: relative; padding: 14px 16px 14px 52px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--line); font-size: 15.5px; line-height: 1.5; }
+.look li::before { content: counter(step); position: absolute; left: 14px; top: 13px; width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; background: var(--chip); color: var(--violet); font: 700 13.5px var(--f-sans); }
+
+/* Chinese text reads better without the tight Latin letter-spacing. */
+:lang(zh) .hero h1, :lang(zh) .slogan, :lang(zh) .copy h2, :lang(zh) .latest h2, :lang(zh) .end h2 { letter-spacing: 0; }
+:lang(zh) .kicker, :lang(zh) .look h3 { letter-spacing: .04em; }
+:lang(zh) .copy p, :lang(zh) .look li { line-height: 1.7; }
+
 .end { text-align: center; padding-block: 96px 56px; border-top: 1px solid var(--line); }
 .end .logo { width: 96px; height: 96px; border-radius: 24px; margin-bottom: 22px; }
 .end .logo img { width: 72px; height: 72px; }
@@ -120,9 +142,16 @@ footer a { text-decoration: none; }
   .feature { padding-block: 56px; }
   .copy { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 22px; }
   .copy p { font-size: 17px; }
+  .look ol { gap: 8px; }
+  .look li { padding: 10px 14px 10px 46px; font-size: 15px; border-radius: 12px; }
+  .look li::before { left: 12px; top: 10px; width: 24px; height: 24px; font-size: 13px; }
   .logo { width: 120px; height: 120px; border-radius: 28px; }
   .logo img { width: 92px; height: 92px; }
   .bar nav { gap: 14px; font-size: 14px; }
+  .bar .right { gap: 14px; }
+}
+@media (max-width: 600px) {
+  .bar nav a.opt { display: none; }
 }
 @media (max-width: 480px) {
   .brand-name { display: none; }
@@ -134,12 +163,18 @@ footer a { text-decoration: none; }
 <header class="bar wrap">
   <div class="inner">
     <a class="brand" href="/llm-for-zotero/"><img src="/assets/llm-for-zotero/icon-color.svg" alt=""><span class="brand-name">LLM for Zotero</span></a>
-    <nav aria-label="Site">
-      <a href="/llm-for-zotero/manual/">Manual</a>
-      <a href="https://github.com/yilewang/llm-for-zotero/releases">Releases</a>
-      <a href="https://github.com/yilewang/llm-for-zotero">GitHub</a>
-      <a href="/">Yile Wang</a>
-    </nav>
+    <div class="right">
+      <nav aria-label="Site">
+        <a href="/llm-for-zotero/manual/">Manual</a>
+        <a class="opt" href="https://github.com/yilewang/llm-for-zotero/releases">Releases</a>
+        <a href="https://github.com/yilewang/llm-for-zotero">GitHub</a>
+        <a class="opt" href="/">Yile Wang</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language / 语言">
+        <a href="/llm-for-zotero/" hreflang="en" lang="en" aria-current="page">EN</a>
+        <a href="/llm-for-zotero/zh/" hreflang="zh-CN" lang="zh-CN">中文</a>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -161,85 +196,116 @@ footer a { text-decoration: none; }
   </section>
 
   <div id="features">
-    
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="cite">
       <div class="inner">
         <div class="copy"><div class="kicker">Cited answers</div><h2>Every answer shows its source</h2><p>Answers quote the paper. Click a citation and the PDF jumps to the exact passage, highlighted.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>The question asks for the main finding and the key evidence.</li><li>Look for the small numbers after each sentence. Each one points to a passage in the paper.</li><li>Clicking a number shows the exact words quoted, with the page number.</li><li>The PDF then scrolls to that passage and highlights it, so you can check it yourself.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: Every answer shows its source"><video data-src="/assets/llm-for-zotero/cite.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="details">
       <div class="inner">
         <div class="copy"><div class="kicker">Fast details</div><h2>Pull out the details in seconds</h2><p>Ask for the subjects, task, recording method or session timeline and get them laid out, each with a citation.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>One request asks for four things at once: the animals, the task, the recording method and the session timeline.</li><li>The answer lays the timeline out as a table, showing what the mouse did at each point and which recording was made.</li><li>Every point carries a citation number, so each detail can be traced back to the paper.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: Pull out the details in seconds"><video data-src="/assets/llm-for-zotero/details.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="compare">
       <div class="inner">
         <div class="copy"><div class="kicker">Compare</div><h2>Compare papers side by side</h2><p>Type @ to bring in any paper from your library, then ask for a comparison table with citations.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>Typing @ opens a list of papers from your library.</li><li>Pick the papers you want. Each one appears as a small tag in the message box.</li><li>The answer is a table that lines the papers up side by side, by method and by main finding.</li><li>Below the table, a short summary explains how the papers fit together, with citations.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: Compare papers side by side"><video data-src="/assets/llm-for-zotero/compare.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="library">
       <div class="inner">
         <div class="copy"><div class="kicker">Library chat</div><h2>Ask your whole library</h2><p>The agent searches and reads across all your papers, then answers with the ones that matter, cited.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>Switch to Library chat to ask about all your papers at once, not just the one that is open.</li><li>The question: which papers in my library argue that representational drift is useful, not just noise?</li><li>The Task progress line at the top counts as it works: papers read in depth, papers found, papers cited.</li><li>The answer groups the papers by kind of evidence (models, theory, animal studies), each with citations.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: Ask your whole library"><video data-src="/assets/llm-for-zotero/library.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="progress">
       <div class="inner">
-        <div class="copy"><div class="kicker">Task progress</div><h2>See how the agent got there</h2><p>Task progress keeps the whole run: the plan, every paper it read, why each one matters, and the passage it quoted. Show in answer takes you back to the claim.</p></div>
+        <div class="copy"><div class="kicker">Task progress</div><h2>See how the agent got there</h2><p>Task progress keeps the whole run, including the plan, every paper it read, why each one matters, and the passage it quoted. Show in answer takes you back to the claim.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>Task progress opens beside the answer and shows the whole run.</li><li>Steps lists what the agent set out to check, with a tick next to each finished step.</li><li>In your library lists every paper it used. Click one to see why it matters and the passage it quoted.</li><li>Show in answer jumps back to the answer and highlights the sentence that paper supports.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: See how the agent got there"><video data-src="/assets/llm-for-zotero/progress.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="notes">
       <div class="inner">
         <div class="copy"><div class="kicker">Notes</div><h2>Edit notes in place</h2><p>Select text in a Zotero note to rewrite, expand or proofread it. Review the diff, then replace.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>Select a paragraph in a Zotero note. A small menu offers Rewrite, Expand, Proofread or Ask in sidebar.</li><li>Choose Rewrite. The change shows as a comparison: removed words in red, new words in green.</li><li>Nothing changes until you decide: Replace, Insert below, or Discard.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: Edit notes in place"><video data-src="/assets/llm-for-zotero/notes.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="inline">
       <div class="inner">
         <div class="copy"><div class="kicker">Inline ask</div><h2>Ask about any sentence</h2><p>Select text in the PDF to explain, define or translate it, then save the answer as an annotation.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>Select a sentence in the PDF and choose Inline Ask from the pop-up menu.</li><li>Pick Explain, Define terms or Translate, or type your own question.</li><li>The answer opens right next to the text, in plain language, so you never leave the page.</li><li>Save as annotation keeps the answer together with the highlighted passage in Zotero.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: Ask about any sentence"><video data-src="/assets/llm-for-zotero/inline.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="skills">
       <div class="inner">
         <div class="copy"><div class="kicker">Skills</div><h2>Bring your own skills</h2><p>Write a workflow once as a skill and run it with /. A journal-club brief, a methods checklist, anything you repeat.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>The Skills panel holds saved workflows, such as journal-club-brief, compare-papers and analyze-figures.</li><li>Type / in the message box to list every action and skill, then pick one.</li><li>Here, journal-club-brief turns one short request, “Prep me for Friday’s journal club”, into a one-page brief.</li><li>The brief has the same layout every time: research question, design, three figures to lead with, and limitations, all cited.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: Bring your own skills"><video data-src="/assets/llm-for-zotero/skills.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="import">
       <div class="inner">
         <div class="copy"><div class="kicker">Import</div><h2>Find and import related papers</h2><p>Browse recommendations, references and citing papers, tick the ones you want, and import them in one step.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>Type / and choose discover_related.</li><li>A panel lists related papers. Switch between Recommendations, References and Citations, and sort by relevance, date or citation count.</li><li>Tick the papers you want and click Import selected.</li><li>The papers arrive in your Zotero library. Here, 5 are imported in one step.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: Find and import related papers"><video data-src="/assets/llm-for-zotero/import.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="tags">
       <div class="inner">
         <div class="copy"><div class="kicker">Organize</div><h2>Organize in plain words</h2><p>Ask the agent to tag papers by topic. Every change is checked against Zotero and listed in a receipt.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>In Library chat, ask in plain words: tag every paper about representational drift in olfactory or piriform cortex with “olfactory-drift”.</li><li>The agent searches the whole library to find the papers that match.</li><li>At the end, pick the new tag in Zotero’s tag list (bottom left). Only the matching papers are shown.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: Organize in plain words"><video data-src="/assets/llm-for-zotero/tags.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
-    <section class="feature wrap">
+    <section class="feature wrap" id="setup">
       <div class="inner">
         <div class="copy"><div class="kicker">Models</div><h2>Use the model you already have</h2><p>Add an API key, or connect a subscription you already pay for: Codex, Claude Code, Antigravity or GitHub Copilot.</p></div>
+        <div class="look">
+          <h3>What to look for</h3>
+          <ol><li>Everything is in Zotero Settings → llm-for-zotero.</li><li>AI Providers: add an API key for OpenAI, DeepSeek, Gemini, Kimi and others. Each one gets its own card.</li><li>Agent: turn on a tool you already pay for, such as Codex, Claude Code or Antigravity. Each has its own on/off switch.</li></ol>
+        </div>
         <button class="clip" type="button" aria-label="Enlarge: Use the model you already have"><video data-src="/assets/llm-for-zotero/setup.mp4" muted loop playsinline preload="none" aria-hidden="true"></video><span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>Enlarge</span></button>
       </div>
     </section>
-    
   </div>
   <section class="latest wrap" id="latest">
     <div class="inner">
@@ -310,3 +376,4 @@ footer a { text-decoration: none; }
 </script>
 </body>
 </html>
+
